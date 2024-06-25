@@ -16,7 +16,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Caltech/IPAC--IRSA Demo Notebooks'
-copyright = '2022-2023, IRSA developers'
+copyright = '2022-2024, IRSA developers'
 author = 'IRSA developers'
 
 
@@ -36,7 +36,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache']
+exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.md']
 
 # MyST-NB configuration
 nb_execution_timeout = 900
