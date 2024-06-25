@@ -1,0 +1,49 @@
+# Directories created by notebooks to store data, results, etc.
+# "data" dir to store any data that is downloaded or otherwise needs to be made available to the notebook
+data/
+# "output" dir used to store results, figures, logs, etc.
+output/
+# "cache" dir is created by nway in the forced photometry notebook. ignore it and any other "cache" directory
+cache/
+
+# Data and Output files
+# data and output files should not be committed to the code repository
+# these files *should* end up in one of the directories listed above and thus already ignored
+# but we list them explicitly here in case they end up in a different directory
+*.bz2
+*.csv
+*.ecsv
+*.fits
+*.gzip
+*.jpg
+*.jpeg
+*.log
+*.parquet
+*.pdf
+*.png
+
+# Tests and reports
+htmlcov/
+.tox/
+.pytest_cache/
+.cache
+
+# Jupyter Notebook and sphinx renderings
+.ipynb_checkpoints
+*.ipynb
+_build/
+
+# PyCharm
+.idea
+
+# Mac OSX
+.DS_Store
+
+# PyCharm
+.idea
+
+# VSCode
+.vscode
+
+#pycache
+__pycache__
