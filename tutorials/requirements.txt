@@ -1,0 +1,10 @@
+numpy
+matplotlib
+astropy
+pyvo
+scipy
+pyarrow
+hpgeom
+pandas
+dask
+psutil
