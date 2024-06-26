@@ -1,0 +1,877 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Image Thumbnails from COSMOS &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/irsa-sia-examples/sia_cosmos';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Image Thumbnails from Spitzer Enhanced Imaging Products" href="siav2_seip.html" />
+    <link rel="prev" title="Image Thumbnails from AllWISE Atlas Images" href="sia_allwise_atlas.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="IRSA Demo Notebooks - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="IRSA Demo Notebooks - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/bsipocz/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC – IRSA notebooks
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="sia_2mass_allsky.html">Image Thumbnails from 2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sia_allwise_atlas.html">Image Thumbnails from AllWISE Atlas Images</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Image Thumbnails from COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siav2_seip.html">Image Thumbnails from Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmosims/CosmoDC2_Parquet.html">Working with CosmoDC2 Parquet files</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/bsipocz/irsa-tutorials/main?urlpath=tree/tutorials/irsa-sia-examples/sia_cosmos.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/edit/main/tutorials/irsa-sia-examples/sia_cosmos.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/irsa-sia-examples/sia_cosmos.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/irsa-sia-examples/sia_cosmos.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/irsa-sia-examples/sia_cosmos.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Image Thumbnails from COSMOS</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-1-setup">Section 1 - Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-2-lookup-and-define-a-service-for-cosmos-images">Section 2 - Lookup and define a service for COSMOS images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-3-search-the-service">Section 3 - Search the service</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-4-locate-and-download-an-image-of-interest">Section 4 - Locate and download an image of interest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-5-extract-a-cutout-and-plot-it">Section 5 - Extract a cutout and plot it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="image-thumbnails-from-cosmos">
+<h1>Image Thumbnails from COSMOS<a class="headerlink" href="#image-thumbnails-from-cosmos" title="Link to this heading">#</a></h1>
+<p>This notebook tutorial demonstrates the process of querying IRSA’s Simple Image Access (SIA) service for the COSMOS images, making a cutout image (thumbnail), and displaying the cutout.</p>
+<hr class="docutils" />
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Learn how to search the NASA Astronomical Virtual Observatory Directory web portal for a service that provides access to IRSA’s COSMOS images.</p></li>
+<li><p>Use the Python pyvo package to identify which of IRSA’s COSMOS images cover a specified coordinate.</p></li>
+<li><p>Download one of the identified images.</p></li>
+<li><p>Create and display a cutout of the downloaded image.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The COSMOS Archive serves data taken for the Cosmic Evolution Survey with HST (COSMOS) project, using IRSA’s general search service, Atlas. COSMOS is an HST Treasury Project to survey a 2 square degree equatorial field with the ACS camera. For more information about COSMOS, see:</p>
+<p>https://irsa.ipac.caltech.edu/Missions/cosmos.html</p>
+<p>The <a class="reference external" href="https://irsa.ipac.caltech.edu">NASA/IPAC Infrared Science Archive (IRSA)</a> at Caltech is one of the archives for COSMOS images and catalogs. The COSMOS images that are the subject of this tutorial are made accessible via the <a class="reference external" href="https://ivoa.net">International Virtual Observatory Alliance (IVOA)</a> <a class="reference external" href="https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf">Simple Image Access (SIA)</a> protocol. IRSA’s SEIP SIA service is registered in the NASA Astronomical Virtual Observatory (NAVO) <a class="reference external" href="https://vao.stsci.edu">Directory</a>. Based on the registered information, the Python package <a class="reference external" href="https://pyvo.readthedocs.io">pyvo</a> can be used to query the SIA service for a list of images that meet specified criteria, and standard Python libraries can be used to download and manipulate the images.
+Other datasets at IRSA are available through other SIA services:</p>
+<p>https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><em>pyvo</em> for querying IRSA’s COSMOS SIA service</p></li>
+<li><p><em>astropy.coordinates</em> for defining coordinates</p></li>
+<li><p><em>astropy.nddata</em> for creating an image cutout</p></li>
+<li><p><em>astropy.wcs</em> for interpreting the World Coordinate System header keywords of a fits file</p></li>
+<li><p><em>astropy.units</em> for attaching units to numbers passed to the SIA service</p></li>
+<li><p><em>matplotlib.pyplot</em> for plotting</p></li>
+<li><p><em>astropy.utils.data</em> for downloading files</p></li>
+<li><p><em>astropy.io</em> to manipulate FITS files</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvo</span> <span class="k">as</span> <span class="nn">vo</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span> <span class="nn">astropy.nddata</span> <span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">astropy.utils.data</span> <span class="kn">import</span> <span class="n">download_file</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1-setup">
+<h2>Section 1 - Setup<a class="headerlink" href="#section-1-setup" title="Link to this heading">#</a></h2>
+<p>Set images to display in the notebook</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<p>Define coordinates of a bright source</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra</span> <span class="o">=</span> <span class="mf">149.99986</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="mf">2.24875</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-2-lookup-and-define-a-service-for-cosmos-images">
+<h2>Section 2 - Lookup and define a service for COSMOS images<a class="headerlink" href="#section-2-lookup-and-define-a-service-for-cosmos-images" title="Link to this heading">#</a></h2>
+<p>Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/</p>
+<p>Limit by Publisher “NASA/IPAC Infrared Science Archive” and Capability Type “Simple Image Access Protocol” then search on “COSMOS”</p>
+<p>Locate the SIA2 URL https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&amp;hdr_location=%5CCOSMOSDataPath%5C&amp;collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&amp;SIAP_ACTIVE=1&amp;</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cosmos_service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">SIAService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&amp;hdr_location=%5CCOSMOSDataPath%5C&amp;collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&amp;SIAP_ACTIVE=1&amp;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-3-search-the-service">
+<h2>Section 3 - Search the service<a class="headerlink" href="#section-3-search-the-service" title="Link to this heading">#</a></h2>
+<p>Search for images covering within 1 arcsecond of the star</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span> <span class="o">=</span> <span class="n">cosmos_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Inspect the table of images that is returned</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;DALResultsTable length=279&gt;
+   ra   ...
+  deg   ...
+float64 ...
+------- ...
+150.014 ...
+150.022 ...
+150.014 ...
+150.022 ...
+149.977 ...
+149.977 ...
+150.061 ...
+150.061 ...
+150.116 ...
+    ... ...
+150.061 ...
+150.061 ...
+150.061 ...
+150.061 ...
+150.061 ...
+150.061 ...
+150.061 ...
+150.061 ...
+149.995 ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">colnames</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;ra&#39;,
+ &#39;dec&#39;,
+ &#39;cra&#39;,
+ &#39;cdec&#39;,
+ &#39;naxis1&#39;,
+ &#39;naxis2&#39;,
+ &#39;ctype1&#39;,
+ &#39;ctype2&#39;,
+ &#39;crval1&#39;,
+ &#39;crval2&#39;,
+ &#39;crpix1&#39;,
+ &#39;crpix2&#39;,
+ &#39;cdelt1&#39;,
+ &#39;cdelt2&#39;,
+ &#39;crota2&#39;,
+ &#39;ra1&#39;,
+ &#39;dec1&#39;,
+ &#39;ra2&#39;,
+ &#39;dec2&#39;,
+ &#39;ra3&#39;,
+ &#39;dec3&#39;,
+ &#39;ra4&#39;,
+ &#39;dec4&#39;,
+ &#39;equinox&#39;,
+ &#39;hdu&#39;,
+ &#39;facility_name&#39;,
+ &#39;instrument_name&#39;,
+ &#39;dataproduct_type&#39;,
+ &#39;file_type&#39;,
+ &#39;band_name&#39;,
+ &#39;wavelength&#39;,
+ &#39;access_estsize&#39;,
+ &#39;s_fov&#39;,
+ &#39;tile&#39;,
+ &#39;fname&#39;,
+ &#39;dataset&#39;,
+ &#39;cutout&#39;,
+ &#39;sia_desc&#39;,
+ &#39;sia_naxes&#39;,
+ &#39;sia_naxis&#39;,
+ &#39;sia_scale&#39;,
+ &#39;sia_cdmatrix&#39;,
+ &#39;sia_format&#39;,
+ &#39;sia_url&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>View the first ten entries of the table</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=10</i>
+<table id="table140214441938320" class="table-striped table-bordered table-condensed">
+<thead><tr><th>ra</th><th>dec</th><th>cra</th><th>cdec</th><th>naxis1</th><th>naxis2</th><th>ctype1</th><th>ctype2</th><th>crval1</th><th>crval2</th><th>crpix1</th><th>crpix2</th><th>cdelt1</th><th>cdelt2</th><th>crota2</th><th>ra1</th><th>dec1</th><th>ra2</th><th>dec2</th><th>ra3</th><th>dec3</th><th>ra4</th><th>dec4</th><th>equinox</th><th>hdu</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_type</th><th>file_type</th><th>band_name</th><th>wavelength</th><th>access_estsize</th><th>s_fov</th><th>tile</th><th>fname</th><th>dataset</th><th>cutout</th><th>sia_desc</th><th>sia_naxes</th><th>sia_naxis</th><th>sia_scale</th><th>sia_cdmatrix</th><th>sia_format</th><th>sia_url</th></tr></thead>
+<thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>int32</th><th>int32</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>int32</th><th>float64</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th></tr></thead>
+<tr><td>150.014</td><td>2.224</td><td>10h 00m 03.41s</td><td>+02d 13m 27.3s</td><td>7500</td><td>7500</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.0142269</td><td>2.224247</td><td>3750.0</td><td>3750.0</td><td>-8.3333333333e-06</td><td>8.3333333333e-06</td><td>260.2377156</td><td>149.9781089</td><td>2.1987513</td><td>150.0397491</td><td>2.188154</td><td>150.0503559</td><td>2.2497487</td><td>149.9887132</td><td>2.2603465</td><td>2000.0</td><td>0</td><td>HST</td><td>ACS</td><td>image</td><td>science</td><td>I</td><td>8.0874e-07</td><td>225043</td><td>0.0625</td><td>-99</td><td>images/acs_2.0/I/acs_I_100003+0213_unrot_sci_20.fits</td><td>HST-ACS</td><td>YES</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[7500 7500]</td><td>[-8.3333333333e-06 8.3333333333e-06]</td><td>[-8.33333e-06 -0.0 -0.0 8.33333e-06]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/cgi-bin/Subimage/nph-subimage?origfile=/irsadata/COSMOS//images%2Facs_2.0%2FI%2Facs_I_100003%2B0213_unrot_sci_20.fits&amp;ra=149.999860&amp;dec=2.248750&amp;xsize=0.000278</td></tr>
+<tr><td>150.022</td><td>2.276</td><td>10h 00m 05.35s</td><td>+02d 16m 32.8s</td><td>7500</td><td>7500</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.0223083</td><td>2.2757825</td><td>3750.0</td><td>3750.0</td><td>-8.3333333333e-06</td><td>8.3333333333e-06</td><td>260.2376781</td><td>149.9861889</td><td>2.2502868</td><td>150.0478312</td><td>2.2396894</td><td>150.0584385</td><td>2.3012841</td><td>149.9967936</td><td>2.3118819</td><td>2000.0</td><td>0</td><td>HST</td><td>ACS</td><td>image</td><td>science</td><td>I</td><td>8.0874e-07</td><td>225043</td><td>0.0625</td><td>-99</td><td>images/acs_2.0/I/acs_I_100005+0216_unrot_sci_20.fits</td><td>HST-ACS</td><td>YES</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[7500 7500]</td><td>[-8.3333333333e-06 8.3333333333e-06]</td><td>[-8.33333e-06 -0.0 -0.0 8.33333e-06]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/cgi-bin/Subimage/nph-subimage?origfile=/irsadata/COSMOS//images%2Facs_2.0%2FI%2Facs_I_100005%2B0216_unrot_sci_20.fits&amp;ra=149.999860&amp;dec=2.248750&amp;xsize=0.000278</td></tr>
+<tr><td>150.014</td><td>2.224</td><td>10h 00m 03.41s</td><td>+02d 13m 27.3s</td><td>7500</td><td>7500</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.0142269</td><td>2.224247</td><td>3750.0</td><td>3750.0</td><td>-8.3333333333e-06</td><td>8.3333333333e-06</td><td>260.2377156</td><td>149.9781089</td><td>2.1987513</td><td>150.0397491</td><td>2.188154</td><td>150.0503559</td><td>2.2497487</td><td>149.9887132</td><td>2.2603465</td><td>2000.0</td><td>0</td><td>HST</td><td>ACS</td><td>image</td><td>weight</td><td>I</td><td>8.0874e-07</td><td>225043</td><td>0.0625</td><td>-99</td><td>images/acs_2.0/I/acs_I_100003+0213_unrot_wht_20.fits</td><td>HST-ACS</td><td>YES</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[7500 7500]</td><td>[-8.3333333333e-06 8.3333333333e-06]</td><td>[-8.33333e-06 -0.0 -0.0 8.33333e-06]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/cgi-bin/Subimage/nph-subimage?origfile=/irsadata/COSMOS//images%2Facs_2.0%2FI%2Facs_I_100003%2B0213_unrot_wht_20.fits&amp;ra=149.999860&amp;dec=2.248750&amp;xsize=0.000278</td></tr>
+<tr><td>150.022</td><td>2.276</td><td>10h 00m 05.35s</td><td>+02d 16m 32.8s</td><td>7500</td><td>7500</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.0223083</td><td>2.2757825</td><td>3750.0</td><td>3750.0</td><td>-8.3333333333e-06</td><td>8.3333333333e-06</td><td>260.2376781</td><td>149.9861889</td><td>2.2502868</td><td>150.0478312</td><td>2.2396894</td><td>150.0584385</td><td>2.3012841</td><td>149.9967936</td><td>2.3118819</td><td>2000.0</td><td>0</td><td>HST</td><td>ACS</td><td>image</td><td>weight</td><td>I</td><td>8.0874e-07</td><td>225043</td><td>0.0625</td><td>-99</td><td>images/acs_2.0/I/acs_I_100005+0216_unrot_wht_20.fits</td><td>HST-ACS</td><td>YES</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[7500 7500]</td><td>[-8.3333333333e-06 8.3333333333e-06]</td><td>[-8.33333e-06 -0.0 -0.0 8.33333e-06]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/cgi-bin/Subimage/nph-subimage?origfile=/irsadata/COSMOS//images%2Facs_2.0%2FI%2Facs_I_100005%2B0216_unrot_wht_20.fits&amp;ra=149.999860&amp;dec=2.248750&amp;xsize=0.000278</td></tr>
+<tr><td>149.977</td><td>2.210</td><td>09h 59m 54.57s</td><td>+02d 12m 34.5s</td><td>4096</td><td>4096</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>-1284.5</td><td>1841.0</td><td>-4.166666832e-05</td><td>4.166666832e-05</td><td>0.0</td><td>150.0627846</td><td>2.124243</td><td>149.8919601</td><td>2.1242277</td><td>149.8919344</td><td>2.2949346</td><td>150.0627784</td><td>2.2949512</td><td>2000.0</td><td>0</td><td>CFHT</td><td>MegaPrime</td><td>image</td><td>uncertainty</td><td>u</td><td>3.798e-07</td><td>67115</td><td>0.170667</td><td>66</td><td>images/cfht/u/original_psf/cfht_u_066_rms_50.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[4096 4096]</td><td>[-4.166666832e-05 4.166666832e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/u/original_psf/cfht_u_066_rms_50.fits</td></tr>
+<tr><td>149.977</td><td>2.210</td><td>09h 59m 54.57s</td><td>+02d 12m 34.5s</td><td>4096</td><td>4096</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>-1284.5</td><td>1841.0</td><td>-4.166666832e-05</td><td>4.166666832e-05</td><td>0.0</td><td>150.0627846</td><td>2.124243</td><td>149.8919601</td><td>2.1242277</td><td>149.8919344</td><td>2.2949346</td><td>150.0627784</td><td>2.2949512</td><td>2000.0</td><td>0</td><td>CFHT</td><td>MegaPrime</td><td>image</td><td>science</td><td>u</td><td>3.798e-07</td><td>67115</td><td>0.170667</td><td>66</td><td>images/cfht/u/original_psf/cfht_u_066_sci_50.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[4096 4096]</td><td>[-4.166666832e-05 4.166666832e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/u/original_psf/cfht_u_066_sci_50.fits</td></tr>
+<tr><td>150.061</td><td>2.293</td><td>10h 00m 14.58s</td><td>+02d 17m 34.5s</td><td>48096</td><td>48096</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>22715.5</td><td>21841.0</td><td>-4.1666667e-05</td><td>4.1666667e-05</td><td>0.0</td><td>151.0628561</td><td>1.290811</td><td>149.0587646</td><td>1.2907673</td><td>149.0573423</td><td>3.2942578</td><td>151.0641292</td><td>3.2943695</td><td>2000.0</td><td>0</td><td>CFHT</td><td>MegaPrime</td><td>image</td><td>science</td><td>i</td><td>7.684e-07</td><td>9252907</td><td>2.004</td><td>0</td><td>images/cfht/mosaics/COSMOS.i_c.original_psf.v2.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[48096 48096]</td><td>[-4.1666667e-05 4.1666667e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/mosaics/COSMOS.i_c.original_psf.v2.fits</td></tr>
+<tr><td>150.061</td><td>2.293</td><td>10h 00m 14.58s</td><td>+02d 17m 34.5s</td><td>48096</td><td>48096</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>22715.5</td><td>21841.0</td><td>-4.1666667e-05</td><td>4.1666667e-05</td><td>0.0</td><td>151.0628561</td><td>1.290811</td><td>149.0587646</td><td>1.2907673</td><td>149.0573423</td><td>3.2942578</td><td>151.0641292</td><td>3.2943695</td><td>2000.0</td><td>0</td><td>CFHT</td><td>WIRCAM</td><td>image</td><td>science</td><td>Ks</td><td>2.146e-06</td><td>9252907</td><td>2.004</td><td>0</td><td>images/cfht/mosaics/COSMOS.Ks.original_psf.v5.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[48096 48096]</td><td>[-4.1666667e-05 4.1666667e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/mosaics/COSMOS.Ks.original_psf.v5.fits</td></tr>
+<tr><td>150.116</td><td>2.201</td><td>10h 00m 27.92s</td><td>+02d 12m 03.4s</td><td>45334</td><td>43585</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>22667.5</td><td>21793.0</td><td>-4.166666832e-05</td><td>4.166666832e-05</td><td>0.0</td><td>151.0608577</td><td>1.2928109</td><td>149.1718266</td><td>1.292811</td><td>149.1706755</td><td>3.1084954</td><td>151.0620088</td><td>3.1084953</td><td>2000.0</td><td>0</td><td>CFHT</td><td>MegaPrime</td><td>image</td><td>science</td><td>u</td><td>3.798e-07</td><td>7903535</td><td>1.88892</td><td>0</td><td>images/cfht/mosaics/COSMOS.u.original_psf.v5.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[45334 43585]</td><td>[-4.166666832e-05 4.166666832e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/mosaics/COSMOS.u.original_psf.v5.fits</td></tr>
+<tr><td>149.977</td><td>2.210</td><td>09h 59m 54.57s</td><td>+02d 12m 34.5s</td><td>4096</td><td>4096</td><td>RA---TAN</td><td>DEC--TAN</td><td>150.1163213</td><td>2.2009731</td><td>-1284.5</td><td>1841.0</td><td>-4.1666667e-05</td><td>4.1666667e-05</td><td>0.0</td><td>150.0627846</td><td>2.124243</td><td>149.8919601</td><td>2.1242277</td><td>149.8919344</td><td>2.2949346</td><td>150.0627784</td><td>2.2949512</td><td>2000.0</td><td>0</td><td>CFHT</td><td>WIRCAM</td><td>image</td><td>science</td><td>Ks</td><td>2.146e-06</td><td>67115</td><td>0.170667</td><td>66</td><td>images/cfht/Ks/original_psf/cfht_Ks_066_sci_50.fits</td><td>CFHT</td><td>NO</td><td>Cosmic Evolution Survey with HST (COSMOS)</td><td>2</td><td>[4096 4096]</td><td>[-4.1666667e-05 4.1666667e-05]</td><td>[-4.16667e-05 -0.0 -0.0 4.16667e-05]</td><td>image/fits</td><td>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/cfht/Ks/original_psf/cfht_Ks_066_sci_50.fits</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="section-4-locate-and-download-an-image-of-interest">
+<h2>Section 4 - Locate and download an image of interest<a class="headerlink" href="#section-4-locate-and-download-an-image-of-interest" title="Link to this heading">#</a></h2>
+<p>Locate the first image in the band_name of i+</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">im_table</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;band_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;i+&#39;</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getdataurl</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://irsa.ipac.caltech.edu:443/data/COSMOS/images/subaru/best_psf/ip/subaru_ip_best-psf_066_rms_20.fits
+</pre></div>
+</div>
+</div>
+</div>
+<p>Download the image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getdataurl</span><span class="p">(),</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">image1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-5-extract-a-cutout-and-plot-it">
+<h2>Section 5 - Extract a cutout and plot it<a class="headerlink" href="#section-5-extract-a-cutout-and-plot-it" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make a cutout centered on the position</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="n">wcs</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
+<span class="n">wcs</span> <span class="o">=</span> <span class="n">cutout</span><span class="o">.</span><span class="n">wcs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;fk5&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f8633aa1190&gt;
+</pre></div>
+</div>
+<img alt="../../_images/2f9d1834172e2ec010c09009437a1434db96e7460f4eac9d08ef6805ff1a88d9.png" src="../../_images/2f9d1834172e2ec010c09009437a1434db96e7460f4eac9d08ef6805ff1a88d9.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="about-this-notebook">
+<h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> David Shupe, IRSA Scientist, and the IRSA Science Team</p>
+<p><strong>Updated On:</strong> 2022-02-14</p>
+<p><strong>Contact:</strong> irsasupport&#64;ipac.caltech.edu or https://jira.ipac.caltech.edu/irsasupport</p>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">astropy</span></code> for published research, please cite the authors. Follow these links for more information about citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.astropy.org/acknowledging.html">Citing <code class="docutils literal notranslate"><span class="pre">astropy</span></code></a></p></li>
+</ul>
+<p>If you use COSMOS ACS imaging data in published research,  please cite the dataset Digital Object Identifier (DOI): <a class="reference external" href="https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA178">10.26131/IRSA178</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sia_allwise_atlas.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Image Thumbnails from AllWISE Atlas Images</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="siav2_seip.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Image Thumbnails from Spitzer Enhanced Imaging Products</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-1-setup">Section 1 - Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-2-lookup-and-define-a-service-for-cosmos-images">Section 2 - Lookup and define a service for COSMOS images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-3-search-the-service">Section 3 - Search the service</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-4-locate-and-download-an-image-of-interest">Section 4 - Locate and download an image of interest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#section-5-extract-a-cutout-and-plot-it">Section 5 - Extract a cutout and plot it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

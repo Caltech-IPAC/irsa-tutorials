@@ -1,0 +1,1768 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>AllWISE Source Catalog Examples &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/parquet-catalog-demos/wise-allwise-catalog-demo';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Working with CosmoDC2 Parquet files" href="../cosmosims/CosmoDC2_Parquet.html" />
+    <link rel="prev" title="Image Thumbnails from Spitzer Enhanced Imaging Products" href="../irsa-sia-examples/siav2_seip.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="IRSA Demo Notebooks - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="IRSA Demo Notebooks - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/bsipocz/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC – IRSA notebooks
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Image Thumbnails from 2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Image Thumbnails from AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Image Thumbnails from COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Image Thumbnails from Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">AllWISE Source Catalog Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmosims/CosmoDC2_Parquet.html">Working with CosmoDC2 Parquet files</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/bsipocz/irsa-tutorials/main?urlpath=tree/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/edit/main/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/parquet-catalog-demos/wise-allwise-catalog-demo.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>AllWISE Source Catalog Examples</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-catalog-paths-and-query-filters">Setup catalog paths and query filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-pandas-with-basic-filters-magnitude-limit-and-ra-dec-polygon">Example 1:  Pandas with basic filters (magnitude limit and ra/dec polygon)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn">Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-nearest-neighbor-search-using-pyarrow-and-astropy">Example 3:  Nearest-neighbor search (using pyarrow and astropy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-access">Schema Access</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="allwise-source-catalog-examples">
+<h1>AllWISE Source Catalog Examples<a class="headerlink" href="#allwise-source-catalog-examples" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Learn how to load data from the AllWISE parquet catalog that is partitioned by HEALPix pixel index at order 5.</p></li>
+<li><p>Learn efficient methods for performing common types of searches. This includes:</p>
+<ul>
+<li><p>query/load using pandas, applying basic filters</p></li>
+<li><p>query/load using pyarrow, applying advanced filters that combine and/or compare columns</p></li>
+<li><p>perform nearest neighbor searches using pyarrow and astropy</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This notebook demonstrates access to the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2005ApJ...622..759G/abstract">HEALPix</a>-partitioned (order 5), <a class="reference external" href="https://parquet.apache.org/">Apache Parquet</a> version of the <a class="reference external" href="https://wise2.ipc.caltech.edu/docs/release/allwise/expsup/sec1_3.html#src_cat">AllWISE Source Catalog</a>.
+The catalog is available through the <a class="reference external" href="https://aws.amazon.com/opendata">AWS Open Data</a> program, as part of the <a class="reference external" href="https://science.nasa.gov/open-science-overview">NASA Open-Source Science Initiative</a>.</p>
+<p>Parquet is convenient for large astronomical catalogs in part because the storage format supports efficient database-style queries on the files themselves, without having to load the catalog into a database (or into memory) first.
+The AllWISE catalog is fairly large at 340 GB.
+The examples below demonstrate different methods that can be used to query the catalog, filtering the data and loading only the results.
+Each method accesses the parquet files a bit differently and is useful for different types of queries.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: Could not open requirements file: [Errno 2] No such file or directory: &#39;requirements.txt&#39;</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">hpgeom</span> <span class="k">as</span> <span class="nn">hp</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pyarrow.compute</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">import</span> <span class="nn">pyarrow.dataset</span> <span class="k">as</span> <span class="nn">ds</span>
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">pyarrow.fs</span> <span class="kn">import</span> <span class="n">S3FileSystem</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="setup-catalog-paths-and-query-filters">
+<h2>Setup catalog paths and query filters<a class="headerlink" href="#setup-catalog-paths-and-query-filters" title="Link to this heading">#</a></h2>
+<p>This AllWISE catalog is stored in an <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> bucket.
+To connect to an S3 bucket we just need to point the reader at S3 instead of the local filesystem, and pass in AWS credentials.
+(Here, a “reader” is a python library that reads parquet files.)
+We’ll use <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.fs.S3FileSystem.html">pyarrow.fs.S3FileSystem</a> for this because it is recognized by every reader in examples below, and we’re already using pyarrow.
+<a class="reference external" href="https://s3fs.readthedocs.io/en/latest/index.html">s3fs</a> is another common option.
+The call to <code class="docutils literal notranslate"><span class="pre">S3FileSystem</span></code> will look for AWS credentials in environment variables and/or the file ~/.aws/credentials.
+Credentials can also be passed as keyword arguments.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-wise&quot;</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;wise/allwise/catalogs/p3as_psd/healpix_k5&quot;</span>
+<span class="n">parquet_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/wise-allwise.parquet&quot;</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="n">S3FileSystem</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-west-2&quot;</span><span class="p">)</span>  <span class="c1"># the bucket is in region us-west-2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>These limits will be used to query the catalog using specific filters created in examples below.
+The Schema Access section (below) shows how to access column names and other schema information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1mpro_min</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span>  <span class="c1"># deg</span>
+<span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span> <span class="o">=</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">72</span>  <span class="c1"># deg</span>
+<span class="n">polygon_corners</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">dec_min</span><span class="p">),</span> <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">),</span> <span class="p">(</span><span class="n">ra_max</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">),</span> <span class="p">(</span><span class="n">ra_max</span><span class="p">,</span> <span class="n">dec_min</span><span class="p">)]</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The catalog is partitioned by HEALPix pixel index at order 5.
+Queries can be most efficient when a filter on the partition column is included, since the reader can skip those partitions entirely.
+Thus, for queries that include ra/dec constraints, we can usually speed up load times significantly by including a constraint on the HEALPix order 5 pixel index.
+The required pixel indexes can be calculated using <a class="reference external" href="https://hpgeom.readthedocs.io/en/latest/index.html">hpgeom</a>, as demonstrated here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># the catalog is partitioned by HEALPix pixel index at order 5</span>
+<span class="n">nside</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">order_to_nside</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>  <span class="c1"># number of order 5 pixels along one side of a base pixel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># polygon search: get the set of pixel indexes that overlap the ra/dec polygon</span>
+<span class="n">polygon_pixels</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span>
+    <span class="n">nside</span><span class="o">=</span><span class="n">nside</span><span class="p">,</span>
+    <span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="n">corner</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">polygon_corners</span><span class="p">],</span>  <span class="c1"># ra values</span>
+    <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="n">corner</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">polygon_corners</span><span class="p">],</span>  <span class="c1"># dec values</span>
+    <span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># catalog uses nested ordering scheme for pixel index</span>
+    <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># return all pixels that overlap with the polygon, and maybe a few more</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;polygon_pixels contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">polygon_pixels</span><span class="p">)</span><span class="si">}</span><span class="s2"> of a possible </span><span class="si">{</span><span class="n">hp</span><span class="o">.</span><span class="n">nside_to_npixel</span><span class="p">(</span><span class="n">nside</span><span class="p">)</span><span class="si">}</span><span class="s2"> pixels&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>polygon_pixels contains 25 of a possible 12288 pixels
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cone search: get the set of pixel indexes that overlap a 5&#39; circle around the ra/dec min</span>
+<span class="n">cone_pixels</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_circle</span><span class="p">(</span>
+    <span class="n">nside</span><span class="o">=</span><span class="n">nside</span><span class="p">,</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">ra_min</span><span class="p">,</span>
+    <span class="n">b</span><span class="o">=</span><span class="n">dec_min</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+    <span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># catalog uses nested ordering scheme for pixel index</span>
+    <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># return all pixels that overlap with the disk, and maybe a few more</span>
+<span class="p">)</span>
+
+<span class="c1"># this can reduce the number of partitions the reader needs to look at from 12288 down to 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cone_pixels contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cone_pixels</span><span class="p">)</span><span class="si">}</span><span class="s2"> of a possible </span><span class="si">{</span><span class="n">hp</span><span class="o">.</span><span class="n">nside_to_npixel</span><span class="p">(</span><span class="n">nside</span><span class="p">)</span><span class="si">}</span><span class="s2"> pixels&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cone_pixels contains 2 of a possible 12288 pixels
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1-pandas-with-basic-filters-magnitude-limit-and-ra-dec-polygon">
+<h2>Example 1:  Pandas with basic filters (magnitude limit and ra/dec polygon)<a class="headerlink" href="#example-1-pandas-with-basic-filters-magnitude-limit-and-ra-dec-polygon" title="Link to this heading">#</a></h2>
+<p>Load using <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.read_parquet.html">pandas.read_parquet</a>.
+Filter for magnitudes above our w1mpro limit and a sky-area limited to the ra/dec polygon.</p>
+<p>Pandas actually uses either pyarrow or fastparquet to interact with parquet files.
+We’ll choose pyarrow (the default).
+For filter options, see the <code class="docutils literal notranslate"><span class="pre">filters</span></code> arg description in <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.parquet.ParquetDataset.html#pyarrow.parquet.ParquetDataset">ParquetDataset</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1"># expect this to take 40-90 seconds</span>
+<span class="n">pandas_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span>
+    <span class="n">parquet_root</span><span class="p">,</span>
+    <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+    <span class="c1"># columns to be returned. similar to a SQL SELECT clause.</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;designation&quot;</span><span class="p">,</span> <span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="s2">&quot;w1mpro&quot;</span><span class="p">,</span> <span class="s2">&quot;healpix_k5&quot;</span><span class="p">],</span>
+    <span class="c1"># row filters. similar to a SQL WHERE clause.</span>
+    <span class="c1"># tuple conditions are joined by AND (for OR, use a list of lists)</span>
+    <span class="c1"># supported operators: ==, !=, &lt;, &gt;, &lt;=, &gt;=, in, not in</span>
+    <span class="n">filters</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;w1mpro&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">w1mpro_min</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">ra_min</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">dec_min</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">),</span>
+        <span class="c1"># include filter on partition column for most efficient loading</span>
+        <span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">polygon_pixels</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">pandas_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.31 s, sys: 1.64 s, total: 6.95 s
+Wall time: 42.9 s
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>w1mpro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>870641.000000</td>
+      <td>870641.000000</td>
+      <td>870641.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>20.014620</td>
+      <td>66.582893</td>
+      <td>14.788122</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>2.900022</td>
+      <td>2.835385</td>
+      <td>1.441931</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>15.000000</td>
+      <td>62.000001</td>
+      <td>10.001000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>17.489370</td>
+      <td>64.121702</td>
+      <td>14.003000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>20.038686</td>
+      <td>66.416329</td>
+      <td>14.992000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>22.525137</td>
+      <td>68.928682</td>
+      <td>15.792000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>25.000000</td>
+      <td>71.999960</td>
+      <td>19.079000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn">
+<h2>Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)<a class="headerlink" href="#example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn" title="Link to this heading">#</a></h2>
+<p>Load using <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.parquet_dataset.html">pyarrow.dataset.parquet_dataset</a> and convert to pandas.
+Useful for:</p>
+<ol class="arabic simple">
+<li><p>advanced filters that combine, compare, and/or create new columns. (this example)</p></li>
+<li><p>speed. This method is more efficient at “discovering” the dataset than pandas. It also provides a persistent dataset object that can be reused for future queries, where pandas must re-discover the dataset every time. (this example and Example 3)</p></li>
+</ol>
+<p>This example filters the catalog for AGN by making cuts in color-color space using the selection limits from <a class="reference external" href="https://arxiv.org/pdf/1208.2530.pdf">Mateos et al. (2012)</a>.
+This is a more complicated filter than in Example 1 (it requires both constructing new columns and comparing values between columns) but this load is generally faster, demonstrating the efficiency of this method.</p>
+<p>For basic info about the <code class="docutils literal notranslate"><span class="pre">columns</span></code> and <code class="docutils literal notranslate"><span class="pre">filter</span></code> arguments, see <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.Scanner.html#pyarrow.dataset.Scanner.from_dataset">Scanner</a>.
+The construction of columns/filters is more involved than before because they must be passed as <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.Expression.html#pyarrow.dataset.Expression">Expressions</a>, and all operations must be done using pyarrow.compute <a class="reference external" href="https://arrow.apache.org/docs/python/api/compute.html">functions</a> and <code class="docutils literal notranslate"><span class="pre">field</span></code>s.
+This is demonstrated below.
+Note that the catalog uses a file naming scheme called “hive”, which the reader uses to identify partitions.
+In other examples this is recognized automatically, but here we must pass it explicitly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define new columns for colors W1-W2 and W3-W4</span>
+<span class="n">w1w2</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w1mpro&quot;</span><span class="p">),</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w2mpro&quot;</span><span class="p">))</span>
+<span class="n">w3w4</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w3mpro&quot;</span><span class="p">),</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w4mpro&quot;</span><span class="p">))</span>
+
+<span class="c1"># define the AGN locus, as in Mateos et al., 2012</span>
+<span class="n">locus</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">w3w4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1"># expect this to take 20-60 seconds.</span>
+<span class="c1"># notice this is generally faster than example 1 using pandas even though</span>
+<span class="c1"># this filter is much more complicated, highlighting the efficiency of this method.</span>
+
+<span class="c1"># load catalog metadata as a pyarrow dataset</span>
+<span class="n">pyarrow_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_metadata&quot;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">partitioning</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)</span>
+
+<span class="c1"># query for AGN using selection limits from Mateos et al., 2012</span>
+<span class="n">pyarrow_df</span> <span class="o">=</span> <span class="n">pyarrow_ds</span><span class="o">.</span><span class="n">to_table</span><span class="p">(</span>
+    <span class="c1"># column filter. similar to a SQL SELECT clause.</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;w1w2&quot;</span><span class="p">:</span> <span class="n">w1w2</span><span class="p">,</span>
+        <span class="s2">&quot;w3w4&quot;</span><span class="p">:</span> <span class="n">w3w4</span><span class="p">,</span>
+        <span class="s2">&quot;cntr&quot;</span><span class="p">:</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;cntr&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;ra&quot;</span><span class="p">:</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;dec&quot;</span><span class="p">:</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;healpix_k5&quot;</span><span class="p">:</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="c1"># row filter. similar to a SQL WHERE clause.</span>
+    <span class="nb">filter</span><span class="o">=</span><span class="p">(</span>
+        <span class="c1"># color-color cuts</span>
+        <span class="p">(</span><span class="n">w1w2</span> <span class="o">&lt;</span> <span class="n">pc</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">locus</span><span class="p">,</span> <span class="n">pc</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">0.979</span><span class="p">)))</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">w1w2</span> <span class="o">&gt;</span> <span class="n">pc</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">locus</span><span class="p">,</span> <span class="n">pc</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">0.405</span><span class="p">)))</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">w3w4</span> <span class="o">&gt;</span> <span class="n">pc</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">1.76</span><span class="p">))</span>
+        <span class="c1"># to do an all-sky search, comment out the rest of the filter. expect it to take 30-60 min</span>
+        <span class="c1"># same ra/dec polygon as before</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ra_min</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;ra&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">ra_max</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">dec_min</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">dec_max</span><span class="p">)</span>
+        <span class="c1"># same partition-column filter as before</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">polygon_pixels</span><span class="p">))</span>
+    <span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.61 s, sys: 2.26 s, total: 6.87 s
+Wall time: 27.5 s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">pyarrow_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3750
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colorbar_norm</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># for an all-sky search, use vmax=100_000</span>
+<span class="n">pyarrow_df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hexbin</span><span class="p">(</span><span class="s2">&quot;w3w4&quot;</span><span class="p">,</span> <span class="s2">&quot;w1w2&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">colorbar_norm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;w3w4&#39;, ylabel=&#39;w1w2&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/b16319fac657975d13f68e50af2a1e7d659c7ede2b4f77884915650a0efd31b8.png" src="../../_images/b16319fac657975d13f68e50af2a1e7d659c7ede2b4f77884915650a0efd31b8.png" />
+</div>
+</div>
+</section>
+<section id="example-3-nearest-neighbor-search-using-pyarrow-and-astropy">
+<h2>Example 3:  Nearest-neighbor search (using pyarrow and astropy)<a class="headerlink" href="#example-3-nearest-neighbor-search-using-pyarrow-and-astropy" title="Link to this heading">#</a></h2>
+<p>Nearest-neighbor searches and cone searches generally use the on-sky separation distance to determine the matches.
+It would be cumbersome to construct the new column and filter on it using the methods shown above because the separation distance is a fairly complicated function of ra and dec.
+However, we can get pretty fast results by filtering down to the HEALPix pixels that cover the region, loading all the data in those partitions, and then using astropy to compute the separations and find the matches.</p>
+<p>Here, we’ll search for the 3 nearest neighbors to each of the 4 corners of our ra/dec polygon.
+We’ll load the data with pyarrow because because it makes this query significantly faster than with pandas (see explanation in Example 2).
+(Note that astropy can also read parquet, but it can only read a single file at a time and so is less convenient.)
+We’ll use <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord.match_to_catalog_sky">astropy.coordinates.SkyCoord.match_to_catalog_sky</a> to do the actual nearest neighbor search.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct dictionary of pixels covering a cone around each polygon corner</span>
+<span class="c1"># we did this once before but now we want all 4 corners</span>
+<span class="n">corner_cone_pixels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_circle</span><span class="p">(</span><span class="n">nside</span><span class="o">=</span><span class="n">nside</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">dec</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span> <span class="ow">in</span> <span class="n">polygon_corners</span>
+<span class="p">}</span>
+<span class="n">corner_cone_pixels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{(15, 62): array([757, 928]),
+ (15, 72): array([947, 950, 953]),
+ (25, 72): array([948, 949]),
+ (25, 62): array([908])}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Find the 3 nearest neighbors of each corner:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1"># expect this to take 30-60 seconds</span>
+<span class="n">idcol</span> <span class="o">=</span> <span class="s2">&quot;cntr&quot;</span>
+<span class="n">neighbor_ids</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># store the allwise source id (cntr) of each neighbor</span>
+<span class="n">corner_neighbors</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># record neighbor info for each corner (for reference. not actually used)</span>
+
+<span class="c1"># use same pyarrow dataset as before, but get it again to include the load time in this cell</span>
+<span class="n">pyarrow_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_metadata&quot;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">partitioning</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">),</span> <span class="n">cone_pixels</span> <span class="ow">in</span> <span class="n">corner_cone_pixels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+    <span class="c1"># load data from all pixels/partitions/files covering this corner</span>
+    <span class="n">src_tbl</span> <span class="o">=</span> <span class="n">pyarrow_ds</span><span class="o">.</span><span class="n">to_table</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">idcol</span><span class="p">,</span> <span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="s2">&quot;dec&quot;</span><span class="p">],</span> <span class="nb">filter</span><span class="o">=</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">cone_pixels</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="c1"># get list of 3 nearest neighbors to this corner</span>
+    <span class="n">corner</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">dec</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+    <span class="n">allwise_sources</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">src_tbl</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">src_tbl</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">corner</span><span class="o">.</span><span class="n">match_to_catalog_sky</span><span class="p">(</span><span class="n">allwise_sources</span><span class="p">,</span> <span class="n">nthneighbor</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+
+    <span class="c1"># get the allwise source ids. record/report some info</span>
+    <span class="n">corner_neighbors</span><span class="p">[(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">):</span>
+        <span class="n">srcid</span> <span class="o">=</span> <span class="n">src_tbl</span><span class="p">[</span><span class="n">idcol</span><span class="p">][</span><span class="n">idx</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span><span class="o">.</span><span class="n">as_py</span><span class="p">()</span>
+        <span class="n">neighbor_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">srcid</span><span class="p">)</span>
+        <span class="n">corner_neighbors</span><span class="p">[(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">srcid</span><span class="p">,</span> <span class="n">sep</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;neighbor </span><span class="si">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">, corner (</span><span class="si">{</span><span class="n">ra</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dec</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">srcid</span><span class="si">}</span><span class="s2"> at on-sky dist </span><span class="si">{</span><span class="n">sep</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;arcsec&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">neighbor_ids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>neighbor 1, corner (15, 62): 157162001351035963 at on-sky dist [7.90224006] arcsec
+neighbor 2, corner (15, 62): 157162001351036469 at on-sky dist [8.50715008] arcsec
+neighbor 3, corner (15, 62): 157162001351035211 at on-sky dist [10.86567525] arcsec
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>neighbor 1, corner (15, 72): 145172601351006308 at on-sky dist [10.93439298] arcsec
+neighbor 2, corner (15, 72): 145172601351005598 at on-sky dist [25.54305849] arcsec
+neighbor 3, corner (15, 72): 145172601351004924 at on-sky dist [28.06138449] arcsec
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>neighbor 1, corner (25, 72): 243172601351002865 at on-sky dist [12.86477229] arcsec
+neighbor 2, corner (25, 72): 243172601351004919 at on-sky dist [22.84314776] arcsec
+neighbor 3, corner (25, 72): 243172601351003808 at on-sky dist [22.86047987] arcsec
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>neighbor 1, corner (25, 62): 252162001351031532 at on-sky dist [7.458129] arcsec
+neighbor 2, corner (25, 62): 252162001351031550 at on-sky dist [14.2719862] arcsec
+neighbor 3, corner (25, 62): 252162001351031549 at on-sky dist [18.96407889] arcsec
+CPU times: user 7.92 s, sys: 9.76 s, total: 17.7 s
+Wall time: 1min 11s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[157162001351035963,
+ 157162001351036469,
+ 157162001351035211,
+ 145172601351006308,
+ 145172601351005598,
+ 145172601351004924,
+ 243172601351002865,
+ 243172601351004919,
+ 243172601351003808,
+ 252162001351031532,
+ 252162001351031550,
+ 252162001351031549]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Load all the data (all columns) for all nearest neighbors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1"># expect this to take 15-25 seconds</span>
+<span class="n">cone_pixels</span> <span class="o">=</span> <span class="p">[</span><span class="n">pixel</span> <span class="k">for</span> <span class="n">cone_pixels</span> <span class="ow">in</span> <span class="n">corner_cone_pixels</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="n">cone_pixels</span><span class="p">]</span>
+<span class="n">neighbors_df</span> <span class="o">=</span> <span class="n">pyarrow_ds</span><span class="o">.</span><span class="n">to_table</span><span class="p">(</span>
+    <span class="nb">filter</span><span class="o">=</span><span class="p">((</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">idcol</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">neighbor_ids</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">cone_pixels</span><span class="p">)))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="n">neighbors_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.88 s, sys: 1.98 s, total: 3.86 s
+Wall time: 5.48 s
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>designation</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>sigra</th>
+      <th>sigdec</th>
+      <th>sigradec</th>
+      <th>glon</th>
+      <th>glat</th>
+      <th>elon</th>
+      <th>elat</th>
+      <th>...</th>
+      <th>h_msig_2mass</th>
+      <th>k_m_2mass</th>
+      <th>k_msig_2mass</th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+      <th>spt_ind</th>
+      <th>htm20</th>
+      <th>healpix_k0</th>
+      <th>healpix_k5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>J013958.40+620015.2</td>
+      <td>24.993333</td>
+      <td>62.004237</td>
+      <td>0.0398</td>
+      <td>0.0489</td>
+      <td>-0.0058</td>
+      <td>128.594461</td>
+      <td>-0.332646</td>
+      <td>51.412734</td>
+      <td>46.989544</td>
+      <td>...</td>
+      <td>0.040</td>
+      <td>11.843</td>
+      <td>0.030</td>
+      <td>0.425450</td>
+      <td>0.198330</td>
+      <td>0.882982</td>
+      <td>231130002</td>
+      <td>16887982685832</td>
+      <td>0</td>
+      <td>908</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>J013958.51+620009.7</td>
+      <td>24.993832</td>
+      <td>62.002708</td>
+      <td>0.1038</td>
+      <td>0.1627</td>
+      <td>-0.0660</td>
+      <td>128.594977</td>
+      <td>-0.334105</td>
+      <td>51.411840</td>
+      <td>46.988121</td>
+      <td>...</td>
+      <td>0.054</td>
+      <td>13.759</td>
+      <td>0.054</td>
+      <td>0.425469</td>
+      <td>0.198344</td>
+      <td>0.882970</td>
+      <td>231130002</td>
+      <td>16887982683755</td>
+      <td>0</td>
+      <td>908</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>J014000.56+615953.6</td>
+      <td>25.002354</td>
+      <td>61.998248</td>
+      <td>0.0398</td>
+      <td>0.0379</td>
+      <td>0.0094</td>
+      <td>128.599742</td>
+      <td>-0.337737</td>
+      <td>51.413364</td>
+      <td>46.982221</td>
+      <td>...</td>
+      <td>0.032</td>
+      <td>11.662</td>
+      <td>0.019</td>
+      <td>0.425502</td>
+      <td>0.198436</td>
+      <td>0.882933</td>
+      <td>231130002</td>
+      <td>16887983158948</td>
+      <td>0</td>
+      <td>908</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>J005959.07+615955.5</td>
+      <td>14.996146</td>
+      <td>61.998757</td>
+      <td>0.0868</td>
+      <td>0.0854</td>
+      <td>-0.0219</td>
+      <td>123.934996</td>
+      <td>-0.856265</td>
+      <td>45.573400</td>
+      <td>49.619268</td>
+      <td>...</td>
+      <td>0.162</td>
+      <td>15.280</td>
+      <td>0.162</td>
+      <td>0.453501</td>
+      <td>0.121483</td>
+      <td>0.882937</td>
+      <td>231122233</td>
+      <td>16882422834846</td>
+      <td>0</td>
+      <td>928</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>J005959.19+620006.3</td>
+      <td>14.996627</td>
+      <td>62.001754</td>
+      <td>0.1677</td>
+      <td>0.1633</td>
+      <td>-0.0432</td>
+      <td>123.935122</td>
+      <td>-0.853262</td>
+      <td>45.576424</td>
+      <td>49.621547</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.453456</td>
+      <td>0.121474</td>
+      <td>0.882962</td>
+      <td>231122233</td>
+      <td>16882422833160</td>
+      <td>0</td>
+      <td>928</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>J010001.07+620007.7</td>
+      <td>15.004480</td>
+      <td>62.002165</td>
+      <td>0.0534</td>
+      <td>0.0510</td>
+      <td>0.0053</td>
+      <td>123.938794</td>
+      <td>-0.852729</td>
+      <td>45.581382</td>
+      <td>49.619691</td>
+      <td>...</td>
+      <td>0.055</td>
+      <td>13.940</td>
+      <td>0.059</td>
+      <td>0.453433</td>
+      <td>0.121535</td>
+      <td>0.882965</td>
+      <td>231122233</td>
+      <td>16882422783986</td>
+      <td>0</td>
+      <td>928</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>J005956.32+720019.0</td>
+      <td>14.984687</td>
+      <td>72.005287</td>
+      <td>0.0997</td>
+      <td>0.0960</td>
+      <td>-0.0153</td>
+      <td>123.596773</td>
+      <td>9.144601</td>
+      <td>56.543000</td>
+      <td>57.227891</td>
+      <td>...</td>
+      <td>0.125</td>
+      <td>15.182</td>
+      <td>0.143</td>
+      <td>0.298424</td>
+      <td>0.079877</td>
+      <td>0.951085</td>
+      <td>231010101</td>
+      <td>16785925865144</td>
+      <td>0</td>
+      <td>947</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>J010001.48+715951.5</td>
+      <td>15.006188</td>
+      <td>71.997640</td>
+      <td>0.2109</td>
+      <td>0.2034</td>
+      <td>-0.0539</td>
+      <td>123.603758</td>
+      <td>9.137181</td>
+      <td>56.541620</td>
+      <td>57.217789</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>15.436</td>
+      <td>0.165</td>
+      <td>0.298517</td>
+      <td>0.080022</td>
+      <td>0.951044</td>
+      <td>231010101</td>
+      <td>16785926933871</td>
+      <td>0</td>
+      <td>947</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>J010002.55+720025.4</td>
+      <td>15.010649</td>
+      <td>72.007066</td>
+      <td>0.0514</td>
+      <td>0.0498</td>
+      <td>0.0083</td>
+      <td>123.604831</td>
+      <td>9.146649</td>
+      <td>56.555769</td>
+      <td>57.223452</td>
+      <td>...</td>
+      <td>0.038</td>
+      <td>13.571</td>
+      <td>0.043</td>
+      <td>0.298359</td>
+      <td>0.080005</td>
+      <td>0.951095</td>
+      <td>231010101</td>
+      <td>16785925808192</td>
+      <td>0</td>
+      <td>947</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>J013956.82+720017.4</td>
+      <td>24.986791</td>
+      <td>72.004858</td>
+      <td>0.5317</td>
+      <td>0.5261</td>
+      <td>-0.1661</td>
+      <td>126.704895</td>
+      <td>9.489459</td>
+      <td>60.653660</td>
+      <td>55.154163</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.280022</td>
+      <td>0.130498</td>
+      <td>0.951083</td>
+      <td>231322133</td>
+      <td>17018750630425</td>
+      <td>0</td>
+      <td>949</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>J013958.03+715950.9</td>
+      <td>24.991821</td>
+      <td>71.997474</td>
+      <td>0.0579</td>
+      <td>0.0571</td>
+      <td>-0.0024</td>
+      <td>126.707862</td>
+      <td>9.482503</td>
+      <td>60.647616</td>
+      <td>55.147453</td>
+      <td>...</td>
+      <td>0.057</td>
+      <td>14.207</td>
+      <td>0.064</td>
+      <td>0.280121</td>
+      <td>0.130574</td>
+      <td>0.951043</td>
+      <td>231322133</td>
+      <td>17018750602154</td>
+      <td>0</td>
+      <td>949</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>J013959.48+715937.2</td>
+      <td>24.997836</td>
+      <td>71.993685</td>
+      <td>0.1479</td>
+      <td>0.1445</td>
+      <td>-0.0417</td>
+      <td>126.710442</td>
+      <td>9.479135</td>
+      <td>60.645958</td>
+      <td>55.143341</td>
+      <td>...</td>
+      <td>0.284</td>
+      <td>15.672</td>
+      <td>0.239</td>
+      <td>0.280164</td>
+      <td>0.130630</td>
+      <td>0.951022</td>
+      <td>231322133</td>
+      <td>17018750518198</td>
+      <td>0</td>
+      <td>949</td>
+    </tr>
+  </tbody>
+</table>
+<p>12 rows × 300 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="schema-access">
+<h2>Schema Access<a class="headerlink" href="#schema-access" title="Link to this heading">#</a></h2>
+<p>The schema can be viewed <a class="reference external" href="http://wise2.ipac.caltech.edu/docs/release/allwise/expsup/sec2_1a.html">online</a> and also accessed from the parquet catalog itself.
+The example below loads it using the <code class="docutils literal notranslate"><span class="pre">_common_metadata</span></code> file and <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.parquet_dataset.html">pyarrow.dataset.parquet_dataset</a>.
+Note that the schema can also be accessed from the metadata in the footer of each Parquet file and from the <code class="docutils literal notranslate"><span class="pre">_metadata</span></code> file, but the method used here is generally faster and easier.
+In addition, this <code class="docutils literal notranslate"><span class="pre">_common_metadata</span></code> file has extra information (units and descriptions) stored in the custom metadata of each column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_common_metadata&quot;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># access individual columns by name or index</span>
+<span class="n">fld</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># equivalently: fld = schema.field(&quot;ra&quot;)</span>
+
+<span class="c1"># basic column information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">nullable</span><span class="p">)</span>
+
+<span class="c1"># units and descriptions are in the `metadata` attribute, always as bytestrings</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="sa">b</span><span class="s2">&quot;units&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>  <span class="c1"># use decode to get a regular string</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fld</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="sa">b</span><span class="s2">&quot;description&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra
+double
+False
+{b&#39;units&#39;: b&#39;deg&#39;, b&#39;description&#39;: b&#39;J2000 right ascension with respect to the 2MASS PSC reference frame from the non-moving source extraction.&#39;}
+deg
+J2000 right ascension with respect to the 2MASS PSC reference frame from the non-moving source extraction.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># full list of column names</span>
+<span class="n">schema</span><span class="o">.</span><span class="n">names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;designation&#39;,
+ &#39;ra&#39;,
+ &#39;dec&#39;,
+ &#39;sigra&#39;,
+ &#39;sigdec&#39;,
+ &#39;sigradec&#39;,
+ &#39;glon&#39;,
+ &#39;glat&#39;,
+ &#39;elon&#39;,
+ &#39;elat&#39;,
+ &#39;wx&#39;,
+ &#39;wy&#39;,
+ &#39;cntr&#39;,
+ &#39;source_id&#39;,
+ &#39;coadd_id&#39;,
+ &#39;src&#39;,
+ &#39;w1mpro&#39;,
+ &#39;w1sigmpro&#39;,
+ &#39;w1snr&#39;,
+ &#39;w1rchi2&#39;,
+ &#39;w2mpro&#39;,
+ &#39;w2sigmpro&#39;,
+ &#39;w2snr&#39;,
+ &#39;w2rchi2&#39;,
+ &#39;w3mpro&#39;,
+ &#39;w3sigmpro&#39;,
+ &#39;w3snr&#39;,
+ &#39;w3rchi2&#39;,
+ &#39;w4mpro&#39;,
+ &#39;w4sigmpro&#39;,
+ &#39;w4snr&#39;,
+ &#39;w4rchi2&#39;,
+ &#39;rchi2&#39;,
+ &#39;nb&#39;,
+ &#39;na&#39;,
+ &#39;w1sat&#39;,
+ &#39;w2sat&#39;,
+ &#39;w3sat&#39;,
+ &#39;w4sat&#39;,
+ &#39;satnum&#39;,
+ &#39;ra_pm&#39;,
+ &#39;dec_pm&#39;,
+ &#39;sigra_pm&#39;,
+ &#39;sigdec_pm&#39;,
+ &#39;sigradec_pm&#39;,
+ &#39;pmra&#39;,
+ &#39;sigpmra&#39;,
+ &#39;pmdec&#39;,
+ &#39;sigpmdec&#39;,
+ &#39;w1rchi2_pm&#39;,
+ &#39;w2rchi2_pm&#39;,
+ &#39;w3rchi2_pm&#39;,
+ &#39;w4rchi2_pm&#39;,
+ &#39;rchi2_pm&#39;,
+ &#39;pmcode&#39;,
+ &#39;cc_flags&#39;,
+ &#39;rel&#39;,
+ &#39;ext_flg&#39;,
+ &#39;var_flg&#39;,
+ &#39;ph_qual&#39;,
+ &#39;det_bit&#39;,
+ &#39;moon_lev&#39;,
+ &#39;w1nm&#39;,
+ &#39;w1m&#39;,
+ &#39;w2nm&#39;,
+ &#39;w2m&#39;,
+ &#39;w3nm&#39;,
+ &#39;w3m&#39;,
+ &#39;w4nm&#39;,
+ &#39;w4m&#39;,
+ &#39;w1cov&#39;,
+ &#39;w2cov&#39;,
+ &#39;w3cov&#39;,
+ &#39;w4cov&#39;,
+ &#39;w1cc_map&#39;,
+ &#39;w1cc_map_str&#39;,
+ &#39;w2cc_map&#39;,
+ &#39;w2cc_map_str&#39;,
+ &#39;w3cc_map&#39;,
+ &#39;w3cc_map_str&#39;,
+ &#39;w4cc_map&#39;,
+ &#39;w4cc_map_str&#39;,
+ &#39;best_use_cntr&#39;,
+ &#39;ngrp&#39;,
+ &#39;w1flux&#39;,
+ &#39;w1sigflux&#39;,
+ &#39;w1sky&#39;,
+ &#39;w1sigsk&#39;,
+ &#39;w1conf&#39;,
+ &#39;w2flux&#39;,
+ &#39;w2sigflux&#39;,
+ &#39;w2sky&#39;,
+ &#39;w2sigsk&#39;,
+ &#39;w2conf&#39;,
+ &#39;w3flux&#39;,
+ &#39;w3sigflux&#39;,
+ &#39;w3sky&#39;,
+ &#39;w3sigsk&#39;,
+ &#39;w3conf&#39;,
+ &#39;w4flux&#39;,
+ &#39;w4sigflux&#39;,
+ &#39;w4sky&#39;,
+ &#39;w4sigsk&#39;,
+ &#39;w4conf&#39;,
+ &#39;w1mag&#39;,
+ &#39;w1sigm&#39;,
+ &#39;w1flg&#39;,
+ &#39;w1mcor&#39;,
+ &#39;w2mag&#39;,
+ &#39;w2sigm&#39;,
+ &#39;w2flg&#39;,
+ &#39;w2mcor&#39;,
+ &#39;w3mag&#39;,
+ &#39;w3sigm&#39;,
+ &#39;w3flg&#39;,
+ &#39;w3mcor&#39;,
+ &#39;w4mag&#39;,
+ &#39;w4sigm&#39;,
+ &#39;w4flg&#39;,
+ &#39;w4mcor&#39;,
+ &#39;w1mag_1&#39;,
+ &#39;w1sigm_1&#39;,
+ &#39;w1flg_1&#39;,
+ &#39;w2mag_1&#39;,
+ &#39;w2sigm_1&#39;,
+ &#39;w2flg_1&#39;,
+ &#39;w3mag_1&#39;,
+ &#39;w3sigm_1&#39;,
+ &#39;w3flg_1&#39;,
+ &#39;w4mag_1&#39;,
+ &#39;w4sigm_1&#39;,
+ &#39;w4flg_1&#39;,
+ &#39;w1mag_2&#39;,
+ &#39;w1sigm_2&#39;,
+ &#39;w1flg_2&#39;,
+ &#39;w2mag_2&#39;,
+ &#39;w2sigm_2&#39;,
+ &#39;w2flg_2&#39;,
+ &#39;w3mag_2&#39;,
+ &#39;w3sigm_2&#39;,
+ &#39;w3flg_2&#39;,
+ &#39;w4mag_2&#39;,
+ &#39;w4sigm_2&#39;,
+ &#39;w4flg_2&#39;,
+ &#39;w1mag_3&#39;,
+ &#39;w1sigm_3&#39;,
+ &#39;w1flg_3&#39;,
+ &#39;w2mag_3&#39;,
+ &#39;w2sigm_3&#39;,
+ &#39;w2flg_3&#39;,
+ &#39;w3mag_3&#39;,
+ &#39;w3sigm_3&#39;,
+ &#39;w3flg_3&#39;,
+ &#39;w4mag_3&#39;,
+ &#39;w4sigm_3&#39;,
+ &#39;w4flg_3&#39;,
+ &#39;w1mag_4&#39;,
+ &#39;w1sigm_4&#39;,
+ &#39;w1flg_4&#39;,
+ &#39;w2mag_4&#39;,
+ &#39;w2sigm_4&#39;,
+ &#39;w2flg_4&#39;,
+ &#39;w3mag_4&#39;,
+ &#39;w3sigm_4&#39;,
+ &#39;w3flg_4&#39;,
+ &#39;w4mag_4&#39;,
+ &#39;w4sigm_4&#39;,
+ &#39;w4flg_4&#39;,
+ &#39;w1mag_5&#39;,
+ &#39;w1sigm_5&#39;,
+ &#39;w1flg_5&#39;,
+ &#39;w2mag_5&#39;,
+ &#39;w2sigm_5&#39;,
+ &#39;w2flg_5&#39;,
+ &#39;w3mag_5&#39;,
+ &#39;w3sigm_5&#39;,
+ &#39;w3flg_5&#39;,
+ &#39;w4mag_5&#39;,
+ &#39;w4sigm_5&#39;,
+ &#39;w4flg_5&#39;,
+ &#39;w1mag_6&#39;,
+ &#39;w1sigm_6&#39;,
+ &#39;w1flg_6&#39;,
+ &#39;w2mag_6&#39;,
+ &#39;w2sigm_6&#39;,
+ &#39;w2flg_6&#39;,
+ &#39;w3mag_6&#39;,
+ &#39;w3sigm_6&#39;,
+ &#39;w3flg_6&#39;,
+ &#39;w4mag_6&#39;,
+ &#39;w4sigm_6&#39;,
+ &#39;w4flg_6&#39;,
+ &#39;w1mag_7&#39;,
+ &#39;w1sigm_7&#39;,
+ &#39;w1flg_7&#39;,
+ &#39;w2mag_7&#39;,
+ &#39;w2sigm_7&#39;,
+ &#39;w2flg_7&#39;,
+ &#39;w3mag_7&#39;,
+ &#39;w3sigm_7&#39;,
+ &#39;w3flg_7&#39;,
+ &#39;w4mag_7&#39;,
+ &#39;w4sigm_7&#39;,
+ &#39;w4flg_7&#39;,
+ &#39;w1mag_8&#39;,
+ &#39;w1sigm_8&#39;,
+ &#39;w1flg_8&#39;,
+ &#39;w2mag_8&#39;,
+ &#39;w2sigm_8&#39;,
+ &#39;w2flg_8&#39;,
+ &#39;w3mag_8&#39;,
+ &#39;w3sigm_8&#39;,
+ &#39;w3flg_8&#39;,
+ &#39;w4mag_8&#39;,
+ &#39;w4sigm_8&#39;,
+ &#39;w4flg_8&#39;,
+ &#39;w1magp&#39;,
+ &#39;w1sigp1&#39;,
+ &#39;w1sigp2&#39;,
+ &#39;w1k&#39;,
+ &#39;w1ndf&#39;,
+ &#39;w1mlq&#39;,
+ &#39;w1mjdmin&#39;,
+ &#39;w1mjdmax&#39;,
+ &#39;w1mjdmean&#39;,
+ &#39;w2magp&#39;,
+ &#39;w2sigp1&#39;,
+ &#39;w2sigp2&#39;,
+ &#39;w2k&#39;,
+ &#39;w2ndf&#39;,
+ &#39;w2mlq&#39;,
+ &#39;w2mjdmin&#39;,
+ &#39;w2mjdmax&#39;,
+ &#39;w2mjdmean&#39;,
+ &#39;w3magp&#39;,
+ &#39;w3sigp1&#39;,
+ &#39;w3sigp2&#39;,
+ &#39;w3k&#39;,
+ &#39;w3ndf&#39;,
+ &#39;w3mlq&#39;,
+ &#39;w3mjdmin&#39;,
+ &#39;w3mjdmax&#39;,
+ &#39;w3mjdmean&#39;,
+ &#39;w4magp&#39;,
+ &#39;w4sigp1&#39;,
+ &#39;w4sigp2&#39;,
+ &#39;w4k&#39;,
+ &#39;w4ndf&#39;,
+ &#39;w4mlq&#39;,
+ &#39;w4mjdmin&#39;,
+ &#39;w4mjdmax&#39;,
+ &#39;w4mjdmean&#39;,
+ &#39;rho12&#39;,
+ &#39;rho23&#39;,
+ &#39;rho34&#39;,
+ &#39;q12&#39;,
+ &#39;q23&#39;,
+ &#39;q34&#39;,
+ &#39;xscprox&#39;,
+ &#39;w1rsemi&#39;,
+ &#39;w1ba&#39;,
+ &#39;w1pa&#39;,
+ &#39;w1gmag&#39;,
+ &#39;w1gerr&#39;,
+ &#39;w1gflg&#39;,
+ &#39;w2rsemi&#39;,
+ &#39;w2ba&#39;,
+ &#39;w2pa&#39;,
+ &#39;w2gmag&#39;,
+ &#39;w2gerr&#39;,
+ &#39;w2gflg&#39;,
+ &#39;w3rsemi&#39;,
+ &#39;w3ba&#39;,
+ &#39;w3pa&#39;,
+ &#39;w3gmag&#39;,
+ &#39;w3gerr&#39;,
+ &#39;w3gflg&#39;,
+ &#39;w4rsemi&#39;,
+ &#39;w4ba&#39;,
+ &#39;w4pa&#39;,
+ &#39;w4gmag&#39;,
+ &#39;w4gerr&#39;,
+ &#39;w4gflg&#39;,
+ &#39;tmass_key&#39;,
+ &#39;r_2mass&#39;,
+ &#39;pa_2mass&#39;,
+ &#39;n_2mass&#39;,
+ &#39;j_m_2mass&#39;,
+ &#39;j_msig_2mass&#39;,
+ &#39;h_m_2mass&#39;,
+ &#39;h_msig_2mass&#39;,
+ &#39;k_m_2mass&#39;,
+ &#39;k_msig_2mass&#39;,
+ &#39;x&#39;,
+ &#39;y&#39;,
+ &#39;z&#39;,
+ &#39;spt_ind&#39;,
+ &#39;htm20&#39;,
+ &#39;healpix_k0&#39;,
+ &#39;healpix_k5&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="about-this-notebook">
+<h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p>This notebook was developed by Troy Raen (raen&#64;ipac.caltech.edu) in conjunction with David Shupe, Jessica Krick and the IRSA Science Platform team at IPAC.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../irsa-sia-examples/siav2_seip.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Image Thumbnails from Spitzer Enhanced Imaging Products</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cosmosims/CosmoDC2_Parquet.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working with CosmoDC2 Parquet files</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-catalog-paths-and-query-filters">Setup catalog paths and query filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-pandas-with-basic-filters-magnitude-limit-and-ra-dec-polygon">Example 1:  Pandas with basic filters (magnitude limit and ra/dec polygon)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn">Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-nearest-neighbor-search-using-pyarrow-and-astropy">Example 3:  Nearest-neighbor search (using pyarrow and astropy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema-access">Schema Access</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
