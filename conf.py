@@ -53,8 +53,8 @@ html_title = 'IRSA Demo Notebooks'
 html_logo = '_static/irsa_logo.png'
 #html_favicon = '_static/favicon.ico'
 html_theme_options = {
-    "github_url": "https://github.com/fornax-navo/fornax-demo-notebooks",
-    "repository_url": "https://github.com/fornax-navo/fornax-demo-notebooks",
+    "github_url": "https://github.com/bsipocz/irsa-tutorials",
+    "repository_url": "https://github.com/bsipocz/irsa-tutorials",
     "repository_branch": "main",
     "use_repository_button": True,
     "use_issues_button": True,
