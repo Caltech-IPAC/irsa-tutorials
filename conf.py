@@ -40,6 +40,8 @@ exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.
 
 # MyST-NB configuration
 nb_execution_timeout = 900
+nb_execution_excludepatterns = ['CosmoDC2_Parquet.md', 'Parallelize_Convolution.md']
+
 
 # -- Options for HTML output -------------------------------------------------
 
