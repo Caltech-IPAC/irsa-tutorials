@@ -1,3 +1,4 @@
+# For the content of the tutorials
 numpy
 matplotlib
 astropy
@@ -8,3 +9,5 @@ hpgeom
 pandas
 dask
 psutil
+# For supporting myst-based notebooks
+jupytext
