@@ -1,0 +1,49 @@
+name: Test notebooks
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: ${{ matrix.os }} ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Run all supported OS for one Python version, then add a few extra scenarios
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.12']
+        toxenv: [py312-test]
+        name: ['with Python 3.12',]
+
+        include:
+          - python-version: '3.9'
+            toxenv: py39-test-oldestdeps
+            name: with Python 3.9 and oldest versioned dependencies
+            os: ubuntu-latest
+
+          - python-version: '3.12'
+            toxenv: py312-test-devdeps
+            name: with Python 3.12 and developer versioned dependencies
+            os: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d  #v5.1.0
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: python -m pip install --upgrade tox
+
+    - name: Test with tox
+      run: tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}
