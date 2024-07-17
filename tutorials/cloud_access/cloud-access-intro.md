@@ -1,3 +1,15 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.2
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
 
 # IRSA Cloud Access Introduction
 
@@ -62,7 +74,7 @@ It can be used to substitute values for the following variables, which are used 
 Libraries are imported at the top of each section when used.
 This cell will install them if needed:
 
-```{code-cell}
+```{code-cell} ipython3
 try:
     import astropy  # perform image cutouts
     import hpgeom  # map sky location to catalog partition
@@ -101,18 +113,18 @@ if calls are taking a long time to return, try narrowing the search by adding ad
 
 Users who want to interact with the buckets and objects more directly may instead prefer the [AWS Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html) library.
 
-```{code-cell}
+```{code-cell} ipython3
 import s3fs
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 # create an S3 client
 s3 = s3fs.S3FileSystem(anon=True)
 ```
 
 `ls` the root directory of the Spitzer SEIP Super Mosaics image set:
 
-```{code-cell}
+```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-spitzer"
 IMAGES_PREFIX = "spitzer/seip/seip_science/images"
 
@@ -123,7 +135,7 @@ Use wildcard (glob) matching to find mosaics.
 This can be slow if looking through a large number of files, so we'll add a few levels to the base prefix to reduce the number of files in the search.
 The additional levels can be found using `ls` recursively or constructed using information on the Cloud Access page.
 
-```{code-cell}
+```{code-cell} ipython3
 sub_prefix = "4/0019/40019821/9"
 glob_pattern = "**/*.mosaic.fits"
 
@@ -140,7 +152,7 @@ Note: There may be a delay between the time when a new dataset is made available
 In this case, the IRSA URL that is returned by the service can be mapped to the cloud information.
 This is explained further on the Cloud Access page, and also demonstrated in section 5.1 below.
 
-```{code-cell}
+```{code-cell} ipython3
 import astropy.io
 import json
 import pyvo
@@ -153,7 +165,7 @@ from matplotlib import pyplot as plt
 
 ### 5.1 Find an image using PyVO and a coordinate search
 
-```{code-cell}
+```{code-cell} ipython3
 coords = SkyCoord("150.01d 2.2d", frame="icrs")
 size = 0.01 * u.deg
 ```
@@ -162,7 +174,7 @@ For the full list of datasets that can be used with the `collection` parameter i
 Note that only some of these are currently available in cloud storage.
 To request that additional datasets be made available in cloud storage, please contact IRSA's [Help Desk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
-```{code-cell}
+```{code-cell} ipython3
 # from astroquery.ipac.irsa import Irsa
 
 # Irsa.list_collections()
@@ -174,7 +186,7 @@ To request that additional datasets be made available in cloud storage, please c
 
 Use PyVO to execute a search for Spitzer SEIP Super Mosaics and find cloud access information:
 
-```{code-cell}
+```{code-cell} ipython3
 irsa_SIA = pyvo.dal.SIA2Service("https://irsa.ipac.caltech.edu/SIA")
 seip_results = irsa_SIA.search((coords, size), collection="spitzer_seip")
 
@@ -184,7 +196,7 @@ seip_results["cloud_access"][:5]
 
 **Option 1**: Extract the cloud information from the "cloud_access" column for a single mosaic file:
 
-```{code-cell}
+```{code-cell} ipython3
 # find the first mosaic file in the results
 # use json to convert the string containing the cloud info to a dictionary
 seip_mosaic_cloud_info = json.loads([i for i in seip_results["cloud_access"] if ".mosaic.fits" in i][0])
@@ -196,7 +208,7 @@ image_key = seip_mosaic_cloud_info["aws"]["key"]
 
 **Option 2**: Construct the cloud information for a single mosaic file from the IRSA URL (useful if you know the dataset is in S3, but results in the "cloud_access" column were empty):
 
-```{code-cell}
+```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-spitzer"
 IMAGES_PREFIX = "spitzer/seip/seip_science/images"
 
@@ -217,14 +229,14 @@ The relevant options are enabled by default when using `astropy.io.fits.open` wi
 In addition, use the HDU `section` method in place of the usual `data` to avoid downloading the full data block.
 (See [Obtaining subsets from cloud-hosted FITS files](https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#fits-io-cloud).)
 
-```{code-cell}
+```{code-cell} ipython3
 with astropy.io.fits.open(f"s3://{BUCKET_NAME}/{image_key}", fsspec_kwargs={"anon": True}) as hdul:
     cutout = Cutout2D(hdul[0].section, position=coords, size=size, wcs=WCS(hdul[0].header))
 ```
 
 Show the cutout:
 
-```{code-cell}
+```{code-cell} ipython3
 plt.imshow(cutout.data, cmap="gray")
 ```
 
@@ -237,7 +249,7 @@ For queries that have a spatial constraint, including a filter on the partitioni
 Section 6.1 demonstrates how to view the catalog schema using [PyArrow](https://arrow.apache.org/docs/python/) to find the column names, etc. needed for constructing queries.
 A basic spatial query using [Pandas](https://pandas.pydata.org/docs/) is shown in section 6.2 and includes finding the relevant partitions using [HPGeom](https://hpgeom.readthedocs.io/en/latest/).
 
-```{code-cell}
+```{code-cell} ipython3
 import hpgeom
 import pandas as pd
 import pyarrow.dataset
@@ -245,7 +257,7 @@ import pyarrow.fs
 from matplotlib import colors
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-wise"
 BUCKET_REGION = "us-west-2"
 
@@ -259,7 +271,7 @@ fs = pyarrow.fs.S3FileSystem(region=BUCKET_REGION, anonymous=True)
 
 ### 6.1 View the schema using PyArrow
 
-```{code-cell}
+```{code-cell} ipython3
 # load the schema from the "_common_metadata" file
 schema = pyarrow.dataset.parquet_dataset(f"{parquet_root}/_common_metadata", filesystem=fs).schema
 
@@ -270,19 +282,19 @@ schema = pyarrow.dataset.parquet_dataset(f"{parquet_root}/_common_metadata", fil
 
 Search through the column names to find the HEALPix partitioning columns:
 
-```{code-cell}
+```{code-cell} ipython3
 [name for name in schema.names if "healpix" in name]
 # the result shows that both orders k=0 and k=5 are available, but typical use cases only need k=5
 ```
 
 Look at a specific column ("ext_flg" will be used below to query for likely stars):
 
-```{code-cell}
+```{code-cell} ipython3
 # this will display basic information like name and type
 schema.field("ext_flg")
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 # units and descriptions are in the field's metadata attribute
 schema.field("ext_flg").metadata
 ```
@@ -293,7 +305,7 @@ Query the AllWISE catalog for likely stars within an RA/Dec polygon.
 
 Spatial limits roughly covering the Taurus L1495 star-forming region:
 
-```{code-cell}
+```{code-cell} ipython3
 ra_min, ra_max, dec_min, dec_max = 62, 66, 25, 29  # deg
 
 polygon_corners = [(ra_min, dec_min), (ra_min, dec_max), (ra_max, dec_max), (ra_max, dec_min)]
@@ -302,14 +314,14 @@ corners = list(zip(*polygon_corners))  # [(ra values), (dec values)]
 
 Find the partitions (HEALPix pixel indexes) that overlap the polygon:
 
-```{code-cell}
+```{code-cell} ipython3
 k = 5
 polygon_pixels = hpgeom.query_polygon(a=corners[0], b=corners[1], nside=hpgeom.order_to_nside(k), inclusive=True)
 ```
 
 Query:
 
-```{code-cell}
+```{code-cell} ipython3
 results_df = pd.read_parquet(
     parquet_root,
     filesystem=fs,
@@ -332,7 +344,7 @@ results_df = pd.read_parquet(
 
 View results on a color-color diagram:
 
-```{code-cell}
+```{code-cell} ipython3
 results_df["W1-W2"] = results_df["w1mpro"] - results_df["w2mpro"]
 results_df["W2-W3"] = results_df["w2mpro"] - results_df["w3mpro"]
 results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))

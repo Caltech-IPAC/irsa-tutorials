@@ -8,7 +8,7 @@ jupytext:
 kernelspec:
   display_name: science_demo
   language: python
-  name: conda-env-science_demo-py
+  name: python3
 ---
 
 # Explore OpenUniverse 2024 Data Preview: Simulated Roman Coadds
@@ -38,8 +38,8 @@ import s3fs  # browse buckets
 
 ## Identify the row and column that contains a particular ra, dec coordinate.
 
-The full simulation covers a 1 deg x 1 deg area centered around RA = 9.5 deg and 
-Dec = -44.1 deg. This region is divided into 1296 blocks (36 rows and 36 columns), 
+The full simulation covers a 1 deg x 1 deg area centered around RA = 9.5 deg and
+Dec = -44.1 deg. This region is divided into 1296 blocks (36 rows and 36 columns),
 each 100 arcsec across.
 
 The data preview presented here covers the central 20x20 arcmin, corresponding to 144 blocks (12 rows and 12 columns).

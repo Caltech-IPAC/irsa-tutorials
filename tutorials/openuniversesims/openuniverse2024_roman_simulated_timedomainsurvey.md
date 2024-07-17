@@ -8,7 +8,7 @@ jupytext:
 kernelspec:
   display_name: science_demo
   language: python
-  name: conda-env-science_demo-py
+  name: python3
 ---
 
 # Explore OpenUniverse 2024 Data Preview: Simulated Roman Time Domain Survey Data
@@ -168,7 +168,7 @@ parquet_file = f's3://{BUCKET_NAME}/{ROMAN_PREFIX}/roman_rubin_cats_v1.1.2_faint
 transients = pd.read_parquet(parquet_file, filesystem=s3)
 ```
 
-## Let's find a relatively nearby SN Ia that lies within the region of the data preview. 
+## Let's find a relatively nearby SN Ia that lies within the region of the data preview.
 
 ```{code-cell} ipython3
 #List the unique models in the SNANA file.
