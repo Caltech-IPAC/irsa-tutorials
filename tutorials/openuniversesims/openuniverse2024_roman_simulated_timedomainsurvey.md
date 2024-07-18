@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Explore OpenUniverse 2024 Data Preview: Simulated Roman Time Domain Survey Data
+# Simulated Roman Time Domain Survey Data
 
 +++
 
@@ -26,7 +26,7 @@ By the end of this tutorial, you will:
 
 +++
 
-# Import required modules
+## Install and Import required modules
 
 ```{code-cell} ipython3
 # Install libraries if necessary

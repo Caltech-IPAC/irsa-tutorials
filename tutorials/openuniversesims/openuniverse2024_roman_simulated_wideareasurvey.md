@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Explore OpenUniverse 2024 Data Preview: Simulated Roman Coadds
+# Simulated Roman Coadds
 
 +++
 
@@ -23,6 +23,8 @@ By the end of this tutorial, you will learn how to do the following:
 - Browse the bucket containing the simulated Roman coadds.
 - Identify a simulated Roman coadd by filter, row, and column.
 - Take a closer look at a simulated coadd file.
+
+## Install and Import required modules
 
 ```{code-cell} ipython3
 # Install libraries if necessary

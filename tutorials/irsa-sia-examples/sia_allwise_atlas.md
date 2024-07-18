@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Image Thumbnails from AllWISE Atlas Images
+# AllWISE Atlas Images
 
 +++
 
@@ -161,7 +161,7 @@ wcs = cutout.wcs
 fig = plt.figure()
 
 ax = fig.add_subplot(1, 1, 1, projection=wcs)
-ax.imshow(cutout.data, cmap='gray_r', origin='lower', 
+ax.imshow(cutout.data, cmap='gray_r', origin='lower',
           vmax = 1000)
 ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', facecolor='none')
 ```
