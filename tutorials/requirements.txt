@@ -10,5 +10,7 @@ pandas>=1.5.2
 dask[distributed]
 psutil
 s3fs
+firefly_client
+jupyter_firefly_extensions
 # For supporting myst-based notebooks
 jupytext
