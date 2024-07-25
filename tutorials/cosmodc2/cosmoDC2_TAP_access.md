@@ -14,11 +14,11 @@ kernelspec:
 
 
 
+# CosmoDC2 Mock v1 catalogs with IRSA TAP
+
 This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More information about these catalogs can be found here: https://irsa.ipac.caltech.edu/Missions/cosmodc2.html
 
-# Use IRSA's Virtual Observatory Table Access Protocol (TAP) Service to access these catalogs.
-
-This catalog can be accessed through IRSA's Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the pvyo library.
+These catalogs can be accessed through IRSA's Virtual Ovservatory Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the PyVO library.
 
 ```{code-cell} ipython3
 import pyvo as vo
@@ -62,7 +62,7 @@ tablename = 'cosmodc2mockv1_heavy'
 With TAP, you can query catalogs with constraints specified in IVOA Astronomical Data Query Language (ADQL; https://www.ivoa.net/documents/latest/ADQL.html), which is based on SQL.
 
 ```{code-cell} ipython3
-# For example, this snippet of ADQL counts the number of elements in 
+# For example, this snippet of ADQL counts the number of elements in
 # the redshift column of the table we chose.
 adql = f"SELECT count(redshift) FROM {tablename}"
 adql
@@ -131,7 +131,7 @@ import matplotlib.pyplot as plt
 
 num_bins = 20
 # the histogram of the data
-n, bins, patches = plt.hist(cone_results['redshift'], num_bins, 
+n, bins, patches = plt.hist(cone_results['redshift'], num_bins,
                             facecolor='blue', alpha = 0.5)
 plt.xlabel('Redshift')
 plt.ylabel('Number')
@@ -159,7 +159,7 @@ len(results['mag_true_r_sdss_z0'])
 ```
 
 ```{code-cell} ipython3
-# Since this results in almost 4 million galaxies, 
+# Since this results in almost 4 million galaxies,
 # we will construct a 2D histogram rather than a scatter plot.
 plt.hist2d(results['mag_true_r_sdss_z0'], results['mag_true_g_sdss_z0']-results['mag_true_r_sdss_z0'],
            bins=200, cmap='plasma', cmax=500)
