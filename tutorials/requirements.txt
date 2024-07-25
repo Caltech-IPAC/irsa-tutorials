@@ -2,12 +2,13 @@
 numpy
 matplotlib
 astropy
-pyvo
+pyvo>=1.5
 scipy
-pyarrow
+pyarrow>=10.0.1
 hpgeom
-pandas
+pandas>=1.5.2
 dask[distributed]
 psutil
+s3fs
 # For supporting myst-based notebooks
 jupytext
