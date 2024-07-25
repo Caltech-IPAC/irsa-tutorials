@@ -1,0 +1,1164 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CosmoDC2 Mock v1 catalogs with IRSA TAP &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/cosmodc2/cosmoDC2_TAP_access';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IRSA Cloud Access Introduction" href="../cloud_access/cloud-access-intro.html" />
+    <link rel="prev" title="Spitzer Enhanced Imaging Products" href="../irsa-sia-examples/siav2_seip.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="IRSA Demo Notebooks - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="IRSA Demo Notebooks - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/bsipocz/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC – IRSA notebooks
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">CosmoDC2 Mock v1 catalogs with IRSA TAP</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA Cloud Access Introduction</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Simulated Roman Time Domain Survey Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Simulated Roman Coadds</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/bsipocz/irsa-tutorials/main?urlpath=tree/tutorials/cosmodc2/cosmoDC2_TAP_access.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/edit/main/tutorials/cosmodc2/cosmoDC2_TAP_access.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/cosmodc2/cosmoDC2_TAP_access.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/cosmodc2/cosmoDC2_TAP_access.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/cosmodc2/cosmoDC2_TAP_access.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>CosmoDC2 Mock v1 catalogs with IRSA TAP</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-the-available-dc2-tables">List the available DC2 tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-dc2-catalog-you-want-to-work-with">Choose the DC2 catalog you want to work with.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-rows-are-in-the-chosen-table">How many rows are in the chosen table?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-default-maximum-number-of-rows-returned-by-the-service">What is the default maximum number of rows returned by the service?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-the-columns-in-the-chosen-table">List the columns in the chosen table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-histogram-of-redshifts">Create a histogram of redshifts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-galaxy-colors-at-z-0-5">Visualize galaxy colors at z ~ 0.5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="cosmodc2-mock-v1-catalogs-with-irsa-tap">
+<h1>CosmoDC2 Mock v1 catalogs with IRSA TAP<a class="headerlink" href="#cosmodc2-mock-v1-catalogs-with-irsa-tap" title="Link to this heading">#</a></h1>
+<p>This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More information about these catalogs can be found here: https://irsa.ipac.caltech.edu/Missions/cosmodc2.html</p>
+<p>These catalogs can be accessed through IRSA’s Virtual Ovservatory Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the PyVO library.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvo</span> <span class="k">as</span> <span class="nn">vo</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="list-the-available-dc2-tables">
+<h2>List the available DC2 tables<a class="headerlink" href="#list-the-available-dc2-tables" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
+<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;dc2&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
+            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cosmodc2mockv1
+    CosmoDC2MockV1 Catalog - unabridged, spatially partitioned
+
+cosmodc2mockv1_heavy
+    CosmoDC2MockV1 Catalog - stellar mass &gt; 10^7 Msun
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cosmodc2mockv1_new
+    CosmoDC2MockV1 Catalog - unabridged
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="choose-the-dc2-catalog-you-want-to-work-with">
+<h2>Choose the DC2 catalog you want to work with.<a class="headerlink" href="#choose-the-dc2-catalog-you-want-to-work-with" title="Link to this heading">#</a></h2>
+<p>IRSA currently offers 3 versions of the DC2 catalog.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_new</span></code> has been optimized to make searches with constraints on stellar mass and redshift fast.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1</span></code> has been optimized to make searches with spatial constraints fast.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_heavy</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_new</span></code>, except that it does not contain galaxies with stellar masses &lt;= 10^7 solar masses.</p></li>
+</ul>
+<p>If you are new to the DC2 catalog, we recommend that you start with <code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_heavy</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose the abridged table to start with.</span>
+<span class="c1"># Queries should be faster on smaller tables.</span>
+
+<span class="n">tablename</span> <span class="o">=</span> <span class="s1">&#39;cosmodc2mockv1_heavy&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-many-rows-are-in-the-chosen-table">
+<h2>How many rows are in the chosen table?<a class="headerlink" href="#how-many-rows-are-in-the-chosen-table" title="Link to this heading">#</a></h2>
+<p>With TAP, you can query catalogs with constraints specified in IVOA Astronomical Data Query Language (ADQL; https://www.ivoa.net/documents/latest/ADQL.html), which is based on SQL.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, this snippet of ADQL counts the number of elements in</span>
+<span class="c1"># the redshift column of the table we chose.</span>
+<span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT count(redshift) FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">adql</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;SELECT count(redshift) FROM cosmodc2mockv1_heavy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In order to use TAP with this ADQL string using pyvo, you can do the following:</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;DALResultsTable length=1&gt;
+count(redshift)
+    float64    
+---------------
+    597488849.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above query shows that there are 597,488,849 redshifts in this table.</p>
+</section>
+<section id="what-is-the-default-maximum-number-of-rows-returned-by-the-service">
+<h2>What is the default maximum number of rows returned by the service?<a class="headerlink" href="#what-is-the-default-maximum-number-of-rows-returned-by-the-service" title="Link to this heading">#</a></h2>
+<p>This service will return a maximum of 2 billion rows by default.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span><span class="o">.</span><span class="n">maxrec</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2000000000
+</pre></div>
+</div>
+</div>
+</div>
+<p>This default maximum can be changed, and there is no hard upper limit to what it can be changed to.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">hardlimit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="list-the-columns-in-the-chosen-table">
+<h2>List the columns in the chosen table<a class="headerlink" href="#list-the-columns-in-the-chosen-table" title="Link to this heading">#</a></h2>
+<p>This table contains 301 columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>301
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s learn a bit more about them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra                              Right ascension, lensed
+dec                             Declination, lensed
+ra_true                         Right ascension, not lensed
+dec_true                        Declination, not lensed
+redshift                        Cosmological redshift with line-of-sight motion
+redshift_true                   Cosmological redshift
+mag_u_lsst                      Apparent magnitude, lensed, in &#39;u&#39; with LSST
+mag_g_lsst                      Apparent magnitude, lensed, in &#39;g&#39; with LSST
+mag_r_lsst                      Apparent magnitude, lensed, in &#39;r&#39; with LSST
+mag_i_lsst                      Apparent magnitude, lensed, in &#39;i&#39; with LSST
+mag_z_lsst                      Apparent magnitude, lensed, in &#39;z&#39; with LSST
+mag_y_lsst                      Apparent magnitude, lensed, in &#39;y&#39; with LSST
+mag_u_sdss                      Apparent magnitude, lensed, in &#39;u&#39; with SDSS
+mag_g_sdss                      Apparent magnitude, lensed, in &#39;g&#39; with SDSS
+mag_r_sdss                      Apparent magnitude, lensed, in &#39;r&#39; with SDSS
+mag_i_sdss                      Apparent magnitude, lensed, in &#39;i&#39; with SDSS
+mag_z_sdss                      Apparent magnitude, lensed, in &#39;z&#39; with SDSS
+mag_true_u_lsst                 Apparent magnitude, not lensed, in &#39;u&#39; with LSST
+mag_true_g_lsst                 Apparent magnitude, not lensed, in &#39;g&#39; with LSST
+mag_true_r_lsst                 Apparent magnitude, not lensed, in &#39;r&#39; with LSST
+mag_true_i_lsst                 Apparent magnitude, not lensed, in &#39;i&#39; with LSST
+mag_true_z_lsst                 Apparent magnitude, not lensed, in &#39;z&#39; with LSST
+mag_true_y_lsst                 Apparent magnitude, not lensed, in &#39;y&#39; with LSST
+mag_true_u_sdss                 Apparent magnitude, not lensed, in &#39;u&#39; with SDSS
+mag_true_g_sdss                 Apparent magnitude, not lensed, in &#39;g&#39; with SDSS
+mag_true_r_sdss                 Apparent magnitude, not lensed, in &#39;r&#39; with SDSS
+mag_true_i_sdss                 Apparent magnitude, not lensed, in &#39;i&#39; with SDSS
+mag_true_z_sdss                 Apparent magnitude, not lensed, in &#39;z&#39; with SDSS
+mag_true_u_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with LSST
+mag_true_g_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with LSST
+mag_true_r_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with LSST
+mag_true_i_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with LSST
+mag_true_z_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with LSST
+mag_true_y_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;y&#39; with LSST
+mag_true_u_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with SDSS
+mag_true_g_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with SDSS
+mag_true_r_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with SDSS
+mag_true_i_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with SDSS
+mag_true_z_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with SDSS
+mag_u_lsst_no_ext               Apparent magnitude, lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_g_lsst_no_ext               Apparent magnitude, lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_r_lsst_no_ext               Apparent magnitude, lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_i_lsst_no_ext               Apparent magnitude, lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_z_lsst_no_ext               Apparent magnitude, lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_y_lsst_no_ext               Apparent magnitude, lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_u_sdss_no_ext               Apparent magnitude, lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_g_sdss_no_ext               Apparent magnitude, lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_r_sdss_no_ext               Apparent magnitude, lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_i_sdss_no_ext               Apparent magnitude, lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_z_sdss_no_ext               Apparent magnitude, lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_no_ext          Apparent magnitude, not lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_no_ext          Apparent magnitude, not lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_no_ext          Apparent magnitude, not lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_no_ext          Apparent magnitude, not lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_no_ext          Apparent magnitude, not lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_no_ext          Apparent magnitude, not lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_no_ext          Apparent magnitude, not lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_no_ext          Apparent magnitude, not lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_no_ext          Apparent magnitude, not lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_no_ext          Apparent magnitude, not lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_no_ext          Apparent magnitude, not lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+sersic_disk                     Sersic index of disk light profile
+sersic_bulge                    Sersic index of bulge light profile
+a_v                             Extinction in V-band, for galaxy light profile
+a_v_disk                        Extinction in V-band, for disk light profile
+a_v_bulge                       Extinction in V-band, for bulge light profile
+r_v                             Ratio of total to selective extinction in B and V bands, for galaxy light profile
+r_v_disk                        Ratio of total to selective extinction in B and V bands, for disk light profile
+r_v_bulge                       Ratio of total to selective extinction in B and V bands, for bulge light profile
+size_true                       Galaxy half-light radius (of major axis), not lensed
+size_minor_true                 Galaxy half-light radius (of minor axis), not lensed
+size_disk_true                  Disk half-light radius (of major axis), not lensed
+size_minor_disk_true            Disk half-light radius (of minor axis), not lensed
+size_bulge_true                 Bulge half-light radius (of major axis), not lensed
+size_minor_bulge_true           Bulge half-light radius (of minor axis), not lensed
+position_angle_true             Position angle (arctan(E2/E1)), for galaxy, not lensed
+ellipticity_true                Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for galaxy, not lensed, where q = size_minor_true/size_true
+ellipticity_1_true              Ellipticity component 1, for galaxy, not lensed
+ellipticity_2_true              Ellipticity component 2, for galaxy, not lensed
+ellipticity_disk_true           Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for disk, not lensed, where q = size_minor_disk_true/size_disk_true
+ellipticity_1_disk_true         Ellipticity component 1, for disk, not lensed
+ellipticity_2_disk_true         Ellipticity component 2, for disk, not lensed
+ellipticity_bulge_true          Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for bulge, not lensed, where q = size_minor_bulge_true/size_bulge_true
+ellipticity_1_bulge_true        Ellipticity component 1, for bulge, not lensed
+ellipticity_2_bulge_true        Ellipticity component 2, for bulge, not lensed
+shear_1                         Shear (gamma) component 1 in treecorr/GalSim convention
+shear_2                         Shear (gamma) component 2 in treecorr/GalSim convention
+shear_2_phosim                  Shear (gamma) component 2 in PhoSim convention ( = -shear_2 )
+shear_2_treecorr                Shear (gamma) component 2 in treecorr/GalSim convention ( = shear_2 )
+convergence                     Convergence (kappa)
+magnification                   Magnification
+galaxy_id                       Unique integer identifier
+halo_id                         Unique ID of the main halo that contains the galaxy
+halo_mass                       Halo mass of the main halo that contains the galaxy
+stellar_mass                    Total stellar mass of the galaxy
+stellar_mass_disk               Stellar mass of the disk component
+stellar_mass_bulge              Stellar mass of the bulge component
+bulge_to_total_ratio_i          bulge-to-total luminosity ratio in &#39;i&#39;
+is_central                      1 if the galaxy is the central galaxy of the main halo, 0 otherwise.
+position_x                      3D position (x coordinate)
+position_y                      3D position (y coordinate)
+position_z                      3D position (z coordinate)
+velocity_x                      3D velocity (x component)
+velocity_y                      3D velocity (y component)
+velocity_z                      3D velocity (z component)
+sed_1000_246                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1000 to 1246 in Angstroms
+sed_1246_306                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1246 to 1552 in Angstroms
+sed_1552_381                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1552 to 1933 in Angstroms
+sed_1933_474                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1933 to 2407 in Angstroms
+sed_2407_591                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2407 to 2998 in Angstroms
+sed_2998_186                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2998 to 3184 in Angstroms
+sed_3184_197                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3184 to 3381 in Angstroms
+sed_3381_209                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3381 to 3590 in Angstroms
+sed_3590_222                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3590 to 3812 in Angstroms
+sed_3812_236                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3812 to 4048 in Angstroms
+sed_4048_251                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4048 to 4299 in Angstroms
+sed_4299_266                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4299 to 4565 in Angstroms
+sed_4565_283                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4565 to 4848 in Angstroms
+sed_4848_300                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4848 to 5148 in Angstroms
+sed_5148_319                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5148 to 5467 in Angstroms
+sed_5467_339                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5467 to 5806 in Angstroms
+sed_5806_360                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5806 to 6166 in Angstroms
+sed_6166_382                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6166 to 6548 in Angstroms
+sed_6548_406                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6548 to 6954 in Angstroms
+sed_6954_431                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6954 to 7385 in Angstroms
+sed_7385_458                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7385 to 7843 in Angstroms
+sed_7843_486                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7843 to 8329 in Angstroms
+sed_8329_517                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8329 to 8846 in Angstroms
+sed_8846_549                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8846 to 9395 in Angstroms
+sed_9395_583                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9395 to 9978 in Angstroms
+sed_9978_1489                   Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9978 to 11467 in Angstroms
+sed_11467_1710                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 11467 to 13177 in Angstroms
+sed_13177_1966                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 13177 to 15143 in Angstroms
+sed_15143_2259                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 15143 to 17402 in Angstroms
+sed_17402_2596                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 17402 to 19998 in Angstroms
+sed_1000_246_disk               Same as sed_1000_246 but for disk
+sed_1246_306_disk               Same as sed_1246_306 but for disk
+sed_1552_381_disk               Same as sed_1552_381 but for disk
+sed_1933_474_disk               Same as sed_1933_474 but for disk
+sed_2407_591_disk               Same as sed_2407_591 but for disk
+sed_2998_186_disk               Same as sed_2998_186 but for disk
+sed_3184_197_disk               Same as sed_3184_197 but for disk
+sed_3381_209_disk               Same as sed_3381_209 but for disk
+sed_3590_222_disk               Same as sed_3590_222 but for disk
+sed_3812_236_disk               Same as sed_3812_236 but for disk
+sed_4048_251_disk               Same as sed_4048_251 but for disk
+sed_4299_266_disk               Same as sed_4299_266 but for disk
+sed_4565_283_disk               Same as sed_4565_283 but for disk
+sed_4848_300_disk               Same as sed_4848_300 but for disk
+sed_5148_319_disk               Same as sed_5148_319 but for disk
+sed_5467_339_disk               Same as sed_5467_339 but for disk
+sed_5806_360_disk               Same as sed_5806_360 but for disk
+sed_6166_382_disk               Same as sed_6166_382 but for disk
+sed_6548_406_disk               Same as sed_6548_406 but for disk
+sed_6954_431_disk               Same as sed_6954_431 but for disk
+sed_7385_458_disk               Same as sed_7385_458 but for disk
+sed_7843_486_disk               Same as sed_7843_486 but for disk
+sed_8329_517_disk               Same as sed_8329_517 but for disk
+sed_8846_549_disk               Same as sed_8846_549 but for disk
+sed_9395_583_disk               Same as sed_9395_583 but for disk
+sed_9978_1489_disk              Same as sed_9978_1489 but for disk
+sed_11467_1710_disk             Same as sed_11467_1710 but for disk
+sed_13177_1966_disk             Same as sed_13177_1966 but for disk
+sed_15143_2259_disk             Same as sed_15143_2259 but for disk
+sed_17402_2596_disk             Same as sed_17402_2596 but for disk
+sed_1000_246_bulge              Same as sed_1000_246 but for bulge
+sed_1246_306_bulge              Same as sed_1246_306 but for bulge
+sed_1552_381_bulge              Same as sed_1552_381 but for bulge
+sed_1933_474_bulge              Same as sed_1933_474 but for bulge
+sed_2407_591_bulge              Same as sed_2407_591 but for bulge
+sed_2998_186_bulge              Same as sed_2998_186 but for bulge
+sed_3184_197_bulge              Same as sed_3184_197 but for bulge
+sed_3381_209_bulge              Same as sed_3381_209 but for bulge
+sed_3590_222_bulge              Same as sed_3590_222 but for bulge
+sed_3812_236_bulge              Same as sed_3812_236 but for bulge
+sed_4048_251_bulge              Same as sed_4048_251 but for bulge
+sed_4299_266_bulge              Same as sed_4299_266 but for bulge
+sed_4565_283_bulge              Same as sed_4565_283 but for bulge
+sed_4848_300_bulge              Same as sed_4848_300 but for bulge
+sed_5148_319_bulge              Same as sed_5148_319 but for bulge
+sed_5467_339_bulge              Same as sed_5467_339 but for bulge
+sed_5806_360_bulge              Same as sed_5806_360 but for bulge
+sed_6166_382_bulge              Same as sed_6166_382 but for bulge
+sed_6548_406_bulge              Same as sed_6548_406 but for bulge
+sed_6954_431_bulge              Same as sed_6954_431 but for bulge
+sed_7385_458_bulge              Same as sed_7385_458 but for bulge
+sed_7843_486_bulge              Same as sed_7843_486 but for bulge
+sed_8329_517_bulge              Same as sed_8329_517 but for bulge
+sed_8846_549_bulge              Same as sed_8846_549 but for bulge
+sed_9395_583_bulge              Same as sed_9395_583 but for bulge
+sed_9978_1489_bulge             Same as sed_9978_1489 but for bulge
+sed_11467_1710_bulge            Same as sed_11467_1710 but for bulge
+sed_13177_1966_bulge            Same as sed_13177_1966 but for bulge
+sed_15143_2259_bulge            Same as sed_15143_2259 but for bulge
+sed_17402_2596_bulge            Same as sed_17402_2596 but for bulge
+sed_1000_246_no_ext             Same as sed_1000_246 but without dust extinction in the host galaxy
+sed_1246_306_no_ext             Same as sed_1246_306 but without dust extinction in the host galaxy
+sed_1552_381_no_ext             Same as sed_1552_381 but without dust extinction in the host galaxy
+sed_1933_474_no_ext             Same as sed_1933_474 but without dust extinction in the host galaxy
+sed_2407_591_no_ext             Same as sed_2407_591 but without dust extinction in the host galaxy
+sed_2998_186_no_ext             Same as sed_2998_186 but without dust extinction in the host galaxy
+sed_3184_197_no_ext             Same as sed_3184_197 but without dust extinction in the host galaxy
+sed_3381_209_no_ext             Same as sed_3381_209 but without dust extinction in the host galaxy
+sed_3590_222_no_ext             Same as sed_3590_222 but without dust extinction in the host galaxy
+sed_3812_236_no_ext             Same as sed_3812_236 but without dust extinction in the host galaxy
+sed_4048_251_no_ext             Same as sed_4048_251 but without dust extinction in the host galaxy
+sed_4299_266_no_ext             Same as sed_4299_266 but without dust extinction in the host galaxy
+sed_4565_283_no_ext             Same as sed_4565_283 but without dust extinction in the host galaxy
+sed_4848_300_no_ext             Same as sed_4848_300 but without dust extinction in the host galaxy
+sed_5148_319_no_ext             Same as sed_5148_319 but without dust extinction in the host galaxy
+sed_5467_339_no_ext             Same as sed_5467_339 but without dust extinction in the host galaxy
+sed_5806_360_no_ext             Same as sed_5806_360 but without dust extinction in the host galaxy
+sed_6166_382_no_ext             Same as sed_6166_382 but without dust extinction in the host galaxy
+sed_6548_406_no_ext             Same as sed_6548_406 but without dust extinction in the host galaxy
+sed_6954_431_no_ext             Same as sed_6954_431 but without dust extinction in the host galaxy
+sed_7385_458_no_ext             Same as sed_7385_458 but without dust extinction in the host galaxy
+sed_7843_486_no_ext             Same as sed_7843_486 but without dust extinction in the host galaxy
+sed_8329_517_no_ext             Same as sed_8329_517 but without dust extinction in the host galaxy
+sed_8846_549_no_ext             Same as sed_8846_549 but without dust extinction in the host galaxy
+sed_9395_583_no_ext             Same as sed_9395_583 but without dust extinction in the host galaxy
+sed_9978_1489_no_ext            Same as sed_9978_1489 but without dust extinction in the host galaxy
+sed_11467_1710_no_ext           Same as sed_11467_1710 but without dust extinction in the host galaxy
+sed_13177_1966_no_ext           Same as sed_13177_1966 but without dust extinction in the host galaxy
+sed_15143_2259_no_ext           Same as sed_15143_2259 but without dust extinction in the host galaxy
+sed_17402_2596_no_ext           Same as sed_17402_2596 but without dust extinction in the host galaxy
+sed_1000_246_disk_no_ext        Same as sed_1000_246_no_ext but for disk
+sed_1246_306_disk_no_ext        Same as sed_1246_306_no_ext but for disk
+sed_1552_381_disk_no_ext        Same as sed_1552_381_no_ext but for disk
+sed_1933_474_disk_no_ext        Same as sed_1933_474_no_ext but for disk
+sed_2407_591_disk_no_ext        Same as sed_2407_591_no_ext but for disk
+sed_2998_186_disk_no_ext        Same as sed_2998_186_no_ext but for disk
+sed_3184_197_disk_no_ext        Same as sed_3184_197_no_ext but for disk
+sed_3381_209_disk_no_ext        Same as sed_3381_209_no_ext but for disk
+sed_3590_222_disk_no_ext        Same as sed_3590_222_no_ext but for disk
+sed_3812_236_disk_no_ext        Same as sed_3812_236_no_ext but for disk
+sed_4048_251_disk_no_ext        Same as sed_4048_251_no_ext but for disk
+sed_4299_266_disk_no_ext        Same as sed_4299_266_no_ext but for disk
+sed_4565_283_disk_no_ext        Same as sed_4565_283_no_ext but for disk
+sed_4848_300_disk_no_ext        Same as sed_4848_300_no_ext but for disk
+sed_5148_319_disk_no_ext        Same as sed_5148_319_no_ext but for disk
+sed_5467_339_disk_no_ext        Same as sed_5467_339_no_ext but for disk
+sed_5806_360_disk_no_ext        Same as sed_5806_360_no_ext but for disk
+sed_6166_382_disk_no_ext        Same as sed_6166_382_no_ext but for disk
+sed_6548_406_disk_no_ext        Same as sed_6548_406_no_ext but for disk
+sed_6954_431_disk_no_ext        Same as sed_6954_431_no_ext but for disk
+sed_7385_458_disk_no_ext        Same as sed_7385_458_no_ext but for disk
+sed_7843_486_disk_no_ext        Same as sed_7843_486_no_ext but for disk
+sed_8329_517_disk_no_ext        Same as sed_8329_517_no_ext but for disk
+sed_8846_549_disk_no_ext        Same as sed_8846_549_no_ext but for disk
+sed_9395_583_disk_no_ext        Same as sed_9395_583_no_ext but for disk
+sed_1000_246_bulge_no_ext       Same as sed_1000_246_no_ext but for bulge
+sed_1246_306_bulge_no_ext       Same as sed_1246_306_no_ext but for bulge
+sed_1552_381_bulge_no_ext       Same as sed_1552_381_no_ext but for bulge
+sed_1933_474_bulge_no_ext       Same as sed_1933_474_no_ext but for bulge
+sed_2407_591_bulge_no_ext       Same as sed_2407_591_no_ext but for bulge
+sed_2998_186_bulge_no_ext       Same as sed_2998_186_no_ext but for bulge
+sed_3184_197_bulge_no_ext       Same as sed_3184_197_no_ext but for bulge
+sed_3381_209_bulge_no_ext       Same as sed_3381_209_no_ext but for bulge
+sed_3590_222_bulge_no_ext       Same as sed_3590_222_no_ext but for bulge
+sed_3812_236_bulge_no_ext       Same as sed_3812_236_no_ext but for bulge
+sed_4048_251_bulge_no_ext       Same as sed_4048_251_no_ext but for bulge
+sed_4299_266_bulge_no_ext       Same as sed_4299_266_no_ext but for bulge
+sed_4565_283_bulge_no_ext       Same as sed_4565_283_no_ext but for bulge
+sed_4848_300_bulge_no_ext       Same as sed_4848_300_no_ext but for bulge
+sed_5148_319_bulge_no_ext       Same as sed_5148_319_no_ext but for bulge
+sed_5467_339_bulge_no_ext       Same as sed_5467_339_no_ext but for bulge
+sed_5806_360_bulge_no_ext       Same as sed_5806_360_no_ext but for bulge
+sed_6166_382_bulge_no_ext       Same as sed_6166_382_no_ext but for bulge
+sed_6548_406_bulge_no_ext       Same as sed_6548_406_no_ext but for bulge
+sed_6954_431_bulge_no_ext       Same as sed_6954_431_no_ext but for bulge
+sed_7385_458_bulge_no_ext       Same as sed_7385_458_no_ext but for bulge
+sed_7843_486_bulge_no_ext       Same as sed_7843_486_no_ext but for bulge
+sed_8329_517_bulge_no_ext       Same as sed_8329_517_no_ext but for bulge
+sed_8846_549_bulge_no_ext       Same as sed_8846_549_no_ext but for bulge
+sed_9395_583_bulge_no_ext       Same as sed_9395_583_no_ext but for bulge
+sed_9978_1489_disk_no_ext       Same as sed_9978_1489_no_ext but for disk
+sed_11467_1710_disk_no_ext      Same as sed_11467_1710_no_ext but for disk
+sed_13177_1966_disk_no_ext      Same as sed_13177_1966_no_ext but for disk
+sed_15143_2259_disk_no_ext      Same as sed_15143_2259_no_ext but for disk
+sed_17402_2596_disk_no_ext      Same as sed_17402_2596_no_ext but for disk
+sed_9978_1489_bulge_no_ext      Same as sed_9978_1489_no_ext but for bulge
+sed_11467_1710_bulge_no_ext     Same as sed_11467_1710_no_ext but for bulge
+sed_13177_1966_bulge_no_ext     Same as sed_13177_1966_no_ext but for bulge
+sed_15143_2259_bulge_no_ext     Same as sed_15143_2259_no_ext but for bulge
+sed_17402_2596_bulge_no_ext     Same as sed_17402_2596_no_ext but for bulge
+cntr                            None
+x                               None
+y                               None
+z                               None
+htm20                           None
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-a-histogram-of-redshifts">
+<h2>Create a histogram of redshifts<a class="headerlink" href="#create-a-histogram-of-redshifts" title="Link to this heading">#</a></h2>
+<p>Let’s figure out what redshift range these galaxies cover. Since we found out above that it’s a large catalog, we can start with a spatial search over a small area of 0.1 deg. The ADQL that is needed for the spatial constraint is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT redshift FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2"> WHERE CONTAINS(POINT(&#39;ICRS&#39;, RAMean, DecMean), CIRCLE(&#39;ICRS&#39;,54.218205903,-37.497959343,.1))=1&quot;</span>
+<span class="n">adql</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;SELECT redshift FROM cosmodc2mockv1_heavy WHERE CONTAINS(POINT(&#39;ICRS&#39;, RAMean, DecMean), CIRCLE(&#39;ICRS&#39;,54.218205903,-37.497959343,.1))=1&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can use the previously-defined service to execute the query with the spatial contraint.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cone_results</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a histogram</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.mlab</span> <span class="k">as</span> <span class="nn">mlab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">num_bins</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># the histogram of the data</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">patches</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">cone_results</span><span class="p">[</span><span class="s1">&#39;redshift&#39;</span><span class="p">],</span> <span class="n">num_bins</span><span class="p">,</span>
+                            <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Redshift&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Redshift Histogram CosmoDC2 Mock Catalog V1 abridged&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Redshift Histogram CosmoDC2 Mock Catalog V1 abridged&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/ee422453de8734a5484db9bd68903e93a233e46ab009b3acd83e8c3c0c47a749.png" src="../../_images/ee422453de8734a5484db9bd68903e93a233e46ab009b3acd83e8c3c0c47a749.png" />
+</div>
+</div>
+<p>We can easily see form this plot that the simulated galaxies go out to z = 3.</p>
+</section>
+<section id="visualize-galaxy-colors-at-z-0-5">
+<h2>Visualize galaxy colors at z ~ 0.5<a class="headerlink" href="#visualize-galaxy-colors-at-z-0-5" title="Link to this heading">#</a></h2>
+<p>Now let’s visualize the galaxy main sequence at z = 2.0. First, we’ll do a narrow redshift cut with no spatial constraint.</p>
+<p>Let’s do it as an asynchronous search since this might take awhile.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
+<span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT Mag_true_r_sdss_z0, Mag_true_g_sdss_z0, redshift FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2"> WHERE redshift &gt; 0.5 and redshift &lt; 0.54&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_r_sdss_z0&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3833489
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Since this results in almost 4 million galaxies,</span>
+<span class="c1"># we will construct a 2D histogram rather than a scatter plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_r_sdss_z0&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_g_sdss_z0&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_r_sdss_z0&#39;</span><span class="p">],</span>
+           <span class="n">bins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span> <span class="n">cmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># Plot a colorbar with label.</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add title and labels to plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;SDSS Mag r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;SDSS rest-frame g-r color&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show the plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ba8ae1ff01d783c6b0a201649ab4b7ccfae19a394efb88d4576aed9305b5d0ec.png" src="../../_images/ba8ae1ff01d783c6b0a201649ab4b7ccfae19a394efb88d4576aed9305b5d0ec.png" />
+</div>
+</div>
+</section>
+<section id="about-this-notebook">
+<h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Author: Vandana Desai (IRSA Science Lead)</p></li>
+<li><p>Updated: 2024-07-24</p></li>
+<li><p>Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../irsa-sia-examples/siav2_seip.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Spitzer Enhanced Imaging Products</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cloud_access/cloud-access-intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">IRSA Cloud Access Introduction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-the-available-dc2-tables">List the available DC2 tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-dc2-catalog-you-want-to-work-with">Choose the DC2 catalog you want to work with.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-rows-are-in-the-chosen-table">How many rows are in the chosen table?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-default-maximum-number-of-rows-returned-by-the-service">What is the default maximum number of rows returned by the service?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-the-columns-in-the-chosen-table">List the columns in the chosen table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-histogram-of-redshifts">Create a histogram of redshifts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-galaxy-colors-at-z-0-5">Visualize galaxy colors at z ~ 0.5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -25,7 +25,6 @@ tutorials/irsa-sia-examples/siav2_seip
 
 ```
 
-<!---
 ### Catalogs
 
 ```{toctree}
@@ -33,8 +32,12 @@ tutorials/irsa-sia-examples/siav2_seip
 maxdepth: 1
 ---
 
+tutorials/cosmodc2/cosmoDC2_TAP_access.md
 
 ```
+
+
+<!---
 
 ## Visualizations
 ```{toctree}
@@ -87,6 +90,7 @@ maxdepth: 1
 
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
+
 ```
 
 ## Generally useful techniques
