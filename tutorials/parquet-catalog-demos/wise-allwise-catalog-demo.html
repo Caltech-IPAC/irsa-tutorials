@@ -501,13 +501,8 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: Could not open requirements file: [Errno 2] No such file or directory: &#39;requirements.txt&#39;</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the following if you have missing dependencies.</span>
+<span class="c1"># !pip install numpy pandas&gt;=1.5.2 pyarrow&gt;=10.0.1 matplotlib hpgeom astropy</span>
 </pre></div>
 </div>
 </div>
@@ -655,8 +650,8 @@ For filter options, see the <code class="docutils literal notranslate"><span cla
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.31 s, sys: 1.64 s, total: 6.95 s
-Wall time: 42.9 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.14 s, sys: 1.58 s, total: 6.71 s
+Wall time: 29.6 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -804,8 +799,8 @@ In other examples this is recognized automatically, but here we must pass it exp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.61 s, sys: 2.26 s, total: 6.87 s
-Wall time: 27.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.19 s, sys: 2.45 s, total: 6.64 s
+Wall time: 25.9 s
 </pre></div>
 </div>
 </div>
@@ -833,7 +828,7 @@ Wall time: 27.5 s
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;w3w4&#39;, ylabel=&#39;w1w2&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/b16319fac657975d13f68e50af2a1e7d659c7ede2b4f77884915650a0efd31b8.png" src="../../_images/b16319fac657975d13f68e50af2a1e7d659c7ede2b4f77884915650a0efd31b8.png" />
+<img alt="../../_images/db99fa773839261954c85c760a0d990dc2e0b97076a283ab6ed4a655e71154d9.png" src="../../_images/db99fa773839261954c85c760a0d990dc2e0b97076a283ab6ed4a655e71154d9.png" />
 </div>
 </div>
 </section>
@@ -922,8 +917,8 @@ neighbor 3, corner (25, 72): 243172601351003808 at on-sky dist [22.86047987] arc
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>neighbor 1, corner (25, 62): 252162001351031532 at on-sky dist [7.458129] arcsec
 neighbor 2, corner (25, 62): 252162001351031550 at on-sky dist [14.2719862] arcsec
 neighbor 3, corner (25, 62): 252162001351031549 at on-sky dist [18.96407889] arcsec
-CPU times: user 7.92 s, sys: 9.76 s, total: 17.7 s
-Wall time: 1min 11s
+CPU times: user 7.45 s, sys: 10.3 s, total: 17.8 s
+Wall time: 1min 29s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[157162001351035963,
@@ -957,8 +952,8 @@ Wall time: 1min 11s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.88 s, sys: 1.98 s, total: 3.86 s
-Wall time: 5.48 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.15 s, sys: 1.61 s, total: 3.77 s
+Wall time: 6.71 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
