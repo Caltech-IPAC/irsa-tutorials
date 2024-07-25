@@ -346,4 +346,8 @@ schema.names
 
 ## About this notebook
 
-This notebook was developed by Troy Raen (raen@ipac.caltech.edu) in conjunction with David Shupe, Jessica Krick and the IRSA Science Platform team at IPAC.
+- Author: Troy Raen (IRSA Developer) in conjunction with David Shupe, Jessica Krick and the IPAC Science Platform team
+- Updated: 2023-7-27
+- Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
+
++++

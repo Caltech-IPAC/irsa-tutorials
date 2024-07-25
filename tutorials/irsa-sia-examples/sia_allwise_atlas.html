@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Image Thumbnails from AllWISE Atlas Images &#8212; IRSA Demo Notebooks</title>
+    <title>AllWISE Atlas Images &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/irsa-sia-examples/sia_allwise_atlas';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Image Thumbnails from COSMOS" href="sia_cosmos.html" />
-    <link rel="prev" title="Image Thumbnails from 2MASS All-Sky Atlas" href="sia_2mass_allsky.html" />
+    <link rel="next" title="COSMOS" href="sia_cosmos.html" />
+    <link rel="prev" title="2MASS All-Sky Atlas" href="sia_2mass_allsky.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,14 +182,20 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="sia_2mass_allsky.html">Image Thumbnails from 2MASS All-Sky Atlas</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Image Thumbnails from AllWISE Atlas Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sia_cosmos.html">Image Thumbnails from COSMOS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="siav2_seip.html">Image Thumbnails from Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sia_2mass_allsky.html">2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sia_cosmos.html">COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siav2_seip.html">Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA Cloud Access Introduction</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cosmosims/CosmoDC2_Parquet.html">Working with CosmoDC2 Parquet files</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Simulated Roman Time Domain Survey Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Simulated Roman Coadds</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
@@ -443,7 +449,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Image Thumbnails from AllWISE Atlas Images</h1>
+    <h1>AllWISE Atlas Images</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -474,8 +480,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="image-thumbnails-from-allwise-atlas-images">
-<h1>Image Thumbnails from AllWISE Atlas Images<a class="headerlink" href="#image-thumbnails-from-allwise-atlas-images" title="Link to this heading">#</a></h1>
+  <section id="allwise-atlas-images">
+<h1>AllWISE Atlas Images<a class="headerlink" href="#allwise-atlas-images" title="Link to this heading">#</a></h1>
 <p>This notebook tutorial demonstrates the process of querying IRSA’s Simple Image Access (SIA) service for AllWISE Atlas images, making a cutout image (thumbnail), and displaying the cutout.</p>
 <hr class="docutils" />
 <section id="learning-goals">
@@ -688,14 +694,14 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
           <span class="n">vmax</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;fk5&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f2b552bcdd0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fef7a1e9c50&gt;
 </pre></div>
 </div>
 <img alt="../../_images/2ddcfe8c4d689396548f9610df4d2051d9e5824f8d23080c6408eb8769f9643c.png" src="../../_images/2ddcfe8c4d689396548f9610df4d2051d9e5824f8d23080c6408eb8769f9643c.png" />
@@ -738,7 +744,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Image Thumbnails from 2MASS All-Sky Atlas</p>
+        <p class="prev-next-title">2MASS All-Sky Atlas</p>
       </div>
     </a>
     <a class="right-next"
@@ -746,7 +752,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Image Thumbnails from COSMOS</p>
+        <p class="prev-next-title">COSMOS</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

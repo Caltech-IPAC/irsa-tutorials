@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Image Thumbnails from 2MASS All-Sky Atlas &#8212; IRSA Demo Notebooks</title>
+    <title>2MASS All-Sky Atlas &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,7 +47,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/irsa-sia-examples/sia_2mass_allsky';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Image Thumbnails from AllWISE Atlas Images" href="sia_allwise_atlas.html" />
+    <link rel="next" title="AllWISE Atlas Images" href="sia_allwise_atlas.html" />
     <link rel="prev" title="Caltech/IPAC – IRSA notebooks" href="../../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -182,14 +182,20 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Image Thumbnails from 2MASS All-Sky Atlas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sia_allwise_atlas.html">Image Thumbnails from AllWISE Atlas Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sia_cosmos.html">Image Thumbnails from COSMOS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="siav2_seip.html">Image Thumbnails from Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sia_allwise_atlas.html">AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sia_cosmos.html">COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="siav2_seip.html">Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA Cloud Access Introduction</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cosmosims/CosmoDC2_Parquet.html">Working with CosmoDC2 Parquet files</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Simulated Roman Time Domain Survey Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Simulated Roman Coadds</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
@@ -443,7 +449,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Image Thumbnails from 2MASS All-Sky Atlas</h1>
+    <h1>2MASS All-Sky Atlas</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -475,8 +481,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="image-thumbnails-from-2mass-all-sky-atlas">
-<h1>Image Thumbnails from 2MASS All-Sky Atlas<a class="headerlink" href="#image-thumbnails-from-2mass-all-sky-atlas" title="Link to this heading">#</a></h1>
+  <section id="mass-all-sky-atlas">
+<h1>2MASS All-Sky Atlas<a class="headerlink" href="#mass-all-sky-atlas" title="Link to this heading">#</a></h1>
 <p>This notebook tutorial demonstrates the process of querying IRSA’s Simple Image Access (SIA) service for the 2MASS All-Sky Atlas, making a cutout image (thumbnail), and displaying the cutout.</p>
 <hr class="docutils" />
 <section id="learning-goals">
@@ -577,7 +583,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=12</i>
-<table id="table139994786065744" class="table-striped table-bordered table-condensed">
+<table id="table139738447418704" class="table-striped table-bordered table-condensed">
 <thead><tr><th>name</th><th>download</th><th>center_ra</th><th>center_dec</th><th>naxes</th><th>naxis</th><th>scale</th><th>format</th><th>crpix</th><th>crval</th><th>crota2</th><th>band</th><th>bref</th><th>bhi</th><th>blo</th><th>pers_art</th><th>glint_art</th><th>type</th><th>dataset</th><th>pixflags</th><th>id</th><th>scntr</th><th>date</th><th>hem</th><th>scan</th><th>image</th><th>ut_date</th><th>coadd_key</th><th>seesh</th><th>magzp</th><th>msnr10</th><th>bin</th></tr></thead>
 <thead><tr><th></th><th></th><th>deg</th><th>deg</th><th></th><th></th><th>deg</th><th></th><th></th><th>deg</th><th>deg</th><th></th><th>meters</th><th>meters</th><th>meters</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcseconds</th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>object</th><th>object</th><th>float64</th><th>float64</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>int32</th><th>int32</th><th>object</th><th>int32</th><th>float64</th><th>float64</th><th>float64</th><th>int32</th></tr></thead>
@@ -646,14 +652,14 @@ Other datasets at IRSA are available through other SIA services:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
           <span class="n">vmax</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_transform</span><span class="p">(</span><span class="s1">&#39;fk5&#39;</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f5313a1e150&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f1763dd0450&gt;
 </pre></div>
 </div>
 <img alt="../../_images/e7093f9a3140564eaf6cad6d8608c2a9e9498009403213df4043496e2a55c1be.png" src="../../_images/e7093f9a3140564eaf6cad6d8608c2a9e9498009403213df4043496e2a55c1be.png" />
@@ -708,7 +714,7 @@ Other datasets at IRSA are available through other SIA services:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Image Thumbnails from AllWISE Atlas Images</p>
+        <p class="prev-next-title">AllWISE Atlas Images</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
