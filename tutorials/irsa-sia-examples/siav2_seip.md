@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Image Thumbnails from Spitzer Enhanced Imaging Products
+# Spitzer Enhanced Imaging Products
 
 +++
 

@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Image Thumbnails from 2MASS All-Sky Atlas
+# 2MASS All-Sky Atlas
 
 This notebook tutorial demonstrates the process of querying IRSA's Simple Image Access (SIA) service for the 2MASS All-Sky Atlas, making a cutout image (thumbnail), and displaying the cutout.
 
@@ -150,7 +150,7 @@ wcs = cutout.wcs
 fig = plt.figure()
 
 ax = fig.add_subplot(1, 1, 1, projection=wcs)
-ax.imshow(cutout.data, cmap='gray_r', origin='lower', 
+ax.imshow(cutout.data, cmap='gray_r', origin='lower',
           vmax = 1000)
 ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', facecolor='none')
 ```

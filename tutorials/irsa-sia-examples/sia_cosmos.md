@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Image Thumbnails from COSMOS
+# COSMOS
 
 +++
 
