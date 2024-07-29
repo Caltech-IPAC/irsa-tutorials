@@ -71,34 +71,22 @@ It can be used to substitute values for the following variables, which are used 
 
 ## 3. Imports
 
-Libraries are imported at the top of each section when used.
+The following libraries will be used:
+
+- astropy: perform image cutouts
+- hpgeom: map sky location to catalog partition
+- matplotlib: view results
+- pandas: query Parquet datasets
+- pyarrow: work with Parquet datasets
+- pyvo: locate images in the cloud (pyvo>=1.5 required)
+- s3fs: browse buckets
+
+Libraries are imported at the top of each section where used.
 This cell will install them if needed:
 
 ```{code-cell} ipython3
-try:
-    import astropy  # perform image cutouts
-    import hpgeom  # map sky location to catalog partition
-    import matplotlib  # view results
-    import pandas  # query Parquet datasets
-    import pyarrow  # work with Parquet datasets
-    import pyvo  # locate images in the cloud (pyvo>=1.5 required)
-    import s3fs  # browse buckets
-except ImportError:
-    %pip install astropy
-    %pip install hpgeom
-    %pip install pandas
-    %pip install pyarrow
-    %pip install pyvo>=1.5
-    %pip install s3fs
-    %pip install -U matplotlib
-
-# check for pyvo>=1.5 (required for SIA2Service)
-try:
-    import pyvo
-    pyvo.dal.SIA2Service("https://irsa.ipac.caltech.edu/SIA")
-except AttributeError:
-    %pip install --upgrade pyvo
-    # note that you may need to restart the kernel to use the updated package
+# Uncomment the next line to install dependencies if needed.
+# !pip install astropy hpgeom pandas pyarrow pyvo>=1.5 s3fs matplotlib
 ```
 
 ## 4. Browse buckets
@@ -353,5 +341,5 @@ results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))
 ## About this notebook
 
 - Author: Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team
-- Updated: 2023-12-22
 - Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
+- Updated: 2024-07-29
