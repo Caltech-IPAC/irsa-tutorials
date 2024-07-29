@@ -71,34 +71,22 @@ It can be used to substitute values for the following variables, which are used 
 
 ## 3. Imports
 
-Libraries are imported at the top of each section when used.
+The following libraries will be used:
+
+- astropy: perform image cutouts
+- hpgeom: map sky location to catalog partition
+- matplotlib: view results
+- pandas: query Parquet datasets
+- pyarrow: work with Parquet datasets
+- pyvo: locate images in the cloud (pyvo>=1.5 required)
+- s3fs: browse buckets
+
+Libraries are imported at the top of each section where used.
 This cell will install them if needed:
 
 ```{code-cell} ipython3
-try:
-    import astropy  # perform image cutouts
-    import hpgeom  # map sky location to catalog partition
-    import matplotlib  # view results
-    import pandas  # query Parquet datasets
-    import pyarrow  # work with Parquet datasets
-    import pyvo  # locate images in the cloud (pyvo>=1.5 required)
-    import s3fs  # browse buckets
-except ImportError:
-    %pip install astropy
-    %pip install hpgeom
-    %pip install pandas
-    %pip install pyarrow
-    %pip install pyvo>=1.5
-    %pip install s3fs
-    %pip install -U matplotlib
-
-# check for pyvo>=1.5 (required for SIA2Service)
-try:
-    import pyvo
-    pyvo.dal.SIA2Service("https://irsa.ipac.caltech.edu/SIA")
-except AttributeError:
-    %pip install --upgrade pyvo
-    # note that you may need to restart the kernel to use the updated package
+# Uncomment the next line to install dependencies if needed.
+# !pip install astropy hpgeom pandas pyarrow pyvo>=1.5 s3fs matplotlib
 ```
 
 ## 4. Browse buckets
@@ -199,7 +187,8 @@ seip_results["cloud_access"][:5]
 ```{code-cell} ipython3
 # find the first mosaic file in the results
 # use json to convert the string containing the cloud info to a dictionary
-seip_mosaic_cloud_info = json.loads([i for i in seip_results["cloud_access"] if ".mosaic.fits" in i][0])
+mosaics = [i for i in seip_results["cloud_access"] if ".mosaic.fits" in i]
+seip_mosaic_cloud_info = json.loads(mosaics[0])
 
 # extract
 BUCKET_NAME = seip_mosaic_cloud_info["aws"]["bucket_name"]
@@ -230,7 +219,8 @@ In addition, use the HDU `section` method in place of the usual `data` to avoid 
 (See [Obtaining subsets from cloud-hosted FITS files](https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#fits-io-cloud).)
 
 ```{code-cell} ipython3
-with astropy.io.fits.open(f"s3://{BUCKET_NAME}/{image_key}", fsspec_kwargs={"anon": True}) as hdul:
+s3_image_path = f"s3://{BUCKET_NAME}/{image_key}"
+with astropy.io.fits.open(s3_image_path, fsspec_kwargs={"anon": True}) as hdul:
     cutout = Cutout2D(hdul[0].section, position=coords, size=size, wcs=WCS(hdul[0].header))
 ```
 
@@ -273,7 +263,8 @@ fs = pyarrow.fs.S3FileSystem(region=BUCKET_REGION, anonymous=True)
 
 ```{code-cell} ipython3
 # load the schema from the "_common_metadata" file
-schema = pyarrow.dataset.parquet_dataset(f"{parquet_root}/_common_metadata", filesystem=fs).schema
+s3_schema_path = f"{parquet_root}/_common_metadata"
+schema = pyarrow.dataset.parquet_dataset(s3_schema_path, filesystem=fs).schema
 
 # the full schema can be quite large since catalogs often have hundreds of columns
 # but if you do want to look at the entire schema, uncomment the next line
@@ -316,7 +307,9 @@ Find the partitions (HEALPix pixel indexes) that overlap the polygon:
 
 ```{code-cell} ipython3
 k = 5
-polygon_pixels = hpgeom.query_polygon(a=corners[0], b=corners[1], nside=hpgeom.order_to_nside(k), inclusive=True)
+polygon_pixels = hpgeom.query_polygon(
+    a=corners[0], b=corners[1], nside=hpgeom.order_to_nside(k), inclusive=True
+)
 ```
 
 Query:
@@ -353,5 +346,5 @@ results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))
 ## About this notebook
 
 - Author: Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team
-- Updated: 2023-12-22
 - Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
+- Updated: 2024-07-29
