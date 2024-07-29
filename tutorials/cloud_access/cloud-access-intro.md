@@ -187,7 +187,8 @@ seip_results["cloud_access"][:5]
 ```{code-cell} ipython3
 # find the first mosaic file in the results
 # use json to convert the string containing the cloud info to a dictionary
-seip_mosaic_cloud_info = json.loads([i for i in seip_results["cloud_access"] if ".mosaic.fits" in i][0])
+mosaics = [i for i in seip_results["cloud_access"] if ".mosaic.fits" in i]
+seip_mosaic_cloud_info = json.loads(mosaics[0])
 
 # extract
 BUCKET_NAME = seip_mosaic_cloud_info["aws"]["bucket_name"]
@@ -218,7 +219,8 @@ In addition, use the HDU `section` method in place of the usual `data` to avoid 
 (See [Obtaining subsets from cloud-hosted FITS files](https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#fits-io-cloud).)
 
 ```{code-cell} ipython3
-with astropy.io.fits.open(f"s3://{BUCKET_NAME}/{image_key}", fsspec_kwargs={"anon": True}) as hdul:
+s3_image_path = f"s3://{BUCKET_NAME}/{image_key}"
+with astropy.io.fits.open(s3_image_path, fsspec_kwargs={"anon": True}) as hdul:
     cutout = Cutout2D(hdul[0].section, position=coords, size=size, wcs=WCS(hdul[0].header))
 ```
 
@@ -261,7 +263,8 @@ fs = pyarrow.fs.S3FileSystem(region=BUCKET_REGION, anonymous=True)
 
 ```{code-cell} ipython3
 # load the schema from the "_common_metadata" file
-schema = pyarrow.dataset.parquet_dataset(f"{parquet_root}/_common_metadata", filesystem=fs).schema
+s3_schema_path = f"{parquet_root}/_common_metadata"
+schema = pyarrow.dataset.parquet_dataset(s3_schema_path, filesystem=fs).schema
 
 # the full schema can be quite large since catalogs often have hundreds of columns
 # but if you do want to look at the entire schema, uncomment the next line
@@ -304,7 +307,9 @@ Find the partitions (HEALPix pixel indexes) that overlap the polygon:
 
 ```{code-cell} ipython3
 k = 5
-polygon_pixels = hpgeom.query_polygon(a=corners[0], b=corners[1], nside=hpgeom.order_to_nside(k), inclusive=True)
+polygon_pixels = hpgeom.query_polygon(
+    a=corners[0], b=corners[1], nside=hpgeom.order_to_nside(k), inclusive=True
+)
 ```
 
 Query:
