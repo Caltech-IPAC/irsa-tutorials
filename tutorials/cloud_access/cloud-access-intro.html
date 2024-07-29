@@ -560,34 +560,22 @@ It can be used to substitute values for the following variables, which are used 
 </section>
 <section id="imports">
 <h2>3. Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<p>Libraries are imported at the top of each section when used.
+<p>The following libraries will be used:</p>
+<ul class="simple">
+<li><p>astropy: perform image cutouts</p></li>
+<li><p>hpgeom: map sky location to catalog partition</p></li>
+<li><p>matplotlib: view results</p></li>
+<li><p>pandas: query Parquet datasets</p></li>
+<li><p>pyarrow: work with Parquet datasets</p></li>
+<li><p>pyvo: locate images in the cloud (pyvo&gt;=1.5 required)</p></li>
+<li><p>s3fs: browse buckets</p></li>
+</ul>
+<p>Libraries are imported at the top of each section where used.
 This cell will install them if needed:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">astropy</span>  <span class="c1"># perform image cutouts</span>
-    <span class="kn">import</span> <span class="nn">hpgeom</span>  <span class="c1"># map sky location to catalog partition</span>
-    <span class="kn">import</span> <span class="nn">matplotlib</span>  <span class="c1"># view results</span>
-    <span class="kn">import</span> <span class="nn">pandas</span>  <span class="c1"># query Parquet datasets</span>
-    <span class="kn">import</span> <span class="nn">pyarrow</span>  <span class="c1"># work with Parquet datasets</span>
-    <span class="kn">import</span> <span class="nn">pyvo</span>  <span class="c1"># locate images in the cloud (pyvo&gt;=1.5 required)</span>
-    <span class="kn">import</span> <span class="nn">s3fs</span>  <span class="c1"># browse buckets</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="o">%</span><span class="k">pip</span> install astropy
-    <span class="o">%</span><span class="k">pip</span> install hpgeom
-    <span class="o">%</span><span class="k">pip</span> install pandas
-    <span class="o">%</span><span class="k">pip</span> install pyarrow
-    <span class="o">%</span><span class="k">pip</span> install pyvo&gt;=1.5
-    <span class="o">%</span><span class="k">pip</span> install s3fs
-    <span class="o">%</span><span class="k">pip</span> install -U matplotlib
-
-<span class="c1"># check for pyvo&gt;=1.5 (required for SIA2Service)</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">pyvo</span>
-    <span class="n">pyvo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">SIA2Service</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/SIA&quot;</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-    <span class="o">%</span><span class="k">pip</span> install --upgrade pyvo
-    <span class="c1"># note that you may need to restart the kernel to use the updated package</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install astropy hpgeom pandas pyarrow pyvo&gt;=1.5 s3fs matplotlib</span>
 </pre></div>
 </div>
 </div>
@@ -743,7 +731,8 @@ To request that additional datasets be made available in cloud storage, please c
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find the first mosaic file in the results</span>
 <span class="c1"># use json to convert the string containing the cloud info to a dictionary</span>
-<span class="n">seip_mosaic_cloud_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seip_results</span><span class="p">[</span><span class="s2">&quot;cloud_access&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.mosaic.fits&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">mosaics</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seip_results</span><span class="p">[</span><span class="s2">&quot;cloud_access&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.mosaic.fits&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
+<span class="n">seip_mosaic_cloud_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">mosaics</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># extract</span>
 <span class="n">BUCKET_NAME</span> <span class="o">=</span> <span class="n">seip_mosaic_cloud_info</span><span class="p">[</span><span class="s2">&quot;aws&quot;</span><span class="p">][</span><span class="s2">&quot;bucket_name&quot;</span><span class="p">]</span>
@@ -779,7 +768,8 @@ In addition, use the HDU <code class="docutils literal notranslate"><span class=
 (See <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#fits-io-cloud">Obtaining subsets from cloud-hosted FITS files</a>.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">astropy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">image_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s3_image_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">image_key</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">with</span> <span class="n">astropy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">s3_image_path</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
     <span class="n">cutout</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -793,7 +783,7 @@ In addition, use the HDU <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f5bffb211d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f63258bc450&gt;
 </pre></div>
 </div>
 <img alt="../../_images/130ea9a4a2cf569ee87156144f02c9aa3a762de2ce0d9b06e55ab99f45cf0fb1.png" src="../../_images/130ea9a4a2cf569ee87156144f02c9aa3a762de2ce0d9b06e55ab99f45cf0fb1.png" />
@@ -839,7 +829,8 @@ A basic spatial query using <a class="reference external" href="https://pandas.p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the schema from the &quot;_common_metadata&quot; file</span>
-<span class="n">schema</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_common_metadata&quot;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span>
+<span class="n">s3_schema_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_common_metadata&quot;</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="n">s3_schema_path</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span>
 
 <span class="c1"># the full schema can be quite large since catalogs often have hundreds of columns</span>
 <span class="c1"># but if you do want to look at the entire schema, uncomment the next line</span>
@@ -909,7 +900,9 @@ A basic spatial query using <a class="reference external" href="https://pandas.p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">polygon_pixels</span> <span class="o">=</span> <span class="n">hpgeom</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">corners</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="n">corners</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nside</span><span class="o">=</span><span class="n">hpgeom</span><span class="o">.</span><span class="n">order_to_nside</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">polygon_pixels</span> <span class="o">=</span> <span class="n">hpgeom</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">corners</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="n">corners</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nside</span><span class="o">=</span><span class="n">hpgeom</span><span class="o">.</span><span class="n">order_to_nside</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -961,8 +954,8 @@ A basic spatial query using <a class="reference external" href="https://pandas.p
 <h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Author: Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team</p></li>
-<li><p>Updated: 2023-12-22</p></li>
 <li><p>Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html</p></li>
+<li><p>Updated: 2024-07-29</p></li>
 </ul>
 </section>
 </section>
