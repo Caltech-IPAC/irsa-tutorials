@@ -11,10 +11,8 @@ kernelspec:
   name: python3
 ---
 
-<a id="top"></a>
-
 # Finding Light Curves of Solar System Objects
-***
+
 ## Learning Goals
 
 By the end of this tutorial, you will:
@@ -67,7 +65,7 @@ ffplt.use_client(fc)
 You can re-initizialize the viewer to return to a clean slate with [`reinit_viewer`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer).
 
 ```{code-cell} ipython3
-# fc.reinit_viewer(); # The semi-colon suppresses the output of the method when ran
+# fc.reinit_viewer();  # The semi-colon suppresses the output of the method when ran
 ```
 
 ## Step 2
@@ -118,23 +116,23 @@ Finally, we can overlay the catalog of data in the table onto a HiPS image using
 
 You will notice that there are colored squares that signify where the object was observed based on the RA and Dec given in the catalog.
 
-Alternatively, we can queue a HiPS image using the method [`show_hips`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_hips). However, this method requires target coordinates for the object you want to analyze.
-
 ```{code-cell} ipython3
 r = fc.add_cell(2, 2, 2, 2, 'catalog-image', 'target')
 if r['success']:
     fc.show_coverage();
 ```
 
-```{code-cell} ipython3
-# target='229.851396;-9.720647;EQ_J2000'
-# viewer_id = 'hipsDiv'
-# hips_url = 'http://alasky.u-strasbg.fr/AllWISE/RGB-W4-W2-W1'
+Alternatively, we can queue a HiPS image using the method [`show_hips`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_hips). However, this method requires target coordinates for the object you want to analyze.
 
-# r = fc.add_cell(2, 2, 2, 2, 'catalog-image', 'target')
-# if r['success']:
-#     status = fc.show_hips(viewer_id=viewer_id, plot_id='aHipsID1-1', hips_root_url = hips_url, 
-#                           Title='HiPS-WISE', WorldPt=target)
+```{code-cell} ipython3
+target='229.851396;-9.720647;EQ_J2000'
+viewer_id = 'hipsDiv'
+hips_url = 'http://alasky.u-strasbg.fr/AllWISE/RGB-W4-W2-W1'
+
+r = fc.add_cell(2, 2, 2, 2, 'catalog-image', 'target')
+if r['success']:
+    status = fc.show_hips(viewer_id=viewer_id, plot_id='aHipsID1-1', hips_root_url = hips_url, 
+                          Title='HiPS-WISE', WorldPt=target)
 ```
 
 ## Summary
@@ -158,13 +156,5 @@ Firefly allows you to visualize data for specific targets. In conjuction with As
 +++
 
 **Author:** Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team<br>
-**Updated On:** 2024-04-30<br>
+**Updated On:** 2024-07-31<br>
 **Contact:** irsasupport@ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html
-
-+++
-
-***
-
-+++
-
-<a href="#top">Top of the Page</a>
