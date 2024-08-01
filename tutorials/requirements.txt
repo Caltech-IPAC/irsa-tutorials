@@ -14,3 +14,5 @@ firefly_client
 jupyter_firefly_extensions
 # For supporting myst-based notebooks
 jupytext
+# For firefly-client packaging bug
+setuptools
