@@ -37,16 +37,19 @@ tutorials/cosmodc2/cosmoDC2_TAP_access.md
 ```
 
 
-<!---
 
-## Visualizations
+## Visualizations with Firefly
+
 ```{toctree}
 ---
 maxdepth: 1
 ---
 
+tutorials/firefly/SEDs_in_Firefly
+tutorials/firefly/NEOWISE_light_curve_demo
+
 ```
--->
+
 
 
 ## IRSA in the cloud

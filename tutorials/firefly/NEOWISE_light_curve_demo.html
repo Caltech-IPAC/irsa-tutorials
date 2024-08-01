@@ -1,0 +1,754 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Finding Light Curves of Solar System Objects &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/firefly/NEOWISE_light_curve_demo';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IRSA Cloud Access Introduction" href="../cloud_access/cloud-access-intro.html" />
+    <link rel="prev" title="Vetting SEDs in Firefly" href="SEDs_in_Firefly.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="IRSA Demo Notebooks - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="IRSA Demo Notebooks - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/bsipocz/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC – IRSA notebooks
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">2MASS All-Sky Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">COSMOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Spitzer Enhanced Imaging Products</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">CosmoDC2 Mock v1 catalogs with IRSA TAP</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="SEDs_in_Firefly.html">Vetting SEDs in Firefly</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Finding Light Curves of Solar System Objects</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA Cloud Access Introduction</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Simulated Roman Time Domain Survey Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Simulated Roman Coadds</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/bsipocz/irsa-tutorials/main?urlpath=tree/tutorials/firefly/NEOWISE_light_curve_demo.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/edit/main/tutorials/firefly/NEOWISE_light_curve_demo.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bsipocz/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/firefly/NEOWISE_light_curve_demo.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/firefly/NEOWISE_light_curve_demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/firefly/NEOWISE_light_curve_demo.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Finding Light Curves of Solar System Objects</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1">Step 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2">Step 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3">Step 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4">Step 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="finding-light-curves-of-solar-system-objects">
+<h1>Finding Light Curves of Solar System Objects<a class="headerlink" href="#finding-light-curves-of-solar-system-objects" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Construct a TAP query to download the necessary data and visualize it via the web browser with an instantiated Firefly environment.</p></li>
+<li><p>Plot light curves from NEOWISE data using the Firefly Python API.</p></li>
+<li><p>Format cells containing tables, charts and images viewed in the client.</p></li>
+<li><p>Overlay a catalog of data onto a HiPS image.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This tutorial demonstrates how to plot light curves from NEOWISE data while also flaunting the many useful capabilities of the Firefly Python API. Using the ‘Known Solar System Object Possible Association List’ catalog from the NEOWISE-R database, we can easily compose a light curve of the faint asteroid <code class="docutils literal notranslate"><span class="pre">558</span> <span class="pre">Carmen</span></code> and show its observed positions in the sky solely through the <code class="docutils literal notranslate"><span class="pre">firefly_client</span></code> package. Minor planet light curves are important in determining their size, spectral class, rotation period and many other properties.</p>
+<p>Firefly is an astronomical data access and visualization written by Caltech/IPAC-IRSA. The visualization provides user with an integrated experience with brushing and linking capabilities among images, catalogs, and plots. Firefly is used in IRSA GUIs to query and visualize data from missions such as WISE, Spitzer, SOFIA, ZTF, PTF, etc. and a large number of highly-used contributed data products from a diverse set of astrophysics projects.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">firefly_client</span></code> package provides a lightweight client class that includes a Python interface to Firefly’s Javascript API.</p>
+<p>For documentation on the firefly client visit https://caltech-ipac.github.io/firefly_client/.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><em>firefly_client FireflyClient</em> - Python API to Firefly for displaying tables, images and charts</p></li>
+<li><p><em>firefly_client.plot</em> for visualizing the light curve in the client</p></li>
+<li><p><em>astropy.utils.data</em> for downloading the catalog data via TAP query</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">firefly_client</span> <span class="kn">import</span> <span class="n">FireflyClient</span>
+<span class="kn">import</span> <span class="nn">firefly_client.plot</span> <span class="k">as</span> <span class="nn">ffplt</span>
+<span class="kn">import</span> <span class="nn">astropy.utils.data</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1">
+<h2>Step 1<a class="headerlink" href="#step-1" title="Link to this heading">#</a></h2>
+<p>Instantiate the client via and view it in a different tab in the web browser.</p>
+<p>In this example, we use the IRSA Viewer - a public firefly server. The firefly server can also be run locally, e.g. via a Firefly Docker image obtained from https://hub.docker.com/r/ipac/firefly/tags/.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://irsa.ipac.caltech.edu/irsaviewer&#39;</span>
+<span class="c1"># url=&#39;http://127.0.0.1:8080/firefly&#39;  # if you have firefly server running locally (preferably through docker)</span>
+
+<span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">ffplt</span><span class="o">.</span><span class="n">use_client</span><span class="p">(</span><span class="n">fc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can re-initizialize the viewer to return to a clean slate with <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer"><code class="docutils literal notranslate"><span class="pre">reinit_viewer</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fc.reinit_viewer();  # The semi-colon suppresses the output of the method when ran</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2">
+<h2>Step 2<a class="headerlink" href="#step-2" title="Link to this heading">#</a></h2>
+<p>Setup the layout of viewer and TAP search the ‘Known Solar System Object Possible Association List’ catalog from the NEOWISE-R database. The specific target we are looking for is minor planet <code class="docutils literal notranslate"><span class="pre">558</span> <span class="pre">Carmen</span></code>. We can query this target using a TAP search through IRSA; the <code class="docutils literal notranslate"><span class="pre">table_url</span></code> is broken down as follows:</p>
+<ul class="simple">
+<li><p>We want to search the data through IRSA, which supports TAP querying, and we want it streamed directly to us via a synchronous search: <br>”https://<!---->irsa.ipac.caltech.edu/TAP/sync?”<br><br></p></li>
+<li><p>Next, we want to structure query to only retrieve (558) Carmen data from the NEOWISE-R ‘Known Solar System Object Possible Association List’ catalog. The table name of the catalog can be found using <a class="reference external" href="https://irsa.ipac.caltech.edu/irsaviewer/?__action=layout.showDropDown&amp;amp;view=MultiTableSearchCmd">IRSAViewer</a> and clicking the <strong>VO TAP Search</strong> tab and changing the ‘Project’ to <strong>neowiser</strong>. We query all columns of data and we search the target by its object id, which is its name, and use the ‘like’ condition to only write (558) with a wildcard: <br>”QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+’(558)%’”</p></li>
+</ul>
+<p>Construction of the query can be found in the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/program_interface/TAP.html"><code class="docutils literal notranslate"><span class="pre">IRSA</span> <span class="pre">TAP</span> <span class="pre">documentation</span> <span class="pre">page</span></code></a>.</p>
+<p>We first add a cell to the layout that will hold the table; this cell is shown at row = 0, col = 0, with width = 4, height = 2. Once the cell is created, we can request the necessary data from the catalog and display the data as a table using the <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table"><code class="docutils literal notranslate"><span class="pre">show_table</span></code></a> method.</p>
+<p>Alternatively, we can download data from the catalog using <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.utils.data.download_file.html"><code class="docutils literal notranslate"><span class="pre">astropy.utils.data.download_file</span></code></a> and upload it to the Firefly client shown in the cell below the first method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;tables&#39;</span><span class="p">,</span> <span class="s1">&#39;main&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+    <span class="n">table_url</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP/sync?QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+&#39;(558)%&#39;&quot;</span><span class="p">)</span>
+    <span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">table_url</span><span class="p">,</span> <span class="n">tbl_id</span><span class="o">=</span><span class="s1">&#39;tableneo&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;558 Carmen NeoWise Catalog&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># r = fc.add_cell(0, 0, 4, 2, &#39;tables&#39;, &#39;main&#39;)</span>
+
+<span class="c1"># if r[&#39;success&#39;]:</span>
+<span class="c1">#     table_url = (&quot;https://irsa.ipac.caltech.edu/TAP/sync?QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+&#39;(558)%&#39;&quot;)</span>
+<span class="c1">#     tablename = astropy.utils.data.download_file(table_url, timeout=120, cache=True)</span>
+    
+<span class="c1">#     file = fc.upload_file(tablename)</span>
+<span class="c1">#     fc.show_table(file, tbl_id=&#39;tableneo&#39;, title=&#39;558 Carmen Catalog&#39;, page_size=50)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3">
+<h2>Step 3<a class="headerlink" href="#step-3" title="Link to this heading">#</a></h2>
+<p>After retrieving the data and displaying it in the client, we can now create a light curve by plotting the Modified Julian Date (‘mjd’) in the abscissa and the magnitude from band W1 (‘w1mpro’) in the ordinate. We also flip the ordinate to accurately display magnitude.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;plot-image&#39;</span><span class="p">,</span> <span class="s1">&#39;light-curve&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">show_xyplot</span><span class="p">(</span><span class="n">tbl_id</span><span class="o">=</span><span class="s1">&#39;tableneo&#39;</span><span class="p">,</span> <span class="n">xCol</span><span class="o">=</span><span class="s1">&#39;mjd&#39;</span><span class="p">,</span> <span class="n">yCol</span><span class="o">=</span><span class="s1">&#39;w1mpro&#39;</span><span class="p">,</span> <span class="n">yOptions</span><span class="o">=</span><span class="s1">&#39;flip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-4">
+<h2>Step 4<a class="headerlink" href="#step-4" title="Link to this heading">#</a></h2>
+<p>Finally, we can overlay the catalog of data in the table onto a HiPS image using the <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_coverage"><code class="docutils literal notranslate"><span class="pre">show_coverage</span></code></a> method.</p>
+<p>You will notice that there are colored squares that signify where the object was observed based on the RA and Dec given in the catalog.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;catalog-image&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+    <span class="n">fc</span><span class="o">.</span><span class="n">show_coverage</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, we can queue a HiPS image using the method <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_hips"><code class="docutils literal notranslate"><span class="pre">show_hips</span></code></a>. However, this method requires target coordinates for the object you want to analyze.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target</span><span class="o">=</span><span class="s1">&#39;229.851396;-9.720647;EQ_J2000&#39;</span>
+<span class="n">viewer_id</span> <span class="o">=</span> <span class="s1">&#39;hipsDiv&#39;</span>
+<span class="n">hips_url</span> <span class="o">=</span> <span class="s1">&#39;http://alasky.u-strasbg.fr/AllWISE/RGB-W4-W2-W1&#39;</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;catalog-image&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">show_hips</span><span class="p">(</span><span class="n">viewer_id</span><span class="o">=</span><span class="n">viewer_id</span><span class="p">,</span> <span class="n">plot_id</span><span class="o">=</span><span class="s1">&#39;aHipsID1-1&#39;</span><span class="p">,</span> <span class="n">hips_root_url</span> <span class="o">=</span> <span class="n">hips_url</span><span class="p">,</span> 
+                          <span class="n">Title</span><span class="o">=</span><span class="s1">&#39;HiPS-WISE&#39;</span><span class="p">,</span> <span class="n">WorldPt</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>Firefly allows you to visualize data for specific targets. In conjuction with Astropy, one can manipulate a catalog of observations to display a light curve in an instantiated Firefly enviroment on their web browser.</p>
+<ol class="arabic simple">
+<li><p>We import all necessary modules to create a Firefly client and to download the catalog of data for our target.</p></li>
+<li><p>We start the client in our web browser and prep the layout to appropiately display our tables, plots and images.</p></li>
+<li><p>We use the TAP schema to display the data for our target — <a class="reference external" href="https://irsa.ipac.caltech.edu/irsaviewer/?__action=table.search&amp;amp;request=%7B%22startIdx%22%3A0%2C%22SearchMethod%22%3A%22AllSky%22%2C%22RequestedDataSet%22%3A%22NEOWISE%20Reactivation%20Database%22%2C%22id%22%3A%22GatorQuery%22%2C%22tbl_id%22%3A%22tbl_id-cf48-45%22%2C%22META_INFO%22%3A%7B%22title%22%3A%22WISE-neowiser_p1ba_mch%20(AllSky)%22%2C%22tbl_id%22%3A%22tbl_id-cf48-45%22%2C%22tbl_pref_key%22%3A%22WISE-neowiser_p1ba_mch%22%7D%2C%22catalogProject%22%3A%22WISE%22%2C%22catalog%22%3A%22neowiser_p1ba_mch%22%2C%22constraints%22%3A%22objid%20like%20%27%25(558)%20Carmen%25%27%22%2C%22pageSize%22%3A100%7D&amp;amp;options=%7B%22backgroundable%22%3Atrue%2C%22pageSize%22%3A100%7D"><code class="docutils literal notranslate"><span class="pre">558</span> <span class="pre">Carmen</span></code></a> — via a table and visualize such data through charts.</p></li>
+<li><p>We finally overlay the catalog onto a HiPS image to dynamically view where our target has been observed in space.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="about-this-notebook">
+<h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team<br>
+<strong>Updated On:</strong> 2024-07-31<br>
+<strong>Contact:</strong> irsasupport&#64;ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SEDs_in_Firefly.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Vetting SEDs in Firefly</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cloud_access/cloud-access-intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">IRSA Cloud Access Introduction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1">Step 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2">Step 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3">Step 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4">Step 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
