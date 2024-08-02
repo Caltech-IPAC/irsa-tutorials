@@ -39,6 +39,11 @@ jobs:
             name: with Python 3.12 and developer versioned dependencies
             os: ubuntu-latest
 
+          - python-version: '3.12'
+            toxenv: py312-buildhtml
+            name: with Python 3.12 and developer versioned dependencies
+            os: ubuntu-latest
+
     steps:
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
     - name: Set up Python ${{ matrix.python-version }}
