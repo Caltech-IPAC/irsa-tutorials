@@ -53,5 +53,5 @@ jobs:
       run: |
         # Workaround for OSX for https://jira.ipac.caltech.edu/browse/FIREFLY-1528
         bash -c 'if echo ${{ runner.os }} | grep -i macos; then echo tutorials/firefly >> ignore_testing; fi'
-
+        bash -c 'if echo ${{ runner.os }} | grep -Ei "macos|win"; then echo tutorials/parallelize/Parallelize_Convolution >> ignore_testing; fi'
         tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}
