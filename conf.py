@@ -6,7 +6,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -38,7 +38,12 @@ exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.
 
 # MyST-NB configuration
 nb_execution_timeout = 900
-#nb_execution_excludepatterns = []
+
+if 'CIRCLECI' in os.environ:
+    # Workaround for https://github.com/Caltech-IPAC/irsa-tutorials/issues/6
+    # Some of the notebooks run into a DeadKernelError on CircleCI, but do execute and render on GHA.
+    # Ignore them here.
+    nb_execution_excludepatterns = ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
 
 
 # -- Options for HTML output -------------------------------------------------

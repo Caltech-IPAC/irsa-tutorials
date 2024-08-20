@@ -17,8 +17,6 @@ jobs:
           name: Build HTML rendering of notebooks
           no_output_timeout: 30m
           command: |
-            # Ugly workaround https://github.com/Caltech-IPAC/irsa-tutorials/issues/6
-            sed -ie 's|nb_execution_excludepatterns = \[|nb_execution_excludepatterns = \["wise-allwise-catalog-demo.md", "Parallelize_Convolution.md", |g' conf.py
             python -m tox -e py312-buildhtml
 
       - store_artifacts:
