@@ -11,6 +11,10 @@ on:
     - cron: '0 5 * * 1'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     name: ${{ matrix.os }} ${{ matrix.name }}
@@ -48,6 +52,4 @@ jobs:
     - name: Test with tox
       run: |
         # Workaround for OSX for https://jira.ipac.caltech.edu/browse/FIREFLY-1528
-        bash -c 'if echo ${{ runner.os }} | grep -i macos; then echo tutorials/firefly >> ignore_testing; fi'
-
         tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}

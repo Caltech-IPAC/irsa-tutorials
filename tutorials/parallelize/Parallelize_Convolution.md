@@ -52,17 +52,12 @@ from dask.distributed import Client
 import numpy as np
 import psutil
 import scipy.signal
-
-try:
-    import ray
-except ImportError:
-    !pip install ray
-    import ray
+import ray
 ```
 
 ## Find the cpus available
 
-Find and print the number of cpus 
+Find and print the number of cpus
 (taken from https://towardsdatascience.com/10x-faster-parallel-python-without-python-multiprocessing-e5017c93cce1)
 
 ```{code-cell} ipython3
