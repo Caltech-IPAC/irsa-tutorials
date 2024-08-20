@@ -577,244 +577,11 @@ cosmodc2mockv1_heavy
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">RemoteDisconnected</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connectionpool.py:789,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">788</span> <span class="c1"># Make the request on the HTTPConnection object</span>
-<span class="ne">--&gt; </span><span class="mi">789</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">790</span>     <span class="n">conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">791</span>     <span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">792</span>     <span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">793</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">794</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">795</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">796</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">797</span>     <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">798</span>     <span class="n">response_conn</span><span class="o">=</span><span class="n">response_conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">799</span>     <span class="n">preload_content</span><span class="o">=</span><span class="n">preload_content</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">800</span>     <span class="n">decode_content</span><span class="o">=</span><span class="n">decode_content</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">801</span>     <span class="o">**</span><span class="n">response_kw</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">802</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">804</span> <span class="c1"># Everything went great!</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connectionpool.py:536,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
-<span class="g g-Whitespace">    </span><span class="mi">535</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">536</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">537</span> <span class="k">except</span> <span class="p">(</span><span class="n">BaseSSLError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connection.py:464,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span> <span class="c1"># Get the response from http.client.HTTPConnection</span>
-<span class="ne">--&gt; </span><span class="mi">464</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">466</span> <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:1395,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1394</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1395</span>     <span class="n">response</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1396</span> <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:325,</span> in <span class="ni">HTTPResponse.begin</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">324</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">325</span>     <span class="n">version</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_status</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">326</span>     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">CONTINUE</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:294,</span> in <span class="ni">HTTPResponse._read_status</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">291</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">292</span>     <span class="c1"># Presumably, the server closed the connection before</span>
-<span class="g g-Whitespace">    </span><span class="mi">293</span>     <span class="c1"># sending a valid response.</span>
-<span class="ne">--&gt; </span><span class="mi">294</span>     <span class="k">raise</span> <span class="n">RemoteDisconnected</span><span class="p">(</span><span class="s2">&quot;Remote end closed connection without&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">295</span>                              <span class="s2">&quot; response&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="k">try</span><span class="p">:</span>
-
-<span class="ne">RemoteDisconnected</span>: Remote end closed connection without response
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">ProtocolError</span><span class="g g-Whitespace">                             </span>Traceback (most recent call last)
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/requests/adapters.py:667,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="g g-Whitespace">    </span><span class="mi">666</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">667</span>     <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">668</span>         <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">669</span>         <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">670</span>         <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">671</span>         <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">672</span>         <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">673</span>         <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">674</span>         <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">675</span>         <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">676</span>         <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">677</span>         <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">678</span>         <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">679</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">681</span> <span class="k">except</span> <span class="p">(</span><span class="n">ProtocolError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connectionpool.py:843,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">841</span>     <span class="n">new_e</span> <span class="o">=</span> <span class="n">ProtocolError</span><span class="p">(</span><span class="s2">&quot;Connection aborted.&quot;</span><span class="p">,</span> <span class="n">new_e</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">843</span> <span class="n">retries</span> <span class="o">=</span> <span class="n">retries</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">844</span>     <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">new_e</span><span class="p">,</span> <span class="n">_pool</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_stacktrace</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">845</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">846</span> <span class="n">retries</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/util/retry.py:474,</span> in <span class="ni">Retry.increment</span><span class="nt">(self, method, url, response, error, _pool, _stacktrace)</span>
-<span class="g g-Whitespace">    </span><span class="mi">473</span> <span class="k">if</span> <span class="n">read</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_method_retryable</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">474</span>     <span class="k">raise</span> <span class="n">reraise</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">error</span><span class="p">,</span> <span class="n">_stacktrace</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">475</span> <span class="k">elif</span> <span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/util/util.py:38,</span> in <span class="ni">reraise</span><span class="nt">(tp, value, tb)</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">__traceback__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">tb</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">38</span>     <span class="k">raise</span> <span class="n">value</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="n">tb</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="k">raise</span> <span class="n">value</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connectionpool.py:789,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="g g-Whitespace">    </span><span class="mi">788</span> <span class="c1"># Make the request on the HTTPConnection object</span>
-<span class="ne">--&gt; </span><span class="mi">789</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">790</span>     <span class="n">conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">791</span>     <span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">792</span>     <span class="n">url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">793</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">794</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">795</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">796</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">797</span>     <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">798</span>     <span class="n">response_conn</span><span class="o">=</span><span class="n">response_conn</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">799</span>     <span class="n">preload_content</span><span class="o">=</span><span class="n">preload_content</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">800</span>     <span class="n">decode_content</span><span class="o">=</span><span class="n">decode_content</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">801</span>     <span class="o">**</span><span class="n">response_kw</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">802</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">804</span> <span class="c1"># Everything went great!</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connectionpool.py:536,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
-<span class="g g-Whitespace">    </span><span class="mi">535</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">536</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">537</span> <span class="k">except</span> <span class="p">(</span><span class="n">BaseSSLError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/urllib3/connection.py:464,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span> <span class="c1"># Get the response from http.client.HTTPConnection</span>
-<span class="ne">--&gt; </span><span class="mi">464</span> <span class="n">httplib_response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">466</span> <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:1395,</span> in <span class="ni">HTTPConnection.getresponse</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1394</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1395</span>     <span class="n">response</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1396</span> <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:325,</span> in <span class="ni">HTTPResponse.begin</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">324</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">325</span>     <span class="n">version</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_status</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">326</span>     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">CONTINUE</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/http/client.py:294,</span> in <span class="ni">HTTPResponse._read_status</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">291</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">292</span>     <span class="c1"># Presumably, the server closed the connection before</span>
-<span class="g g-Whitespace">    </span><span class="mi">293</span>     <span class="c1"># sending a valid response.</span>
-<span class="ne">--&gt; </span><span class="mi">294</span>     <span class="k">raise</span> <span class="n">RemoteDisconnected</span><span class="p">(</span><span class="s2">&quot;Remote end closed connection without&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">295</span>                              <span class="s2">&quot; response&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="k">try</span><span class="p">:</span>
-
-<span class="ne">ProtocolError</span>: (&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">ConnectionError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/query.py:244,</span> in <span class="ni">DALQuery.execute_votable</span><span class="nt">(self, post)</span>
-<span class="g g-Whitespace">    </span><span class="mi">243</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">244</span>     <span class="k">return</span> <span class="n">votableparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_stream</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">245</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/tap.py:1101,</span> in <span class="ni">TAPQuery.execute_stream</span><span class="nt">(self, post)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1098</span>     <span class="k">raise</span> <span class="n">DALServiceError</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1099</span>         <span class="s2">&quot;Cannot execute a non-synchronous query. Use submit instead&quot;</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">1101</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execute_stream</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/utils/decorators.py:9,</span> in <span class="ni">stream_decode_content.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">----&gt; </span><span class="mi">9</span>     <span class="n">raw</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">raw</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">decode_content</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/query.py:193,</span> in <span class="ni">DALQuery.execute_stream</span><span class="nt">(self, post)</span>
-<span class="g g-Whitespace">    </span><span class="mi">187</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">188</span><span class="sd"> Submit the query and return the raw response as a file stream.</span>
-<span class="g g-Whitespace">    </span><span class="mi">189</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">190</span><span class="sd"> No exceptions are raised here because non-2xx responses might still</span>
-<span class="g g-Whitespace">    </span><span class="mi">191</span><span class="sd"> contain payload. They can be raised later by calling ``raise_if_error``</span>
-<span class="g g-Whitespace">    </span><span class="mi">192</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">193</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/tap.py:1134,</span> in <span class="ni">TAPQuery.submit</span><span class="nt">(self, post)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1128</span> <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
-<span class="g g-Whitespace">   </span><span class="mi">1129</span>     <span class="n">upload</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">upload</span><span class="o">.</span><span class="n">fileobj</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1130</span>     <span class="k">for</span> <span class="n">upload</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uploads</span>
-<span class="g g-Whitespace">   </span><span class="mi">1131</span>     <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">is_inline</span>
-<span class="g g-Whitespace">   </span><span class="mi">1132</span> <span class="p">}</span>
-<span class="ne">-&gt; </span><span class="mi">1134</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1135</span>     <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1136</span> <span class="c1"># requests doesn&#39;t decode the content by default</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/requests/sessions.py:637,</span> in <span class="ni">Session.post</span><span class="nt">(self, url, data, json, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">627</span><span class="w"> </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sends a POST request. Returns :class:`Response` object.</span>
-<span class="g g-Whitespace">    </span><span class="mi">628</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">629</span><span class="sd"> :param url: URL for the new :class:`Request` object.</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">634</span><span class="sd"> :rtype: requests.Response</span>
-<span class="g g-Whitespace">    </span><span class="mi">635</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">637</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/requests/sessions.py:589,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
-<span class="g g-Whitespace">    </span><span class="mi">588</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">589</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">591</span> <span class="k">return</span> <span class="n">resp</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/requests/sessions.py:703,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">702</span> <span class="c1"># Send the request</span>
-<span class="ne">--&gt; </span><span class="mi">703</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">705</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/requests/adapters.py:682,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="g g-Whitespace">    </span><span class="mi">681</span> <span class="k">except</span> <span class="p">(</span><span class="n">ProtocolError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">682</span>     <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">684</span> <span class="k">except</span> <span class="n">MaxRetryError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="ne">ConnectionError</span>: (&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">DALFormatError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># In order to use TAP with this ADQL string using pyvo, you can do the following:</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">result</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/tap.py:278,</span> in <span class="ni">TAPService.run_sync</span><span class="nt">(self, query, language, maxrec, uploads, **keywords)</span>
-<span class="g g-Whitespace">    </span><span class="mi">249</span> <span class="k">def</span> <span class="nf">run_sync</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span>         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;ADQL&quot;</span><span class="p">,</span> <span class="n">maxrec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uploads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">251</span>         <span class="o">**</span><span class="n">keywords</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">252</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">253</span><span class="sd">     runs sync query and returns its result</span>
-<span class="g g-Whitespace">    </span><span class="mi">254</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">274</span><span class="sd">     TAPResults</span>
-<span class="g g-Whitespace">    </span><span class="mi">275</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">276</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_query</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">277</span>         <span class="n">query</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span> <span class="n">maxrec</span><span class="o">=</span><span class="n">maxrec</span><span class="p">,</span> <span class="n">uploads</span><span class="o">=</span><span class="n">uploads</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">278</span>         <span class="o">**</span><span class="n">keywords</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/tap.py:1117,</span> in <span class="ni">TAPQuery.execute</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1103</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1104</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1105</span><span class="sd">     submit the query and return the results as a TAPResults instance</span>
-<span class="g g-Whitespace">   </span><span class="mi">1106</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1115</span><span class="sd">        for errors parsing the VOTable response</span>
-<span class="g g-Whitespace">   </span><span class="mi">1116</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1117</span>     <span class="k">return</span> <span class="n">TAPResults</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_votable</span><span class="p">(),</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">queryurl</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span>
-
-<span class="nn">File ~/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/pyvo/dal/query.py:247,</span> in <span class="ni">DALQuery.execute_votable</span><span class="nt">(self, post)</span>
-<span class="g g-Whitespace">    </span><span class="mi">245</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">246</span>     <span class="bp">self</span><span class="o">.</span><span class="n">raise_if_error</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">247</span>     <span class="k">raise</span> <span class="n">DALFormatError</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryurl</span><span class="p">)</span>
-
-<span class="ne">DALFormatError</span>: ConnectionError: (&#39;Connection aborted.&#39;, RemoteDisconnected(&#39;Remote end closed connection without response&#39;))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;DALResultsTable length=1&gt;
+count(redshift)
+    float64    
+---------------
+    597488849.0
 </pre></div>
 </div>
 </div>
@@ -830,11 +597,21 @@ cosmodc2mockv1_heavy
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2000000000
+</pre></div>
+</div>
+</div>
 </div>
 <p>This default maximum can be changed, and there is no hard upper limit to what it can be changed to.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">hardlimit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
 </pre></div>
 </div>
 </div>
@@ -850,12 +627,322 @@ cosmodc2mockv1_heavy
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>301
+</pre></div>
+</div>
+</div>
 </div>
 <p>Let’s learn a bit more about them.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ra                              Right ascension, lensed
+dec                             Declination, lensed
+ra_true                         Right ascension, not lensed
+dec_true                        Declination, not lensed
+redshift                        Cosmological redshift with line-of-sight motion
+redshift_true                   Cosmological redshift
+mag_u_lsst                      Apparent magnitude, lensed, in &#39;u&#39; with LSST
+mag_g_lsst                      Apparent magnitude, lensed, in &#39;g&#39; with LSST
+mag_r_lsst                      Apparent magnitude, lensed, in &#39;r&#39; with LSST
+mag_i_lsst                      Apparent magnitude, lensed, in &#39;i&#39; with LSST
+mag_z_lsst                      Apparent magnitude, lensed, in &#39;z&#39; with LSST
+mag_y_lsst                      Apparent magnitude, lensed, in &#39;y&#39; with LSST
+mag_u_sdss                      Apparent magnitude, lensed, in &#39;u&#39; with SDSS
+mag_g_sdss                      Apparent magnitude, lensed, in &#39;g&#39; with SDSS
+mag_r_sdss                      Apparent magnitude, lensed, in &#39;r&#39; with SDSS
+mag_i_sdss                      Apparent magnitude, lensed, in &#39;i&#39; with SDSS
+mag_z_sdss                      Apparent magnitude, lensed, in &#39;z&#39; with SDSS
+mag_true_u_lsst                 Apparent magnitude, not lensed, in &#39;u&#39; with LSST
+mag_true_g_lsst                 Apparent magnitude, not lensed, in &#39;g&#39; with LSST
+mag_true_r_lsst                 Apparent magnitude, not lensed, in &#39;r&#39; with LSST
+mag_true_i_lsst                 Apparent magnitude, not lensed, in &#39;i&#39; with LSST
+mag_true_z_lsst                 Apparent magnitude, not lensed, in &#39;z&#39; with LSST
+mag_true_y_lsst                 Apparent magnitude, not lensed, in &#39;y&#39; with LSST
+mag_true_u_sdss                 Apparent magnitude, not lensed, in &#39;u&#39; with SDSS
+mag_true_g_sdss                 Apparent magnitude, not lensed, in &#39;g&#39; with SDSS
+mag_true_r_sdss                 Apparent magnitude, not lensed, in &#39;r&#39; with SDSS
+mag_true_i_sdss                 Apparent magnitude, not lensed, in &#39;i&#39; with SDSS
+mag_true_z_sdss                 Apparent magnitude, not lensed, in &#39;z&#39; with SDSS
+mag_true_u_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with LSST
+mag_true_g_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with LSST
+mag_true_r_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with LSST
+mag_true_i_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with LSST
+mag_true_z_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with LSST
+mag_true_y_lsst_z0              Rest-frame absolute magnitude, not lensed, in &#39;y&#39; with LSST
+mag_true_u_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with SDSS
+mag_true_g_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with SDSS
+mag_true_r_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with SDSS
+mag_true_i_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with SDSS
+mag_true_z_sdss_z0              Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with SDSS
+mag_u_lsst_no_ext               Apparent magnitude, lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_g_lsst_no_ext               Apparent magnitude, lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_r_lsst_no_ext               Apparent magnitude, lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_i_lsst_no_ext               Apparent magnitude, lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_z_lsst_no_ext               Apparent magnitude, lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_y_lsst_no_ext               Apparent magnitude, lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_u_sdss_no_ext               Apparent magnitude, lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_g_sdss_no_ext               Apparent magnitude, lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_r_sdss_no_ext               Apparent magnitude, lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_i_sdss_no_ext               Apparent magnitude, lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_z_sdss_no_ext               Apparent magnitude, lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_no_ext          Apparent magnitude, not lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_no_ext          Apparent magnitude, not lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_no_ext          Apparent magnitude, not lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_no_ext          Apparent magnitude, not lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_no_ext          Apparent magnitude, not lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_no_ext          Apparent magnitude, not lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_no_ext          Apparent magnitude, not lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_no_ext          Apparent magnitude, not lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_no_ext          Apparent magnitude, not lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_no_ext          Apparent magnitude, not lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_no_ext          Apparent magnitude, not lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;y&#39; with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;u&#39; with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;g&#39; with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;r&#39; with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;i&#39; with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in &#39;z&#39; with SDSS without dust extinction in the host galaxy
+sersic_disk                     Sersic index of disk light profile
+sersic_bulge                    Sersic index of bulge light profile
+a_v                             Extinction in V-band, for galaxy light profile
+a_v_disk                        Extinction in V-band, for disk light profile
+a_v_bulge                       Extinction in V-band, for bulge light profile
+r_v                             Ratio of total to selective extinction in B and V bands, for galaxy light profile
+r_v_disk                        Ratio of total to selective extinction in B and V bands, for disk light profile
+r_v_bulge                       Ratio of total to selective extinction in B and V bands, for bulge light profile
+size_true                       Galaxy half-light radius (of major axis), not lensed
+size_minor_true                 Galaxy half-light radius (of minor axis), not lensed
+size_disk_true                  Disk half-light radius (of major axis), not lensed
+size_minor_disk_true            Disk half-light radius (of minor axis), not lensed
+size_bulge_true                 Bulge half-light radius (of major axis), not lensed
+size_minor_bulge_true           Bulge half-light radius (of minor axis), not lensed
+position_angle_true             Position angle (arctan(E2/E1)), for galaxy, not lensed
+ellipticity_true                Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for galaxy, not lensed, where q = size_minor_true/size_true
+ellipticity_1_true              Ellipticity component 1, for galaxy, not lensed
+ellipticity_2_true              Ellipticity component 2, for galaxy, not lensed
+ellipticity_disk_true           Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for disk, not lensed, where q = size_minor_disk_true/size_disk_true
+ellipticity_1_disk_true         Ellipticity component 1, for disk, not lensed
+ellipticity_2_disk_true         Ellipticity component 2, for disk, not lensed
+ellipticity_bulge_true          Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for bulge, not lensed, where q = size_minor_bulge_true/size_bulge_true
+ellipticity_1_bulge_true        Ellipticity component 1, for bulge, not lensed
+ellipticity_2_bulge_true        Ellipticity component 2, for bulge, not lensed
+shear_1                         Shear (gamma) component 1 in treecorr/GalSim convention
+shear_2                         Shear (gamma) component 2 in treecorr/GalSim convention
+shear_2_phosim                  Shear (gamma) component 2 in PhoSim convention ( = -shear_2 )
+shear_2_treecorr                Shear (gamma) component 2 in treecorr/GalSim convention ( = shear_2 )
+convergence                     Convergence (kappa)
+magnification                   Magnification
+galaxy_id                       Unique integer identifier
+halo_id                         Unique ID of the main halo that contains the galaxy
+halo_mass                       Halo mass of the main halo that contains the galaxy
+stellar_mass                    Total stellar mass of the galaxy
+stellar_mass_disk               Stellar mass of the disk component
+stellar_mass_bulge              Stellar mass of the bulge component
+bulge_to_total_ratio_i          bulge-to-total luminosity ratio in &#39;i&#39;
+is_central                      1 if the galaxy is the central galaxy of the main halo, 0 otherwise.
+position_x                      3D position (x coordinate)
+position_y                      3D position (y coordinate)
+position_z                      3D position (z coordinate)
+velocity_x                      3D velocity (x component)
+velocity_y                      3D velocity (y component)
+velocity_z                      3D velocity (z component)
+sed_1000_246                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1000 to 1246 in Angstroms
+sed_1246_306                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1246 to 1552 in Angstroms
+sed_1552_381                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1552 to 1933 in Angstroms
+sed_1933_474                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1933 to 2407 in Angstroms
+sed_2407_591                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2407 to 2998 in Angstroms
+sed_2998_186                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2998 to 3184 in Angstroms
+sed_3184_197                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3184 to 3381 in Angstroms
+sed_3381_209                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3381 to 3590 in Angstroms
+sed_3590_222                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3590 to 3812 in Angstroms
+sed_3812_236                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3812 to 4048 in Angstroms
+sed_4048_251                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4048 to 4299 in Angstroms
+sed_4299_266                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4299 to 4565 in Angstroms
+sed_4565_283                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4565 to 4848 in Angstroms
+sed_4848_300                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4848 to 5148 in Angstroms
+sed_5148_319                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5148 to 5467 in Angstroms
+sed_5467_339                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5467 to 5806 in Angstroms
+sed_5806_360                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5806 to 6166 in Angstroms
+sed_6166_382                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6166 to 6548 in Angstroms
+sed_6548_406                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6548 to 6954 in Angstroms
+sed_6954_431                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6954 to 7385 in Angstroms
+sed_7385_458                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7385 to 7843 in Angstroms
+sed_7843_486                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7843 to 8329 in Angstroms
+sed_8329_517                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8329 to 8846 in Angstroms
+sed_8846_549                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8846 to 9395 in Angstroms
+sed_9395_583                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9395 to 9978 in Angstroms
+sed_9978_1489                   Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9978 to 11467 in Angstroms
+sed_11467_1710                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 11467 to 13177 in Angstroms
+sed_13177_1966                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 13177 to 15143 in Angstroms
+sed_15143_2259                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 15143 to 17402 in Angstroms
+sed_17402_2596                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 17402 to 19998 in Angstroms
+sed_1000_246_disk               Same as sed_1000_246 but for disk
+sed_1246_306_disk               Same as sed_1246_306 but for disk
+sed_1552_381_disk               Same as sed_1552_381 but for disk
+sed_1933_474_disk               Same as sed_1933_474 but for disk
+sed_2407_591_disk               Same as sed_2407_591 but for disk
+sed_2998_186_disk               Same as sed_2998_186 but for disk
+sed_3184_197_disk               Same as sed_3184_197 but for disk
+sed_3381_209_disk               Same as sed_3381_209 but for disk
+sed_3590_222_disk               Same as sed_3590_222 but for disk
+sed_3812_236_disk               Same as sed_3812_236 but for disk
+sed_4048_251_disk               Same as sed_4048_251 but for disk
+sed_4299_266_disk               Same as sed_4299_266 but for disk
+sed_4565_283_disk               Same as sed_4565_283 but for disk
+sed_4848_300_disk               Same as sed_4848_300 but for disk
+sed_5148_319_disk               Same as sed_5148_319 but for disk
+sed_5467_339_disk               Same as sed_5467_339 but for disk
+sed_5806_360_disk               Same as sed_5806_360 but for disk
+sed_6166_382_disk               Same as sed_6166_382 but for disk
+sed_6548_406_disk               Same as sed_6548_406 but for disk
+sed_6954_431_disk               Same as sed_6954_431 but for disk
+sed_7385_458_disk               Same as sed_7385_458 but for disk
+sed_7843_486_disk               Same as sed_7843_486 but for disk
+sed_8329_517_disk               Same as sed_8329_517 but for disk
+sed_8846_549_disk               Same as sed_8846_549 but for disk
+sed_9395_583_disk               Same as sed_9395_583 but for disk
+sed_9978_1489_disk              Same as sed_9978_1489 but for disk
+sed_11467_1710_disk             Same as sed_11467_1710 but for disk
+sed_13177_1966_disk             Same as sed_13177_1966 but for disk
+sed_15143_2259_disk             Same as sed_15143_2259 but for disk
+sed_17402_2596_disk             Same as sed_17402_2596 but for disk
+sed_1000_246_bulge              Same as sed_1000_246 but for bulge
+sed_1246_306_bulge              Same as sed_1246_306 but for bulge
+sed_1552_381_bulge              Same as sed_1552_381 but for bulge
+sed_1933_474_bulge              Same as sed_1933_474 but for bulge
+sed_2407_591_bulge              Same as sed_2407_591 but for bulge
+sed_2998_186_bulge              Same as sed_2998_186 but for bulge
+sed_3184_197_bulge              Same as sed_3184_197 but for bulge
+sed_3381_209_bulge              Same as sed_3381_209 but for bulge
+sed_3590_222_bulge              Same as sed_3590_222 but for bulge
+sed_3812_236_bulge              Same as sed_3812_236 but for bulge
+sed_4048_251_bulge              Same as sed_4048_251 but for bulge
+sed_4299_266_bulge              Same as sed_4299_266 but for bulge
+sed_4565_283_bulge              Same as sed_4565_283 but for bulge
+sed_4848_300_bulge              Same as sed_4848_300 but for bulge
+sed_5148_319_bulge              Same as sed_5148_319 but for bulge
+sed_5467_339_bulge              Same as sed_5467_339 but for bulge
+sed_5806_360_bulge              Same as sed_5806_360 but for bulge
+sed_6166_382_bulge              Same as sed_6166_382 but for bulge
+sed_6548_406_bulge              Same as sed_6548_406 but for bulge
+sed_6954_431_bulge              Same as sed_6954_431 but for bulge
+sed_7385_458_bulge              Same as sed_7385_458 but for bulge
+sed_7843_486_bulge              Same as sed_7843_486 but for bulge
+sed_8329_517_bulge              Same as sed_8329_517 but for bulge
+sed_8846_549_bulge              Same as sed_8846_549 but for bulge
+sed_9395_583_bulge              Same as sed_9395_583 but for bulge
+sed_9978_1489_bulge             Same as sed_9978_1489 but for bulge
+sed_11467_1710_bulge            Same as sed_11467_1710 but for bulge
+sed_13177_1966_bulge            Same as sed_13177_1966 but for bulge
+sed_15143_2259_bulge            Same as sed_15143_2259 but for bulge
+sed_17402_2596_bulge            Same as sed_17402_2596 but for bulge
+sed_1000_246_no_ext             Same as sed_1000_246 but without dust extinction in the host galaxy
+sed_1246_306_no_ext             Same as sed_1246_306 but without dust extinction in the host galaxy
+sed_1552_381_no_ext             Same as sed_1552_381 but without dust extinction in the host galaxy
+sed_1933_474_no_ext             Same as sed_1933_474 but without dust extinction in the host galaxy
+sed_2407_591_no_ext             Same as sed_2407_591 but without dust extinction in the host galaxy
+sed_2998_186_no_ext             Same as sed_2998_186 but without dust extinction in the host galaxy
+sed_3184_197_no_ext             Same as sed_3184_197 but without dust extinction in the host galaxy
+sed_3381_209_no_ext             Same as sed_3381_209 but without dust extinction in the host galaxy
+sed_3590_222_no_ext             Same as sed_3590_222 but without dust extinction in the host galaxy
+sed_3812_236_no_ext             Same as sed_3812_236 but without dust extinction in the host galaxy
+sed_4048_251_no_ext             Same as sed_4048_251 but without dust extinction in the host galaxy
+sed_4299_266_no_ext             Same as sed_4299_266 but without dust extinction in the host galaxy
+sed_4565_283_no_ext             Same as sed_4565_283 but without dust extinction in the host galaxy
+sed_4848_300_no_ext             Same as sed_4848_300 but without dust extinction in the host galaxy
+sed_5148_319_no_ext             Same as sed_5148_319 but without dust extinction in the host galaxy
+sed_5467_339_no_ext             Same as sed_5467_339 but without dust extinction in the host galaxy
+sed_5806_360_no_ext             Same as sed_5806_360 but without dust extinction in the host galaxy
+sed_6166_382_no_ext             Same as sed_6166_382 but without dust extinction in the host galaxy
+sed_6548_406_no_ext             Same as sed_6548_406 but without dust extinction in the host galaxy
+sed_6954_431_no_ext             Same as sed_6954_431 but without dust extinction in the host galaxy
+sed_7385_458_no_ext             Same as sed_7385_458 but without dust extinction in the host galaxy
+sed_7843_486_no_ext             Same as sed_7843_486 but without dust extinction in the host galaxy
+sed_8329_517_no_ext             Same as sed_8329_517 but without dust extinction in the host galaxy
+sed_8846_549_no_ext             Same as sed_8846_549 but without dust extinction in the host galaxy
+sed_9395_583_no_ext             Same as sed_9395_583 but without dust extinction in the host galaxy
+sed_9978_1489_no_ext            Same as sed_9978_1489 but without dust extinction in the host galaxy
+sed_11467_1710_no_ext           Same as sed_11467_1710 but without dust extinction in the host galaxy
+sed_13177_1966_no_ext           Same as sed_13177_1966 but without dust extinction in the host galaxy
+sed_15143_2259_no_ext           Same as sed_15143_2259 but without dust extinction in the host galaxy
+sed_17402_2596_no_ext           Same as sed_17402_2596 but without dust extinction in the host galaxy
+sed_1000_246_disk_no_ext        Same as sed_1000_246_no_ext but for disk
+sed_1246_306_disk_no_ext        Same as sed_1246_306_no_ext but for disk
+sed_1552_381_disk_no_ext        Same as sed_1552_381_no_ext but for disk
+sed_1933_474_disk_no_ext        Same as sed_1933_474_no_ext but for disk
+sed_2407_591_disk_no_ext        Same as sed_2407_591_no_ext but for disk
+sed_2998_186_disk_no_ext        Same as sed_2998_186_no_ext but for disk
+sed_3184_197_disk_no_ext        Same as sed_3184_197_no_ext but for disk
+sed_3381_209_disk_no_ext        Same as sed_3381_209_no_ext but for disk
+sed_3590_222_disk_no_ext        Same as sed_3590_222_no_ext but for disk
+sed_3812_236_disk_no_ext        Same as sed_3812_236_no_ext but for disk
+sed_4048_251_disk_no_ext        Same as sed_4048_251_no_ext but for disk
+sed_4299_266_disk_no_ext        Same as sed_4299_266_no_ext but for disk
+sed_4565_283_disk_no_ext        Same as sed_4565_283_no_ext but for disk
+sed_4848_300_disk_no_ext        Same as sed_4848_300_no_ext but for disk
+sed_5148_319_disk_no_ext        Same as sed_5148_319_no_ext but for disk
+sed_5467_339_disk_no_ext        Same as sed_5467_339_no_ext but for disk
+sed_5806_360_disk_no_ext        Same as sed_5806_360_no_ext but for disk
+sed_6166_382_disk_no_ext        Same as sed_6166_382_no_ext but for disk
+sed_6548_406_disk_no_ext        Same as sed_6548_406_no_ext but for disk
+sed_6954_431_disk_no_ext        Same as sed_6954_431_no_ext but for disk
+sed_7385_458_disk_no_ext        Same as sed_7385_458_no_ext but for disk
+sed_7843_486_disk_no_ext        Same as sed_7843_486_no_ext but for disk
+sed_8329_517_disk_no_ext        Same as sed_8329_517_no_ext but for disk
+sed_8846_549_disk_no_ext        Same as sed_8846_549_no_ext but for disk
+sed_9395_583_disk_no_ext        Same as sed_9395_583_no_ext but for disk
+sed_1000_246_bulge_no_ext       Same as sed_1000_246_no_ext but for bulge
+sed_1246_306_bulge_no_ext       Same as sed_1246_306_no_ext but for bulge
+sed_1552_381_bulge_no_ext       Same as sed_1552_381_no_ext but for bulge
+sed_1933_474_bulge_no_ext       Same as sed_1933_474_no_ext but for bulge
+sed_2407_591_bulge_no_ext       Same as sed_2407_591_no_ext but for bulge
+sed_2998_186_bulge_no_ext       Same as sed_2998_186_no_ext but for bulge
+sed_3184_197_bulge_no_ext       Same as sed_3184_197_no_ext but for bulge
+sed_3381_209_bulge_no_ext       Same as sed_3381_209_no_ext but for bulge
+sed_3590_222_bulge_no_ext       Same as sed_3590_222_no_ext but for bulge
+sed_3812_236_bulge_no_ext       Same as sed_3812_236_no_ext but for bulge
+sed_4048_251_bulge_no_ext       Same as sed_4048_251_no_ext but for bulge
+sed_4299_266_bulge_no_ext       Same as sed_4299_266_no_ext but for bulge
+sed_4565_283_bulge_no_ext       Same as sed_4565_283_no_ext but for bulge
+sed_4848_300_bulge_no_ext       Same as sed_4848_300_no_ext but for bulge
+sed_5148_319_bulge_no_ext       Same as sed_5148_319_no_ext but for bulge
+sed_5467_339_bulge_no_ext       Same as sed_5467_339_no_ext but for bulge
+sed_5806_360_bulge_no_ext       Same as sed_5806_360_no_ext but for bulge
+sed_6166_382_bulge_no_ext       Same as sed_6166_382_no_ext but for bulge
+sed_6548_406_bulge_no_ext       Same as sed_6548_406_no_ext but for bulge
+sed_6954_431_bulge_no_ext       Same as sed_6954_431_no_ext but for bulge
+sed_7385_458_bulge_no_ext       Same as sed_7385_458_no_ext but for bulge
+sed_7843_486_bulge_no_ext       Same as sed_7843_486_no_ext but for bulge
+sed_8329_517_bulge_no_ext       Same as sed_8329_517_no_ext but for bulge
+sed_8846_549_bulge_no_ext       Same as sed_8846_549_no_ext but for bulge
+sed_9395_583_bulge_no_ext       Same as sed_9395_583_no_ext but for bulge
+sed_9978_1489_disk_no_ext       Same as sed_9978_1489_no_ext but for disk
+sed_11467_1710_disk_no_ext      Same as sed_11467_1710_no_ext but for disk
+sed_13177_1966_disk_no_ext      Same as sed_13177_1966_no_ext but for disk
+sed_15143_2259_disk_no_ext      Same as sed_15143_2259_no_ext but for disk
+sed_17402_2596_disk_no_ext      Same as sed_17402_2596_no_ext but for disk
+sed_9978_1489_bulge_no_ext      Same as sed_9978_1489_no_ext but for bulge
+sed_11467_1710_bulge_no_ext     Same as sed_11467_1710_no_ext but for bulge
+sed_13177_1966_bulge_no_ext     Same as sed_13177_1966_no_ext but for bulge
+sed_15143_2259_bulge_no_ext     Same as sed_15143_2259_no_ext but for bulge
+sed_17402_2596_bulge_no_ext     Same as sed_17402_2596_no_ext but for bulge
+cntr                            None
+x                               None
+y                               None
+z                               None
+htm20                           None
 </pre></div>
 </div>
 </div>
@@ -868,6 +955,11 @@ cosmodc2mockv1_heavy
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT redshift FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2"> WHERE CONTAINS(POINT(&#39;ICRS&#39;, RAMean, DecMean), CIRCLE(&#39;ICRS&#39;,54.218205903,-37.497959343,.1))=1&quot;</span>
 <span class="n">adql</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;SELECT redshift FROM cosmodc2mockv1_heavy WHERE CONTAINS(POINT(&#39;ICRS&#39;, RAMean, DecMean), CIRCLE(&#39;ICRS&#39;,54.218205903,-37.497959343,.1))=1&quot;
 </pre></div>
 </div>
 </div>
@@ -897,6 +989,12 @@ cosmodc2mockv1_heavy
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Redshift Histogram CosmoDC2 Mock Catalog V1 abridged&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/786cb2008903343e6237b537f3cb85d57f68eef9d0ea61f5bcaf82e63f1a2a23.png" src="../../_images/786cb2008903343e6237b537f3cb85d57f68eef9d0ea61f5bcaf82e63f1a2a23.png" />
+</div>
 </div>
 <p>We can easily see form this plot that the simulated galaxies go out to z = 3.</p>
 </section>
@@ -916,6 +1014,11 @@ cosmodc2mockv1_heavy
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_r_sdss_z0&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3833489
 </pre></div>
 </div>
 </div>
@@ -939,6 +1042,9 @@ cosmodc2mockv1_heavy
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/83f9377e78079f6d738c052d7953eb5b2b4096fe7fb414db697f799ecc761d00.png" src="../../_images/83f9377e78079f6d738c052d7953eb5b2b4096fe7fb414db697f799ecc761d00.png" />
 </div>
 </div>
 </section>
