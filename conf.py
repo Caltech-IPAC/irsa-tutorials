@@ -62,14 +62,12 @@ html_theme_options = {
     "use_repository_button": True,
     "use_issues_button": True,
     "use_edit_page_button": True,
-    "launch_buttons": {
-        "binderhub_url": "https://mybinder.org",
-#        "colab_url": "https://colab.research.google.com"
-
+    "launch_buttons": {"binderhub_url": "https://mybinder.org",},
+    "logo": {
+        "link": "https://irsa.ipac.caltech.edu/",
+        "alt_text": "NASA/IPAC Infrared Science Archive - Home",
     },
     "home_page_in_toc": True,
-#    "logo_link_url": "https://astroML.org",
-#    "logo_url": "http://www.astroml.org/_images/plot_moving_objects_1.png"
 }
 
 
