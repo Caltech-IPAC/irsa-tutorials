@@ -100,10 +100,10 @@ Locate the COLLECTION=spitzer_seip from the SIA2 URL https://irsa.ipac.caltech.e
 
 +++
 
-To work with pyvo 1.4, define this SIAv2 service and use the collection argument separately
+To work with PyVO, define this SIAv2 service and use the collection argument separately
 
 ```{code-cell} ipython3
-seip_service2= vo.dal.sia2.SIAService('https://irsa.ipac.caltech.edu/SIA')
+seip_service2= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
 ```
 
 ## Section 3 - Search the service
