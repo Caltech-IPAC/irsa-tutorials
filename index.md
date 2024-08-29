@@ -5,44 +5,51 @@ These Jupyter Notebook tutorials demonstrate access methods and techniques for w
 They cover topics like querying IRSA, working with catalogs in Parquet format, and general parallelization techniques.
 
 
-## Accessing IRSA archive holdings
+## Accessing IRSA's on Premises Holding using VO protocols
 
-### Image Thumbnailes
-
-These notebooks show how to query IRSA's image services, inspect the results, and download and visualize images.
-
-They use the tools: PyVO, Astropy.
+These notebooks use the tools: PyVO, Astropy.
 
 ```{toctree}
 ---
 maxdepth: 1
+caption: IRSA's on premises
 ---
-
 tutorials/irsa-sia-examples/sia_2mass_allsky
 tutorials/irsa-sia-examples/sia_allwise_atlas
 tutorials/irsa-sia-examples/sia_cosmos
 tutorials/irsa-sia-examples/siav2_seip
-
-```
-
-### Catalogs
-
-```{toctree}
----
-maxdepth: 1
----
-
 tutorials/cosmodc2/cosmoDC2_TAP_access.md
 
 ```
 
+## Accessing IRSA's Cloud Holdings
 
+These notebooks demonstrate basic access to the IRSA-curated datasets available in AWS S3 cloud storage buckets.
+They show examples for the Parquet version of the AllWISE Source Catalog, located in AWS S3 cloud storage and the exploration of simulated Roman observations store in AWS S3 cloud storage.
 
-## Visualizations with Firefly
+They use the tools: Pandas, PyArrow, Astropy, Astroquery, PyVO, S3FS, matplotlib
+
 
 ```{toctree}
 ---
 maxdepth: 1
+caption: IRSA in the cloud
+---
+
+tutorials/cloud_access/cloud-access-intro
+tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
+tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
+
+```
+
+
+## Interactive Visualization in Python with Firefly
+
+```{toctree}
+---
+maxdepth: 1
+caption: Visualizations with Firefly
 ---
 
 tutorials/firefly/SEDs_in_Firefly
@@ -51,56 +58,12 @@ tutorials/firefly/NEOWISE_light_curve_demo
 ```
 
 
-
-## IRSA in the cloud
-
-This notebook demonstrates basic access to the IRSA-curated datasets available in AWS S3 cloud storage buckets.
-
-It uses the tools: Pandas, PyArrow, Astropy, Astroquery, PyVO, S3FS
+## Generally Useful Techniques
 
 ```{toctree}
 ---
 maxdepth: 1
----
-
-tutorials/cloud_access/cloud-access-intro
-```
-
-### Catalogs
-
-This notebook shows examples for the Parquet version of the AllWISE Source Catalog, located in AWS S3 cloud storage.
-It uses the tools: Pandas, PyArrow, Astropy
-
-
-```{toctree}
----
-maxdepth: 1
----
-
-tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
-
-```
-
-### Explore OpenUniverse 2024 Data Preview
-
-These notebooks explore simulared Roman observation stored in AWS S3 cloud storage.
-They use the tools: Pandas, Astropy, S3FS, matplotlib, NumPy
-
-```{toctree}
----
-maxdepth: 1
----
-
-tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
-
-```
-
-## Generally useful techniques
-
-```{toctree}
----
-maxdepth: 1
+caption: Generic Techniques
 ---
 
 tutorials/parallelize/Parallelize_Convolution
