@@ -11,12 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
-+++
-
-***
-
-+++
 # Using Firefly visualization tools in Python to vet SEDs
 
 ## Learning Goals
