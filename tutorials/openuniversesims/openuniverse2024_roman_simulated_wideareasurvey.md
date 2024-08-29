@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Simulated Roman Coadds
+# Analyzing cloud-hosted simulated Roman coadded images
 
 +++
 

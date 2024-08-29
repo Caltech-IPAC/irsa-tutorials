@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# COSMOS
+# Searching for contributed COSMOS images
 
 +++
 

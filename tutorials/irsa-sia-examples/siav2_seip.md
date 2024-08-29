@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Spitzer Enhanced Imaging Products
+# Searching for Spitzer Enhanced Imaging Products
 
 +++
 
