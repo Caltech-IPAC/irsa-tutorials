@@ -42,7 +42,7 @@ tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
 ## Interactive visualization in Python with Firefly
 
 These notebooks demonstrate how to use the Firefly visualization tools from Python. 
-Firefly is an open-source toolkit based on IVOA standards and designed to enable astronomical data archive access, exploratory data analysis, and visualization. 
+[Firefly](https://github.com/Caltech-IPAC/firefly) is an open-source toolkit based on IVOA standards and designed to enable astronomical data archive access, exploratory data analysis, and visualization. 
 
 It is used in archive user interfaces at IRSA, the NASA Exoplanet Science Institute (NExScI), the NASA/IPAC Extragalactic Database (NED), and the Vera C. Rubin Observatory.
 
