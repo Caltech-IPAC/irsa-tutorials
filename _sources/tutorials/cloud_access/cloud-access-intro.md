@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# IRSA Cloud Access Introduction
+# IRSA cloud access introduction
 
 This is the introductory tutorial demonstrating basic python access to the IRSA-curated images and catalogs available in AWS S3 cloud storage buckets.
 

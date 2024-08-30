@@ -1,48 +1,55 @@
-# Caltech/IPAC -- IRSA notebooks
+# Caltech/IPAC--IRSA Python Notebook Tutorials
 
 
-These Jupyter Notebook tutorials demonstrate access methods and techniques for working with data served by IRSA.
-They cover topics like querying IRSA, working with catalogs in Parquet format, and general parallelization techniques.
+These Python Jupyter Notebook tutorials demonstrate access methods and techniques for working with data served by the NASA/IPAC Infrared Science Archive (IRSA).
+They cover topics like querying IRSA, working with catalogs in Parquet format, visualizing with Firefly, and general other techniques.
 
 
-## Accessing IRSA archive holdings
-
-### Image Thumbnailes
-
-These notebooks show how to query IRSA's image services, inspect the results, and download and visualize images.
-
-They use the tools: PyVO, Astropy.
+## Accessing IRSA's on-premises holdings using VO protocols
 
 ```{toctree}
 ---
 maxdepth: 1
+caption: VO on-prem data access
 ---
-
 tutorials/irsa-sia-examples/sia_2mass_allsky
 tutorials/irsa-sia-examples/sia_allwise_atlas
 tutorials/irsa-sia-examples/sia_cosmos
 tutorials/irsa-sia-examples/siav2_seip
-
-```
-
-### Catalogs
-
-```{toctree}
----
-maxdepth: 1
----
-
 tutorials/cosmodc2/cosmoDC2_TAP_access.md
 
 ```
 
+## Accessing IRSA's cloud holdings
 
+These notebooks demonstrate how to access the IRSA-curated datasets that available in Amazon Web Services (AWS) S3 cloud storage buckets.
 
-## Visualizations with Firefly
 
 ```{toctree}
 ---
 maxdepth: 1
+caption: Cloud data access
+---
+
+tutorials/cloud_access/cloud-access-intro
+tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
+tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
+
+```
+
+
+## Interactive visualization in Python with Firefly
+
+These notebooks demonstrate how to use the Firefly visualization tools from Python. 
+[Firefly](https://github.com/Caltech-IPAC/firefly) is an open-source toolkit based on IVOA standards and designed to enable astronomical data archive access, exploratory data analysis, and visualization. 
+
+It is used in archive user interfaces at IRSA, the NASA Exoplanet Science Institute (NExScI), the NASA/IPAC Extragalactic Database (NED), and the Vera C. Rubin Observatory.
+
+```{toctree}
+---
+maxdepth: 1
+caption: Visualizations with Firefly
 ---
 
 tutorials/firefly/SEDs_in_Firefly
@@ -51,56 +58,14 @@ tutorials/firefly/NEOWISE_light_curve_demo
 ```
 
 
-
-## IRSA in the cloud
-
-This notebook demonstrates basic access to the IRSA-curated datasets available in AWS S3 cloud storage buckets.
-
-It uses the tools: Pandas, PyArrow, Astropy, Astroquery, PyVO, S3FS
-
-```{toctree}
----
-maxdepth: 1
----
-
-tutorials/cloud_access/cloud-access-intro
-```
-
-### Catalogs
-
-This notebook shows examples for the Parquet version of the AllWISE Source Catalog, located in AWS S3 cloud storage.
-It uses the tools: Pandas, PyArrow, Astropy
-
-
-```{toctree}
----
-maxdepth: 1
----
-
-tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
-
-```
-
-### Explore OpenUniverse 2024 Data Preview
-
-These notebooks explore simulared Roman observation stored in AWS S3 cloud storage.
-They use the tools: Pandas, Astropy, S3FS, matplotlib, NumPy
-
-```{toctree}
----
-maxdepth: 1
----
-
-tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
-
-```
-
 ## Generally useful techniques
 
+These notebooks  cover miscellaneous topics that users might find useful in their analysis of IRSA-curated data.
+
 ```{toctree}
 ---
 maxdepth: 1
+caption: Generic techniques
 ---
 
 tutorials/parallelize/Parallelize_Convolution

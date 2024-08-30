@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# AllWISE Atlas Images
+# Searching for AllWISE Atlas Images
 
 +++
 

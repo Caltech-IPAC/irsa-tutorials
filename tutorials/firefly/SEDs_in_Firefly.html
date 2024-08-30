@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Vetting SEDs in Firefly &#8212; IRSA Demo Notebooks</title>
+    <title>Using Firefly visualization tools in Python to vet SEDs &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -48,8 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/firefly/SEDs_in_Firefly';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Finding Light Curves of Solar System Objects" href="NEOWISE_light_curve_demo.html" />
-    <link rel="prev" title="CosmoDC2 Mock v1 catalogs with IRSA TAP" href="../cosmodc2/cosmoDC2_TAP_access.html" />
+    <link rel="next" title="Using Firefly visualization tools to understand the light curves of Solar System objects" href="NEOWISE_light_curve_demo.html" />
+    <link rel="prev" title="Analyzing cloud-hosted simulated Roman coadded images" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -178,35 +178,33 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../../index.html">
-                    Caltech/IPAC – IRSA notebooks
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">2MASS All-Sky Atlas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">AllWISE Atlas Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">COSMOS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Spitzer Enhanced Imaging Products</a></li>
-</ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">CosmoDC2 Mock v1 catalogs with IRSA TAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Vetting SEDs in Firefly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NEOWISE_light_curve_demo.html">Finding Light Curves of Solar System Objects</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA Cloud Access Introduction</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">AllWISE Source Catalog Examples</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Simulated Roman Time Domain Survey Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Simulated Roman Coadds</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing Image Convolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
 </ul>
 
     </div>
@@ -457,7 +455,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Vetting SEDs in Firefly</h1>
+    <h1>Using Firefly visualization tools in Python to vet SEDs</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -498,9 +496,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="vetting-seds-in-firefly">
-<h1>Vetting SEDs in Firefly<a class="headerlink" href="#vetting-seds-in-firefly" title="Link to this heading">#</a></h1>
-<hr class="docutils" />
+  <section id="using-firefly-visualization-tools-in-python-to-vet-seds">
+<h1>Using Firefly visualization tools in Python to vet SEDs<a class="headerlink" href="#using-firefly-visualization-tools-in-python-to-vet-seds" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
 <p>By the end of this tutorial, the following goals can be accomplished:</p>
@@ -1071,7 +1068,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=14</i>
-<table id="table140089158598160" class="table-striped table-bordered table-condensed">
+<table id="table140137727402256" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>wavelength</th><th>mag</th><th>magerr</th><th>upper_limit</th><th>zeropoint</th><th>lam_flam</th><th>lam_flam_err</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th>micron</th><th></th><th></th><th></th><th>Jy</th><th>erg / (s cm2)</th><th>erg / (s cm2)</th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1106,8 +1103,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0wOC0zMA"" target="_blank">this link</a></div></div>
 </div>
 <p>In the event that there are problems with the tab opened above, run the below command to obtain a web link that can be opened in a browser directly:</p>
 <div class="cell docutils container">
@@ -1307,12 +1302,12 @@ https://irsa.ipac.caltech.edu/applications/finderchart/servlet/api?mode=getResul
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../cosmodc2/cosmoDC2_TAP_access.html"
+       href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">CosmoDC2 Mock v1 catalogs with IRSA TAP</p>
+        <p class="prev-next-title">Analyzing cloud-hosted simulated Roman coadded images</p>
       </div>
     </a>
     <a class="right-next"
@@ -1320,7 +1315,7 @@ https://irsa.ipac.caltech.edu/applications/finderchart/servlet/api?mode=getResul
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Finding Light Curves of Solar System Objects</p>
+        <p class="prev-next-title">Using Firefly visualization tools to understand the light curves of Solar System objects</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

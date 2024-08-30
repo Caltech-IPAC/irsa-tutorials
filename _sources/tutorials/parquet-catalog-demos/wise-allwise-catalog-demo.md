@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# AllWISE Source Catalog Examples
+# Analyzing cloud-hosted AllWISE Source Catalog in Parquet format
 
 +++
 
