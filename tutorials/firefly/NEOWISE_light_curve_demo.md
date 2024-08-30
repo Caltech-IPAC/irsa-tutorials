@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Using Firefly visualization tools to understand the Light Curves of Solar System Objects
+# Using Firefly visualization tools to understand the light curves of Solar System objects
 
 ## Learning Goals
 
