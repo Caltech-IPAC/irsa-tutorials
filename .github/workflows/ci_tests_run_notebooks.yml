@@ -18,7 +18,7 @@ concurrency:
 jobs:
   tests:
     # Do not run the test matrix on PRs affecting the rendering
-    if: ${{! (github.event_name == 'pull_request' && !contains(github.event.pull_requiest.label.*.name, 'html rendering')) }}
+    if: ${{ !(github.event_name == 'pull_request') || !contains(github.event.pull_requiest.label.*.name, 'html rendering') }}
 
     name: ${{ matrix.os }} ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
