@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Parallelizing Image Convolution
+# Parallelizing image convolution
 
 +++
 

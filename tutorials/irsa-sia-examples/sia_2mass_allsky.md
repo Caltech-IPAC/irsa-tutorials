@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# 2MASS All-Sky Atlas
+# Searching for 2MASS All-Sky Atlas Images
 
 This notebook tutorial demonstrates the process of querying IRSA's Simple Image Access (SIA) service for the 2MASS All-Sky Atlas, making a cutout image (thumbnail), and displaying the cutout.
 

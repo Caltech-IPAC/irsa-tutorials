@@ -14,7 +14,7 @@ kernelspec:
 
 
 
-# CosmoDC2 Mock v1 catalogs with IRSA TAP
+# Querying CosmoDC2 Mock v1 catalogs
 
 This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More information about these catalogs can be found here: https://irsa.ipac.caltech.edu/Missions/cosmodc2.html
 
