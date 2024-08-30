@@ -53,6 +53,4 @@ jobs:
       run: python -m pip install --upgrade tox
 
     - name: Test with tox
-      run: |
-        # Workaround for OSX for https://jira.ipac.caltech.edu/browse/FIREFLY-1528
-        tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}
+      run: tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}
