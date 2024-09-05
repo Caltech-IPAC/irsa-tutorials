@@ -49,9 +49,12 @@ if 'CIRCLECI' in os.environ:
     # Ignore them here.
     nb_execution_excludepatterns += ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
 
+    # Both NEOWISE notebooks work with large data that doesn't work with CircleCI resource limits
+    nb_execution_excludepatterns += ['neowise-source-table-strategies.md', 'neowise-source-table-lightcurves.md']
+
 if platform.platform().startswith("mac") or platform.platform().startswith("win"):
     # The way the notebooks use the multiprocessing module is known to not work on non-Linux
-    nb_execution_excludepatterns += ['Parallelize_Convolution.md']
+    nb_execution_excludepatterns += ['Parallelize_Convolution.md', 'neowise-source-table-lightcurves.md']
 
 # -- Options for HTML output -------------------------------------------------
 
