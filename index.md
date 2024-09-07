@@ -33,6 +33,8 @@ caption: Cloud data access
 
 tutorials/cloud_access/cloud-access-intro
 tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
+tutorials/parquet-catalog-demos/neowise-source-table-strategies
+tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
 
