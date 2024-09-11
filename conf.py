@@ -7,6 +7,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import platform
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -39,12 +40,17 @@ exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.
 # MyST-NB configuration
 nb_execution_timeout = 900
 
+nb_execution_excludepatterns = []
+
 if 'CIRCLECI' in os.environ:
     # Workaround for https://github.com/Caltech-IPAC/irsa-tutorials/issues/6
     # Some of the notebooks run into a DeadKernelError on CircleCI, but do execute and render on GHA.
     # Ignore them here.
-    nb_execution_excludepatterns = ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
+    nb_execution_excludepatterns += ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
 
+if platform.platform().startswith("mac") or platform.platform().startswith("win"):
+    # The way the notebooks use the multiprocessing module is known to not work on non-Linux
+    nb_execution_excludepatterns += ['Parallelize_Convolution.md']
 
 # -- Options for HTML output -------------------------------------------------
 
