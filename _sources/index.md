@@ -1,7 +1,7 @@
 # Caltech/IPAC--IRSA Python Notebook Tutorials
 
 
-These Python Jupyter Notebook tutorials demonstrate access methods and techniques for working with data served by the NASA/IPAC Infrared Science Archive (IRSA).
+These Python Jupyter Notebook tutorials demonstrate access methods and techniques for working with data served by the [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu).
 They cover topics like querying IRSA, working with catalogs in Parquet format, visualizing with Firefly, and general other techniques.
 
 
@@ -41,10 +41,10 @@ tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
 
 ## Interactive visualization in Python with Firefly
 
-These notebooks demonstrate how to use the Firefly visualization tools from Python. 
-[Firefly](https://github.com/Caltech-IPAC/firefly) is an open-source toolkit based on IVOA standards and designed to enable astronomical data archive access, exploratory data analysis, and visualization. 
+These notebooks demonstrate how to use the Firefly visualization tools from Python.
+[Firefly](https://github.com/Caltech-IPAC/firefly) is an open-source toolkit based on IVOA standards and designed to enable astronomical data archive access, exploratory data analysis, and visualization.
 
-It is used in archive user interfaces at IRSA, the NASA Exoplanet Science Institute (NExScI), the NASA/IPAC Extragalactic Database (NED), and the Vera C. Rubin Observatory.
+It is used in archive user interfaces at [IRSA](https://irsa.ipac.caltech.edu), the [NASA Exoplanet Science Institute (NExScI)](https://nexsci.caltech.edu/), the [NASA/IPAC Extragalactic Database (NED)](https://ned.ipac.caltech.edu/), and the [Vera C. Rubin Observatory](https://www.lsst.org/).
 
 ```{toctree}
 ---
