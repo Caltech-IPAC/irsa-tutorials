@@ -49,7 +49,8 @@ if 'CIRCLECI' in os.environ:
     # Ignore them here.
     nb_execution_excludepatterns += ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
 
-    # Both NEOWISE notebooks work with large data that doesn't work with CircleCI resource limits
+if 'CI' in os.environ:
+    # Both NEOWISE parquet notebooks work with large data that doesn't work within CircleCI or GHA resource limits
     nb_execution_excludepatterns += ['neowise-source-table-strategies.md', 'neowise-source-table-lightcurves.md']
 
 if platform.platform().startswith("mac") or platform.platform().startswith("win"):
