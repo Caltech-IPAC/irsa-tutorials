@@ -460,7 +460,3 @@ About this notebook:
 - Author: Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
 - Contact: [https://irsa.ipac.caltech.edu/docs/help_desk.html](https://irsa.ipac.caltech.edu/docs/help_desk.html)
 - Updated: 2024-08-08
-
-```{code-cell} ipython3
-
-```
