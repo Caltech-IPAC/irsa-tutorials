@@ -54,3 +54,24 @@ jobs:
 
     - name: Test with tox
       run: tox ${{ matrix.toxargs }} -e ${{ matrix.toxenv }} -- ${{ matrix.toxposargs }}
+
+
+  gha_buildhtml:
+    # When label is used, we do run buildhtml on GHA to check if the publishing job will run or not.
+    # Use in case when new content has run into troubles on CircleCI.
+    if: ${{ (github.event_name == 'pull_request') && contains(github.event.pull_request.labels.*.name, 'GHA buildhtml') }}
+    name: Buildhtml testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade tox
+
+      - name: Execute notebooks as testing
+        run: tox -e py311-buildhtml
