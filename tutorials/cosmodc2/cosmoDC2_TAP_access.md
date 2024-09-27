@@ -21,6 +21,11 @@ This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More inf
 These catalogs can be accessed through IRSA's Virtual Ovservatory Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the PyVO library.
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install numpy matplotlib pyvo
+```
+
+```{code-cell} ipython3
 import pyvo as vo
 ```
 

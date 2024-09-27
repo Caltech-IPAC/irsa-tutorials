@@ -43,6 +43,11 @@ For documentation on the firefly client visit https://caltech-ipac.github.io/fir
 - *astropy.utils.data* for downloading the catalog data via TAP query
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install firefly_client astropy
+```
+
+```{code-cell} ipython3
 from firefly_client import FireflyClient
 import firefly_client.plot as ffplt
 import astropy.utils.data
@@ -75,7 +80,7 @@ Setup the layout of viewer and TAP search the 'Known Solar System Object Possibl
 - We want to search the data through IRSA, which supports TAP querying, and we want it streamed directly to us via a synchronous search: <br>"https://<!---->irsa.ipac.caltech.edu/TAP/sync?"<br><br>
 - Next, we want to structure query to only retrieve (558) Carmen data from the NEOWISE-R 'Known Solar System Object Possible Association List' catalog. The table name of the catalog can be found using [IRSAViewer](https://irsa.ipac.caltech.edu/irsaviewer/?__action=layout.showDropDown&view=MultiTableSearchCmd) and clicking the **VO TAP Search** tab and changing the 'Project' to **neowiser**. We query all columns of data and we search the target by its object id, which is its name, and use the 'like' condition to only write (558) with a wildcard: <br>"QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+'(558)%'"
 
-Construction of the query can be found in the [`IRSA TAP documentation page`](https://irsa.ipac.caltech.edu/docs/program_interface/TAP.html). 
+Construction of the query can be found in the [`IRSA TAP documentation page`](https://irsa.ipac.caltech.edu/docs/program_interface/TAP.html).
 
 We first add a cell to the layout that will hold the table; this cell is shown at row = 0, col = 0, with width = 4, height = 2. Once the cell is created, we can request the necessary data from the catalog and display the data as a table using the [`show_table`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table) method.
 
@@ -95,7 +100,7 @@ if r['success']:
 # if r['success']:
 #     table_url = ("https://irsa.ipac.caltech.edu/TAP/sync?QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+'(558)%'")
 #     tablename = astropy.utils.data.download_file(table_url, timeout=120, cache=True)
-    
+
 #     file = fc.upload_file(tablename)
 #     fc.show_table(file, tbl_id='tableneo', title='558 Carmen Catalog', page_size=50)
 ```
@@ -131,7 +136,7 @@ hips_url = 'http://alasky.u-strasbg.fr/AllWISE/RGB-W4-W2-W1'
 
 r = fc.add_cell(2, 2, 2, 2, 'catalog-image', 'target')
 if r['success']:
-    status = fc.show_hips(viewer_id=viewer_id, plot_id='aHipsID1-1', hips_root_url = hips_url, 
+    status = fc.show_hips(viewer_id=viewer_id, plot_id='aHipsID1-1', hips_root_url = hips_url,
                           Title='HiPS-WISE', WorldPt=target)
 ```
 

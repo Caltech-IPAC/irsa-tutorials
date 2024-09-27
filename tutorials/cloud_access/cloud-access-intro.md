@@ -86,7 +86,7 @@ This cell will install them if needed:
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy hpgeom pandas pyarrow pyvo>=1.5 s3fs matplotlib
+# !pip install astropy hpgeom pandas pyarrow pyvo>=1.5 s3fs matplotlib astroquery
 ```
 
 ## 4. Browse buckets
@@ -167,9 +167,6 @@ To request that additional datasets be made available in cloud storage, please c
 
 # Irsa.list_collections()
 
-# # If `list_collections` is not found,
-# # uncomment the next line to update astroquery, then restart your kernel.
-# # !pip install --upgrade --pre astroquery
 ```
 
 Use PyVO to execute a search for Spitzer SEIP Super Mosaics and find cloud access information:

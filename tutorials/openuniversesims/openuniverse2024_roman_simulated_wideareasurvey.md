@@ -27,7 +27,7 @@ By the end of this tutorial, you will learn how to do the following:
 ## Install and Import required modules
 
 ```{code-cell} ipython3
-# Install libraries if necessary by uncommenting the following
+# Uncomment the next line to install dependencies if needed.
 # !pip install astropy numpy s3fs
 ```
 

@@ -61,15 +61,12 @@ The packages needed for this notebook are in the `requirements.txt` file. They c
 * _firefly_client.FireflyClient_ - Python API to Firefly for displaying tables, images and charts
 * _numpy_ - for working with arrays
 * _pyvo_ - for queries to Virtual Observatory services at the archives
-* _jupytext_ - for working with Markdown notebooks. It must be installed before your Jupyterlab session is started. See [these instructions](https://github.com/NASA-NAVO/navo-workshop/blob/main/00_SETUP.md#8-handling-notebooks-in-myst-markdown-format) for helpful information.
 
 +++
 
-To run the notebook by itself, run the cell below (skip if you already have the requirements installed):
-
 ```{code-cell} ipython3
-# Install libraries if necessary by uncommenting the following
-# !pip install -r requirements.txt
+# Uncomment the next line to install dependencies if needed.
+# !pip install numpy astropy pyvo firefly_client
 ```
 
 Call the imports below:
