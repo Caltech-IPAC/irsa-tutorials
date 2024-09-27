@@ -202,7 +202,7 @@ image = np.zeros((3000, 3000))
 for _ in range(100):
     for j in range(num_cpus):
         big_future = client.scatter((image, filters[j % num_cpus]))
-        future = client.submit(fconv, big_future)
+        future = client.submit(fmp, big_future)
 duration_dask = time.time() - start
 print("Dask duration = {:.1f}, speedup = {:.2f}"
       .format(duration_dask, duration_conv*num_cpus / duration_dask))
