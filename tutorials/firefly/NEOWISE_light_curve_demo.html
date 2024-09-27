@@ -514,6 +514,14 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install firefly_client astropy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">firefly_client</span> <span class="kn">import</span> <span class="n">FireflyClient</span>
 <span class="kn">import</span> <span class="nn">firefly_client.plot</span> <span class="k">as</span> <span class="nn">ffplt</span>
 <span class="kn">import</span> <span class="nn">astropy.utils.data</span>
@@ -536,8 +544,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0wOS0yNg"" target="_blank">this link</a></div></div>
 </div>
 <p>You can re-initizialize the viewer to return to a clean slate with <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer"><code class="docutils literal notranslate"><span class="pre">reinit_viewer</span></code></a>.</p>
 <div class="cell docutils container">
@@ -576,7 +582,7 @@ document.write(`
 <span class="c1"># if r[&#39;success&#39;]:</span>
 <span class="c1">#     table_url = (&quot;https://irsa.ipac.caltech.edu/TAP/sync?QUERY=SELECT+*+FROM+neowiser_p1ba_mch+AS+n+WHERE+n.objid+like+&#39;(558)%&#39;&quot;)</span>
 <span class="c1">#     tablename = astropy.utils.data.download_file(table_url, timeout=120, cache=True)</span>
-    
+
 <span class="c1">#     file = fc.upload_file(tablename)</span>
 <span class="c1">#     fc.show_table(file, tbl_id=&#39;tableneo&#39;, title=&#39;558 Carmen Catalog&#39;, page_size=50)</span>
 </pre></div>
@@ -619,7 +625,7 @@ document.write(`
 
 <span class="n">r</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;catalog-image&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
-    <span class="n">status</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">show_hips</span><span class="p">(</span><span class="n">viewer_id</span><span class="o">=</span><span class="n">viewer_id</span><span class="p">,</span> <span class="n">plot_id</span><span class="o">=</span><span class="s1">&#39;aHipsID1-1&#39;</span><span class="p">,</span> <span class="n">hips_root_url</span> <span class="o">=</span> <span class="n">hips_url</span><span class="p">,</span> 
+    <span class="n">status</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">show_hips</span><span class="p">(</span><span class="n">viewer_id</span><span class="o">=</span><span class="n">viewer_id</span><span class="p">,</span> <span class="n">plot_id</span><span class="o">=</span><span class="s1">&#39;aHipsID1-1&#39;</span><span class="p">,</span> <span class="n">hips_root_url</span> <span class="o">=</span> <span class="n">hips_url</span><span class="p">,</span>
                           <span class="n">Title</span><span class="o">=</span><span class="s1">&#39;HiPS-WISE&#39;</span><span class="p">,</span> <span class="n">WorldPt</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>

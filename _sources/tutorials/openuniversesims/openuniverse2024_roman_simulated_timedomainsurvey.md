@@ -29,7 +29,7 @@ By the end of this tutorial, you will:
 ## Install and Import required modules
 
 ```{code-cell} ipython3
-# Install libraries if necessary by uncommenting the following
+# Uncomment the next line to install dependencies if needed.
 # !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy
 ```
 

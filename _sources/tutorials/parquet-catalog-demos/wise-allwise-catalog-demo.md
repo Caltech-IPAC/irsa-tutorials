@@ -42,8 +42,8 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the following if you have missing dependencies.
-# !pip install numpy pandas>=1.5.2 pyarrow>=10.0.1 matplotlib hpgeom astropy
+# Uncomment the next line to install dependencies if needed.
+# !pip install pandas>=1.5.2 pyarrow>=10.0.1 matplotlib hpgeom astropy
 ```
 
 ```{code-cell} ipython3

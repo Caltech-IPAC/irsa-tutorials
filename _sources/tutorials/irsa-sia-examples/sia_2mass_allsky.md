@@ -57,6 +57,11 @@ https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html
 - *astropy.io* to manipulate FITS files
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install matplotlib astropy pyvo
+```
+
+```{code-cell} ipython3
 import pyvo as vo
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
