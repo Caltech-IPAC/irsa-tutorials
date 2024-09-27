@@ -45,6 +45,11 @@ This notebook shows how to speed up an image convolution task using these three 
 * _ray_ for scaling up Python tasks
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install dask[distributed] numpy ray scipy
+```
+
+```{code-cell} ipython3
 from multiprocessing import Pool
 import time
 
