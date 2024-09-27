@@ -143,6 +143,11 @@ ray.shutdown()
 Use `scipy.signal` to convolve two 2-dimensional arrays and return a 5x5 downsampled result. The call to the function has a slightly different form than that for the serial loop.
 
 ```{code-cell} ipython3
+# Note: Mac and Windows users may need to copy the contents of this cell into a separate '.py' file
+# and then import it in order to use the `fmp` function with `multiprocessing`. This has to do with
+# differences in what does / does not get copied into the child processes in different operating systems.
+import scipy.signal
+
 def fmp(args):
     image, random_filter = args
     return scipy.signal.convolve2d(image, random_filter)[::5, ::5]
