@@ -45,6 +45,11 @@ This notebook shows how to speed up an image convolution task using these three 
 * _ray_ for scaling up Python tasks
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install dask[distributed] numpy ray scipy
+```
+
+```{code-cell} ipython3
 from multiprocessing import Pool
 import time
 
@@ -143,6 +148,11 @@ ray.shutdown()
 Use `scipy.signal` to convolve two 2-dimensional arrays and return a 5x5 downsampled result. The call to the function has a slightly different form than that for the serial loop.
 
 ```{code-cell} ipython3
+# Note: Mac and Windows users may need to copy the contents of this cell into a separate '.py' file
+# and then import it in order to use the `fmp` function with `multiprocessing`. This has to do with
+# differences in what does / does not get copied into the child processes in different operating systems.
+import scipy.signal
+
 def fmp(args):
     image, random_filter = args
     return scipy.signal.convolve2d(image, random_filter)[::5, ::5]
@@ -192,7 +202,7 @@ image = np.zeros((3000, 3000))
 for _ in range(100):
     for j in range(num_cpus):
         big_future = client.scatter((image, filters[j % num_cpus]))
-        future = client.submit(fconv, big_future)
+        future = client.submit(fmp, big_future)
 duration_dask = time.time() - start
 print("Dask duration = {:.1f}, speedup = {:.2f}"
       .format(duration_dask, duration_conv*num_cpus / duration_dask))
