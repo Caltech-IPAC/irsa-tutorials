@@ -553,7 +553,7 @@ phot_tbl
 
 This notebook assumes that [jupyter_firefly_extensions](https://github.com/Caltech-IPAC/jupyter_firefly_extensions) has been installed, and that the Firefly server to use has been specified before Jupyterlab was started.
 
-If everything has been properly configured, executing the next cell will bring up a Firefly tab in Jupyterlab with the message "Firefly Ready":
+If everything has been properly configured, executing the next cell will bring up a Firefly tab in Jupyterlab with the welcome message.
 
 ```{code-cell} ipython3
 # Uncomment to use the jupyter_firefly_extensions
@@ -566,7 +566,6 @@ fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 In the event that there are problems with the tab opened above, run the below command to obtain a web link that can be opened in a browser directly:
 
 ```{code-cell} ipython3
-# Temporary work-around to Firefly error for Slate and/or Internet connection problems
 fc.display_url()
 ```
 
@@ -577,7 +576,7 @@ tblpath = "./phot_tbl.fits"
 phot_tbl.write(tblpath, format="fits", overwrite=True)
 ```
 
-Upload the table to Firefly:
+Upload the table (FITS file) to Firefly:
 
 ```{code-cell} ipython3
 tval = fc.upload_file(tblpath)
@@ -667,9 +666,9 @@ j_fname, h_fname, k_fname = get_2mass_images(target)
 ```
 
 ```{code-cell} ipython3
-fc.show_fits(fc.upload_file(j_fname), plot_id="2MASS J")
-fc.show_fits(fc.upload_file(h_fname), plot_id="2MASS H")
-fc.show_fits(fc.upload_file(k_fname), plot_id="2MASS K")
+fc.show_fits(fc.upload_file(j_fname), plot_id="2MASS J", title="2MASS J")
+fc.show_fits(fc.upload_file(h_fname), plot_id="2MASS H", title="2MASS H")
+fc.show_fits(fc.upload_file(k_fname), plot_id="2MASS K", title="2MASS K")
 ```
 
 ```{code-cell} ipython3
@@ -684,14 +683,14 @@ fc.set_pan(plot_id="2MASS K", x=target.ra.deg,
            y=target.dec.deg, coord="j2000")
 ```
 
-In the future, the user should be able to implement turning on "Align and Lock by WCS" using the Python API as part of this notebook.
+For turning on "Align and Lock by WCS" in these images, there's no dedicated method in firefly but you can use this workaround (using low-level API):
 
-+++
+```{code-cell} ipython3
+fc.dispatch('ImagePlotCntlr.wcsMatch',
+            payload=dict(matchType='Standard', lockMatch=True))
+```
 
-The current alternative is to use the following link to launch IRSA Finder Chart in a separate browser and turn on that function there:
-https://irsa.ipac.caltech.edu/applications/finderchart/servlet/api?mode=getResult&locstr=270.599026+-24.147018+Equ+J2000&subsize=0.0167&sources=2MASS&DoSearch=true
-
-In that Firefly display, it should be possible to turn on "Align and Lock by WCS" in the image toolbar.
+Note that zooming or panning one image, will do the same in others.
 
 +++
 
@@ -705,7 +704,7 @@ In that Firefly display, it should be possible to turn on "Align and Lock by WCS
 
 **Author:** David Shupe (IRSA Scientist) and Joyce Kim (IRSA Scientist) in conjunction with the IRSA Science Team
 
-**Updated On:** 2024-07-31
+**Updated On:** 2024-10-17
 
 **Contact:** irsasupport@ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html
 
