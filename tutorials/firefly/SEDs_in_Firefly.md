@@ -683,14 +683,14 @@ fc.set_pan(plot_id="2MASS K", x=target.ra.deg,
            y=target.dec.deg, coord="j2000")
 ```
 
-For turning on "Align and Lock by WCS" in these images, there's no dedicated method in firefly but you can use this workaround (using low-level API):
+For turning on "Align and Lock by WCS" in these images, there's no dedicated method in Firefly but you can use this workaround (using low-level API):
 
 ```{code-cell} ipython3
 fc.dispatch('ImagePlotCntlr.wcsMatch',
             payload=dict(matchType='Standard', lockMatch=True))
 ```
 
-Note that zooming or panning one image, will do the same in others.
+Note that zooming or panning one image will do the same in the other images as well.
 
 +++
 
