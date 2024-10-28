@@ -184,8 +184,10 @@ def neowise_path(year, file="_metadata"):
         The path to the file.
     """
     # This information can be found at https://irsa.ipac.caltech.edu/cloud_access/.
-    bucket = "nasa-irsa-wise"
-    base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
+    # bucket = "nasa-irsa-wise"
+    # base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
+    bucket = "/stage/irsa-data-parquetlinks/links-dev"
+    base_prefix = "neowiser/healpix_k5"
     root_dir = f"{bucket}/{base_prefix}/{year}/neowiser-healpix_k5-{year}.parquet"
     return f"{root_dir}/{file}"
 ```
@@ -232,7 +234,8 @@ Later, we will use this pyarrow dataset object to slice and query the catalog in
 ```{code-cell} ipython3
 # This catalog is so big that even the metadata is big.
 # Expect this cell to take about 30 seconds per year.
-fs = pyarrow.fs.S3FileSystem(region="us-west-2", anonymous=True)
+# fs = pyarrow.fs.S3FileSystem(region="us-west-2", anonymous=True)
+fs = None
 
 # list of datasets, one per year
 year_datasets = [

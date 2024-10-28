@@ -139,12 +139,15 @@ We'll load it as a pyarrow dataset.
 # Expect this cell to take about 30 seconds per year.
 
 # This information can be found at https://irsa.ipac.caltech.edu/cloud_access/.
-bucket = "nasa-irsa-wise"
-base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
+# bucket = "nasa-irsa-wise"
+# base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
+bucket = "/stage/irsa-data-parquetlinks/links-dev"
+base_prefix = "neowiser/healpix_k5"
 metadata_path = (
     lambda yr: f"{bucket}/{base_prefix}/{yr}/neowiser-healpix_k5-{yr}.parquet/_metadata"
 )
-fs = pyarrow.fs.S3FileSystem(region="us-west-2", anonymous=True)
+# fs = pyarrow.fs.S3FileSystem(region="us-west-2", anonymous=True)
+fs = None
 
 # list of datasets, one per year
 year_datasets = [
