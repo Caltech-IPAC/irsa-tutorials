@@ -11,6 +11,11 @@ kernelspec:
   name: python3
 ---
 
+An executed version of this notebook can be seen at
+[https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
+
++++
+
 # Make Light Curves from NEOWISE Single-exposure Source Table
 
 +++
@@ -31,7 +36,7 @@ Learning Goals:
 This notebook loads light curves from the
 [NEOWISE](https://irsa.ipac.caltech.edu/Missions/wise.html) Single-exposure Source Table
 for a sample of about 2000 cataclysmic variables from [Downes et al. (2001)](https://doi.org/10.1086/320802).
-The NEOWISE Single-exposure Source Table is a very large catalog -- 10 years and 40 terabytes in total
+The NEOWISE Single-exposure Source Table is a very large catalog -- 11 years and 42 terabytes in total
 with 145 columns and 200 billion rows.
 When searching this catalog, it is important to consider the requirements of your use case and
 the format of this dataset.
@@ -57,7 +62,7 @@ The specific strategy we employ is:
 
 The efficiency of this method will increase with the number of rows needed from each partition.
 For example, a cone search radius of 1 arcsec will require about 10 CPUs, 65G RAM, and
-50 minutes to load the data from all 10 NEOWISE years.
+50 minutes to load the data from all 11 NEOWISE years.
 Increasing the radius to 10 arcsec will return about 2.5x more rows using roughly the same resources.
 Increasing the target sample size can result in similar efficiency gains.
 To try out this notebook with fewer resources, use a subset of NEOWISE years.
@@ -104,7 +109,8 @@ Real use cases are likely to require all ten years but it can be helpful to star
 fewer while exploring to make things run faster.
 
 ```{code-cell} ipython3
-YEARS = list(range(1, 11))  # all years => about 11 CPU, 65G RAM, and 50 minutes runtime
+# all years => about 11 CPU, 65G RAM, and 50 minutes runtime
+YEARS = [f"year{yr}" for yr in range(1, 12)] + ["addendum"]
 
 # To try out a smaller version of the notebook,
 # uncomment the next line and choose your own subset of years.
@@ -136,7 +142,7 @@ We'll load it as a pyarrow dataset.
 bucket = "nasa-irsa-wise"
 base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
 metadata_path = (
-    lambda yr: f"{bucket}/{base_prefix}/year{yr}/neowiser-healpix_k5-year{yr}.parquet/_metadata"
+    lambda yr: f"{bucket}/{base_prefix}/{yr}/neowiser-healpix_k5-{yr}.parquet/_metadata"
 )
 fs = pyarrow.fs.S3FileSystem(region="us-west-2", anonymous=True)
 
@@ -461,6 +467,6 @@ This has to do with differences in what does / does not get copied into the chil
 
 **Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
-**Updated:** 2024-08-08
+**Updated:** 2025-03-07
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
