@@ -162,13 +162,12 @@ INWEIGHTFLAT = a reshape of INWEIGHT suitable for display as a single image in a
 FIDELITY, SIGMA, INWTSUM, EFFCOVER = maps of U_alpha/C, S_alpha, sum_i T_{alpha i}, and the effective coverage as rescaled int16 maps. See Rowe et al. (2011) for details on the definitions of these quantities. The comment in the 'UNIT' keyword indicates how to rescale these.
 
 +++
+***
 
 ## About this notebook
 
-- Author: Vandana Desai (Science Lead, IRSA) in conjunction with the IPAC Science Platform team
-- Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
-- Updated: 2024-06-10
+**Author:** Vandana Desai (Science Lead, IRSA) in conjunction with the IPAC Science Platform team
 
-```{code-cell} ipython3
+**Updated:** 2024-06-10
 
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

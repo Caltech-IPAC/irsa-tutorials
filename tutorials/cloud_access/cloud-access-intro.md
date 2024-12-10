@@ -339,9 +339,12 @@ results_df["W1-W2"] = results_df["w1mpro"] - results_df["w2mpro"]
 results_df["W2-W3"] = results_df["w2mpro"] - results_df["w3mpro"]
 results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))
 ```
+***
 
 ## About this notebook
 
-- Author: Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team
-- Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
-- Updated: 2024-07-29
+**Author:** Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team
+
+**Updated:** 2024-07-29
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

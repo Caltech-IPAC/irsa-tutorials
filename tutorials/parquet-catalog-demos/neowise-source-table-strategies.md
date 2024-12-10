@@ -553,10 +553,12 @@ per_part.loc[per_part.numrows == per_part.numrows.max()]
 per_part.sort_values("numrows").iloc[len(per_part.index) // 2]
 ```
 
------
+***
 
-About this notebook:
+## About this notebook
 
-- Author: Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
-- Contact: [https://irsa.ipac.caltech.edu/docs/help_desk.html](https://irsa.ipac.caltech.edu/docs/help_desk.html)
-- Updated: 2024-08-08
+**Author:** Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
+
+**Updated:** 2024-08-08
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

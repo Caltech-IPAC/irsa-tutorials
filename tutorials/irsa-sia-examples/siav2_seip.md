@@ -185,9 +185,9 @@ Search the SEIP Source List using IRSA [Gator service](https://irsa.ipac.caltech
 
 **Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
-**Updated On:** 2022-02-14
+**Updated:** 2022-02-14
 
-**Contact:** irsasupport@ipac.caltech.edu or https://jira.ipac.caltech.edu/irsasupport
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
 +++
 

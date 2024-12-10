@@ -297,12 +297,12 @@ animate_stamps(stamps,savepath,labels=mjd)
 
 +++
 
+***
+
 ## About this notebook
 
-- Author: Lauren Aldoroty (laurenaldoroty@gmail.com) with minor subsequent modifications to match repository style
-- Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
-- Updated: 2024-06-10
+**Author:** Lauren Aldoroty (laurenaldoroty@gmail.com) with minor subsequent modifications to match repository style
 
-```{code-cell} ipython3
+**Updated:** 2024-06-10
 
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
