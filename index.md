@@ -73,3 +73,11 @@ caption: Generic techniques
 tutorials/parallelize/Parallelize_Convolution
 
 ```
+
+***
+
+## About these notebooks
+
+**Authors:** IRSA Scientists and Developers wrote and maintain these notebooks.
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
