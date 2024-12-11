@@ -557,7 +557,7 @@ per_part.sort_values("numrows").iloc[len(per_part.index) // 2]
 
 ## About this notebook
 
-**Author:** Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
+**Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
 **Updated:** 2024-08-08
 

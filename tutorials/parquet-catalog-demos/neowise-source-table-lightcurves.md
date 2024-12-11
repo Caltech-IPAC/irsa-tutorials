@@ -459,7 +459,7 @@ This has to do with differences in what does / does not get copied into the chil
 
 ## About this notebook
 
-**Author:** Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
+**Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
 **Updated:** 2024-08-08
 
