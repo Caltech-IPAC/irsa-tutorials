@@ -455,8 +455,12 @@ You will need to copy the functions and imports from this notebook into a separa
 In addition, you may need to load `neowise_ds` separately for each child process (i.e., worker) by adding that code to the `init_worker` function instead of passing it in as an argument.
 This has to do with differences in what does / does not get copied into the child processes on different platforms.
 
-About this notebook:
+***
 
-- Author: Troy Raen (Applications Developer, IRSA) and the IPAC Science Platform team
-- Contact: [https://irsa.ipac.caltech.edu/docs/help_desk.html](https://irsa.ipac.caltech.edu/docs/help_desk.html)
-- Updated: 2024-08-08
+## About this notebook
+
+**Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
+
+**Updated:** 2024-08-08
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

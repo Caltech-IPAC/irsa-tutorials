@@ -221,12 +221,15 @@ client.close()
 * Dask delivers the least speedup; perhaps due to having only six processes on the dask.distributed client
 
 +++
+***
 
 ## About this notebook
 
-This notebook was developed by David Shupe (shupe@ipac.caltech.edu) in conjunction with Jessica Krick and the IRSA Science Platform team at IPAC.
+**Author:** David Shupe in conjunction with Jessica Krick and the IRSA Science Platform team at IPAC.
 
-+++
+**Updated:** 2024-09-24
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
 ## Citations
 

@@ -704,10 +704,6 @@ Note that zooming or panning one image will do the same in the other images as w
 
 **Author:** David Shupe (IRSA Scientist) and Joyce Kim (IRSA Scientist) in conjunction with the IRSA Science Team
 
-**Updated On:** 2024-10-17
+**Updated:** 2024-10-17
 
-**Contact:** irsasupport@ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html
-
-```{code-cell} ipython3
-
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

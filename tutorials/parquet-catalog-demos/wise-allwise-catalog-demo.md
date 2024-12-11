@@ -344,10 +344,12 @@ print(fld.metadata[b"description"].decode())
 schema.names
 ```
 
+***
+
 ## About this notebook
 
-- Author: Troy Raen (IRSA Developer) in conjunction with David Shupe, Jessica Krick and the IPAC Science Platform team
-- Updated: 2023-7-27
-- Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
+**Author:** Troy Raen (IRSA Developer) in conjunction with David Shupe, Jessica Krick and the IPAC Science Platform team
 
-+++
+**Updated:** 2023-07-27
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
