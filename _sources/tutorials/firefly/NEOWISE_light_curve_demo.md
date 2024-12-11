@@ -84,8 +84,8 @@ Construction of the query can be found in the [`IRSA TAP documentation page`](ht
 ```{code-cell} ipython3
 BASE_URL = "https://irsa.ipac.caltech.edu/TAP/sync"
 QUERY = """
-SELECT * 
-FROM neowiser_p1ba_mch AS n 
+SELECT *
+FROM neowiser_p1ba_mch AS n
 WHERE n.objid LIKE '(558)%'
 """
 table_url = f"{BASE_URL}?QUERY={urllib.parse.quote_plus(QUERY)}"
@@ -151,6 +151,8 @@ Firefly allows you to visualize data for specific targets. In conjuction with As
 
 +++
 
-**Author:** Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team<br>
-**Updated On:** 2024-10-17<br>
-**Contact:** irsasupport@ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html
+**Author:** Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team
+
+**Updated:** 2024-10-17
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

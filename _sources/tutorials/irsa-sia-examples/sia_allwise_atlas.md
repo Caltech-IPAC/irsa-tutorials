@@ -19,9 +19,7 @@ This notebook tutorial demonstrates the process of querying IRSA's Simple Image 
 
 +++
 
-***
 
-+++
 
 ## Learning Goals
 
@@ -185,9 +183,10 @@ ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', f
 
 **Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
-**Updated On:** 2022-02-14
+**Updated:** 2022-02-14
 
-**Contact:** irsasupport@ipac.caltech.edu or https://jira.ipac.caltech.edu/irsasupport
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+
 
 +++
 

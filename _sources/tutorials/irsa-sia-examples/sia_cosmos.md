@@ -17,9 +17,6 @@ kernelspec:
 
 This notebook tutorial demonstrates the process of querying IRSA's Simple Image Access (SIA) service for the COSMOS images, making a cutout image (thumbnail), and displaying the cutout.
 
-+++
-
-***
 
 +++
 
@@ -184,9 +181,9 @@ ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', f
 
 **Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
-**Updated On:** 2022-02-14
+**Updated:** 2022-02-14
 
-**Contact:** irsasupport@ipac.caltech.edu or https://jira.ipac.caltech.edu/irsasupport
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
 +++
 
@@ -201,7 +198,3 @@ If you use `astropy` for published research, please cite the authors. Follow the
 +++
 
 If you use COSMOS ACS imaging data in published research,  please cite the dataset Digital Object Identifier (DOI): [10.26131/IRSA178](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA178).
-
-```{code-cell} ipython3
-
-```

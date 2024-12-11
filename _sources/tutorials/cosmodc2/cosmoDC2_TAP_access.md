@@ -180,9 +180,12 @@ plt.ylabel('SDSS rest-frame g-r color')
 # Show the plot.
 plt.show()
 ```
+***
 
 ## About this notebook
 
- * Author: Vandana Desai (IRSA Science Lead)
- * Updated: 2024-07-24
- * Contact: https://irsa.ipac.caltech.edu/docs/help_desk.html
+**Author:** Vandana Desai (IRSA Science Lead)
+
+**Updated:** 2024-07-24
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

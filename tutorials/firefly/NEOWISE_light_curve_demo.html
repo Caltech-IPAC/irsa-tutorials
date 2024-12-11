@@ -525,7 +525,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMC0yOA"" target="_blank">this link</a></div></div>
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMi0xMQ"" target="_blank">this link</a></div></div>
 </div>
 <p>You can re-initizialize the viewer to return to a clean state with <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer"><code class="docutils literal notranslate"><span class="pre">reinit_viewer</span></code></a>.</p>
 <div class="cell docutils container">
@@ -548,8 +548,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BASE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP/sync&quot;</span>
 <span class="n">QUERY</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT * </span>
-<span class="s2">FROM neowiser_p1ba_mch AS n </span>
+<span class="s2">SELECT *</span>
+<span class="s2">FROM neowiser_p1ba_mch AS n</span>
 <span class="s2">WHERE n.objid LIKE &#39;(558)%&#39;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">table_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">?QUERY=</span><span class="si">{</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -558,7 +558,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/TAP/sync?QUERY=%0ASELECT+%2A+%0AFROM+neowiser_p1ba_mch+AS+n+%0AWHERE+n.objid+LIKE+%27%28558%29%25%27%0A&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/TAP/sync?QUERY=%0ASELECT+%2A%0AFROM+neowiser_p1ba_mch+AS+n%0AWHERE+n.objid+LIKE+%27%28558%29%25%27%0A&#39;
 </pre></div>
 </div>
 </div>
@@ -639,9 +639,9 @@
 <hr class="docutils" />
 <section id="about-this-notebook">
 <h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
-<p><strong>Author:</strong> Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team<br>
-<strong>Updated On:</strong> 2024-10-17<br>
-<strong>Contact:</strong> irsasupport&#64;ipac.caltech.edu or  https://irsa.ipac.caltech.edu/docs/help_desk.html</p>
+<p><strong>Author:</strong> Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team</p>
+<p><strong>Updated:</strong> 2024-10-17</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>
 
