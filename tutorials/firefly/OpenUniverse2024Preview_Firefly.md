@@ -67,6 +67,8 @@ https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md
 - firefly_client.FireflyClient for using the Firefly python client
 - astropy.nddata.Cutout2D for making image cutouts
 - itertools.product to support looping over Roman blocks
+- reproject.reproject_interp to convert Roman coadds from STG to TAN projection
+- io.BytesIO for writing a fits file to an in-memory stream
 
 ```{code-cell} ipython3
 from astropy.io import fits
@@ -80,6 +82,8 @@ from astropy.coordinates import SkyCoord
 from firefly_client import FireflyClient
 from astropy.nddata import Cutout2D
 from itertools import product
+from reproject import reproject_interp
+from io import BytesIO
 ```
 
 ## Learn where the OpenUniverse2024 data are hosted in the cloud.
@@ -565,7 +569,7 @@ For each row in the table you can notice a marker in the image. Selecting a row 
 
 ## Show only high-redshift galaxies
 
-High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>3 galaxies. Notice how the table display and image overlay change. WHAT HAPPENS TO THE CHARTS? You can remove this filter or add new ones through the GUI.
+High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>3 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.
 
 For filtering, we will use `apply_table_filters` method on the galaxy table we loaded above. More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters
 
@@ -620,39 +624,107 @@ fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 ```
 
 ## Plot Roman coadd containing it
+Let's inspect WCS of Roman coadd first
 
 ```{code-cell} ipython3
-#TODO: zoom/pan to same area as in Rubin 3color by translating coords to x,y
+coadd_roman['wcs']
+```
+
+Roman coadds have STG projection which cannot be read by firefly yet. Firefly can display any fits image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike Rubin 3 color image where we directly passed URL of coadd files to firefly, we will read Roman coadd files in python, reproject them from STG to TAN, and write them back to fits to pass them to firefly.
+
+Let's first define functions to do so:
+
+```{code-cell} ipython3
+def reproject_to_TAN(coadd_roman):
+    # Define a new WCS with TAN projection (in CTYPE key)
+    output_wcs = coadd_roman['wcs'].deepcopy()
+    output_wcs.wcs.ctype = [ctype.replace('STG', 'TAN') for ctype in coadd_roman['wcs'].wcs.ctype]
+    
+    # Use reproject to convert a given data and wcs, to a desired wcs and shape
+    reprojected_data, _ = reproject_interp(
+        (coadd_roman['data'], coadd_roman['wcs']),
+        output_projection=output_wcs,
+        shape_out=coadd_roman['data'].shape
+    )
+
+    return {'data': reprojected_data, 'wcs': output_wcs}
 ```
 
 ```{code-cell} ipython3
-# roman rgb for identifed region (3 img X 469M have to wait)
+def get_fits_stream(coadd_roman):
+    # Create a FITS PrimaryHDU object with the coadd data
+    hdu = fits.PrimaryHDU(data=coadd_roman['data'], header=coadd_roman['wcs'].to_header())
 
+    # Write the HDU to the in-memory stream (to save I/O time)
+    fits_stream = BytesIO()
+    hdu.writeto(fits_stream, overwrite=True)
+    fits_stream.seek(0) # to bring reading pointer to the beginning of file
+
+    return fits_stream
+```
+
+Then we perform all 3 operations we mentioned above for the RGB filters of Roman:
+
+```{code-cell} ipython3
+coadds_rgb = []
+coadds_rgb_reprojected = []
+coadds_rgb_fits_stream = []
+
+for filter_name in ROMAN_RGB_FILTERS:
+    print(f'\nFILTER: {filter_name}')
+    print('Retrieving Roman coadd...')
+    coadd_roman = get_roman_coadd(high_z_gal_coords, filter_name)
+    coadds_rgb.append(coadd_roman)
+
+    print('Reprojecting to TAN...')
+    coadd_roman_reprojected = reproject_to_TAN(coadd_roman)
+    coadds_rgb_reprojected.append(coadd_roman_reprojected)
+
+    print('Writing back to fits stream...')
+    coadd_roman_fits_stream = get_fits_stream(coadd_roman_reprojected)
+    coadds_rgb_fits_stream.append(coadd_roman_fits_stream)
+```
+
+Now we upload each fits stream (in-memory fits file) to firefly using `upload_fits_data()` and prepare color params to pass to the `show_fits_3color()`. More info here:
+
+- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data
+
+- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color
+
+```{code-cell} ipython3
+three_color_params = [
+    {
+        'file': fc.upload_fits_data(fits_stream),
+        'Title': "Roman Coadd 3 color"
+    } for fits_stream in coadds_rgb_fits_stream]
+```
+
+```{code-cell} ipython3
 coadd_ff_id_roman_3color = 'roman-coadd-3color-high_z_gal'
-threeC = [
-    dict(url=https_url(get_roman_coadd_fpath(high_z_gal_coords, filter_name)),
-         Title="Roman Coadd 3 color")
-    for filter_name in ROMAN_RGB_FILTERS
-]
-
-fc.show_fits_3color(threeC, plot_id=coadd_ff_id_roman_3color)
+fc.show_fits_3color(three_color_params, plot_id=coadd_ff_id_roman_3color)
 ```
 
-Firefly can't read the STG WCS yet, so we won't see catalog markers on Roman image. We can still refer the Rubin coadd, and identify the high z galaxy cluster we picked in Roman coadd. Let's zoom to it and play with color stretch option in the toolbar.
+We can see 3 color image of Roman coadd containing the high-redshift galaxy sources. Try panning and zomming out, you can notice it spans over one block compared to the Rubin coadd which is much larger.
 
-We identify that squared stretch from -2 to 10 sigma highlights the colors of our galaxy cluster better. Let's also set it through code for reproduciblity:
+### Use Firefly's pan/zoom/align methods to locate high redshift sources
+Now, let's align and lock all images and zoom to the region where we located high-redshift galaxy sources:
+
+```{code-cell} ipython3
+fc.set_pan(plot_id=coadd_ff_id_roman_3color, x=high_z_gal_coords.ra.deg, y=high_z_gal_coords.dec.deg, coord='j2000')
+fc.set_zoom(plot_id=coadd_ff_id_roman_3color, factor=2)
+fc.dispatch('ImagePlotCntlr.wcsMatch', payload=dict(matchType='Standard', lockMatch=True)) # TODO; make a method alignByWcs(lock) and replace by it
+```
 
 +++
 
 ### Use Firefly's set_stretch method to change the stretch of the image display via Python.
 
-You can use the Firefly GUI to change the stretch of the image display. You can also use the Firefly client's set_stretch to do this via Python. This is helpful for reproducibility and for scaling up to many images.
+The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client's `set_stretch` to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
 ```{code-cell} ipython3
 fc.set_stretch(coadd_ff_id_roman_3color, 'sigma', 'squared', 
-               band='ALL', lower_value=-2, upper_value=10)
+               band='ALL', lower_value=-2, upper_value=10);
 ```
 
-```{code-cell} ipython3
-# TODO: create region file for Roman to show markers of identifies high z galaxy cluster
-```
+We can see atleast one of the high-redshift galaxy sources we were interested in, got simulated by Roman OpenUniverse2024 data.
+
