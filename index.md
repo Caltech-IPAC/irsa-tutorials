@@ -56,6 +56,7 @@ caption: Visualizations with Firefly
 
 tutorials/firefly/SEDs_in_Firefly
 tutorials/firefly/NEOWISE_light_curve_demo
+tutorials/firefly/OpenUniverse2024Preview_Firefly
 
 ```
 
