@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Using Firelfy to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images
+# Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images
 
 +++
 
@@ -23,7 +23,7 @@ By the end of this tutorial, you will:
 
 - Learn how to launch an interactive Firefly instance inside JupyterLab.
 
-- Learn how to use the Firefly Jupyterlab extension to visualize cloud-hosted simulated images, overplot ds9 region files, overplot catalogs in Parquet format, and create 3 color images.
+- Learn how to use the Firefly Jupyterlab extension to visualize cloud-hosted simulated images, overplot ds9 regions, overplot catalogs in Parquet format, and create 3 color images.
 
 +++
 
@@ -175,7 +175,7 @@ def get_roman_coadd(coord, filter):
         return {'data': coadd_data, 'wcs': coadd_wcs}
 ```
 
-## Inspect a simulated Roman Coadd
+### Inspect a simulated Roman Coadd
 
 +++
 
@@ -366,7 +366,7 @@ fig.suptitle(f"Cutouts at ({coord.ra}, {coord.dec}) with {cutout_size} size", fo
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 ```
 
-### Use Firefly to create an interactive image visualization to identify a blended source
+## Use Firefly to interactively identify a blended source
 
 Clearly, the simulated Roman coadd has higher spatial resolution than the Rubin simulated coadd. Let's try to locate blended objects to compare in the simulated Rubin and Roman images. We will use Firefly's interactive visualization to make this task easier.
 
@@ -382,7 +382,7 @@ fc.reinit_viewer() #to clean the state, if this cell ran earlier
 
 ### Send the simulated Rubin coadd to Firefly using show_fits.
 
-For more information on show_fits, see: 
+For more information on `show_fits`, see: 
 
 https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits
 
@@ -394,31 +394,26 @@ fc.show_fits(url=https_url(coadd_s3_fpath_rubin),
              )
 ```
 
-### Use ds9 region files to overplot the simulated Roman image blocks on the interactive display
+### Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display
 
-The Firefly client includes several methods related to controlling ds9 region overlays. These include:
+The Firefly client includes several methods related to controlling ds9 region overlays. To 
+overlay a region layer on the loaded FITS images, we can use `overlay_region_layer`:
 
-- overlay_region_layer (overlay a region layer on the loaded FITS images)
-- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer
-  
-- add_region_data (add region entries to a region layer)
-- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data
-  
-- remove_region_data (remove region entries from a region layer)
-- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.remove_region_data
+https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer
 
-- delete_region_layer (delete region layer from the loaded FITS images)
-- https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.delete_region_layer
+Region data is defined in ds9 region syntax that can be found at https://ds9.si.edu/doc/ref/region.html
 
 ```{code-cell} ipython3
-# mark the roman coadd blocks as boxes (uses ds9 region syntax - https://ds9.si.edu/doc/ref/region.html)
+# mark the roman coadd blocks as boxes
 roman_regions = [
     f'icrs;box {ra_block_center.value}d {dec_block_center.value}d {block_size.value}" {block_size.value}" 0d'
     for (ra_block_center, dec_block_center) in product(ra_block_centers, dec_block_centers)
 ]
 
 roman_regions_id = 'roman_regions'
-fc.overlay_region_layer(region_data=roman_regions, title='Roman Mosiac', region_layer_id=roman_regions_id)
+fc.overlay_region_layer(region_data=roman_regions,
+                        title='Roman Mosiac', 
+                        region_layer_id=roman_regions_id)
 ```
 
 ### Use Firefly's pan and zoom capabilities to locate a region of interest (a blended source)
@@ -441,13 +436,17 @@ coords_of_interest = SkyCoord('0h38m25.35s -44d00m10.1s', frame='icrs') # locate
 coords_of_interest
 ```
 
-We can now use this SkyCoord object to compare our coadds. More information on SkyCoord can be found here:
+We can now use this `SkyCoord` object to compare our coadds. More information on `SkyCoord` can be found here:
 
 https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord
 
 +++
 
-### Use a ds9 region file to overplot the selected position.
+### Use ds9 region syntax to overplot the selected position
+
+For this we use the id of the region layer we defined above, and add more region data using `add_region_data`:
+
+https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data
 
 ```{code-cell} ipython3
 point_region = f'icrs;point {coords_of_interest.ra.value}d {coords_of_interest.dec.value}d # point=cross 15 text={{Blended source}}'
@@ -503,7 +502,7 @@ plt.tight_layout(rect=[0, 0, 1, 0.97])
 # plt.savefig("plot.pdf", bbox_inches='tight', pad_inches=0.2)
 ```
 
-### Use Firefly to visualize the OpenUniverse2024 data preview catalogs
+## Use Firefly to visualize the OpenUniverse2024 data preview catalogs
 Let's inspect the properties of sources in the Rubin coadd image. For this we will use the input truth files present in S3 bucket.
 
 The OpenUniverse2024 data preview includes the input truth files that were used to create the simulated images. These files are in Parquet and HDF5 format, and include information about the properties of galaxies, stars, and transients.
@@ -528,7 +527,7 @@ galaxy_cat_path = f"{BUCKET_NAME}/{TRUTH_FILES_PATH}/galaxy_10307.parquet"
 galaxy_cat_path
 ```
 
-## Overlay catalog on interactive image of coadd
+### Use Firefly's show_table to overlay the catalogs on interactive image of coadd
 
 The input truth files cover a region much larger than the data preview, so we define filters on table to constraint the sources in catalog within the ra and dec bounds of preview data. (Note: you can remove filters through the table UI if you wish to see the entire data)
 
@@ -536,7 +535,7 @@ The input truth files cover a region much larger than the data preview, so we de
 
 You can visualize catalogs interactively with Firefly using `show_table`. This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we've already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.
 
-For more information on show_fits, see: 
+For more information on `show_table`, see: 
 
 https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table
 
@@ -567,7 +566,7 @@ fc.show_table(url=https_url(galaxy_cat_path),
 
 For each row in the table you can notice a marker in the image. Selecting a row or marker changes the corresponding marker or row, respectively. You can click on "Details" tab in the UI to show properties of each source selected in image/table.
 
-## Show only high-redshift galaxies
+### Use Firefly's apply_table_filters to show only high-redshift galaxies
 
 High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>3 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.
 
@@ -582,11 +581,7 @@ You can play with the filters directly from the UI as well. Try removing adding 
 
 +++
 
-### Use Firefly's show_fits_3color to create a 3 color image of the simulated Rubin images.
-
-More information on the show_fits_3color method can be found here:
-
-https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color
+### Use Firefly's show_fits_3color to create a 3 color image of the simulated Rubin images
 
 ```{code-cell} ipython3
 # [R, G, B]
@@ -594,7 +589,9 @@ ROMAN_RGB_FILTERS = ['H158', 'J129', 'Y106']
 RUBIN_RGB_FILTERS = ['r', 'g', 'u']
 ```
 
-We already have Rubin coadd with catalog overlaid, let's make a 3 color image to see colors of marked objects more clearly.
+We already have Rubin coadd with catalog overlaid, let's make a 3 color image to see colors of marked objects more clearly. For this we will use `show_fits_3color` method:
+
+https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color
 
 ```{code-cell} ipython3
 coadd_ff_id_rubin_3color = 'rubin-coadd-3color'
@@ -604,10 +601,11 @@ threeC = [
     for filter_name in RUBIN_RGB_FILTERS
 ]
 
-fc.show_fits_3color(threeC, plot_id=coadd_ff_id_rubin_3color)
+fc.show_fits_3color(three_color_params=threeC,
+                    plot_id=coadd_ff_id_rubin_3color)
 ```
 
-### Use Firefly's image pan/zoom and catalog overlay/filter features to identify a region of interest. 
+### Use Firefly's interactivity to identify a region of interest 
 
 For example, we found a region of the sky that seems to have a high number of high redshift sources and we copy it from the image display:
 
@@ -619,18 +617,20 @@ high_z_gal_coords
 
 ```{code-cell} ipython3
 # let's also mark it in our region layer, so that it's easy to pinpoint later
-point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec.value}d # point=cross 15 text={{z>3 galaxies}}'
+point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec.value}d # point=cross 15 text={{z>3 mock galaxies}}'
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 ```
 
-## Plot Roman coadd containing it
+## Plot 3-color Roman coadd containing your region of interest
 Let's inspect WCS of Roman coadd first
 
 ```{code-cell} ipython3
 coadd_roman['wcs']
 ```
 
-Roman coadds have STG projection which cannot be read by firefly yet. Firefly can display any fits image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike Rubin 3 color image where we directly passed URL of coadd files to firefly, we will read Roman coadd files in python, reproject them from STG to TAN, and write them back to fits to pass them to firefly.
+### Prepare Roman coadds for displaying in Firefly
+
+Roman coadds have STG projection which cannot be read by Firefly yet. Firefly can display any FITS image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike Rubin 3 color image where we directly passed URL of coadd files to Firefly, we will read Roman coadd files in Python, reproject them from STG to TAN, and write them back to FITS to pass them to Firefly.
 
 Let's first define functions to do so:
 
@@ -685,6 +685,8 @@ for filter_name in ROMAN_RGB_FILTERS:
     coadds_rgb_fits_stream.append(coadd_roman_fits_stream)
 ```
 
+### Use Firefly's show_fits_3color to create a 3 color image of Roman coadds
+
 Now we upload each fits stream (in-memory fits file) to firefly using `upload_fits_data()` and prepare color params to pass to the `show_fits_3color()`. More info here:
 
 - https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data
@@ -701,30 +703,31 @@ three_color_params = [
 
 ```{code-cell} ipython3
 coadd_ff_id_roman_3color = 'roman-coadd-3color-high_z_gal'
-fc.show_fits_3color(three_color_params, plot_id=coadd_ff_id_roman_3color)
+fc.show_fits_3color(three_color_params=three_color_params,
+                    plot_id=coadd_ff_id_roman_3color)
 ```
 
 We can see 3 color image of Roman coadd containing the high-redshift galaxy sources. Try panning and zomming out, you can notice it spans over one block compared to the Rubin coadd which is much larger.
 
 ### Use Firefly's pan/zoom/align methods to locate high redshift sources
-Now, let's align and lock all images and zoom to the region where we located high-redshift galaxy sources:
+Now, let's pan & zoom to the region where we located high-redshift galaxy sources. Also align & lock all images being displayed by WCS. For these operations we use these 3 methods:
+- `set_pan`: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_pan
+- `set_zoom`: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom
+- `align_images`: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images
 
 ```{code-cell} ipython3
 fc.set_pan(plot_id=coadd_ff_id_roman_3color, x=high_z_gal_coords.ra.deg, y=high_z_gal_coords.dec.deg, coord='j2000')
-fc.set_zoom(plot_id=coadd_ff_id_roman_3color, factor=2)
-fc.dispatch('ImagePlotCntlr.wcsMatch', payload=dict(matchType='Standard', lockMatch=True)) # TODO; make a method alignByWcs(lock) and replace by it
+fc.set_zoom(plot_id=coadd_ff_id_roman_3color, factor=1)
+fc.align_images(lock_match=True)
 ```
 
-+++
-
-### Use Firefly's set_stretch method to change the stretch of the image display via Python.
+### Use Firefly's set_stretch method to change the stretch of the image display via Python
 
 The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client's `set_stretch` to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
+More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch
+
 ```{code-cell} ipython3
-fc.set_stretch(coadd_ff_id_roman_3color, 'sigma', 'squared', 
-               band='ALL', lower_value=-2, upper_value=10);
+fc.set_stretch(plot_id=coadd_ff_id_roman_3color, stype='sigma', algorithm='squared', 
+               band='ALL', lower_value=-2, upper_value=10)
 ```
-
-We can see atleast one of the high-redshift galaxy sources we were interested in, got simulated by Roman OpenUniverse2024 data.
-
