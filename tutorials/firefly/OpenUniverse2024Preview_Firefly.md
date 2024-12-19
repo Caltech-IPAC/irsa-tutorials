@@ -375,7 +375,7 @@ Clearly, the simulated Roman coadd has higher spatial resolution than the Rubin 
 ### Launch and initialize Firefly
 
 ```{code-cell} ipython3
-fc = FireflyClient.make_lab_client()
+fc = FireflyClient.make_client()
 
 fc.reinit_viewer() #to clean the state, if this cell ran earlier
 ```
@@ -731,3 +731,13 @@ More info about this method: https://caltech-ipac.github.io/firefly_client/api/f
 fc.set_stretch(plot_id=coadd_ff_id_roman_3color, stype='sigma', algorithm='squared', 
                band='ALL', lower_value=-2, upper_value=10)
 ```
+
+***
+
+## About This Notebook
+
+**Author:** Jaladh Singhal and Vandana Desai in conjunction with the IRSA Team
+
+**Updated:** 2024-12-18
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
