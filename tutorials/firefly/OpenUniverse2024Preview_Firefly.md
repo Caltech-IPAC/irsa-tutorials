@@ -373,11 +373,18 @@ Clearly, the simulated Roman coadd has higher spatial resolution than the Rubin 
 +++
 
 ### Launch and initialize Firefly
+There are two ways to initialize a Firefly client from Python, depending on whether you're running the notebook in JupyterLab or not. Assuming you have `jupyter-firefly-extensions` set up in your environment as explained [here](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md), you can use `make_lab_client()` in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use `make_client()` in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.
+
+You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a [Firefly Docker image](https://hub.docker.com/r/ipac/firefly) and access it at `http://localhost:8080/firefly`. The URL of the Firefly server is read by both `make_client()` and `make_lab_client()` through the environment variable `FIREFLY_URL`. However, `make_client()` also allows you to pass the URL directly as the `url` parameter.
 
 ```{code-cell} ipython3
-fc = FireflyClient.make_client()
+# Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
 
-fc.reinit_viewer() #to clean the state, if this cell ran earlier
+# Uncomment for contexts other than above 
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+
+fc.reinit_viewer() # to clean the state, if this cell ran earlier
 ```
 
 ### Send the simulated Rubin coadd to Firefly using show_fits.
@@ -738,6 +745,6 @@ fc.set_stretch(plot_id=coadd_ff_id_roman_3color, stype='sigma', algorithm='squar
 
 **Author:** Jaladh Singhal and Vandana Desai in conjunction with the IRSA Team
 
-**Updated:** 2024-12-18
+**Updated:** 2024-12-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

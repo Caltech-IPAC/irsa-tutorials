@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.16.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -61,8 +61,6 @@ The packages needed for this notebook are in the `requirements.txt` file. They c
 * _firefly_client.FireflyClient_ - Python API to Firefly for displaying tables, images and charts
 * _numpy_ - for working with arrays
 * _pyvo_ - for queries to Virtual Observatory services at the archives
-
-+++
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -551,16 +549,18 @@ phot_tbl
 
 +++
 
-This notebook assumes that [jupyter_firefly_extensions](https://github.com/Caltech-IPAC/jupyter_firefly_extensions) has been installed, and that the Firefly server to use has been specified before Jupyterlab was started.
+There are two ways to initialize a Firefly client from Python, depending on whether you're running the notebook in JupyterLab or not. Assuming you have `jupyter-firefly-extensions` set up in your environment as explained [here](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md), you can use `make_lab_client()` in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use `make_client()` in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.
 
-If everything has been properly configured, executing the next cell will bring up a Firefly tab in Jupyterlab with the welcome message.
+You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a [Firefly Docker image](https://hub.docker.com/r/ipac/firefly) and access it at `http://localhost:8080/firefly`. The URL of the Firefly server is read by both `make_client()` and `make_lab_client()` through the environment variable `FIREFLY_URL`. However, `make_client()` also allows you to pass the URL directly as the `url` parameter.
 
 ```{code-cell} ipython3
-# Uncomment to use the jupyter_firefly_extensions
-#fc = FireflyClient.make_lab_client()
+# Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
 
-# Uncomment to use a separate web browser tab
+# Uncomment for contexts other than above 
 fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+
+fc.reinit_viewer() # to clean the state, if this cell ran earlier
 ```
 
 In the event that there are problems with the tab opened above, run the below command to obtain a web link that can be opened in a browser directly:
@@ -703,6 +703,6 @@ Note that zooming or panning one image will do the same in the other images as w
 
 **Author:** David Shupe (IRSA Scientist) and Joyce Kim (IRSA Scientist) in conjunction with the IRSA Science Team
 
-**Updated:** 2024-12-18
+**Updated:** 2024-12-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

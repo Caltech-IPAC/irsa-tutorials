@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.16.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -19,7 +19,6 @@ By the end of this tutorial, you will:
 
 - Construct a TAP query to download the necessary data and visualize it via the web browser with an instantiated Firefly environment.
 - Plot light curves from NEOWISE data using the Firefly Python API.
-- Format cells containing tables, charts and images viewed in the client.
 - Overlay a catalog of data onto a HiPS image.
 
 +++
@@ -53,26 +52,23 @@ import astropy.utils.data
 import urllib.parse
 ```
 
-## Step 1
+## Instantiate the Firefly client
 
-Instantiate the client and view it in a different tab in the web browser.
+There are two ways to initialize a Firefly client from Python, depending on whether you're running the notebook in JupyterLab or not. Assuming you have `jupyter-firefly-extensions` set up in your environment as explained [here](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md), you can use `make_lab_client()` in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use `make_client()` in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.
 
-In this example, we use the IRSA Viewer - a public firefly server. The firefly server can also be run locally, e.g. via a Firefly Docker image obtained from https://hub.docker.com/r/ipac/firefly/tags/.
-
-```{code-cell} ipython3
-url = 'https://irsa.ipac.caltech.edu/irsaviewer'
-# url='http://127.0.0.1:8080/firefly'  # if you have firefly server running locally (preferably through docker)
-
-fc = FireflyClient.make_client(url)
-```
-
-You can re-initizialize the viewer to return to a clean state with [`reinit_viewer`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer).
+You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a [Firefly Docker image](https://hub.docker.com/r/ipac/firefly) and access it at `http://localhost:8080/firefly`. The URL of the Firefly server is read by both `make_client()` and `make_lab_client()` through the environment variable `FIREFLY_URL`. However, `make_client()` also allows you to pass the URL directly as the `url` parameter.
 
 ```{code-cell} ipython3
-# fc.reinit_viewer();  # The semi-colon suppresses the output of the method when ran
+# Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
+
+# Uncomment for contexts other than above 
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+
+fc.reinit_viewer() # to clean the state, if this cell ran earlier
 ```
 
-## Step 2
+## Construct a TAP Query and display the retrieved table in Firefly 
 
 TAP search the 'Known Solar System Object Possible Association List' catalog from the NEOWISE-R database. The specific target we are looking for is minor planet `558 Carmen`. We can query this target using a TAP search through IRSA; the `table_url` is broken down as follows:
 
@@ -110,7 +106,7 @@ Note that along with the table, firefly also displays the coverage and chart ass
 
 +++
 
-## Step 3
+## Plot Light Curves in Firefly
 
 After retrieving the data and displaying it in the client, we can now create a light curve by plotting the Modified Julian Date ('mjd') in the abscissa and the magnitude from band W1 ('w1mpro') in the ordinate. We also flip the ordinate to accurately display magnitude.
 
@@ -118,7 +114,7 @@ After retrieving the data and displaying it in the client, we can now create a l
 fc.show_xyplot(tbl_id='tableneo', xCol='mjd', yCol='w1mpro', yOptions='flip')
 ```
 
-## Step 4
+## Overlay the catalog on a HiPS image
 
 Finally, we can overlay the catalog of data in the table onto a HiPS image of our choice, using the method [`show_hips`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_hips). However, this method requires target coordinates for the object you want to analyze.
 
@@ -153,6 +149,6 @@ Firefly allows you to visualize data for specific targets. In conjuction with As
 
 **Author:** Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team
 
-**Updated:** 2024-10-17
+**Updated:** 2024-12-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
