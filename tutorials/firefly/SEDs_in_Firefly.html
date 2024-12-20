@@ -192,6 +192,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Firefly visualization tools in Python to vet SEDs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="nav bd-sidenav">
@@ -1054,7 +1055,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=14</i>
-<table id="table139927152310096" class="table-striped table-bordered table-condensed">
+<table id="table140636287742736" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>wavelength</th><th>mag</th><th>magerr</th><th>upper_limit</th><th>zeropoint</th><th>lam_flam</th><th>lam_flam_err</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th>micron</th><th></th><th></th><th></th><th>Jy</th><th>erg / (s cm2)</th><th>erg / (s cm2)</th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1077,15 +1078,22 @@
 </section>
 <section id="upload-to-firefly">
 <h2>Upload to Firefly<a class="headerlink" href="#upload-to-firefly" title="Link to this heading">#</a></h2>
-<p>This notebook assumes that <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions">jupyter_firefly_extensions</a> has been installed, and that the Firefly server to use has been specified before Jupyterlab was started.</p>
-<p>If everything has been properly configured, executing the next cell will bring up a Firefly tab in Jupyterlab with the welcome message.</p>
+<p>There are two ways to initialize a Firefly client from Python, depending on whether you’re running the notebook in JupyterLab or not. Assuming you have <code class="docutils literal notranslate"><span class="pre">jupyter-firefly-extensions</span></code> set up in your environment as explained <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>, you can use <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.</p>
+<p>You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a <a class="reference external" href="https://hub.docker.com/r/ipac/firefly">Firefly Docker image</a> and access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/firefly</span></code>. The URL of the Firefly server is read by both <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> and <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> through the environment variable <code class="docutils literal notranslate"><span class="pre">FIREFLY_URL</span></code>. However, <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> also allows you to pass the URL directly as the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment to use the jupyter_firefly_extensions</span>
-<span class="c1">#fc = FireflyClient.make_lab_client()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
+<span class="c1"># fc = FireflyClient.make_lab_client()</span>
 
-<span class="c1"># Uncomment to use a separate web browser tab</span>
+<span class="c1"># Uncomment for contexts other than above </span>
 <span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/irsaviewer&quot;</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">reinit_viewer</span><span class="p">()</span> <span class="c1"># to clean the state, if this cell ran earlier</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1098,7 +1106,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMi0xOQ"" target="_blank">this link</a></div></div>
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMi0yMA"" target="_blank">this link</a></div></div>
 </div>
 <p>Write the photometry table to a FITS file:</p>
 <div class="cell docutils container">
@@ -1260,11 +1268,10 @@
 </div>
 </div>
 </div>
-<p>For turning on “Align and Lock by WCS” in these images, there’s no dedicated method in Firefly but you can use this workaround (using low-level API):</p>
+<p>For turning on “Align and Lock by WCS” in these images, use:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="s1">&#39;ImagePlotCntlr.wcsMatch&#39;</span><span class="p">,</span>
-            <span class="n">payload</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">matchType</span><span class="o">=</span><span class="s1">&#39;Standard&#39;</span><span class="p">,</span> <span class="n">lockMatch</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">align_images</span><span class="p">(</span><span class="n">lock_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1281,7 +1288,7 @@
 <section id="about-this-notebook">
 <h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Author:</strong> David Shupe (IRSA Scientist) and Joyce Kim (IRSA Scientist) in conjunction with the IRSA Science Team</p>
-<p><strong>Updated:</strong> 2024-10-17</p>
+<p><strong>Updated:</strong> 2024-12-19</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>

@@ -50,7 +50,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/firefly/NEOWISE_light_curve_demo';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Parallelizing image convolution" href="../parallelize/Parallelize_Convolution.html" />
+    <link rel="next" title="Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images" href="OpenUniverse2024Preview_Firefly.html" />
     <link rel="prev" title="Using Firefly visualization tools in Python to vet SEDs" href="SEDs_in_Firefly.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,6 +191,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="nav bd-sidenav">
@@ -455,10 +456,10 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1">Step 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2">Step 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3">Step 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4">Step 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-the-firefly-client">Instantiate the Firefly client</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construct-a-tap-query-and-display-the-retrieved-table-in-firefly">Construct a TAP Query and display the retrieved table in Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-light-curves-in-firefly">Plot Light Curves in Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlay-the-catalog-on-a-hips-image">Overlay the catalog on a HiPS image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
 </ul>
@@ -480,7 +481,6 @@
 <ul class="simple">
 <li><p>Construct a TAP query to download the necessary data and visualize it via the web browser with an instantiated Firefly environment.</p></li>
 <li><p>Plot light curves from NEOWISE data using the Firefly Python API.</p></li>
-<li><p>Format cells containing tables, charts and images viewed in the client.</p></li>
 <li><p>Overlay a catalog of data onto a HiPS image.</p></li>
 </ul>
 </section>
@@ -516,33 +516,31 @@
 </div>
 </div>
 </section>
-<section id="step-1">
-<h2>Step 1<a class="headerlink" href="#step-1" title="Link to this heading">#</a></h2>
-<p>Instantiate the client and view it in a different tab in the web browser.</p>
-<p>In this example, we use the IRSA Viewer - a public firefly server. The firefly server can also be run locally, e.g. via a Firefly Docker image obtained from https://hub.docker.com/r/ipac/firefly/tags/.</p>
+<section id="instantiate-the-firefly-client">
+<h2>Instantiate the Firefly client<a class="headerlink" href="#instantiate-the-firefly-client" title="Link to this heading">#</a></h2>
+<p>There are two ways to initialize a Firefly client from Python, depending on whether you’re running the notebook in JupyterLab or not. Assuming you have <code class="docutils literal notranslate"><span class="pre">jupyter-firefly-extensions</span></code> set up in your environment as explained <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>, you can use <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.</p>
+<p>You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a <a class="reference external" href="https://hub.docker.com/r/ipac/firefly">Firefly Docker image</a> and access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/firefly</span></code>. The URL of the Firefly server is read by both <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> and <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> through the environment variable <code class="docutils literal notranslate"><span class="pre">FIREFLY_URL</span></code>. However, <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> also allows you to pass the URL directly as the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://irsa.ipac.caltech.edu/irsaviewer&#39;</span>
-<span class="c1"># url=&#39;http://127.0.0.1:8080/firefly&#39;  # if you have firefly server running locally (preferably through docker)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
+<span class="c1"># fc = FireflyClient.make_lab_client()</span>
 
-<span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="c1"># Uncomment for contexts other than above </span>
+<span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/irsaviewer&quot;</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">reinit_viewer</span><span class="p">()</span> <span class="c1"># to clean the state, if this cell ran earlier</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMi0xOQ"" target="_blank">this link</a></div></div>
-</div>
-<p>You can re-initizialize the viewer to return to a clean state with <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.reinit_viewer"><code class="docutils literal notranslate"><span class="pre">reinit_viewer</span></code></a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fc.reinit_viewer();  # The semi-colon suppresses the output of the method when ran</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="step-2">
-<h2>Step 2<a class="headerlink" href="#step-2" title="Link to this heading">#</a></h2>
+<section id="construct-a-tap-query-and-display-the-retrieved-table-in-firefly">
+<h2>Construct a TAP Query and display the retrieved table in Firefly<a class="headerlink" href="#construct-a-tap-query-and-display-the-retrieved-table-in-firefly" title="Link to this heading">#</a></h2>
 <p>TAP search the ‘Known Solar System Object Possible Association List’ catalog from the NEOWISE-R database. The specific target we are looking for is minor planet <code class="docutils literal notranslate"><span class="pre">558</span> <span class="pre">Carmen</span></code>. We can query this target using a TAP search through IRSA; the <code class="docutils literal notranslate"><span class="pre">table_url</span></code> is broken down as follows:</p>
 <ul class="simple">
 <li><p>We want to search the data through IRSA, which supports TAP querying, and we want it streamed directly to us via a synchronous search: <br>”https://<!---->irsa.ipac.caltech.edu/TAP/sync”<br><br></p></li>
@@ -593,8 +591,8 @@
 </div>
 <p>Note that along with the table, firefly also displays the coverage and chart associated with the table. It overlays colored squares for each row of the table onto a HiPS image, because the table contains recognizable celestial coordinates. It also creates a scatter plot of ra and dec from the table.</p>
 </section>
-<section id="step-3">
-<h2>Step 3<a class="headerlink" href="#step-3" title="Link to this heading">#</a></h2>
+<section id="plot-light-curves-in-firefly">
+<h2>Plot Light Curves in Firefly<a class="headerlink" href="#plot-light-curves-in-firefly" title="Link to this heading">#</a></h2>
 <p>After retrieving the data and displaying it in the client, we can now create a light curve by plotting the Modified Julian Date (‘mjd’) in the abscissa and the magnitude from band W1 (‘w1mpro’) in the ordinate. We also flip the ordinate to accurately display magnitude.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -609,8 +607,8 @@
 </div>
 </div>
 </section>
-<section id="step-4">
-<h2>Step 4<a class="headerlink" href="#step-4" title="Link to this heading">#</a></h2>
+<section id="overlay-the-catalog-on-a-hips-image">
+<h2>Overlay the catalog on a HiPS image<a class="headerlink" href="#overlay-the-catalog-on-a-hips-image" title="Link to this heading">#</a></h2>
 <p>Finally, we can overlay the catalog of data in the table onto a HiPS image of our choice, using the method <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_hips"><code class="docutils literal notranslate"><span class="pre">show_hips</span></code></a>. However, this method requires target coordinates for the object you want to analyze.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -645,7 +643,7 @@
 <section id="about-this-notebook">
 <h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Author:</strong> Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team</p>
-<p><strong>Updated:</strong> 2024-10-17</p>
+<p><strong>Updated:</strong> 2024-12-19</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>
@@ -671,11 +669,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../parallelize/Parallelize_Convolution.html"
+       href="OpenUniverse2024Preview_Firefly.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Parallelizing image convolution</p>
+        <p class="prev-next-title">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -699,10 +697,10 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1">Step 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2">Step 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3">Step 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4">Step 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instantiate-the-firefly-client">Instantiate the Firefly client</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construct-a-tap-query-and-display-the-retrieved-table-in-firefly">Construct a TAP Query and display the retrieved table in Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-light-curves-in-firefly">Plot Light Curves in Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlay-the-catalog-on-a-hips-image">Overlay the catalog on a HiPS image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
 </ul>

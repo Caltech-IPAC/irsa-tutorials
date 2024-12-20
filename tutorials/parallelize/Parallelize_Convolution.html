@@ -50,7 +50,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/parallelize/Parallelize_Convolution';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Using Firefly visualization tools to understand the light curves of Solar System objects" href="../firefly/NEOWISE_light_curve_demo.html" />
+    <link rel="prev" title="Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images" href="../firefly/OpenUniverse2024Preview_Firefly.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -190,6 +190,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="current nav bd-sidenav">
@@ -525,7 +526,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-19 23:26:48,634	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-20 05:10:56,248	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -582,7 +583,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.3 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.1 seconds
 </pre></div>
 </div>
 </div>
@@ -599,7 +600,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-19 23:27:27,807	INFO worker.py:1821 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-20 05:11:35,428	INFO worker.py:1821 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -659,7 +660,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 85.9, speedup = 1.73
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 85.9, speedup = 1.72
 </pre></div>
 </div>
 </div>
@@ -712,7 +713,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 140.9, speedup = 1.05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 132.9, speedup = 1.11
 </pre></div>
 </div>
 </div>
@@ -736,7 +737,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:37745&#39; processes=4 threads=4, memory=15.61 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:36475&#39; processes=4 threads=4, memory=15.61 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -757,7 +758,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 105.4, speedup = 1.41
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.5, speedup = 1.42
 </pre></div>
 </div>
 </div>
@@ -769,8 +770,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-19 23:33:04,055 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-883490741d48b44e5e25f23d9ecc8685&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3606&gt;&gt; ended with CancelledError
-2024-12-19 23:33:04,111 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-a91a35f7ad251d0e4be6ef59a3f0cce2&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3606&gt;&gt; ended with CancelledError
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-12-20 05:17:02,550 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-620f6a795438d29f3957af77fc9ff834&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3606&gt;&gt; ended with CancelledError
+2024-12-20 05:17:02,874 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-de3dc06580b30f1279a952ef425f2c19&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3606&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>
@@ -813,12 +814,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../firefly/NEOWISE_light_curve_demo.html"
+       href="../firefly/OpenUniverse2024Preview_Firefly.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Using Firefly visualization tools to understand the light curves of Solar System objects</p>
+        <p class="prev-next-title">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</p>
       </div>
     </a>
 </div>

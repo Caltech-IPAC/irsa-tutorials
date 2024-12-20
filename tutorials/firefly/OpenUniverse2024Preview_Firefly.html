@@ -1,0 +1,1716 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/firefly/OpenUniverse2024Preview_Firefly';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Parallelizing image convolution" href="../parallelize/Parallelize_Convolution.html" />
+    <link rel="prev" title="Using Firefly visualization tools to understand the light curves of Solar System objects" href="NEOWISE_light_curve_demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <img src="../../_static/irsa_logo.png" class="logo__image only-dark pst-js-only" alt="NASA/IPAC Infrared Science Archive - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/firefly/OpenUniverse2024Preview_Firefly.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/firefly/OpenUniverse2024Preview_Firefly.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/firefly/OpenUniverse2024Preview_Firefly.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/firefly/OpenUniverse2024Preview_Firefly.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/firefly/OpenUniverse2024Preview_Firefly.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud">Learn where the OpenUniverse2024 data are hosted in the cloud.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roman-coadds">Roman Coadds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-roman-simulated-blocks">Define Roman Simulated “Blocks”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec">Define a function that returns the simulated Roman block column/row for a given RA/Dec.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter">Define a function that retrieves a Roman simulated coadd given a sky position and filter.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-a-simulated-roman-coadd">Inspect a simulated Roman Coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-the-size-of-a-simulated-roman-coadd">Understand the size of a simulated Roman coadd.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position">Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position">Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubin-coadds">Rubin Coadds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieve-rubin-coadds">Retrieve Rubin Coadds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-a-simulated-rubin-coadd">Inspect a simulated Rubin Coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-the-size-of-a-simulated-rubin-coadd">Understand the size of a simulated Rubin coadd.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position">Use matplotlib imshow to create a static visualization of the Rubin simulated coadd and overplot the selected position.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-returns-the-url-for-a-given-s3-filepath">Define a function that returns the URL for a given S3 filepath</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-simulated-roman-and-rubin-cutouts-for-a-selected-position">Compare simulated Roman and Rubin cutouts for a selected position</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-cutout-size">Choose cutout size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-cutouts">Create the cutouts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts">Use matplotlib imshow to plot static side-by-side comparisons of the cutouts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-to-interactively-identify-a-blended-source">Use Firefly to interactively identify a blended source</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-and-initialize-firefly">Launch and initialize Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#send-the-simulated-rubin-coadd-to-firefly-using-show-fits">Send the simulated Rubin coadd to Firefly using show_fits.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display">Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-pan-and-zoom-capabilities-to-locate-a-region-of-interest-a-blended-source">Use Firefly’s pan and zoom capabilities to locate a region of interest (a blended source)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook">Copy the coordinates from the coordinate display to the Python notebook</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-ds9-region-syntax-to-overplot-the-selected-position">Use ds9 region syntax to overplot the selected position</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-cutouts-of-the-identified-blended-source">Plot cutouts of the identified blended source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-to-visualize-the-openuniverse2024-data-preview-catalogs">Use Firefly to visualize the OpenUniverse2024 data preview catalogs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd">Use Firefly’s show_table to overlay the catalogs on interactive image of coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies">Use Firefly’s apply_table_filters to show only high-redshift galaxies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images">Use Firefly’s show_fits_3color to create a 3 color image of the simulated Rubin images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-interactivity-to-identify-a-region-of-interest">Use Firefly’s interactivity to identify a region of interest</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-3-color-roman-coadd-containing-your-region-of-interest">Plot 3-color Roman coadd containing your region of interest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-roman-coadds-for-displaying-in-firefly">Prepare Roman coadds for displaying in Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds">Use Firefly’s show_fits_3color to create a 3 color image of Roman coadds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources">Use Firefly’s pan/zoom/align methods to locate high redshift sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python">Use Firefly’s set_stretch method to change the stretch of the image display via Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="using-firefly-to-explore-openuniverse2024-data-preview-simulated-roman-and-rubin-images">
+<h1>Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images<a class="headerlink" href="#using-firefly-to-explore-openuniverse2024-data-preview-simulated-roman-and-rubin-images" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Learn how to access cloud-hosted Roman and Rubin simulated images.</p></li>
+<li><p>Learn how to launch an interactive Firefly instance inside JupyterLab.</p></li>
+<li><p>Learn how to use the Firefly Jupyterlab extension to visualize cloud-hosted simulated images, overplot ds9 regions, overplot catalogs in Parquet format, and create 3 color images.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The purpose of this tutorial is to become familiar with simulated Roman and Rubin simulated data published through the OpenUniverse 2024 data preview, and to become familiar with the Firefly JupyterLab Extension for visualizing astronomical data products.</p>
+<p>OpenUniverse2024 is a project to simulate spatially overlapping imaging surveys to be carried out by the Nancy Grace Roman Telescope and the Vera C. Rubin Observatory. The simulations were carried out on Argonne’s Theta cluster and consist of:</p>
+<ul class="simple">
+<li><p>The LSST ELAIS-S1 Deep Drilling Field (DDF)</p></li>
+<li><p>The Roman Time-Domain Survey (TDS) shifted to overlap the ELAIS region and LSST DDF</p></li>
+<li><p>Overlapping LSST Wide-Fast-Deep (WFD) survey (with rolling cadence)</p></li>
+<li><p>Overlapping Roman Wide-Area Survey (WAS) in the same region</p></li>
+<li><p>A deep-field calibration region of the Roman WAS in the same region</p></li>
+</ul>
+<p>This data preview release consists of a subset of data from each of the five categories above. More information about data preview can be found at:
+https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html</p>
+<p>Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information can be found here:
+https://github.com/Caltech-IPAC/firefly/blob/dev/README.md</p>
+<p>In addition to being used to make web applications, Firefly can be used from Python. More information can be found here:
+https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
+<p>The Firefly JupyterLab Extension makes it particularly easy to use Firefly to efficiently visualize cloud-hosted astronomical data using cloud-based JupyterLab instances. More information can be found here:</p>
+<p>https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>astropy.io.fits for accessing FITS files</p></li>
+<li><p>numpy for numerical computing</p></li>
+<li><p>s3fs for browsing cloud buckets</p></li>
+<li><p>matplotlib.pyplot for creating static visualizations of FITS images</p></li>
+<li><p>matplotlib.patches for annotating visualizations of FITS images</p></li>
+<li><p>astropy.wcs for dealing with astronomical world coordinate systems</p></li>
+<li><p>astropy.units for dealing with astronomical units</p></li>
+<li><p>astropy.coordinates.SkyCoord for dealing with astronomical coordinates</p></li>
+<li><p>firefly_client.FireflyClient for using the Firefly python client</p></li>
+<li><p>astropy.nddata.Cutout2D for making image cutouts</p></li>
+<li><p>itertools.product to support looping over Roman blocks</p></li>
+<li><p>reproject.reproject_interp to convert Roman coadds from STG to TAN projection</p></li>
+<li><p>io.BytesIO for writing a fits file to an in-memory stream</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">s3fs</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">patches</span>
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">wcs</span>
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span> <span class="nn">firefly_client</span> <span class="kn">import</span> <span class="n">FireflyClient</span>
+<span class="kn">from</span> <span class="nn">astropy.nddata</span> <span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">reproject</span> <span class="kn">import</span> <span class="n">reproject_interp</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud">
+<h2>Learn where the OpenUniverse2024 data are hosted in the cloud.<a class="headerlink" href="#learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud" title="Link to this heading">#</a></h2>
+<p>The OpenUniverse2024 data preview is hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon’s Simple Storage Service (s3) buckets, and you need to know some information about those buckets. The OpenUniverse2024 data preview contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BUCKET_NAME</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-simulations&quot;</span>
+<span class="n">ROMAN_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;openuniverse2024/roman/preview&quot;</span>
+<span class="n">ROMAN_COADD_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ROMAN_PREFIX</span><span class="si">}</span><span class="s2">/RomanWAS/images/coadds&quot;</span>
+<span class="n">TRUTH_FILES_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ROMAN_PREFIX</span><span class="si">}</span><span class="s2">/roman_rubin_cats_v1.1.2_faint&quot;</span>
+
+<span class="n">RUBIN_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;openuniverse2024/rubin/preview&quot;</span>
+<span class="n">RUBIN_COADD_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">RUBIN_PREFIX</span><span class="si">}</span><span class="s2">/u/descdm/preview_data_step3_2877_19_w_2024_12/20240403T150003Z/deepCoadd_calexp/2877/19&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="roman-coadds">
+<h2>Roman Coadds<a class="headerlink" href="#roman-coadds" title="Link to this heading">#</a></h2>
+<p>The Nancy Grace Roman Space Telescope will carry out a wide-area survey (WAS) in the near infrared. The OpenUniverse2024 data preview includes coadded mosaics of simulated WAS data, created with the IMCOM algorithm (Rowe et al. 2011). Bands include F184, H158, J129, K213, Y106. In this section, we define some functions that make it convenient to retrieve a given cloud-hosted simulated Roman coadd based on position and filter.</p>
+<section id="define-roman-simulated-blocks">
+<h3>Define Roman Simulated “Blocks”<a class="headerlink" href="#define-roman-simulated-blocks" title="Link to this heading">#</a></h3>
+<p>The simulated Roman coadds are arranged in 100 arcsecond blocks, as described in Hirata et al. 2024. Below we define the RA and Dec of the block centers. This cell should not be altered.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Centers of roman data preview blocks. Do not alter.</span>
+<span class="n">ra_block_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">9.76330352298415</span><span class="p">,</span> <span class="mf">9.724522605135252</span><span class="p">,</span> <span class="mf">9.68574158906671</span><span class="p">,</span>
+                        <span class="mf">9.646960496603766</span><span class="p">,</span> <span class="mf">9.608179349571955</span><span class="p">,</span> <span class="mf">9.56939816979703</span><span class="p">,</span>
+                        <span class="mf">9.530616979104877</span><span class="p">,</span> <span class="mf">9.491835799321422</span><span class="p">,</span> <span class="mf">9.453054652272561</span><span class="p">,</span>
+                        <span class="mf">9.414273559784032</span><span class="p">,</span> <span class="mf">9.375492543681393</span><span class="p">,</span> <span class="mf">9.336711625789874</span><span class="p">])</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">dec_block_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">44.252584927082495</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.22480733304182</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.197029724175756</span><span class="p">,</span>
+                            <span class="o">-</span><span class="mf">44.16925210374898</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.14147447502621</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.11369684127218</span><span class="p">,</span>
+                            <span class="o">-</span><span class="mf">44.08591920575162</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.05814157172923</span><span class="p">,</span> <span class="o">-</span><span class="mf">44.03036394246976</span><span class="p">,</span>
+                            <span class="o">-</span><span class="mf">44.0025863212379</span><span class="p">,</span> <span class="o">-</span><span class="mf">43.974808711298394</span><span class="p">,</span> <span class="o">-</span><span class="mf">43.94703111591591</span><span class="p">])</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">block_size</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span> <span class="c1"># each block is 100 arcsec across</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec">
+<h3>Define a function that returns the simulated Roman block column/row for a given RA/Dec.<a class="headerlink" href="#define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec" title="Link to this heading">#</a></h3>
+<p>Blocks are arranged in a grid with axes parallel to RA and Dec. A given RA represents a column of blocks and a given Dec represents a row of blocks. This function returns the block column or row given the block centers from the cell above and a given RA or Dec, respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_block_axis</span><span class="p">(</span><span class="n">block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">):</span>
+    <span class="n">ra_or_dec_coord</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">)</span>
+    <span class="n">block_dist_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">block_centers</span> <span class="o">-</span> <span class="n">ra_or_dec_coord</span><span class="p">)</span>
+    <span class="n">closest_block_idx</span> <span class="o">=</span> <span class="n">block_dist_array</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ra_or_dec_coord</span> <span class="o">&lt;</span> <span class="n">block_centers</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="n">block_size</span><span class="o">/</span><span class="mi">2</span> 
+        <span class="ow">or</span> <span class="n">ra_or_dec_coord</span> <span class="o">&gt;</span> <span class="n">block_centers</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="n">block_size</span><span class="o">/</span><span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chosen </span><span class="si">{</span><span class="n">ra_or_dec</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ra_or_dec_coord</span><span class="si">}</span><span class="s2"> not covered by OpenUniverse 2024 data preview simulated Roman coadds&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">closest_block_idx</span> <span class="o">+</span> <span class="mi">12</span> <span class="c1"># preview covers central 12 rows 12 columns, in a grid of 36x36 blocks</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter">
+<h3>Define a function that retrieves a Roman simulated coadd given a sky position and filter.<a class="headerlink" href="#define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter" title="Link to this heading">#</a></h3>
+<p>Each of the cloud-hosted simulated Roman coadds can be accessed via a S3 filepath. This function returns the access path for the simulated Roman coadd that includes a specified position on the sky and desired filter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">get_block_axis</span><span class="p">(</span><span class="n">ra_block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">get_block_axis</span><span class="p">(</span><span class="n">dec_block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Construct the coadd filename from the chosen filter, row, and column.</span>
+    <span class="n">coadd_fname_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;prod_</span><span class="si">{</span><span class="nb">filter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">_map.fits&quot;</span>
+    <span class="n">coadd_fpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">ROMAN_COADD_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">/Row</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">coadd_fname_root</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">coadd_fpath</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we use this access path and prefix it with <code class="docutils literal notranslate"><span class="pre">s3://</span></code> and use astropy.fits to extract a subset of it (for more info see https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#subsetting-fits-files-hosted-in-amazon-s3-cloud-storage).</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">.section</span></code> to retrieve just the science image data from fits HDU as a 2D <code class="docutils literal notranslate"><span class="pre">numpy.array</span></code>, and extract WCS information from fits header as <code class="docutils literal notranslate"><span class="pre">astropy.wcs.WCS</span></code> object. The following function returns a dictionary of both.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+    <span class="c1"># retrive fits file of block/tile from the coadd mosiac</span>
+    <span class="n">coadd_s3_fpath</span> <span class="o">=</span> <span class="n">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
+    <span class="n">coadd_s3_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">coadd_s3_fpath</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">coadd_s3_uri</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+        <span class="c1"># retrieve science data from coadd fits</span>
+        <span class="n">coadd_data</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>  <span class="c1"># has (2688, 2688, 15, 1) shape, with 0th layer in the cube as science image</span>
+
+        <span class="c1"># make wcs using header</span>
+        <span class="n">coadd_wcs</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="n">naxis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">coadd_data</span><span class="p">,</span> <span class="s1">&#39;wcs&#39;</span><span class="p">:</span> <span class="n">coadd_wcs</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inspect-a-simulated-roman-coadd">
+<h3>Inspect a simulated Roman Coadd<a class="headerlink" href="#inspect-a-simulated-roman-coadd" title="Link to this heading">#</a></h3>
+<p>Choose a filter and position that lies within the data preview region</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mf">9.6055383</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">44.1895542</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+<span class="n">filter_roman</span> <span class="o">=</span> <span class="s1">&#39;H158&#39;</span> <span class="c1">#F184, H158, J129, K213, and Y106 are available in the data preview</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Retrieve the data and header information from the simulated Roman coadd corresponding to the chosen position and filter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span> <span class="o">=</span> <span class="n">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">filter_roman</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="understand-the-size-of-a-simulated-roman-coadd">
+<h3>Understand the size of a simulated Roman coadd.<a class="headerlink" href="#understand-the-size-of-a-simulated-roman-coadd" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of pixels (Y, X)</span>
+<span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2688, 2688)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel size (scale Y, scale X) [degrees/pixel]</span>
+<span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Quantity 1.08506944e-05 deg&gt;, &lt;Quantity 1.08506944e-05 deg&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coadd size (FOV Y, FOV X)</span>
+<span class="p">[(</span><span class="n">num</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;arcsec&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">())]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Quantity 105. arcsec&gt;, &lt;Quantity 105. arcsec&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The field of view of Roman coadd is ~100 arcsec.</p>
+</section>
+<section id="use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position">
+<h3>Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.<a class="headerlink" href="#use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">coord_to_xy</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">world_to_array_index</span><span class="p">(</span><span class="n">coord</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#reverse since 0th axis is y, 1st axis is x</span>
+
+<span class="n">coord_arr_idx</span> <span class="o">=</span> <span class="n">coord_to_xy</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">)</span>
+<span class="n">coord_arr_idx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1513, 2049)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position">
+<h3>Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.<a class="headerlink" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">stretch_color</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clipPercent</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="n">clipPercent</span><span class="p">,</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">clipPercent</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+           <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+           <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">coord_arr_idx</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb353e43150&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/2845377c9753444193b13af7cb4ca157ee073f283bc72460545dad88f3d2265d.png" src="../../_images/2845377c9753444193b13af7cb4ca157ee073f283bc72460545dad88f3d2265d.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="rubin-coadds">
+<h2>Rubin Coadds<a class="headerlink" href="#rubin-coadds" title="Link to this heading">#</a></h2>
+<p>The OpenUniverse2024 data preview includes coadded mosaics in the following filters: u, g, r, i, z, y. In this section, we define some functions that make it convenient to retrieve a given cloud-hosted simulated Roman coadd based on position and filter.</p>
+<section id="retrieve-rubin-coadds">
+<h3>Retrieve Rubin Coadds<a class="headerlink" href="#retrieve-rubin-coadds" title="Link to this heading">#</a></h3>
+<p>The OpenUniverse2024 data preview includes only one simulated Rubin coadd per filter. Below we define functions that make it convenient to retrieve the simulated Rubin coadd corresponding to the desired filter. We return data in same structure as the functions we defined above for Roman.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span> 
+    <span class="n">coadd_fname_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;deepCoadd_calexp_2877_19_</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">_DC2_u_descdm_preview_data_step3_2877_19_w_2024_12_20240403T150003Z.fits&quot;</span>
+    <span class="n">coadd_fpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">RUBIN_COADD_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">coadd_fname_root</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">coadd_fpath</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_rubin_coadd</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
+    <span class="n">coadd_s3_fpath</span> <span class="o">=</span> <span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">coadd_s3_fpath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+        <span class="c1"># retrieve science data from coadd fits</span>
+        <span class="n">coadd_data</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">[:,:]</span>
+
+        <span class="c1"># make wcs using header</span>
+        <span class="n">coadd_wcs</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">coadd_data</span><span class="p">,</span> <span class="s1">&#39;wcs&#39;</span><span class="p">:</span> <span class="n">coadd_wcs</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inspect-a-simulated-rubin-coadd">
+<h3>Inspect a simulated Rubin Coadd<a class="headerlink" href="#inspect-a-simulated-rubin-coadd" title="Link to this heading">#</a></h3>
+<p>Choose a filter and retrieve the data and header information from the simulated Rubin coadd corresponding to that filter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filter_rubin</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
+<span class="n">coadd_rubin</span> <span class="o">=</span> <span class="n">get_rubin_coadd</span><span class="p">(</span><span class="n">filter_rubin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="understand-the-size-of-a-simulated-rubin-coadd">
+<h3>Understand the size of a simulated Rubin coadd.<a class="headerlink" href="#understand-the-size-of-a-simulated-rubin-coadd" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of pixels (Y, X)</span>
+<span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4200, 4200)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel size (scale Y, scale X) [degrees/pixel]</span>
+<span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Quantity 5.55555556e-05 deg&gt;, &lt;Quantity 5.55555556e-05 deg&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coadd size (FOV Y, FOV X)</span>
+<span class="p">[(</span><span class="n">num</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;arcsec&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">())]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Quantity 840. arcsec&gt;, &lt;Quantity 840. arcsec&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The field of view of Rubin coadd is 840 arcsec.</p>
+</section>
+<section id="use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position">
+<h3>Use matplotlib imshow to create a static visualization of the Rubin simulated coadd and overplot the selected position.<a class="headerlink" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+           <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+           <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">),</span> <span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb368d6e850&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/1d469a44f371f491618cf3fe83265810f238e52c2fa97a5748a8e64eb4ff50a3.png" src="../../_images/1d469a44f371f491618cf3fe83265810f238e52c2fa97a5748a8e64eb4ff50a3.png" />
+</div>
+</div>
+</section>
+<section id="define-a-function-that-returns-the-url-for-a-given-s3-filepath">
+<h3>Define a function that returns the URL for a given S3 filepath<a class="headerlink" href="#define-a-function-that-returns-the-url-for-a-given-s3-filepath" title="Link to this heading">#</a></h3>
+<p>Since the OpenUniverse2024 data is available through a public S3 bucket, we can access a given S3 file using HTTPS URL as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">https_url</span><span class="p">(</span><span class="n">s3_fpath</span><span class="p">):</span>
+    <span class="n">s3_fpath_without_bucket</span> <span class="o">=</span> <span class="n">s3_fpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">.s3.amazonaws.com/</span><span class="si">{</span><span class="n">s3_fpath_without_bucket</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s generate URL for the Rubin coadd we plotted above. Clicking on the returned URL will allow you to download this image locally.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_s3_fpath_rubin</span> <span class="o">=</span> <span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="n">filter_rubin</span><span class="p">)</span>
+<span class="n">https_url</span><span class="p">(</span><span class="n">coadd_s3_fpath_rubin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://nasa-irsa-simulations.s3.amazonaws.com/openuniverse2024/rubin/preview/u/descdm/preview_data_step3_2877_19_w_2024_12/20240403T150003Z/deepCoadd_calexp/2877/19/r/deepCoadd_calexp_2877_19_r_DC2_u_descdm_preview_data_step3_2877_19_w_2024_12_20240403T150003Z.fits&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="compare-simulated-roman-and-rubin-cutouts-for-a-selected-position">
+<h2>Compare simulated Roman and Rubin cutouts for a selected position<a class="headerlink" href="#compare-simulated-roman-and-rubin-cutouts-for-a-selected-position" title="Link to this heading">#</a></h2>
+<section id="choose-cutout-size">
+<h3>Choose cutout size<a class="headerlink" href="#choose-cutout-size" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_size</span> <span class="o">=</span> <span class="mi">50</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-the-cutouts">
+<h3>Create the cutouts<a class="headerlink" href="#create-the-cutouts" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_roman</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
+<span class="n">cutout_rubin</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts">
+<h3>Use matplotlib imshow to plot static side-by-side comparisons of the cutouts<a class="headerlink" href="#use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+              <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+              <span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">coord</span><span class="p">),</span> <span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROMAN in filter </span><span class="si">{</span><span class="n">filter_roman</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+              <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+              <span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">coord</span><span class="p">),</span> <span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RUBIN in filter </span><span class="si">{</span><span class="n">filter_rubin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cutouts at (</span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">ra</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">coord</span><span class="o">.</span><span class="n">dec</span><span class="si">}</span><span class="s2">) with </span><span class="si">{</span><span class="n">cutout_size</span><span class="si">}</span><span class="s2"> size&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/635e4d8c289c752966a551d4dd90b78a24619cfe729a8e30789761613f9db690.png" src="../../_images/635e4d8c289c752966a551d4dd90b78a24619cfe729a8e30789761613f9db690.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="use-firefly-to-interactively-identify-a-blended-source">
+<h2>Use Firefly to interactively identify a blended source<a class="headerlink" href="#use-firefly-to-interactively-identify-a-blended-source" title="Link to this heading">#</a></h2>
+<p>Clearly, the simulated Roman coadd has higher spatial resolution than the Rubin simulated coadd. Let’s try to locate blended objects to compare in the simulated Rubin and Roman images. We will use Firefly’s interactive visualization to make this task easier.</p>
+<section id="launch-and-initialize-firefly">
+<h3>Launch and initialize Firefly<a class="headerlink" href="#launch-and-initialize-firefly" title="Link to this heading">#</a></h3>
+<p>There are two ways to initialize a Firefly client from Python, depending on whether you’re running the notebook in JupyterLab or not. Assuming you have <code class="docutils literal notranslate"><span class="pre">jupyter-firefly-extensions</span></code> set up in your environment as explained <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>, you can use <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.</p>
+<p>You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a <a class="reference external" href="https://hub.docker.com/r/ipac/firefly">Firefly Docker image</a> and access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/firefly</span></code>. The URL of the Firefly server is read by both <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> and <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> through the environment variable <code class="docutils literal notranslate"><span class="pre">FIREFLY_URL</span></code>. However, <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> also allows you to pass the URL directly as the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
+<span class="c1"># fc = FireflyClient.make_lab_client()</span>
+
+<span class="c1"># Uncomment for contexts other than above </span>
+<span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/irsaviewer&quot;</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">reinit_viewer</span><span class="p">()</span> <span class="c1"># to clean the state, if this cell ran earlier</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="send-the-simulated-rubin-coadd-to-firefly-using-show-fits">
+<h3>Send the simulated Rubin coadd to Firefly using show_fits.<a class="headerlink" href="#send-the-simulated-rubin-coadd-to-firefly-using-show-fits" title="Link to this heading">#</a></h3>
+<p>For more information on <code class="docutils literal notranslate"><span class="pre">show_fits</span></code>, see:</p>
+<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-filter-r&#39;</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">coadd_s3_fpath_rubin</span><span class="p">),</span>
+             <span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_rubin</span><span class="p">,</span>
+             <span class="n">Title</span><span class="o">=</span><span class="s2">&quot;Rubin Coadd&quot;</span>
+             <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display">
+<h3>Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display<a class="headerlink" href="#use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display" title="Link to this heading">#</a></h3>
+<p>The Firefly client includes several methods related to controlling ds9 region overlays. To
+overlay a region layer on the loaded FITS images, we can use <code class="docutils literal notranslate"><span class="pre">overlay_region_layer</span></code>:</p>
+<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer</p>
+<p>Region data is defined in ds9 region syntax that can be found at https://ds9.si.edu/doc/ref/region.html</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mark the roman coadd blocks as boxes</span>
+<span class="n">roman_regions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s1">&#39;icrs;box </span><span class="si">{</span><span class="n">ra_block_center</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">dec_block_center</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">block_size</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; </span><span class="si">{</span><span class="n">block_size</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; 0d&#39;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ra_block_center</span><span class="p">,</span> <span class="n">dec_block_center</span><span class="p">)</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">ra_block_centers</span><span class="p">,</span> <span class="n">dec_block_centers</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">roman_regions_id</span> <span class="o">=</span> <span class="s1">&#39;roman_regions&#39;</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">overlay_region_layer</span><span class="p">(</span><span class="n">region_data</span><span class="o">=</span><span class="n">roman_regions</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Roman Mosiac&#39;</span><span class="p">,</span> 
+                        <span class="n">region_layer_id</span><span class="o">=</span><span class="n">roman_regions_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-firefly-s-pan-and-zoom-capabilities-to-locate-a-region-of-interest-a-blended-source">
+<h3>Use Firefly’s pan and zoom capabilities to locate a region of interest (a blended source)<a class="headerlink" href="#use-firefly-s-pan-and-zoom-capabilities-to-locate-a-region-of-interest-a-blended-source" title="Link to this heading">#</a></h3>
+<p>You can view the coordinates of your mouse pointer at the bottom left of the display window. To copy the coordinates for a specific coordinate:</p>
+<ul class="simple">
+<li><p>Toggle the “Click Lock” to “on” in the bottom right of the image display.</p></li>
+<li><p>Click on the position of interest, and notice that the coordinate display is now frozen.</p></li>
+<li><p>Click on “EQ-J2000”, the coordinate label in the bottom left of the image display. In the dialog that opens, change copy options to “[Python] Astropy SkyCoord” so that we can directly work with them in python.</p></li>
+<li><p>Close the dialog and click on the copy icon next to the coordinate values display.</p></li>
+</ul>
+</section>
+<section id="copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook">
+<h3>Copy the coordinates from the coordinate display to the Python notebook<a class="headerlink" href="#copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook" title="Link to this heading">#</a></h3>
+<p>We have provided an example. You can change this based on your interests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords_of_interest</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="s1">&#39;0h38m25.35s -44d00m10.1s&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span> <span class="c1"># located and copied through UI</span>
+<span class="n">coords_of_interest</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (9.605625, -44.00280556)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now use this <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> object to compare our coadds. More information on <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> can be found here:</p>
+<p>https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord</p>
+</section>
+<section id="use-ds9-region-syntax-to-overplot-the-selected-position">
+<h3>Use ds9 region syntax to overplot the selected position<a class="headerlink" href="#use-ds9-region-syntax-to-overplot-the-selected-position" title="Link to this heading">#</a></h3>
+<p>For this we use the id of the region layer we defined above, and add more region data using <code class="docutils literal notranslate"><span class="pre">add_region_data</span></code>:</p>
+<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_region</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;icrs;point </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d # point=cross 15 text=</span><span class="se">{{</span><span class="s1">Blended source</span><span class="se">}}</span><span class="s1">&#39;</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">add_region_data</span><span class="p">(</span><span class="n">region_data</span><span class="o">=</span><span class="n">point_region</span><span class="p">,</span> <span class="n">region_layer_id</span><span class="o">=</span><span class="n">roman_regions_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plot-cutouts-of-the-identified-blended-source">
+<h2>Plot cutouts of the identified blended source<a class="headerlink" href="#plot-cutouts-of-the-identified-blended-source" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span> <span class="o">=</span> <span class="n">get_roman_coadd</span><span class="p">(</span><span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">filter_roman</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_size</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_roman</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
+<span class="n">cutout_rubin</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+              <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+              <span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROMAN in filter </span><span class="si">{</span><span class="n">filter_roman</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s also encircle the blended source we identified </span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">coords_of_interest</span><span class="p">),</span> 
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="c1"># and a bonus blended source that is close to it</span>
+<span class="n">other_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">ra</span><span class="o">-</span><span class="mf">9.2</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">,</span> <span class="n">coords_of_interest</span><span class="o">.</span><span class="n">dec</span><span class="o">+</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_roman</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">other_coords</span><span class="p">),</span>
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
+              <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+              <span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RUBIN in filter </span><span class="si">{</span><span class="n">filter_rubin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s also encircle the source we identified </span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">coords_of_interest</span><span class="p">),</span>
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">coord_to_xy</span><span class="p">(</span><span class="n">cutout_rubin</span><span class="o">.</span><span class="n">wcs</span><span class="p">,</span> <span class="n">other_coords</span><span class="p">),</span>
+                                <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cutouts at (</span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">ra</span><span class="si">:</span><span class="s2">6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">dec</span><span class="si">:</span><span class="s2">6f</span><span class="si">}</span><span class="s2">) with </span><span class="si">{</span><span class="n">cutout_size</span><span class="si">}</span><span class="s2"> size&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+<span class="c1"># plt.savefig(&quot;plot.pdf&quot;, bbox_inches=&#39;tight&#39;, pad_inches=0.2)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c4650ad65a2888bf9655b3d19b372d8a156ee855d2973bdcd16c1d1ece5b57eb.png" src="../../_images/c4650ad65a2888bf9655b3d19b372d8a156ee855d2973bdcd16c1d1ece5b57eb.png" />
+</div>
+</div>
+</section>
+<section id="use-firefly-to-visualize-the-openuniverse2024-data-preview-catalogs">
+<h2>Use Firefly to visualize the OpenUniverse2024 data preview catalogs<a class="headerlink" href="#use-firefly-to-visualize-the-openuniverse2024-data-preview-catalogs" title="Link to this heading">#</a></h2>
+<p>Let’s inspect the properties of sources in the Rubin coadd image. For this we will use the input truth files present in S3 bucket.</p>
+<p>The OpenUniverse2024 data preview includes the input truth files that were used to create the simulated images. These files are in Parquet and HDF5 format, and include information about the properties of galaxies, stars, and transients.</p>
+<p>To list the available files, we use <a class="reference external" href="https://s3fs.readthedocs.io/en/latest/index.html">s3fs</a>. We open a file-system like connection
+to AWS S3 and then simply list (<code class="docutils literal notranslate"><span class="pre">ls</span></code>) truth files directory:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># to browse s3 bucket</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/galaxy_10307.parquet&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/galaxy_flux_10307.parquet&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/galaxy_sed_10307.hdf5&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/pointsource_10307.parquet&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/pointsource_flux_10307.parquet&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/snana_10307.hdf5&#39;,
+ &#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/snana_10307.parquet&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Catalog table of star properties (in parquet format)</span>
+<span class="n">pointsource_cat_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">/pointsource_10307.parquet&quot;</span>
+<span class="n">pointsource_cat_path</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/pointsource_10307.parquet&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Catalog table of galaxy properties (in parquet format)</span>
+<span class="n">galaxy_cat_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">/galaxy_10307.parquet&quot;</span>
+<span class="n">galaxy_cat_path</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;nasa-irsa-simulations/openuniverse2024/roman/preview/roman_rubin_cats_v1.1.2_faint/galaxy_10307.parquet&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd">
+<h3>Use Firefly’s show_table to overlay the catalogs on interactive image of coadd<a class="headerlink" href="#use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd" title="Link to this heading">#</a></h3>
+<p>The input truth files cover a region much larger than the data preview, so we define filters on table to constraint the sources in catalog within the ra and dec bounds of preview data. (Note: you can remove filters through the table UI if you wish to see the entire data)</p>
+<p>You can visualize catalogs interactively with Firefly using <code class="docutils literal notranslate"><span class="pre">show_table</span></code>. This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we’ve already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.</p>
+<p>For more information on <code class="docutils literal notranslate"><span class="pre">show_table</span></code>, see:</p>
+<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_filters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s1">&#39;(&quot;ra&quot; &gt;= </span><span class="si">{</span><span class="n">ra_block_centers</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> AND &quot;ra&quot; &lt;= </span><span class="si">{</span><span class="n">ra_block_centers</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> 
+    <span class="sa">f</span><span class="s1">&#39;(&quot;dec&quot; &gt;= </span><span class="si">{</span><span class="n">dec_block_centers</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> AND &quot;dec&quot; &lt;= </span><span class="si">{</span><span class="n">dec_block_centers</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">)&#39;</span>
+<span class="p">]</span>
+<span class="n">cat_filters</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;(&quot;ra&quot; &gt;= 9.336711625789874 AND &quot;ra&quot; &lt;= 9.76330352298415)&#39;,
+ &#39;(&quot;dec&quot; &gt;= -44.252584927082495 AND &quot;dec&quot; &lt;= -43.94703111591591)&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">pointsource_cat_path</span><span class="p">),</span>
+              <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Stars Catalog&#39;</span><span class="p">,</span>
+              <span class="n">tbl_id</span><span class="o">=</span><span class="s1">&#39;stars_cat&#39;</span><span class="p">,</span>
+              <span class="n">filters</span><span class="o">=</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_filters</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gal_cat_tbl_id</span> <span class="o">=</span> <span class="s1">&#39;galaxy_cat&#39;</span>
+
+<span class="c1"># may take ~1.25min, because galaxy catalog is a big file</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">galaxy_cat_path</span><span class="p">),</span>
+              <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Galaxy Catalog&#39;</span><span class="p">,</span>
+              <span class="n">tbl_id</span><span class="o">=</span><span class="n">gal_cat_tbl_id</span><span class="p">,</span>
+              <span class="n">filters</span><span class="o">=</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_filters</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each row in the table you can notice a marker in the image. Selecting a row or marker changes the corresponding marker or row, respectively. You can click on “Details” tab in the UI to show properties of each source selected in image/table.</p>
+</section>
+<section id="use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies">
+<h3>Use Firefly’s apply_table_filters to show only high-redshift galaxies<a class="headerlink" href="#use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies" title="Link to this heading">#</a></h3>
+<p>High redshift galaxies are the most interesting, so let’s filter the table we sent to Firefly to only include z&gt;3 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.</p>
+<p>For filtering, we will use <code class="docutils literal notranslate"><span class="pre">apply_table_filters</span></code> method on the galaxy table we loaded above. More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">apply_table_filters</span><span class="p">(</span><span class="n">tbl_id</span><span class="o">=</span><span class="n">gal_cat_tbl_id</span><span class="p">,</span>
+                       <span class="n">filters</span><span class="o">=</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_filters</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;&quot;redshift&quot; &gt; 3&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can play with the filters directly from the UI as well. Try removing adding more filters in the tables and see how markers change.</p>
+</section>
+<section id="use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images">
+<h3>Use Firefly’s show_fits_3color to create a 3 color image of the simulated Rubin images<a class="headerlink" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># [R, G, B]</span>
+<span class="n">ROMAN_RGB_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;H158&#39;</span><span class="p">,</span> <span class="s1">&#39;J129&#39;</span><span class="p">,</span> <span class="s1">&#39;Y106&#39;</span><span class="p">]</span>
+<span class="n">RUBIN_RGB_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We already have Rubin coadd with catalog overlaid, let’s make a 3 color image to see colors of marked objects more clearly. For this we will use <code class="docutils literal notranslate"><span class="pre">show_fits_3color</span></code> method:</p>
+<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin_3color</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-3color&#39;</span>
+<span class="n">threeC</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="n">filter_name</span><span class="p">)),</span>
+         <span class="n">Title</span><span class="o">=</span><span class="s2">&quot;Rubin Coadd 3 color&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">filter_name</span> <span class="ow">in</span> <span class="n">RUBIN_RGB_FILTERS</span>
+<span class="p">]</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">show_fits_3color</span><span class="p">(</span><span class="n">three_color_params</span><span class="o">=</span><span class="n">threeC</span><span class="p">,</span>
+                    <span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_rubin_3color</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-firefly-s-interactivity-to-identify-a-region-of-interest">
+<h3>Use Firefly’s interactivity to identify a region of interest<a class="headerlink" href="#use-firefly-s-interactivity-to-identify-a-region-of-interest" title="Link to this heading">#</a></h3>
+<p>For example, we found a region of the sky that seems to have a high number of high redshift sources and we copy it from the image display:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># located and copied through UI</span>
+<span class="n">high_z_gal_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="s1">&#39;0h38m00.77s -44d12m10.2s&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+<span class="n">high_z_gal_coords</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;SkyCoord (ICRS): (ra, dec) in deg
+    (9.50320833, -44.20283333)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s also mark it in our region layer, so that it&#39;s easy to pinpoint later</span>
+<span class="n">point_region</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;icrs;point </span><span class="si">{</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d # point=cross 15 text=</span><span class="se">{{</span><span class="s1">z&gt;3 mock galaxies</span><span class="se">}}</span><span class="s1">&#39;</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">add_region_data</span><span class="p">(</span><span class="n">region_data</span><span class="o">=</span><span class="n">point_region</span><span class="p">,</span> <span class="n">region_layer_id</span><span class="o">=</span><span class="n">roman_regions_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plot-3-color-roman-coadd-containing-your-region-of-interest">
+<h2>Plot 3-color Roman coadd containing your region of interest<a class="headerlink" href="#plot-3-color-roman-coadd-containing-your-region-of-interest" title="Link to this heading">#</a></h2>
+<p>Let’s inspect WCS of Roman coadd first</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WCS Keywords
+
+Number of WCS axes: 2
+CTYPE : &#39;RA---STG&#39; &#39;DEC--STG&#39; 
+CRVAL : 9.55 -44.1 
+CRPIX : 5184.5 -7615.5 
+PC1_1 PC1_2  : 1.0 0.0 
+PC2_1 PC2_2  : 0.0 1.0 
+CDELT : -1.0850694444444e-05 1.0850694444444e-05 
+NAXIS : 2688  2688  15  1
+</pre></div>
+</div>
+</div>
+</div>
+<section id="prepare-roman-coadds-for-displaying-in-firefly">
+<h3>Prepare Roman coadds for displaying in Firefly<a class="headerlink" href="#prepare-roman-coadds-for-displaying-in-firefly" title="Link to this heading">#</a></h3>
+<p>Roman coadds have STG projection which cannot be read by Firefly yet. Firefly can display any FITS image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike Rubin 3 color image where we directly passed URL of coadd files to Firefly, we will read Roman coadd files in Python, reproject them from STG to TAN, and write them back to FITS to pass them to Firefly.</p>
+<p>Let’s first define functions to do so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reproject_to_TAN</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
+    <span class="c1"># Define a new WCS with TAN projection (in CTYPE key)</span>
+    <span class="n">output_wcs</span> <span class="o">=</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+    <span class="n">output_wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">ctype</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;STG&#39;</span><span class="p">,</span> <span class="s1">&#39;TAN&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span>
+    
+    <span class="c1"># Use reproject to convert a given data and wcs, to a desired wcs and shape</span>
+    <span class="n">reprojected_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">reproject_interp</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]),</span>
+        <span class="n">output_projection</span><span class="o">=</span><span class="n">output_wcs</span><span class="p">,</span>
+        <span class="n">shape_out</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">reprojected_data</span><span class="p">,</span> <span class="s1">&#39;wcs&#39;</span><span class="p">:</span> <span class="n">output_wcs</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_fits_stream</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
+    <span class="c1"># Create a FITS PrimaryHDU object with the coadd data</span>
+    <span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span>
+
+    <span class="c1"># Write the HDU to the in-memory stream (to save I/O time)</span>
+    <span class="n">fits_stream</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">hdu</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="n">fits_stream</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fits_stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># to bring reading pointer to the beginning of file</span>
+
+    <span class="k">return</span> <span class="n">fits_stream</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then we perform all 3 operations we mentioned above for the RGB filters of Roman:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadds_rgb</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">coadds_rgb_reprojected</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">coadds_rgb_fits_stream</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">filter_name</span> <span class="ow">in</span> <span class="n">ROMAN_RGB_FILTERS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">FILTER: </span><span class="si">{</span><span class="n">filter_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Retrieving Roman coadd...&#39;</span><span class="p">)</span>
+    <span class="n">coadd_roman</span> <span class="o">=</span> <span class="n">get_roman_coadd</span><span class="p">(</span><span class="n">high_z_gal_coords</span><span class="p">,</span> <span class="n">filter_name</span><span class="p">)</span>
+    <span class="n">coadds_rgb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reprojecting to TAN...&#39;</span><span class="p">)</span>
+    <span class="n">coadd_roman_reprojected</span> <span class="o">=</span> <span class="n">reproject_to_TAN</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">)</span>
+    <span class="n">coadds_rgb_reprojected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coadd_roman_reprojected</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Writing back to fits stream...&#39;</span><span class="p">)</span>
+    <span class="n">coadd_roman_fits_stream</span> <span class="o">=</span> <span class="n">get_fits_stream</span><span class="p">(</span><span class="n">coadd_roman_reprojected</span><span class="p">)</span>
+    <span class="n">coadds_rgb_fits_stream</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coadd_roman_fits_stream</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FILTER: H158
+Retrieving Roman coadd...
+Reprojecting to TAN...
+Writing back to fits stream...
+
+FILTER: J129
+Retrieving Roman coadd...
+Reprojecting to TAN...
+Writing back to fits stream...
+
+FILTER: Y106
+Retrieving Roman coadd...
+Reprojecting to TAN...
+Writing back to fits stream...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds">
+<h3>Use Firefly’s show_fits_3color to create a 3 color image of Roman coadds<a class="headerlink" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds" title="Link to this heading">#</a></h3>
+<p>Now we upload each fits stream (in-memory fits file) to firefly using <code class="docutils literal notranslate"><span class="pre">upload_fits_data()</span></code> and prepare color params to pass to the <code class="docutils literal notranslate"><span class="pre">show_fits_3color()</span></code>. More info here:</p>
+<ul class="simple">
+<li><p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data</p></li>
+<li><p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">three_color_params</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_fits_data</span><span class="p">(</span><span class="n">fits_stream</span><span class="p">),</span>
+        <span class="s1">&#39;Title&#39;</span><span class="p">:</span> <span class="s2">&quot;Roman Coadd 3 color&quot;</span>
+    <span class="p">}</span> <span class="k">for</span> <span class="n">fits_stream</span> <span class="ow">in</span> <span class="n">coadds_rgb_fits_stream</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_roman_3color</span> <span class="o">=</span> <span class="s1">&#39;roman-coadd-3color-high_z_gal&#39;</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">show_fits_3color</span><span class="p">(</span><span class="n">three_color_params</span><span class="o">=</span><span class="n">three_color_params</span><span class="p">,</span>
+                    <span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see 3 color image of Roman coadd containing the high-redshift galaxy sources. Try panning and zomming out, you can notice it spans over one block compared to the Rubin coadd which is much larger.</p>
+</section>
+<section id="use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources">
+<h3>Use Firefly’s pan/zoom/align methods to locate high redshift sources<a class="headerlink" href="#use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources" title="Link to this heading">#</a></h3>
+<p>Now, let’s pan &amp; zoom to the region where we located high-redshift galaxy sources. Also align &amp; lock all images being displayed by WCS. For these operations we use these 3 methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set_pan</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_pan</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set_zoom</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">align_images</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_pan</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;j2000&#39;</span><span class="p">)</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">align_images</span><span class="p">(</span><span class="n">lock_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python">
+<h3>Use Firefly’s set_stretch method to change the stretch of the image display via Python<a class="headerlink" href="#use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python" title="Link to this heading">#</a></h3>
+<p>The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client’s <code class="docutils literal notranslate"><span class="pre">set_stretch</span></code> to do this via Python. This is helpful for reproducibility and for scaling up to many images.</p>
+<p>More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_stretch</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">stype</span><span class="o">=</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;squared&#39;</span><span class="p">,</span> 
+               <span class="n">band</span><span class="o">=</span><span class="s1">&#39;ALL&#39;</span><span class="p">,</span> <span class="n">lower_value</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">upper_value</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True,
+ &#39;rv_string&#39;: &#39;92,-2.000000,92,10.000000,NaN,2.000000,48,25,600,120,0,NaN,1.000000&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="about-this-notebook">
+<h2>About This Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author:</strong> Jaladh Singhal and Vandana Desai in conjunction with the IRSA Team</p>
+<p><strong>Updated:</strong> 2024-12-19</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="NEOWISE_light_curve_demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using Firefly visualization tools to understand the light curves of Solar System objects</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../parallelize/Parallelize_Convolution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Parallelizing image convolution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud">Learn where the OpenUniverse2024 data are hosted in the cloud.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roman-coadds">Roman Coadds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-roman-simulated-blocks">Define Roman Simulated “Blocks”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec">Define a function that returns the simulated Roman block column/row for a given RA/Dec.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter">Define a function that retrieves a Roman simulated coadd given a sky position and filter.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-a-simulated-roman-coadd">Inspect a simulated Roman Coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-the-size-of-a-simulated-roman-coadd">Understand the size of a simulated Roman coadd.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position">Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position">Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rubin-coadds">Rubin Coadds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieve-rubin-coadds">Retrieve Rubin Coadds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-a-simulated-rubin-coadd">Inspect a simulated Rubin Coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-the-size-of-a-simulated-rubin-coadd">Understand the size of a simulated Rubin coadd.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position">Use matplotlib imshow to create a static visualization of the Rubin simulated coadd and overplot the selected position.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-function-that-returns-the-url-for-a-given-s3-filepath">Define a function that returns the URL for a given S3 filepath</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-simulated-roman-and-rubin-cutouts-for-a-selected-position">Compare simulated Roman and Rubin cutouts for a selected position</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-cutout-size">Choose cutout size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-cutouts">Create the cutouts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts">Use matplotlib imshow to plot static side-by-side comparisons of the cutouts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-to-interactively-identify-a-blended-source">Use Firefly to interactively identify a blended source</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-and-initialize-firefly">Launch and initialize Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#send-the-simulated-rubin-coadd-to-firefly-using-show-fits">Send the simulated Rubin coadd to Firefly using show_fits.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display">Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-pan-and-zoom-capabilities-to-locate-a-region-of-interest-a-blended-source">Use Firefly’s pan and zoom capabilities to locate a region of interest (a blended source)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook">Copy the coordinates from the coordinate display to the Python notebook</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-ds9-region-syntax-to-overplot-the-selected-position">Use ds9 region syntax to overplot the selected position</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-cutouts-of-the-identified-blended-source">Plot cutouts of the identified blended source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-to-visualize-the-openuniverse2024-data-preview-catalogs">Use Firefly to visualize the OpenUniverse2024 data preview catalogs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd">Use Firefly’s show_table to overlay the catalogs on interactive image of coadd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies">Use Firefly’s apply_table_filters to show only high-redshift galaxies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images">Use Firefly’s show_fits_3color to create a 3 color image of the simulated Rubin images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-interactivity-to-identify-a-region-of-interest">Use Firefly’s interactivity to identify a region of interest</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-3-color-roman-coadd-containing-your-region-of-interest">Plot 3-color Roman coadd containing your region of interest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-roman-coadds-for-displaying-in-firefly">Prepare Roman coadds for displaying in Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds">Use Firefly’s show_fits_3color to create a 3 color image of Roman coadds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources">Use Firefly’s pan/zoom/align methods to locate high redshift sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python">Use Firefly’s set_stretch method to change the stretch of the image display via Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About This Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
