@@ -14,5 +14,6 @@ ray
 s3fs
 firefly-client
 jupyter-firefly-extensions
+reproject
 # For supporting myst-based notebooks
 jupytext
