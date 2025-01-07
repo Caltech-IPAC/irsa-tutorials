@@ -30,7 +30,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -539,14 +539,10 @@
 <li><p>Overlapping Roman Wide-Area Survey (WAS) in the same region</p></li>
 <li><p>A deep-field calibration region of the Roman WAS in the same region</p></li>
 </ul>
-<p>This data preview release consists of a subset of data from each of the five categories above. More information about data preview can be found at:
-https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html</p>
-<p>Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information can be found here:
-https://github.com/Caltech-IPAC/firefly/blob/dev/README.md</p>
-<p>In addition to being used to make web applications, Firefly can be used from Python. More information can be found here:
-https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
-<p>The Firefly JupyterLab Extension makes it particularly easy to use Firefly to efficiently visualize cloud-hosted astronomical data using cloud-based JupyterLab instances. More information can be found here:</p>
-<p>https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md</p>
+<p>This data preview release consists of a subset of data from each of the five categories above. More information about data preview can be found at <a class="reference external" href="https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html">IRSA holding of this dataset</a>.</p>
+<p>Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information on Firefly can be found <a class="reference external" href="https://github.com/Caltech-IPAC/firefly/blob/dev/README.md">here</a>.</p>
+<p>In addition to being used to make web applications, Firefly can be used from Python. More information on Firefly Python client can be found <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/usage/index.html">here</a>.</p>
+<p>The Firefly JupyterLab Extension makes it particularly easy to use Firefly to efficiently visualize cloud-hosted astronomical data using JupyterLab instances running locally or on cloud. More information on Firefly JupyterLab Extension can be found <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>.</p>
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
@@ -567,19 +563,27 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">s3fs</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">patches</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">wcs</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
-<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
-<span class="kn">from</span> <span class="nn">firefly_client</span> <span class="kn">import</span> <span class="n">FireflyClient</span>
-<span class="kn">from</span> <span class="nn">astropy.nddata</span> <span class="kn">import</span> <span class="n">Cutout2D</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
-<span class="kn">from</span> <span class="nn">reproject</span> <span class="kn">import</span> <span class="n">reproject_interp</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install numpy astropy s3fs matplotlib firefly_client reproject</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">s3fs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">patches</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">wcs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.nddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">reproject</span><span class="w"> </span><span class="kn">import</span> <span class="n">reproject_interp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
 </pre></div>
 </div>
 </div>
@@ -630,7 +634,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <p>Blocks are arranged in a grid with axes parallel to RA and Dec. A given RA represents a column of blocks and a given Dec represents a row of blocks. This function returns the block column or row given the block centers from the cell above and a given RA or Dec, respectively.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_block_axis</span><span class="p">(</span><span class="n">block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_block_axis</span><span class="p">(</span><span class="n">block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">):</span>
     <span class="n">ra_or_dec_coord</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">)</span>
     <span class="n">block_dist_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">block_centers</span> <span class="o">-</span> <span class="n">ra_or_dec_coord</span><span class="p">)</span>
     <span class="n">closest_block_idx</span> <span class="o">=</span> <span class="n">block_dist_array</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
@@ -649,7 +653,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <p>Each of the cloud-hosted simulated Roman coadds can be accessed via a S3 filepath. This function returns the access path for the simulated Roman coadd that includes a specified position on the sky and desired filter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
     <span class="n">col</span> <span class="o">=</span> <span class="n">get_block_axis</span><span class="p">(</span><span class="n">ra_block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">)</span>
     <span class="n">row</span> <span class="o">=</span> <span class="n">get_block_axis</span><span class="p">(</span><span class="n">dec_block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">)</span>
     
@@ -661,11 +665,11 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </div>
 </div>
 </div>
-<p>Now we use this access path and prefix it with <code class="docutils literal notranslate"><span class="pre">s3://</span></code> and use astropy.fits to extract a subset of it (for more info see https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#subsetting-fits-files-hosted-in-amazon-s3-cloud-storage).</p>
+<p>Now we use this access path and prefix it with <code class="docutils literal notranslate"><span class="pre">s3://</span></code> and use astropy.fits to extract a subset of it (for more info see <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#subsetting-fits-files-hosted-in-amazon-s3-cloud-storage">this section</a> of astropy docs).</p>
 <p>We use <code class="docutils literal notranslate"><span class="pre">.section</span></code> to retrieve just the science image data from fits HDU as a 2D <code class="docutils literal notranslate"><span class="pre">numpy.array</span></code>, and extract WCS information from fits header as <code class="docutils literal notranslate"><span class="pre">astropy.wcs.WCS</span></code> object. The following function returns a dictionary of both.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
     <span class="c1"># retrive fits file of block/tile from the coadd mosiac</span>
     <span class="n">coadd_s3_fpath</span> <span class="o">=</span> <span class="n">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
     <span class="n">coadd_s3_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">coadd_s3_fpath</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -751,7 +755,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <h3>Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.<a class="headerlink" href="#use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">coord_to_xy</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">coord_to_xy</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">world_to_array_index</span><span class="p">(</span><span class="n">coord</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#reverse since 0th axis is y, 1st axis is x</span>
 
 <span class="n">coord_arr_idx</span> <span class="o">=</span> <span class="n">coord_to_xy</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">)</span>
@@ -770,7 +774,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <h3>Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.<a class="headerlink" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">stretch_color</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clipPercent</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">stretch_color</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clipPercent</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="n">clipPercent</span><span class="p">,</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">clipPercent</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
@@ -782,7 +786,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb353e43150&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f4aa3598750&gt;]
 </pre></div>
 </div>
 <img alt="../../_images/2845377c9753444193b13af7cb4ca157ee073f283bc72460545dad88f3d2265d.png" src="../../_images/2845377c9753444193b13af7cb4ca157ee073f283bc72460545dad88f3d2265d.png" />
@@ -798,7 +802,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <p>The OpenUniverse2024 data preview includes only one simulated Rubin coadd per filter. Below we define functions that make it convenient to retrieve the simulated Rubin coadd corresponding to the desired filter. We return data in same structure as the functions we defined above for Roman.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span> 
     <span class="n">coadd_fname_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;deepCoadd_calexp_2877_19_</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">_DC2_u_descdm_preview_data_step3_2877_19_w_2024_12_20240403T150003Z.fits&quot;</span>
     <span class="n">coadd_fpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">RUBIN_COADD_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">coadd_fname_root</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">coadd_fpath</span>
@@ -808,7 +812,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_rubin_coadd</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_rubin_coadd</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
     <span class="n">coadd_s3_fpath</span> <span class="o">=</span> <span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;s3://</span><span class="si">{</span><span class="n">coadd_s3_fpath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fsspec_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
@@ -893,7 +897,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb368d6e850&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f4aa219bdd0&gt;]
 </pre></div>
 </div>
 <img alt="../../_images/1d469a44f371f491618cf3fe83265810f238e52c2fa97a5748a8e64eb4ff50a3.png" src="../../_images/1d469a44f371f491618cf3fe83265810f238e52c2fa97a5748a8e64eb4ff50a3.png" />
@@ -905,7 +909,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <p>Since the OpenUniverse2024 data is available through a public S3 bucket, we can access a given S3 file using HTTPS URL as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">https_url</span><span class="p">(</span><span class="n">s3_fpath</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">https_url</span><span class="p">(</span><span class="n">s3_fpath</span><span class="p">):</span>
     <span class="n">s3_fpath_without_bucket</span> <span class="o">=</span> <span class="n">s3_fpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">.s3.amazonaws.com/</span><span class="si">{</span><span class="n">s3_fpath_without_bucket</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
@@ -1001,7 +1005,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wMS0wNw"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1009,8 +1013,7 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 </section>
 <section id="send-the-simulated-rubin-coadd-to-firefly-using-show-fits">
 <h3>Send the simulated Rubin coadd to Firefly using show_fits.<a class="headerlink" href="#send-the-simulated-rubin-coadd-to-firefly-using-show-fits" title="Link to this heading">#</a></h3>
-<p>For more information on <code class="docutils literal notranslate"><span class="pre">show_fits</span></code>, see:</p>
-<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits</p>
+<p>For displaying the FITS image of Rubin coadd in Firefly, we use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits"><code class="docutils literal notranslate"><span class="pre">show_fits</span></code></a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-filter-r&#39;</span>
@@ -1031,9 +1034,8 @@ https://caltech-ipac.github.io/firefly_client/usage/index.html</p>
 <section id="use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display">
 <h3>Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display<a class="headerlink" href="#use-ds9-region-syntax-to-overplot-the-simulated-roman-image-blocks-on-the-interactive-display" title="Link to this heading">#</a></h3>
 <p>The Firefly client includes several methods related to controlling ds9 region overlays. To
-overlay a region layer on the loaded FITS images, we can use <code class="docutils literal notranslate"><span class="pre">overlay_region_layer</span></code>:</p>
-<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer</p>
-<p>Region data is defined in ds9 region syntax that can be found at https://ds9.si.edu/doc/ref/region.html</p>
+overlay a region layer on the loaded FITS images, we can use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer"><code class="docutils literal notranslate"><span class="pre">overlay_region_layer</span></code></a>.</p>
+<p>Region data is defined in ds9 region syntax that can be found <a class="reference external" href="https://ds9.si.edu/doc/ref/region.html">here</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mark the roman coadd blocks as boxes</span>
@@ -1083,13 +1085,11 @@ overlay a region layer on the loaded FITS images, we can use <code class="docuti
 </div>
 </div>
 </div>
-<p>We can now use this <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> object to compare our coadds. More information on <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> can be found here:</p>
-<p>https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord</p>
+<p>We can now use this <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord">astropy <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> object</a> to compare our coadds.</p>
 </section>
 <section id="use-ds9-region-syntax-to-overplot-the-selected-position">
 <h3>Use ds9 region syntax to overplot the selected position<a class="headerlink" href="#use-ds9-region-syntax-to-overplot-the-selected-position" title="Link to this heading">#</a></h3>
-<p>For this we use the id of the region layer we defined above, and add more region data using <code class="docutils literal notranslate"><span class="pre">add_region_data</span></code>:</p>
-<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data</p>
+<p>For this we use the id of the region layer we defined above, and add more region data using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data"><code class="docutils literal notranslate"><span class="pre">add_region_data</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_region</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;icrs;point </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d # point=cross 15 text=</span><span class="se">{{</span><span class="s1">Blended source</span><span class="se">}}</span><span class="s1">&#39;</span>
@@ -1226,9 +1226,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <section id="use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd">
 <h3>Use Firefly’s show_table to overlay the catalogs on interactive image of coadd<a class="headerlink" href="#use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd" title="Link to this heading">#</a></h3>
 <p>The input truth files cover a region much larger than the data preview, so we define filters on table to constraint the sources in catalog within the ra and dec bounds of preview data. (Note: you can remove filters through the table UI if you wish to see the entire data)</p>
-<p>You can visualize catalogs interactively with Firefly using <code class="docutils literal notranslate"><span class="pre">show_table</span></code>. This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we’ve already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.</p>
-<p>For more information on <code class="docutils literal notranslate"><span class="pre">show_table</span></code>, see:</p>
-<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table</p>
+<p>You can visualize catalogs interactively with Firefly using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table"><code class="docutils literal notranslate"><span class="pre">show_table</span></code></a>. This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we’ve already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_filters</span> <span class="o">=</span> <span class="p">[</span>
@@ -1284,7 +1282,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <section id="use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies">
 <h3>Use Firefly’s apply_table_filters to show only high-redshift galaxies<a class="headerlink" href="#use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies" title="Link to this heading">#</a></h3>
 <p>High redshift galaxies are the most interesting, so let’s filter the table we sent to Firefly to only include z&gt;3 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.</p>
-<p>For filtering, we will use <code class="docutils literal notranslate"><span class="pre">apply_table_filters</span></code> method on the galaxy table we loaded above. More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters</p>
+<p>For filtering, we will use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters"><code class="docutils literal notranslate"><span class="pre">apply_table_filters</span></code></a> method on the galaxy table we loaded above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">apply_table_filters</span><span class="p">(</span><span class="n">tbl_id</span><span class="o">=</span><span class="n">gal_cat_tbl_id</span><span class="p">,</span>
@@ -1311,8 +1309,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<p>We already have Rubin coadd with catalog overlaid, let’s make a 3 color image to see colors of marked objects more clearly. For this we will use <code class="docutils literal notranslate"><span class="pre">show_fits_3color</span></code> method:</p>
-<p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color</p>
+<p>We already have Rubin coadd with catalog overlaid, let’s make a 3 color image to see colors of marked objects more clearly. For this we will use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color"><code class="docutils literal notranslate"><span class="pre">show_fits_3color</span></code></a> method:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin_3color</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-3color&#39;</span>
@@ -1398,7 +1395,7 @@ NAXIS : 2688  2688  15  1
 <p>Let’s first define functions to do so:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reproject_to_TAN</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">reproject_to_TAN</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
     <span class="c1"># Define a new WCS with TAN projection (in CTYPE key)</span>
     <span class="n">output_wcs</span> <span class="o">=</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
     <span class="n">output_wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">ctype</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;STG&#39;</span><span class="p">,</span> <span class="s1">&#39;TAN&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span>
@@ -1417,7 +1414,7 @@ NAXIS : 2688  2688  15  1
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_fits_stream</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_fits_stream</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
     <span class="c1"># Create a FITS PrimaryHDU object with the coadd data</span>
     <span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span>
 
@@ -1476,11 +1473,7 @@ Writing back to fits stream...
 </section>
 <section id="use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds">
 <h3>Use Firefly’s show_fits_3color to create a 3 color image of Roman coadds<a class="headerlink" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds" title="Link to this heading">#</a></h3>
-<p>Now we upload each fits stream (in-memory fits file) to firefly using <code class="docutils literal notranslate"><span class="pre">upload_fits_data()</span></code> and prepare color params to pass to the <code class="docutils literal notranslate"><span class="pre">show_fits_3color()</span></code>. More info here:</p>
-<ul class="simple">
-<li><p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data</p></li>
-<li><p>https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color</p></li>
-</ul>
+<p>Now we upload each fits stream (in-memory fits file) to firefly using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data"><code class="docutils literal notranslate"><span class="pre">upload_fits_data()</span></code></a> and prepare color params to pass to the <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color"><code class="docutils literal notranslate"><span class="pre">show_fits_3color()</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">three_color_params</span> <span class="o">=</span> <span class="p">[</span>
@@ -1510,11 +1503,11 @@ Writing back to fits stream...
 </section>
 <section id="use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources">
 <h3>Use Firefly’s pan/zoom/align methods to locate high redshift sources<a class="headerlink" href="#use-firefly-s-pan-zoom-align-methods-to-locate-high-redshift-sources" title="Link to this heading">#</a></h3>
-<p>Now, let’s pan &amp; zoom to the region where we located high-redshift galaxy sources. Also align &amp; lock all images being displayed by WCS. For these operations we use these 3 methods:</p>
+<p>Now, let’s pan &amp; zoom to the region where we located high-redshift galaxy sources. Also align &amp; lock all images being displayed by WCS. For these operations we use these 3 methods (click on them to see their documentation):</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">set_pan</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_pan</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">set_zoom</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">align_images</span></code>: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images</p></li>
+<li><p><a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_pan"><code class="docutils literal notranslate"><span class="pre">set_pan</span></code></a></p></li>
+<li><p><a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom"><code class="docutils literal notranslate"><span class="pre">set_zoom</span></code></a></p></li>
+<li><p><a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images"><code class="docutils literal notranslate"><span class="pre">align_images</span></code></a></p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1533,8 +1526,7 @@ Writing back to fits stream...
 </section>
 <section id="use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python">
 <h3>Use Firefly’s set_stretch method to change the stretch of the image display via Python<a class="headerlink" href="#use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python" title="Link to this heading">#</a></h3>
-<p>The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client’s <code class="docutils literal notranslate"><span class="pre">set_stretch</span></code> to do this via Python. This is helpful for reproducibility and for scaling up to many images.</p>
-<p>More info about this method: https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch</p>
+<p>The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client’s <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch"><code class="docutils literal notranslate"><span class="pre">set_stretch</span></code></a> to do this via Python. This is helpful for reproducibility and for scaling up to many images.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_stretch</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">stype</span><span class="o">=</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;squared&#39;</span><span class="p">,</span> 

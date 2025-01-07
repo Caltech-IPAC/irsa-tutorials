@@ -30,7 +30,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -591,14 +591,14 @@ A fully-worked example is shown in the light curve notebook linked below.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>  <span class="c1"># parse strings</span>
-<span class="kn">import</span> <span class="nn">sys</span>  <span class="c1"># check size of loaded data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>  <span class="c1"># parse strings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>  <span class="c1"># check size of loaded data</span>
 
-<span class="kn">import</span> <span class="nn">hpgeom</span>  <span class="c1"># HEALPix math</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  <span class="c1"># store and manipulate table data</span>
-<span class="kn">import</span> <span class="nn">pyarrow.compute</span>  <span class="c1"># construct dataset filters</span>
-<span class="kn">import</span> <span class="nn">pyarrow.dataset</span>  <span class="c1"># load and query the NEOWISE dataset</span>
-<span class="kn">import</span> <span class="nn">pyarrow.fs</span>  <span class="c1"># interact with the S3 bucket storing the NEOWISE catalog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hpgeom</span>  <span class="c1"># HEALPix math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># store and manipulate table data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.compute</span>  <span class="c1"># construct dataset filters</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.dataset</span>  <span class="c1"># load and query the NEOWISE dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow.fs</span>  <span class="c1"># interact with the S3 bucket storing the NEOWISE catalog</span>
 </pre></div>
 </div>
 </div>
@@ -641,7 +641,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;re going to look at several different files, so make a function to return the path.</span>
-<span class="k">def</span> <span class="nf">neowise_path</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;_metadata&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">neowise_path</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;_metadata&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the path to a file. Default is &quot;_metadata&quot; file of the given year&#39;s dataset.</span>
 
 <span class="sd">    Parameters</span>
@@ -683,7 +683,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll use this function throughout the notebook to see how big different tables are.</span>
-<span class="k">def</span> <span class="nf">print_table_size</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pixel_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_table_size</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pixel_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prints the shape (rows x columns) and size (GiB) of the given table.</span>
 
 <span class="sd">    Parameters</span>
@@ -961,7 +961,7 @@ the slices to speed up your code.</p></li>
 dataset statistics like partition and file sizes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pixel_index_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">k_column</span><span class="o">=</span><span class="n">KCOLUMN</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">pixel_index_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">k_column</span><span class="o">=</span><span class="n">KCOLUMN</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the path and return the partition pixel index.</span>
 
 <span class="sd">    Parameters</span>

@@ -30,7 +30,7 @@
   <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -528,14 +528,14 @@
 <p>Call the imports below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
-<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span>
-<span class="kn">from</span> <span class="nn">astropy.utils.data</span> <span class="kn">import</span> <span class="n">download_file</span>
-<span class="kn">from</span> <span class="nn">firefly_client</span> <span class="kn">import</span> <span class="n">FireflyClient</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pyvo</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span>
 </pre></div>
 </div>
 </div>
@@ -601,7 +601,7 @@
 <p>To start, define a function to retrieve 2MASS photometry via a TAP query to IRSA that includes upper limits (note that only the <code class="docutils literal notranslate"><span class="pre">ph_qual</span></code> column on photometric quality of source is used and not the <code class="docutils literal notranslate"><span class="pre">rd_flg</span></code> column on “read flag”):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_2mass_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_2mass_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from 2MASS</span>
 
 <span class="sd">    Parameters:</span>
@@ -681,7 +681,7 @@
 <p>Based on that information, define a function to release AllWISE photometry via a TAP query to IRSA that includes the needed data quality flags and retains upper limits:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_allwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_allwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from AllWISE</span>
 
 <span class="sd">    Parameters:</span>
@@ -767,7 +767,7 @@
 <p>Define a function to retrieve Gaia DR3 photometry via a TAP query to IRSA (not considering upper limits as Gaia DR3 ony provides “detections or not” info so actual limits are not given):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_gaia_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_gaia_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from Gaia DR3</span>
 
 <span class="sd">    Parameters:</span>
@@ -845,7 +845,7 @@
 <p>Define a function to retrieve CatWISE photometry via a TAP query to IRSA that includes upper limits (note that CatWISE2020 Catalog is being used rather than CatWISE Preliminary Catalog):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_catwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_catwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from CatWISE</span>
 
 <span class="sd">    Parameters:</span>
@@ -914,7 +914,7 @@
 <p>Define a function to retrieve unWISE photometry via a TAP query to IRSA(note that flux units are given in nano-mag, zero-point is carried over from AllWISE, and no flag for upper limits is given):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_unwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_unwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from CatWISE</span>
 
 <span class="sd">    Parameters:</span>
@@ -1055,7 +1055,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=14</i>
-<table id="table140636287742736" class="table-striped table-bordered table-condensed">
+<table id="table140416703456400" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>wavelength</th><th>mag</th><th>magerr</th><th>upper_limit</th><th>zeropoint</th><th>lam_flam</th><th>lam_flam_err</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th>micron</th><th></th><th></th><th></th><th>Jy</th><th>erg / (s cm2)</th><th>erg / (s cm2)</th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1106,7 +1106,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNC0xMi0yMA"" target="_blank">this link</a></div></div>
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wMS0wNw"" target="_blank">this link</a></div></div>
 </div>
 <p>Write the photometry table to a FITS file:</p>
 <div class="cell docutils container">
@@ -1187,7 +1187,7 @@
 <h3>Get 2MASS Images<a class="headerlink" href="#get-2mass-images" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_2mass_images</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">search_size</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_2mass_images</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">search_size</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve 2MASS images</span>
 
 <span class="sd">    Parameters:</span>
