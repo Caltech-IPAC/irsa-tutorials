@@ -75,7 +75,7 @@ adql
 
 ```{code-cell} ipython3
 # In order to use TAP with this ADQL string using pyvo, you can do the following:
-result = service.search(adql)
+result = service.run_async(adql)
 result
 ```
 
@@ -125,7 +125,7 @@ adql
 Now we can use the previously-defined service to execute the query with the spatial contraint.
 
 ```{code-cell} ipython3
-cone_results = service.search(adql)
+cone_results = service.run_async(adql)
 ```
 
 ```{code-cell} ipython3
