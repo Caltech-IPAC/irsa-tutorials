@@ -75,11 +75,13 @@ adql
 
 ```{code-cell} ipython3
 # In order to use TAP with this ADQL string using pyvo, you can do the following:
-result = service.search(adql)
+result = service.run_async(adql)
 result
 ```
 
-The above query shows that there are 597,488,849 redshifts in this table.
+The above query shows that there are 597,488,849 redshifts in this table. 
+Running ``count`` on an entire table is an expensive operation, therefore we ran it asynchronously to avoid any potential timeout issues. 
+To learn more about synchronous versus asynchronous PyVO queries please read the [relevant PyVO documentation](https://pyvo.readthedocs.io/en/latest/dal/index.html#synchronous-vs-asynchronous-query).
 
 +++
 
@@ -125,7 +127,7 @@ adql
 Now we can use the previously-defined service to execute the query with the spatial contraint.
 
 ```{code-cell} ipython3
-cone_results = service.search(adql)
+cone_results = service.run_sync(adql)
 ```
 
 ```{code-cell} ipython3
@@ -151,7 +153,7 @@ We can easily see form this plot that the simulated galaxies go out to z = 3.
 
 Now let's visualize the galaxy main sequence at z = 2.0. First, we'll do a narrow redshift cut with no spatial constraint.
 
-Let's do it as an asynchronous search since this might take awhile.
+Let's do it as an asynchronous search since this might take awhile, too.
 
 ```{code-cell} ipython3
 service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
