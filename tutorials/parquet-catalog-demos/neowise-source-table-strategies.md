@@ -11,6 +11,11 @@ kernelspec:
   name: python3
 ---
 
+An executed version of this notebook can be seen at
+[https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-strategies.html](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-strategies.html).
+
++++
+
 # Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet
 
 +++
@@ -18,7 +23,7 @@ kernelspec:
 This notebook discusses strategies for working with the Apache Parquet version of the
 [NEOWISE](https://irsa.ipac.caltech.edu/Missions/wise.html) Single-exposure Source Table
 and provides the basic code needed for each approach.
-This is a very large catalog -- 10 years and 40 terabytes in total with 145 columns and 200 billion rows.
+This is a very large catalog -- 11 years and 42 terabytes in total with 145 columns and 200 billion rows.
 Most of the work shown in this notebook is how to efficiently deal with so much data.
 
 Learning Goals:
@@ -34,7 +39,7 @@ Learning Goals:
 
 +++
 
-The NEOWISE Single-exposure Source Table comprises 10 years of data.
+The NEOWISE Single-exposure Source Table comprises 11 years of data.
 Each year on its own would be considered "large" compared to astronomy catalogs produced
 contemporaneously, so working with the full dataset requires extra consideration.
 In this Parquet version, each year is stored as an independent Parquet dataset.
@@ -139,11 +144,11 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.
 
 ```{code-cell} ipython3
 # All NEOWISE years => about 40G RAM and 10 minutes runtime
-YEARS = list(range(1, 11))
+YEARS = [f"year{yr}" for yr in range(1, 12)] + ["addendum"]
 
 # To reduce the needed RAM or runtime, uncomment the next line and choose your own years.
-# Years 1 and 9 are needed for the median_file and biggest_file (defined below).
-# YEARS = [1, 9]
+# Years 1 and 8 are needed for the median_file and biggest_file (defined below).
+# YEARS = [1, 8]
 ```
 
 Column and partition variables:
@@ -181,7 +186,7 @@ def neowise_path(year, file="_metadata"):
     # This information can be found at https://irsa.ipac.caltech.edu/cloud_access/.
     bucket = "nasa-irsa-wise"
     base_prefix = "wise/neowiser/catalogs/p1bs_psd/healpix_k5"
-    root_dir = f"{bucket}/{base_prefix}/year{year}/neowiser-healpix_k5-year{year}.parquet"
+    root_dir = f"{bucket}/{base_prefix}/{year}/neowiser-healpix_k5-{year}.parquet"
     return f"{root_dir}/{file}"
 ```
 
@@ -189,12 +194,12 @@ Some representative partitions and files (see dataset stats in the Appendix for 
 
 ```{code-cell} ipython3
 # pixel index of the median partition and the biggest partition by number of rows
-median_part = 10_936
+median_part = 11_831
 biggest_part = 8_277
 
 # path to the median file and the biggest file by file size on disk (see Appendix)
-median_file = neowise_path(9, "healpix_k0=3/healpix_k5=3420/part0.snappy.parquet")
-biggest_file = neowise_path(1, "healpix_k0=2/healpix_k5=2551/part0.snappy.parquet")
+median_file = neowise_path("year8", "healpix_k0=1/healpix_k5=1986/part0.snappy.parquet")
+biggest_file = neowise_path("year1", "healpix_k0=2/healpix_k5=2551/part0.snappy.parquet")
 ```
 
 Convenience function for displaying a table size:
@@ -400,7 +405,7 @@ for year, year_ds in zip(YEARS, neowise_ds.children):
     # we'll just look at some basic metadata.
     num_rows = sum(frag.metadata.num_rows for frag in year_ds.get_fragments())
     num_files = len(year_ds.files)
-    print(f"NEOWISE year {year} dataset: {num_rows:,} rows in {num_files:,} files")
+    print(f"NEOWISE {year} dataset: {num_rows:,} rows in {num_files:,} files")
 ```
 
 ## Appendix
@@ -559,6 +564,6 @@ per_part.sort_values("numrows").iloc[len(per_part.index) // 2]
 
 **Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
-**Updated:** 2024-08-08
+**Updated:** 2025-03-07
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
