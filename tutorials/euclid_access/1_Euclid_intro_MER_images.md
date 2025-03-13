@@ -26,7 +26,6 @@ By the end of this tutorial, you will:
 - Use matplotlib to plot a grid of cutouts.
 - Identify sources in the cutouts and make basic measurements.
 
-
 +++
 
 ## Introduction
@@ -41,13 +40,9 @@ MER mosaic images are all the images from Level 2 images in different filters ma
 
 +++
 
-### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
-
-+++
-
 ## Data volume
 
-Each MER image is approximately 1.47 GB. On Caltech wifi this takes between 1-5 mins to download. 
+Each MER image is approximately 1.47 GB. Downloading can take some time.
 
 +++
 
@@ -140,12 +135,12 @@ print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
 Note that 'access_estsize' is in units of kb
 
 ```{code-cell} ipython3
-filename=df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].to_list()[0]
-filesize=df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_estsize'].to_list()[0]/1000000
+filename = df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].to_list()[0]
+filesize = df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_estsize'].to_list()[0]/1000000
 
 print(filename)
 
-print('Please note this image is',filesize,'GB. With 230 Mbps internet download speed, it takes about 1 minute to download.')
+print(f'Please note this image is {filesize} GB. With 230 Mbps internet download speed, it takes about 1 minute to download.')
 ```
 
 ### For future notebooks, extract the tileID of this image from the filename and extract the tileID
@@ -233,7 +228,7 @@ print(urls)
 #####################
 ```
 
-Create an array with the instrument and filter name so we can add this to the plots. 
+Create an array with the instrument and filter name so we can add this to the plots.
 
 ```{code-cell} ipython3
 df_im_euclid.loc[:, "filters"] = df_im_euclid["instrument_name"] + "_" + df_im_euclid["energy_bandpassname"]
@@ -294,12 +289,11 @@ for url in urls:
 ## Combine all cutouts into a single HDUList and display information
 final_hdulist = fits.HDUList(cutout_list)
 final_hdulist.info()
-
 ```
 
 ## 3. Visualize multiwavelength Euclid Q1 MER cutouts
 
-Need to determine the number of images for the grid layout, then we iterate through the images and plot each one. 
+Need to determine the number of images for the grid layout, then we iterate through the images and plot each one.
 
 ```{code-cell} ipython3
 num_images = len(final_hdulist)
@@ -418,18 +412,6 @@ for i in range(len(sources_thr)):
     ax.add_artist(e)
 ```
 
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-## Exercise
-
-+++
-
 ### Optional -- Access the data from the ESA archive website directly
 
 +++
@@ -441,27 +423,10 @@ for i in range(len(sources_thr)):
 
 +++
 
-## Additional Resources
-
-If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
-
-+++
-
 ## About this Notebook
 
-**Author(s)**: Tiffany Meshkat <br>
-**Keyword(s)**: Euclid, Q1, MER mosaics <br>
-**First published**: March 19, 2025 <br>
-**Last updated**: March 19, 2025
+**Author**: Tiffany Meshkat (IPAC Scientist)
 
-```{code-cell} ipython3
+**Updated**: March 19, 2025
 
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

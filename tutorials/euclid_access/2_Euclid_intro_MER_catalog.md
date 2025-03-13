@@ -39,10 +39,6 @@ Each entry in the MER catalog is a single source containing all its photometry f
 
 +++
 
-### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
-
-+++
-
 ## Imports
 
 ```{code-cell} ipython3
@@ -77,11 +73,7 @@ for tablename in tables.keys():
 ### Choose the Euclid MER table
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-```
-
-```{code-cell} ipython3
-
+table_mer = 'euclid_q1_mer_catalogue'
 ```
 
 ### Learn some information about the table:
@@ -95,7 +87,7 @@ print(len(columns))
 
 ```{code-cell} ipython3
 for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
+    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') 
 ```
 
 ### Define the following ADQL query to find the first 10k stars in the MER catalog
@@ -105,18 +97,16 @@ Since we are just using the MER catalog alone, it does not have a column for cla
 Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images
 
 ```{code-cell} ipython3
-adql_stars = f"SELECT TOP 10000 mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, \
-mer.flux_j_templfit, mer.fluxerr_j_templfit, mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob \
-FROM {table_mer} AS mer \
-WHERE  mer.flux_vis_psf > 0 \
-AND mer.flux_y_templfit > 0 \
-AND mer.flux_j_templfit > 0 \
-AND mer.flux_h_templfit > 0 \
-AND mer.point_like_flag = 1  \
-"
+adql_stars = ("SELECT TOP 10000 mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, "
+    "mer.flux_j_templfit, mer.fluxerr_j_templfit, mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob "
+    f"FROM {table_mer} AS mer "
+    "WHERE  mer.flux_vis_psf > 0 "
+    "AND mer.flux_y_templfit > 0 "
+    "AND mer.flux_j_templfit > 0 "
+    "AND mer.flux_h_templfit > 0 "
+    "AND mer.point_like_flag = 1 ")
 
-
-## Run the query
+# Run the query
 
 result_stars = service.search(adql_stars)
 ```
@@ -152,7 +142,6 @@ plt.ylabel('Y')
 plt.xlim(-10,10)
 plt.ylim(10,35)
 plt.title('10k Stars in MER catalog -- IRSA')
-
 ```
 
 ## Exercise
@@ -249,27 +238,10 @@ mer.DEBLENDED_FLAG, mer.BLENDED_PROB, mer.BINARY_FLAG, mer. POINT_LIKE_FLAG, mer
 ____________________________
 ```
 
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-## Additional Resources
-
-If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
-
-+++
-
 ## About this Notebook
 
-**Author(s)**: Tiffany Meshkat <br>
-**Keyword(s)**: Euclid, Q1, MER catalog <br>
-**First published**: March 19, 2025 <br>
-**Last updated**: March 19, 2025
+**Author**: Tiffany Meshkat (IPAC Scientist)
 
-```{code-cell} ipython3
+**Updated**: March 19, 2025
 
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

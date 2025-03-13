@@ -43,10 +43,6 @@ This notebook provides an introduction to the SIR 1D spectra released as part of
 
 +++
 
-### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
-
-+++
-
 ## Imports
 
 ```{code-cell} ipython3
@@ -77,7 +73,6 @@ Search for all tables in IRSA labeled as euclid
 
 ```{code-cell} ipython3
 service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
-
 
 tables = service.tables
 for tablename in tables.keys():
@@ -144,7 +139,6 @@ Currently IRSA has the spectra stored in very large files containing multiple (1
 
 # hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory
 # hdul.info()  # Show file info
-
 ```
 
 ### Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
@@ -173,10 +167,6 @@ plt.ylabel('Flux'+dat['SIGNAL'].unit.to_string('latex_inline'))
 plt.title(obj_id)
 ```
 
-```{code-cell} ipython3
-
-```
-
 ## Exercise
 
 +++
@@ -198,7 +188,6 @@ ON phz_class.object_id=spec.source_id
 WHERE phz_class.phz_classification = 2
 ```
 
-
 - This shows the first 10 sources with spectra in the list.
 - Click the link/chain
 - Make sure "source_id" is selected under "IDs columns"
@@ -206,23 +195,12 @@ WHERE phz_class.phz_classification = 2
 
 NOTE: You need to unzip the file to get a fits file with the combined spectra. On a mac you can do this by just double clicking the file to unzip.
 
-```{code-cell} ipython3
-
-```
-
-## Additional Resources
-
-If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
-
 +++
 
 ## About this Notebook
 
-**Author(s)**: Tiffany Meshkat <br>
-**Keyword(s)**: Euclid, Q1, 1D spectra <br>
-**First published**: March 19, 2025 <br>
-**Last updated**: March 19, 2025
+**Author**: Tiffany Meshkat (IPAC Scientist)
 
-```{code-cell} ipython3
+**Updated**: March 19, 2025
 
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

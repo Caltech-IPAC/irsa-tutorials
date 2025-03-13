@@ -37,9 +37,6 @@ These notebooks focus on how to access, download, and process Euclid Q1 data fro
 
 Every one dimensional spectrum is processed through a template and line fitting pipeline, producing several different 'SPE' catalogs. This notebook provides an introduction to the SPE catalogs released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
-
-### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
-
 +++
 
 ## Imports
@@ -69,7 +66,7 @@ import pyvo as vo
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
 
-In this case, choose the coordinates from the first notebook to save time downloading the MER mosaic. Search a radius of 1.5 arcminutes around these coordinates. 
+In this case, choose the coordinates from the first notebook to save time downloading the MER mosaic. Search a radius of 1.5 arcminutes around these coordinates.
 
 ```{code-cell} ipython3
 ra = 273.474451
@@ -119,14 +116,6 @@ filename=df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].
 tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 
 print('The MER tile ID for this object is :',tileID)
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
 ```
 
 ## 2. Read in the MER image from IRSA directly
@@ -322,15 +311,10 @@ plt.ylabel('Flux (erg / (Angstrom s cm2))')
 plt.title(obj_id)
 ```
 
-## Additional Resources
-
-If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
-
-+++
-
 ## About this Notebook
 
-**Author(s)**: Tiffany Meshkat <br>
-**Keyword(s)**: Euclid, Q1, spe catalog <br>
-**First published**: March 19, 2025 <br>
-**Last updated**: March 19, 2025
+**Author**: Tiffany Meshkat (IPAC Scientist)
+
+**Updated**: March 19, 2025
+
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
