@@ -50,38 +50,21 @@ This notebook provides an introduction to the SIR 1D spectra released as part of
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next lines to install dependencies if needed
-
-# Installation for pip
-# !pip install astropy
-# !pip install pyvo
-
-
-# Installation for conda
-# !conda install -c conda-forge astropy
-# !conda install -c conda-forge pyvo
+# Uncomment the next line to install dependencies if needed
+# !pip install matplotlib pandas requests astropy pyvo
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
-from astropy.coordinates import SkyCoord
-from astropy import units
-from astropy.wcs import WCS
-from astropy.table import Table
-from astropy.units import UnitsWarning
-
-import warnings
-import math
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-from os import listdir
-from os.path import isfile, join
-import pandas as pd
-import glob
-import pyvo as vo
 from io import BytesIO
+
+import matplotlib.pyplot as plt
+import pandas as pd
 import requests
+
+from astropy.io import fits
+from astropy.table import Table
+
+import pyvo as vo
 ```
 
 # Introduction to Euclid Q1 1D spectra
@@ -119,10 +102,6 @@ pd.set_option('display.max_colwidth', None)
 ## Can use the following lines to reset the max columns and column width of pandas
 # pd.reset_option('display.max_columns')
 # pd.reset_option('display.max_colwidth')
-```
-
-```{code-cell} ipython3
-
 ```
 
 ## 2. Search for the spectrum of a specific galaxy in the 1D spectra table

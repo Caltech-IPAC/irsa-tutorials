@@ -54,45 +54,29 @@ Each MER image is approximately 1.47 GB. On Caltech wifi this takes between 1-5 
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next lines to install dependencies if needed
-
-# Installation for pip
-# !pip install sep
-# !pip install astropy
-# !pip install pyvo
-# !pip install requests
-# !pip install fsspec[http]
-
-
-# Installation for conda
-# !conda install -c conda-forge sep
-# !conda install -c conda-forge astropy
-# !conda install -c conda-forge pyvo
-# !conda install requests
-# !conda install -c conda-forge fsspec requests aiohttp
+# Uncomment the next line to install dependencies if needed.
+# !pip install numpy astropy matplotlib pyvo sep>=1.4 fsspec pandas
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
-from astropy.coordinates import SkyCoord
-from astropy import units
-from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch,  ZScaleInterval, SquaredStretch
-from astropy.nddata import Cutout2D
-from astropy.wcs import WCS
-from astropy.utils.data import download_file
+import re
 
 import numpy as np
+import pandas as pd
+
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
-import os
-from os import listdir
-from os.path import isfile, join
-import pandas as pd
-import glob
-import sep
-import re
+
+from astropy.coordinates import SkyCoord
+from astropy.io import fits
+from astropy.nddata import Cutout2D
+from astropy.utils.data import download_file
+from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch,  ZScaleInterval, SquaredStretch
+from astropy.wcs import WCS
+from astropy import units as u
+
 import pyvo as vo
-import fsspec
+import sep
 ```
 
 # Introduction to Euclid Q1 MER mosaics
@@ -103,15 +87,8 @@ import fsspec
 Below are the object name and coordinates and our search radius
 
 ```{code-cell} ipython3
-name = 'HD 168151'
-
-ra = 273.474451
-dec = 64.397273
-
-search_radius = 1.5 * units.arcmin
-pos = SkyCoord(ra=ra, dec=dec, unit='deg')
-
-coord = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+search_radius = 10 * u.arcsec
+coord = SkyCoord.from_name('HD 168151')
 ```
 
 Use IRSA to search for all Euclid data on this target. 
@@ -121,14 +98,13 @@ This query will return any image with pixels that overlap the search region.
 ```{code-cell} ipython3
 irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
 
-im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, 10*units.arcsec),
-                                collection='euclid_DpdMerBksMosaic')
+image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
 
 Convert the table to pandas dataframe
 
 ```{code-cell} ipython3
-df_im_irsa=im_table.to_table().to_pandas()
+df_im_irsa=image_table.to_table().to_pandas()
 ```
 
 Change the settings so we can see all the columns in the dataframe and the full column width (to see the full long URL)
@@ -153,14 +129,6 @@ df_im_euclid.head()
 
 ```{code-cell} ipython3
 print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
 ```
 
 ## 2. Retrieve a Euclid Q1 MER mosaic image in the VIS bandpass
@@ -282,7 +250,7 @@ filters
 ```{code-cell} ipython3
 ######################## User defined section ############################
 ## How large do you want the image cutout to be?
-im_cutout= 1.0 * units.arcmin
+im_cutout= 1.0 * u.arcmin
 
 ## What is the center of the cutout? 
 ## For now choosing a random location on the image 
@@ -294,7 +262,7 @@ dec =  64.525
 # ra = 273.474451
 # dec = 64.397273
 
-coords_cutout = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+coords_cutout = SkyCoord(ra, dec, unit=(u.deg, u.deg), frame='icrs')
 
 ##########################################################################
 
@@ -434,7 +402,6 @@ print("Found", len(sources_thr), "objects above flux threshold")
 We plot the VIS cutout with the sources detected overplotted with a red ellipse
 
 ```{code-cell} ipython3
-
 fig, ax = plt.subplots()
 m, s = np.mean(data_sub), np.std(data_sub)
 im = ax.imshow(data_sub, cmap='gray', origin='lower', norm=ImageNormalize(img2, interval=ZScaleInterval(), stretch=SquaredStretch()))

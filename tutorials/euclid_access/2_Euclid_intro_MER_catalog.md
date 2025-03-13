@@ -46,35 +46,14 @@ Each entry in the MER catalog is a single source containing all its photometry f
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next lines to install dependencies if needed
-
-# Installation for pip
-# !pip install sep
-# !pip install astropy
-# !pip install pyvo
-
-
-# Installation for conda
-# !conda install -c conda-forge sep
-# !conda install -c conda-forge astropy
-# !conda install -c conda-forge pyvo
+# Uncomment the next line to install dependencies if needed
+# !pip install numpy matplotlib pyvo
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
-from astropy.coordinates import SkyCoord
-from astropy import units
-from astropy.wcs import WCS
-from astropy.io.votable import parse
-
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-from os import listdir
-from os.path import isfile, join
-import pandas as pd
-import glob
-import sep
+
 import pyvo as vo
 ```
 

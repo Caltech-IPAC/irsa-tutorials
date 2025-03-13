@@ -37,9 +37,6 @@ These notebooks focus on how to access, download, and process Euclid Q1 data fro
 
 Every one dimensional spectrum is processed through a template and line fitting pipeline, producing several different 'SPE' catalogs. This notebook provides an introduction to the SPE catalogs released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
-```{code-cell} ipython3
-
-```
 
 ### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
 
@@ -48,47 +45,27 @@ Every one dimensional spectrum is processed through a template and line fitting 
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next lines to install dependencies if needed
-
-# Installation for pip
-# !pip install sep
-# !pip install astropy
-# !pip install pyvo
-
-
-# Installation for conda
-# !conda install -c conda-forge sep
-# !conda install -c conda-forge astropy
-# !conda install -c conda-forge pyvo
+# Uncomment the next line to install dependencies if needed
+# !pip install matplotlib pandas astropy pyvo
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
-from astropy.coordinates import SkyCoord
-from astropy import units
-from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch
-from astropy.nddata import Cutout2D
-from astropy.wcs import WCS
-from astropy.table import Table
-from astropy.utils.data import download_file
-
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-from os import listdir
-from os.path import isfile, join
-import pandas as pd
-import glob
-import sep
-import pyvo as vo
-import re
 from io import BytesIO
+import re
+
+import matplotlib.pyplot as plt
+import pandas as pd
 import requests
+
+from astropy.coordinates import SkyCoord
+from astropy.io import fits
+from astropy.table import Table
+from astropy import units as u
+from astropy.utils.data import download_file
+from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch
+
+import pyvo as vo
 ```
-
-# Introduction to Euclid Q1 SPE catalog
-
-+++
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
 
@@ -98,10 +75,10 @@ In this case, choose the coordinates from the first notebook to save time downlo
 ra = 273.474451
 dec = 64.397273
 
-search_radius = 1.5 * units.arcmin
+search_radius = 1.5 * u.arcmin
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 
-coord = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+coord = SkyCoord(ra, dec, unit=(u.deg, u.deg), frame='icrs')
 ```
 
 ### Use IRSA to search for all Euclid data on this target
@@ -111,12 +88,11 @@ This searches specifically in the euclid_DpdMerBksMosaic "collection" which is t
 ```{code-cell} ipython3
 irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
 
-im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, 10*units.arcsec),
+im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, 10*u.arcsec),
                                 collection='euclid_DpdMerBksMosaic')
 
 ## Convert the table to pandas dataframe
 df_im_irsa=im_table.to_table().to_pandas()
-
 ```
 
 ```{code-cell} ipython3
@@ -346,17 +322,11 @@ plt.ylabel('Flux (erg / (Angstrom s cm2))')
 plt.title(obj_id)
 ```
 
-```{code-cell} ipython3
-
-```
-
 ## Additional Resources
 
 If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
 
-```{code-cell} ipython3
-
-```
++++
 
 ## About this Notebook
 
@@ -364,23 +334,3 @@ If you have any issues accessing data from the archives, please contact the help
 **Keyword(s)**: Euclid, Q1, spe catalog <br>
 **First published**: March 19, 2025 <br>
 **Last updated**: March 19, 2025
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
