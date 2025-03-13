@@ -12,7 +12,7 @@ kernelspec:
 ---
 
 An executed version of this notebook can be seen at
-[https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
+[IRSA website]https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
 
 +++
 
