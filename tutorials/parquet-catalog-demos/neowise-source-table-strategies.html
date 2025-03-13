@@ -507,12 +507,14 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="strategies-to-efficiently-work-with-neowise-single-exposure-source-table-in-parquet">
+  <p>An executed version of this notebook can be seen on
+<a class="reference external" href="https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-strategies.html">IRSA’s website</a>.</p>
+<section id="strategies-to-efficiently-work-with-neowise-single-exposure-source-table-in-parquet">
 <h1>Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet<a class="headerlink" href="#strategies-to-efficiently-work-with-neowise-single-exposure-source-table-in-parquet" title="Link to this heading">#</a></h1>
 <p>This notebook discusses strategies for working with the Apache Parquet version of the
 <a class="reference external" href="https://irsa.ipac.caltech.edu/Missions/wise.html">NEOWISE</a> Single-exposure Source Table
 and provides the basic code needed for each approach.
-This is a very large catalog – 10 years and 40 terabytes in total with 145 columns and 200 billion rows.
+This is a very large catalog – 11 years and 42 terabytes in total with 145 columns and 200 billion rows.
 Most of the work shown in this notebook is how to efficiently deal with so much data.</p>
 <p>Learning Goals:</p>
 <ul class="simple">
@@ -523,7 +525,7 @@ slice it in order to obtain a subset small enough to load into memory and proces
 </ul>
 <section id="introduction">
 <h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>The NEOWISE Single-exposure Source Table comprises 10 years of data.
+<p>The NEOWISE Single-exposure Source Table comprises 11 years of data.
 Each year on its own would be considered “large” compared to astronomy catalogs produced
 contemporaneously, so working with the full dataset requires extra consideration.
 In this Parquet version, each year is stored as an independent Parquet dataset.
@@ -627,11 +629,11 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># All NEOWISE years =&gt; about 40G RAM and 10 minutes runtime</span>
-<span class="n">YEARS</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="n">YEARS</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;addendum&quot;</span><span class="p">]</span>
 
 <span class="c1"># To reduce the needed RAM or runtime, uncomment the next line and choose your own years.</span>
-<span class="c1"># Years 1 and 9 are needed for the median_file and biggest_file (defined below).</span>
-<span class="c1"># YEARS = [1, 9]</span>
+<span class="c1"># Years 1 and 8 are needed for the median_file and biggest_file (defined below).</span>
+<span class="c1"># YEARS = [1, 8]</span>
 </pre></div>
 </div>
 </div>
@@ -673,7 +675,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
     <span class="c1"># This information can be found at https://irsa.ipac.caltech.edu/cloud_access/.</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-wise&quot;</span>
     <span class="n">base_prefix</span> <span class="o">=</span> <span class="s2">&quot;wise/neowiser/catalogs/p1bs_psd/healpix_k5&quot;</span>
-    <span class="n">root_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">base_prefix</span><span class="si">}</span><span class="s2">/year</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">/neowiser-healpix_k5-year</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">.parquet&quot;</span>
+    <span class="n">root_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">base_prefix</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">/neowiser-healpix_k5-</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">.parquet&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
@@ -683,12 +685,12 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pixel index of the median partition and the biggest partition by number of rows</span>
-<span class="n">median_part</span> <span class="o">=</span> <span class="mi">10_936</span>
+<span class="n">median_part</span> <span class="o">=</span> <span class="mi">11_831</span>
 <span class="n">biggest_part</span> <span class="o">=</span> <span class="mi">8_277</span>
 
 <span class="c1"># path to the median file and the biggest file by file size on disk (see Appendix)</span>
-<span class="n">median_file</span> <span class="o">=</span> <span class="n">neowise_path</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;healpix_k0=3/healpix_k5=3420/part0.snappy.parquet&quot;</span><span class="p">)</span>
-<span class="n">biggest_file</span> <span class="o">=</span> <span class="n">neowise_path</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;healpix_k0=2/healpix_k5=2551/part0.snappy.parquet&quot;</span><span class="p">)</span>
+<span class="n">median_file</span> <span class="o">=</span> <span class="n">neowise_path</span><span class="p">(</span><span class="s2">&quot;year8&quot;</span><span class="p">,</span> <span class="s2">&quot;healpix_k0=1/healpix_k5=1986/part0.snappy.parquet&quot;</span><span class="p">)</span>
+<span class="n">biggest_file</span> <span class="o">=</span> <span class="n">neowise_path</span><span class="p">(</span><span class="s2">&quot;year1&quot;</span><span class="p">,</span> <span class="s2">&quot;healpix_k0=2/healpix_k5=2551/part0.snappy.parquet&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -903,7 +905,7 @@ be applied to the per-year datasets.</p>
     <span class="c1"># we&#39;ll just look at some basic metadata.</span>
     <span class="n">num_rows</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">frag</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">num_rows</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">year_ds</span><span class="o">.</span><span class="n">get_fragments</span><span class="p">())</span>
     <span class="n">num_files</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">year_ds</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NEOWISE year </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> dataset: </span><span class="si">{</span><span class="n">num_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> rows in </span><span class="si">{</span><span class="n">num_files</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NEOWISE </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> dataset: </span><span class="si">{</span><span class="n">num_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> rows in </span><span class="si">{</span><span class="n">num_files</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1112,7 +1114,7 @@ dataset statistics like partition and file sizes.</p>
 <section id="about-this-notebook">
 <h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Author:</strong> Troy Raen (IRSA Developer) and the IPAC Science Platform team</p>
-<p><strong>Updated:</strong> 2024-08-08</p>
+<p><strong>Updated:</strong> 2025-03-07</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>

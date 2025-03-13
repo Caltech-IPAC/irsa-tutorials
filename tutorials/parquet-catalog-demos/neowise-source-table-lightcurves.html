@@ -489,7 +489,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="make-light-curves-from-neowise-single-exposure-source-table">
+  <p>An executed version of this notebook can be seen on
+<a class="reference external" href="https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html">IRSA’s website</a>.</p>
+<section id="make-light-curves-from-neowise-single-exposure-source-table">
 <h1>Make Light Curves from NEOWISE Single-exposure Source Table<a class="headerlink" href="#make-light-curves-from-neowise-single-exposure-source-table" title="Link to this heading">#</a></h1>
 <p>Learning Goals:</p>
 <ul class="simple">
@@ -508,7 +510,7 @@ set of targets with RA/Dec coordinates.</p>
 <p>This notebook loads light curves from the
 <a class="reference external" href="https://irsa.ipac.caltech.edu/Missions/wise.html">NEOWISE</a> Single-exposure Source Table
 for a sample of about 2000 cataclysmic variables from <a class="reference external" href="https://doi.org/10.1086/320802">Downes et al. (2001)</a>.
-The NEOWISE Single-exposure Source Table is a very large catalog – 10 years and 40 terabytes in total
+The NEOWISE Single-exposure Source Table is a very large catalog – 11 years and 42 terabytes in total
 with 145 columns and 200 billion rows.
 When searching this catalog, it is important to consider the requirements of your use case and
 the format of this dataset.
@@ -536,7 +538,7 @@ For each pixel:</p>
 </ul>
 <p>The efficiency of this method will increase with the number of rows needed from each partition.
 For example, a cone search radius of 1 arcsec will require about 10 CPUs, 65G RAM, and
-50 minutes to load the data from all 10 NEOWISE years.
+50 minutes to load the data from all 11 NEOWISE years.
 Increasing the radius to 10 arcsec will return about 2.5x more rows using roughly the same resources.
 Increasing the target sample size can result in similar efficiency gains.
 To try out this notebook with fewer resources, use a subset of NEOWISE years.
@@ -586,7 +588,8 @@ Real use cases are likely to require all ten years but it can be helpful to star
 fewer while exploring to make things run faster.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">YEARS</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>  <span class="c1"># all years =&gt; about 11 CPU, 65G RAM, and 50 minutes runtime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># all years =&gt; about 11 CPU, 65G RAM, and 50 minutes runtime</span>
+<span class="n">YEARS</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;addendum&quot;</span><span class="p">]</span>
 
 <span class="c1"># To try out a smaller version of the notebook,</span>
 <span class="c1"># uncomment the next line and choose your own subset of years.</span>
@@ -622,7 +625,7 @@ We’ll load it as a pyarrow dataset.</p>
 <span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-wise&quot;</span>
 <span class="n">base_prefix</span> <span class="o">=</span> <span class="s2">&quot;wise/neowiser/catalogs/p1bs_psd/healpix_k5&quot;</span>
 <span class="n">metadata_path</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">yr</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">base_prefix</span><span class="si">}</span><span class="s2">/year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">/neowiser-healpix_k5-year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">.parquet/_metadata&quot;</span>
+    <span class="k">lambda</span> <span class="n">yr</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">base_prefix</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">/neowiser-healpix_k5-</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">.parquet/_metadata&quot;</span>
 <span class="p">)</span>
 <span class="n">fs</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-west-2&quot;</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -967,7 +970,7 @@ This has to do with differences in what does / does not get copied into the chil
 <section id="about-this-notebook">
 <h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
 <p><strong>Author:</strong> Troy Raen (IRSA Developer) and the IPAC Science Platform team</p>
-<p><strong>Updated:</strong> 2024-08-08</p>
+<p><strong>Updated:</strong> 2025-03-07</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>
