@@ -11,8 +11,8 @@ kernelspec:
   name: python3
 ---
 
-An executed version of this notebook can be seen at
-[IRSA website]https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
+An executed version of this notebook can be seen on
+[IRSA's website](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
 
 +++
 
