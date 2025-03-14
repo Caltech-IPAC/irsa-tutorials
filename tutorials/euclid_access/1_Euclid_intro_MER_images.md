@@ -130,7 +130,7 @@ print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
 
 +++
 
-#### Lets first look at one example full image, the VIS image
+### Lets first look at one example full image, the VIS image
 
 Note that 'access_estsize' is in units of kb
 
@@ -177,7 +177,7 @@ print(hdu_mer_irsa.info())
 head_mer_irsa = hdu_mer_irsa[0].header
 ```
 
-#### Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
 
 ```{code-cell} ipython3
 # download_path='/Users/meshkat/data/Euclid/'
@@ -209,7 +209,9 @@ colorbar = plt.colorbar()
 
 +++
 
-#### We'd like to take a look at the other MER images but only in a certain cutout of interest so we don't have to download 9 full MER images
+```{note}
+We'd like to take a look at the other MER images but only in a specific cutout of interest so we don't have to download 9 full MER images.
+```
 
 ```{code-cell} ipython3
 urls = df_im_euclid['access_url'].to_list()
