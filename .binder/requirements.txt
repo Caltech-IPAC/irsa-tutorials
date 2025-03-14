@@ -12,8 +12,10 @@ dask[distributed]
 psutil
 ray
 s3fs
+fsspec
 firefly-client
 jupyter-firefly-extensions
 reproject
+sep>=1.4
 # For supporting myst-based notebooks
 jupytext
