@@ -163,36 +163,6 @@ plt.ylabel('Flux'+dat['SIGNAL'].unit.to_string('latex_inline'))
 plt.title(obj_id)
 ```
 
-## Exercise
-
-+++
-
-### Optional -- Access the data from the ESA archive website directly
-
-+++
-
-#### 1. Download the data from the ESA archive
-
-- Go to https://easidr.esac.esa.int/sas/ and sign in with your credentials.
-- Go to the ADQL form and do the following search:
-
-```{raw-cell}
-SELECT TOP 10 spec.source_id 
-FROM sedm.spectra_source as spec
-JOIN catalogue.phz_classification AS phz_class
-ON phz_class.object_id=spec.source_id
-WHERE phz_class.phz_classification = 2
-```
-
-- This shows the first 10 sources with spectra in the list.
-- Click the link/chain
-- Make sure "source_id" is selected under "IDs columns"
-- Click "show data" then click the download button next to "Spectra -- source_id"
-
-NOTE: You need to unzip the file to get a fits file with the combined spectra. On a mac you can do this by just double clicking the file to unzip.
-
-+++
-
 ## About this Notebook
 
 **Author**: Tiffany Meshkat (IPAC Scientist)

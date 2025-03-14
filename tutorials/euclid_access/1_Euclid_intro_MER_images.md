@@ -410,17 +410,6 @@ for i in range(len(sources_thr)):
     ax.add_artist(e)
 ```
 
-### Optional -- Access the data from the ESA archive website directly
-
-+++
-
-- Go to https://easidr.esac.esa.int/sas/ and sign in with your credentials.
-- Download all Level 2 MER Mosaic
-   data on the bright, high proper motion star HD 168151
-- repeat the steps above with these data
-
-+++
-
 ## About this Notebook
 
 **Author**: Tiffany Meshkat (IPAC Scientist)
