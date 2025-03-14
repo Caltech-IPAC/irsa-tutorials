@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: 1D spectra
+# Introduction to Euclid Q1 1D spectra
 
 +++
 
@@ -62,10 +62,6 @@ from astropy.table import Table
 
 import pyvo as vo
 ```
-
-# Introduction to Euclid Q1 1D spectra
-
-+++
 
 ## 1. Download 1D spectra from IRSA directly to this notebook
 

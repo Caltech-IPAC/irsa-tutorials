@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: MER mosaics
+# Introduction to Euclid Q1 MER mosaics
 
 +++
 
@@ -73,10 +73,6 @@ from astropy import units as u
 import pyvo as vo
 import sep
 ```
-
-# Introduction to Euclid Q1 MER mosaics
-
-+++
 
 ## 1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151
 Below are the object name and coordinates and our search radius

@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: MER catalog
+# Introduction to Euclid Q1 MER catalog
 
 +++
 
@@ -52,10 +52,6 @@ import matplotlib.pyplot as plt
 
 import pyvo as vo
 ```
-
-# Introduction to Euclid Q1 MER catalog
-
-+++
 
 ## 1. Download MER catalog from IRSA directly to this notebook
 
