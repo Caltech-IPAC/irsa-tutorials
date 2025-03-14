@@ -62,6 +62,7 @@ tutorials/euclid_access/1_Euclid_intro_MER_images
 tutorials/euclid_access/2_Euclid_intro_MER_catalog
 tutorials/euclid_access/3_Euclid_intro_1D_spectra
 tutorials/euclid_access/5_Euclid_intro_SPE_catalog
+tutorials/cloud_access/euclid-cloud-access
 
 ```
 
