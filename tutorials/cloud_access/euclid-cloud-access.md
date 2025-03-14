@@ -87,20 +87,14 @@ As per doc specification, we need `MER/{tile_id}/{instrument}/EUC_MER_BGSUB-MOSA
 ### Get image file paths for a coordinate search of interest
 
 ```{code-cell} ipython3
-# Star TYC 4429-1677-1
-ra = 273.11730230 * u.deg
-dec = 68.20761349 * u.deg
-```
-
-```{code-cell} ipython3
-coord = SkyCoord(ra=ra, dec=dec)
+coord = SkyCoord.from_name("TYC 4429-1677-1")
 search_radius = 10 * u.arcsec
 ```
 
 List all Simple Image Access (SIA) collections for IRSA.
 
 ```{code-cell} ipython3
-tbl = Irsa.list_collections(servicetype='SIA')
+collections = Irsa.list_collections(servicetype='SIA')
 len(tbl)
 ```
 
@@ -296,8 +290,9 @@ plt.title(f'Euclid Object ID: {object_id}');
 ```
 
 ## About this Notebook
-Author: Jaladh Singhal (IRSA Developer) in conjunction with Tiffany Meshkat, Vandana Desai, Brigitta Sipőcz, and the IPAC Science Platform team
 
-Updated: 2025-03-13
+**Author:** Jaladh Singhal (IRSA Developer) in conjunction with Tiffany Meshkat, Vandana Desai, Brigitta Sipőcz, and the IPAC Science Platform team
 
-Contact: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+**Updated:** 2025-03-13
+
+**Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
