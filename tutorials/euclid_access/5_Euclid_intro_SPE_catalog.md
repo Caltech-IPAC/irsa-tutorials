@@ -69,13 +69,8 @@ import pyvo as vo
 In this case, choose the coordinates from the first notebook to save time downloading the MER mosaic. Search a radius of 1.5 arcminutes around these coordinates.
 
 ```{code-cell} ipython3
-ra = 273.474451
-dec = 64.397273
-
-search_radius = 1.5 * u.arcmin
-pos = SkyCoord(ra=ra, dec=dec, unit='deg')
-
-coord = SkyCoord(ra, dec, unit=(u.deg, u.deg), frame='icrs')
+search_radius = 10 * u.arcsec
+coord = SkyCoord.from_name('HD 168151')
 ```
 
 ### Use IRSA to search for all Euclid data on this target
@@ -85,8 +80,7 @@ This searches specifically in the euclid_DpdMerBksMosaic "collection" which is t
 ```{code-cell} ipython3
 irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
 
-im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, 10*u.arcsec),
-                                collection='euclid_DpdMerBksMosaic')
+im_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 
 ## Convert the table to pandas dataframe
 df_im_irsa=im_table.to_table().to_pandas()
@@ -235,17 +229,12 @@ AND galaxy.spe_z_prob > 0.999 \
 AND galaxy.spe_z BETWEEN 1.4 AND 1.6 \
 ORDER BY spe.spe_line_snr_gf DESC \
 "
-adql
 
-
-## Use TAP with this ADQL string using pyvo
+# Use TAP with this ADQL string using pyvo
 result = service.search(adql)
 
-## Convert table to pandas dataframe and drop duplicates
-df_spe = result.to_table().to_pandas()
-
-# Display first few rows
-df_spe[0:15]
+# Convert table to pandas dataframe and drop duplicates
+result_table = result.to_qtable()
 ```
 
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
@@ -253,21 +242,18 @@ df_spe[0:15]
 ```{code-cell} ipython3
 obj_id = 2739401293646823742
 
-df_obj=df_spe[(df_spe['object_id']==obj_id)]
+obj_2739401293646823742 = result_table[(result_table['object_id'] == obj_id)]
 
-df_obj
+obj_2739401293646823742
 ```
 
 ### Pull the spectrum of this object
 
 ```{code-cell} ipython3
-adql_object = f"SELECT * \
-FROM {table_1dspectra} \
-WHERE objectid = {obj_id} \
-AND uri IS NOT NULL "
+adql_object = f"SELECT *  FROM {table_1dspectra}  WHERE objectid = {obj_id} AND uri IS NOT NULL "
 
 result2 = service.search(adql_object)
-df2=result2.to_table().to_pandas()
+df2 = result2.to_table().to_pandas()
 df2
 ```
 
@@ -276,9 +262,9 @@ df2
 This involves reading in the spectrum without readin in the full FITS file, just pulling the extension we want.
 
 ```{code-cell} ipython3
-irsa_url='https://irsadev.ipac.caltech.edu/'
+irsa_url = 'https://irsadev.ipac.caltech.edu/'
 
-file_url=irsa_url+df2['uri'].iloc[0]
+file_url = irsa_url + df2['uri'].iloc[0]
 file_url
 
 response = requests.get(file_url)
