@@ -6,7 +6,7 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.16.3
 kernelspec:
-  display_name: irsa-tutorials
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -16,18 +16,24 @@ kernelspec:
 +++
 
 ## Learning Goals
-- Learn where Euclid QR1 data is present in the cloud
-- Find an image and retireve its cutout from cloud
-- Find an object and retrieve its spectrum from cloud
+By the end of this tutorial, you will:
+- Learn where Euclid Q1 data are stored in the cloud.
+- Retrieve an image cutout from the cloud.
+- Retrieve a spectrum from the cloud.
 
 +++
 
 ## Introduction
-TODO: fill with links of docs/specs?
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA. The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe. The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals. These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
+
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+
+Euclid Q1 data were released on-premises at IPAC and in the cloud via Amazon Web Services' Open Data Repository. This notebook introduces users to accessing Euclid Q1 data from the cloud. Additional Euclid-specific notebooks can be found at ["Accessing Euclid data" section](https://caltech-ipac.github.io/irsa-tutorials/#accessing-euclid-data) and additional notebooks about how to access IRSA-curated data from the AWS ODR can be found at ["Accessing IRSA's cloud holdings" section](https://caltech-ipac.github.io/irsa-tutorials/#accessing-irsa-s-cloud-holdings).
 
 +++
 
 ## Imports
+- TODO: fill the imports explaination
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -57,6 +63,8 @@ BUCKET_NAME='nasa-irsa-euclid-q1' # internal to IPAC until public release (use L
 ```{code-cell} ipython3
 s3 = s3fs.S3FileSystem(anon=True)
 ```
+
+TODO: link s3fs docs
 
 ```{code-cell} ipython3
 s3.ls(f'{BUCKET_NAME}/q1')
@@ -95,16 +103,16 @@ List all Simple Image Access (SIA) collections for IRSA.
 
 ```{code-cell} ipython3
 collections = Irsa.list_collections(servicetype='SIA')
-len(tbl)
+len(collections)
 ```
 
 Filter to only those containing "euclid":
 
 ```{code-cell} ipython3
-tbl[['euclid' in v for v in tbl['collection']]]
+collections[['euclid' in v for v in collections['collection']]]
 ```
 
-We identify the collection we need for MER images:
+As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) and the above table, we identify that MER Mosiacs are available as follows:
 
 ```{code-cell} ipython3
 img_collection = 'euclid_DpdMerBksMosaic'
@@ -234,7 +242,7 @@ search_radius = (5 * u.arcsec).to('deg')
 adql_query = f"SELECT * \
     FROM {euclid_mer_catalog} \
     WHERE CONTAINS(POINT('ICRS', ra, dec), \
-        CIRCLE('ICRS', {ra.value}, {dec.value}, {search_radius.value})) = 1"
+        CIRCLE('ICRS', {coord.ra.deg}, {coord.dec.deg}, {search_radius.value})) = 1"
 
 mer_catalog_tbl = Irsa.query_tap(query=adql_query).to_table()
 mer_catalog_tbl
