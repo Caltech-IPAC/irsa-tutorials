@@ -57,6 +57,9 @@ if platform.platform().startswith("mac") or platform.platform().startswith("win"
     # The way the notebooks use the multiprocessing module is known to not work on non-Linux
     nb_execution_excludepatterns += ['Parallelize_Convolution.md', 'neowise-source-table-lightcurves.md']
 
+# Euclid data is not yet available publicly
+nb_execution_excludepatterns += ['*Euclid*', '*euclid*']
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
