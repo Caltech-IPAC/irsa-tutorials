@@ -37,6 +37,7 @@ tutorials/parquet-catalog-demos/neowise-source-table-strategies
 tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
+tutorials/cloud_access/euclid-cloud-access
 
 ```
 
