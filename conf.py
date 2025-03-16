@@ -64,8 +64,6 @@ if platform.platform().startswith("mac") or platform.platform().startswith("win"
 # Euclid data is not yet available publicly
 nb_execution_excludepatterns += ['*_Euclid*', '*euclid*']
 
-exclude_patterns += ['tutorials/*/*_Euclid*', 'tutorials/*/euclid*']
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
