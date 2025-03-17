@@ -147,26 +147,10 @@ tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 print('The MER tile ID for this object is :',tileID)
 ```
 
-```{code-cell} ipython3
-######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsa
-######## This will not be the same after the data are made public so this cell will be deleted at that time
-def add_dev_to_domain(domain):
-    parts = domain.split('.', 1)  # Split at the first dot
-    if len(parts) == 2:
-        return f"{parts[0]}dev.{parts[1]}"
-    return domain
-
-filename_dev = add_dev_to_domain(filename)
-print(filename_dev)  
-
-#####################
-```
-
 Download the MER image -- note this file is about 1.46 GB
 
 ```{code-cell} ipython3
-fname = download_file(filename_dev, cache=True)
+fname = download_file(filename, cache=True)
 hdu_mer_irsa = fits.open(fname)
 print(hdu_mer_irsa.info())
 
