@@ -56,7 +56,7 @@ import pyvo as vo
 ## 1. Download MER catalog from IRSA directly to this notebook
 
 ```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
+service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 ```
 
 ```{code-cell} ipython3

@@ -68,7 +68,7 @@ import pyvo as vo
 Search for all tables in IRSA labeled as euclid
 
 ```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
+service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 
 tables = service.tables
 for tablename in tables.keys():
@@ -115,7 +115,7 @@ df2
 ### Create the full filename/url
 
 ```{code-cell} ipython3
-irsa_url='https://irsadev.ipac.caltech.edu/'
+irsa_url='https://irsa.ipac.caltech.edu/'
 
 file_url=irsa_url+df2['uri'].iloc[0]
 file_url

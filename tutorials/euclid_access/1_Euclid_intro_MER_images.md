@@ -87,7 +87,7 @@ This searches specifically in the euclid_DpdMerBksMosaic "collection" which is t
 This query will return any image with pixels that overlap the search region.
 
 ```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
+irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
 
 image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
@@ -149,7 +149,7 @@ print('The MER tile ID for this object is :',tileID)
 
 ```{code-cell} ipython3
 ######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsadev
+######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsa
 ######## This will not be the same after the data are made public so this cell will be deleted at that time
 def add_dev_to_domain(domain):
     parts = domain.split('.', 1)  # Split at the first dot
@@ -217,7 +217,7 @@ urls
 
 ```{code-cell} ipython3
 ######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsadev
+######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsa
 ######## reusing the add_dev_to_domain function from before
 ######## This will not be the same after the data are made public so this cell will be deleted at that time
 
