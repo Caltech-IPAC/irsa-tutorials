@@ -128,13 +128,7 @@ else:
 search_radius = 1.5 * u.arcmin # search radius
 cutout_size = 1.5 * u.arcmin # cutout size
 
-# Coordinates for NGC 6254
-#ra = 254.2923478
-#dec = -4.1020057
-
-# Coordinates for NGC 6397
-ra = 265.1764034
-dec = -53.6746141
+coord = SkyCoord.from_name('NGC 6397')
 ```
 
 ## Search Euclid ERO Images
@@ -153,7 +147,6 @@ Here we use the collection *euclid_ero*, containing the Euclid ERO images. We fi
 
 
 ```python
-coord = SkyCoord(ra, dec, unit=(u.deg,u.deg), frame='icrs')
 image_tab = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_ero').to_table()
 print("Number of images available: {}".format(len(image_tab)))
 ```
