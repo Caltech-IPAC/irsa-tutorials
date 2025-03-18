@@ -148,7 +148,9 @@ coord = SkyCoord.from_name('NGC 6397')
 Now, we search for the Euclid ERO images using the `astroquery` package.
 Note that the Euclid ERO images are no in the cloud currently, but we access them directly from IRSA using IRSA's *Simple Image Access* (SIA) methods.
 
-**Note:** The following only works for combined images (either extended or point source stacks). This would not work if there are multiple, let's say, H-band images of Euclid at a given position. Therefore, no time domain studies here (which is anyway not one of the main goals of Euclid).
+```{note}
+The following only works for combined images (either extended or point source stacks). This would not work if there are multiple, let's say, H-band images of Euclid at a given position. Therefore, no time domain studies here (which is anyway not one of the main goals of Euclid).
+```
 
 The IRSA SIA products can be listed via
 ```
@@ -213,7 +215,6 @@ for filt in filters:
     print(products)
 
     summary_table.add_row( [filt , ";".join(products), str(np.unique(image_tab["facility_name"][sel].value)[0]), str(np.unique(image_tab["instrument_name"][sel].value)[0])] )
-
 ```
 
 Let's check out the summary table that we have created. We see that we have all the 4 Euclid bands and what data products are available for each of them.
@@ -230,7 +231,9 @@ For each image, we create a cutout around the target of interest, using the `cut
 
 We save the HDU to disk as it will be later used when we visualize the Euclid ERO FITS images in `Firefly`.
 
-**Note:** You will notice that `Cutout2D` can be applied to an URL. That way, it we do not need to download the full image to create a cutout. This is a useful trick to keep in mind when analyzing large images. This makes creating cutout images very fast.
+```{note}
+You will notice that `Cutout2D` can be applied to an URL. That way, it we do not need to download the full image to create a cutout. This is a useful trick to keep in mind when analyzing large images. This makes creating cutout images very fast.
+```
 
 ```{code-cell} ipython3
 %%time
@@ -337,7 +340,9 @@ flux, fluxerr, flag = sep.sum_circle(img-median, objects['x'], objects['y'],r=3.
 
 Now, we use the `photutils` Python package to perform PSF fitting. Here we assume a simple Gaussian with a FWHM given by `psf_fwhm` as PSF.
 
-**Note:** We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars).
+```{note}
+We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars).
+```
 
 ```{code-cell} ipython3
 psf_fwhm = 0.16 # PSF FWHM in arcsec
@@ -354,7 +359,6 @@ psfphot = PSFPhotometry(psf_model,
                         finder = DAOStarFinder(fwhm=0.1, threshold=3.*std, exclude_border=True), # not needed because we are using fixed initial positions.
                         aperture_radius = 4,
                         progress_bar = True)
-
 
 ```
 
@@ -675,8 +679,9 @@ Now, check out the `Firefly` GUI. You can zoom the images, click on sources, fil
 ***
 
 ## About this Notebook
+
 **Author**: Andreas Faisst (IPAC Scientist)
 
-**Updated**: March 19, 2025
+**Updated**: 2025-03-17
 
 **Contact**: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
