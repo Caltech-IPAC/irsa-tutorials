@@ -624,7 +624,11 @@ We start by initializing the Firefly client.
 The following line will open a new `Firefly` GUI in a separate tab **inside** the Jupyter Notebook environment. The user can drag the tab onto the currently open tab to create a "split tab". This the user to see the code and images side-by-side.
 
 ```python
-fc = FireflyClient.make_lab_client()
+# Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
+
+# Uncomment for contexts other than the above 
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 ```
 
 In order to display in image or catalog in `Firefly`, it needs to be uploaded to the `Firefly` server. We do this here using the `upload_file()` function.
