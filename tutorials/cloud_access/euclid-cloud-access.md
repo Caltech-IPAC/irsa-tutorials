@@ -35,13 +35,13 @@ Euclid Q1 data were released on-premises at IPAC and in the cloud via Amazon Web
 ## 2. Imports
 - `s3fs` for browsing S3 buckets
 - `astropy` for handling coordinates, units, FITS I/O, tables, images, etc.
-- `astroquery` for querying Euclid data products from IRSA 
+- `astroquery` for querying Euclid data products from IRSA
 - `matplotlib` for visualization
 - `json` for decoding JSON strings
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs astropy astroquery matploltib
+# !pip install s3fs astropy astroquery>=0.4.10 matploltib
 ```
 
 ```{code-cell} ipython3
@@ -104,17 +104,11 @@ coord = SkyCoord.from_name(target_name)
 search_radius = 10 * u.arcsec
 ```
 
-List all Simple Image Access (SIA) collections for IRSA:
+List all Simple Image Access (SIA) collections for IRSA with names containing "euclid":
 
 ```{code-cell} ipython3
-collections = Irsa.list_collections(servicetype='SIA')
+collections = Irsa.list_collections(servicetype='SIA', filter='euclid')
 len(collections)
-```
-
-Filter to only those containing "euclid":
-
-```{code-cell} ipython3
-collections[['euclid' in v for v in collections['collection']]]
 ```
 
 As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) and above table, we identify that MER Mosiacs are available as the following collection:
@@ -126,7 +120,7 @@ img_collection = 'euclid_DpdMerBksMosaic'
 Now query this collection for our target's coordinates and search radius:
 
 ```{code-cell} ipython3
-img_tbl = Irsa.query_sia(pos=(coord, search_radius), collection=img_collection).to_table()
+img_tbl = Irsa.query_sia(pos=(coord, search_radius), collection=img_collection)
 img_tbl
 ```
 
@@ -182,9 +176,9 @@ for row in euclid_sci_img_tbl:
 
     with fits.open(f's3://{s3_fpath}', fsspec_kwargs={"anon": True}) as hdul:
         print(f'Retrieving cutout for {filter_name} ...')
-        cutout = Cutout2D(hdul[0].section, 
-                          position=coord, 
-                          size=cutout_size, 
+        cutout = Cutout2D(hdul[0].section,
+                          position=coord,
+                          size=cutout_size,
                           wcs=WCS(hdul[0].header))
         cutouts.append(cutout)
         filters.append(filter_name)
@@ -231,12 +225,8 @@ Once the catalogs are available as Parquet files in the cloud, we can efficientl
 First, list the Euclid catalogs provided by IRSA:
 
 ```{code-cell} ipython3
-catalogs = Irsa.list_catalogs(full=True).to_table()
+catalogs = Irsa.list_catalogs(full=True, filter='euclid')
 len(catalogs)
-```
-
-```{code-cell} ipython3
-catalogs[['euclid' in v for v in catalogs['schema_name']]]
 ```
 
 From this table, we can extract the MER catalog name. We also see several other interesting catalogs, let's also extract spectral file association catalog for retrieving spectra later.
