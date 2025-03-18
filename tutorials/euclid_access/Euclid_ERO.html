@@ -1,0 +1,1814 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exploring Star Clusters in the Euclid ERO Data &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/Euclid_ERO';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using Firefly visualization tools in Python to vet SEDs" href="../firefly/SEDs_in_Firefly.html" />
+    <link rel="prev" title="Analyzing cloud-hosted simulated Roman coadded images" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="NASA/IPAC Infrared Science Archive - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/euclid_access/Euclid_ERO.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/euclid_access/Euclid_ERO.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/euclid_access/Euclid_ERO.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/Euclid_ERO.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/Euclid_ERO.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exploring Star Clusters in the Euclid ERO Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-volume">Data Volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-environment">Setting up the Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-euclid-ero-images">Search Euclid ERO Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-cutout-images">Create Cutout Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-sources-and-measure-their-photometry-on-the-vis-image">Extract Sources and Measure their Photometry on the VIS Image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-the-photometry-on-the-nisp-images">Measure the Photometry on the NISP Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-gaia-catalog">Load Gaia Catalog</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#match-the-gaia-catalog-to-the-vis-and-nisp-catalogs">Match the Gaia Catalog to the VIS and NISP Catalogs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-with-firefly">Visualization with Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="exploring-star-clusters-in-the-euclid-ero-data">
+<h1>Exploring Star Clusters in the Euclid ERO Data<a class="headerlink" href="#exploring-star-clusters-in-the-euclid-ero-data" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will be able to:</p>
+<p>• Access the Euclid ERO images using <code class="docutils literal notranslate"><span class="pre">astroquery</span></code></p>
+<p>• Create cutouts on the large Euclid ERO images directly</p>
+<p>• Extract sources on the Euclid image and run photometry tools</p>
+<p>• Compare photometry to the Gaia catalog</p>
+<p>• Visualize the Euclid ERO image and the Gaia catalog in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code></p>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. As part of its first observations, Euclid publicly released so-called <em>Early Release Observations</em> (ERO) targeting some press-worthy targets on the sky such as star clusters or local galaxies.</p>
+<p>In this notebook, we will focus on the ERO data of <strong>NGC 6397</strong>, a globular cluster 78,000 light years away. (Note that there is another globular cluster, <strong>NGC 6254</strong> that can also be used for this analysis - in fact the user can choose which one to use) The goal of this analysis is to extract the Euclid photometry of the stars belonging to the cluster and compare them to the photometry of Gaia. Due to the different pixel scales of the visible (VIS, <span class="math notranslate nohighlight">\(0.1^{\prime\prime}\)</span>) and near-IR (NISP, <span class="math notranslate nohighlight">\(0.3^{\prime\prime}\)</span>) wavelengths, we will first detect and extract the stars in the VIS filter and use their position to subsequently extract the photometry in the NISP (Y, J, H) filters (a method also referred to as <em>forced photometry</em>).</p>
+<p>One challenge with Euclid data is their size due to the large sky coverage and small pixel size.
+This notebook demonstrates how to download only a cutout of the large Euclid ERO observation image (namely focussing only on the position of the globular cluster. Furthermore, this notebook demonstrates how to extract sources on a large astronomical image and how to measure their photometry across different pixel scales using a very simple implementation of the forced photometry method with positional priors.
+Finally, we also demonstrate how to visualize the Euclid images and catalog in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>, an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech (https://github.com/Caltech-IPAC/firefly). <code class="docutils literal notranslate"><span class="pre">Firefly</span></code> is a convenient tool to visualize images similar to DS9 on your local computer, but it can run on a cloud-based science platform.</p>
+<p>This notebook is written to be used in Fornax which is a cloud based computing platform using AWS. The advantage of this is that the user does not need to download actuall data, hence the analysis of large datasets is not limited by local computing resources. It also allows to access data across all archives fast and easy.</p>
+</section>
+<section id="data-volume">
+<h2>Data Volume<a class="headerlink" href="#data-volume" title="Link to this heading">#</a></h2>
+<p>The total data volume required for running this notebook is less than 20 MB.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<p>First, we import all necessary packages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install tqdm numpy matplotlib astropy photutils astroquery&gt;0.4.10 sep&gt;=1.4 firefly_client&gt;=3.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># Astroquery</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.gaia</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaia</span>
+
+<span class="c1"># Astropy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.nddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">sigma_clipped_stats</span>
+
+<span class="c1"># Photometry tools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">photutils.detection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAOStarFinder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">photutils.psf</span><span class="w"> </span><span class="kn">import</span> <span class="n">PSFPhotometry</span><span class="p">,</span> <span class="n">IterativePSFPhotometry</span><span class="p">,</span> <span class="n">CircularGaussianSigmaPRF</span><span class="p">,</span> <span class="n">make_psf_model_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">photutils.background</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalBackground</span><span class="p">,</span> <span class="n">MMMBackground</span>
+
+<span class="c1"># Firefly</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
+
+<span class="c1"># Matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we define some parameters for <code class="docutils literal notranslate"><span class="pre">Matplotlib</span></code> plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Plotting stuff</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.labelpad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.major.pad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.major.pad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.minor.visible&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.minor.visible&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.minor.top&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.minor.bottom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.minor.left&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.minor.right&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.major.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.major.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.minor.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.minor.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;in&#39;</span>
+<span class="c1">#mpl.rc(&#39;text&#39;, usetex=True)</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s1">&#39;serif&#39;</span><span class="p">)</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.top&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.right&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;hatch.linewidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">def_cols</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="setting-up-the-environment">
+<h2>Setting up the Environment<a class="headerlink" href="#setting-up-the-environment" title="Link to this heading">#</a></h2>
+<p>Next, we set up the environment. This includes</p>
+<ul class="simple">
+<li><p>setting up an output data directory (will be created if it does not exist)</p></li>
+<li><p>define the search radius around the target of interest to pull data from the Gaia catalog</p></li>
+<li><p>define the cutout size that will be used to download a certain part of the Euclid ERO images</p></li>
+</ul>
+<p>Finally, we also define the target of interest here. We can choose between two globular clusters, <strong>NGC 6254</strong> and <strong>NGC6397</strong>, both covered by the Euclid ERO data.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">astropy</span></code> units can be attached to the <code class="docutils literal notranslate"><span class="pre">search_radius</span></code> and <code class="docutils literal notranslate"><span class="pre">cutout_size</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create output directory</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;./data/&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output directory already created.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating data directory.&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;./data/&quot;</span><span class="p">)</span>
+
+<span class="n">search_radius</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span> <span class="c1"># search radius</span>
+<span class="n">cutout_size</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span> <span class="c1"># cutout size</span>
+
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;NGC 6397&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating data directory.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="search-euclid-ero-images">
+<h2>Search Euclid ERO Images<a class="headerlink" href="#search-euclid-ero-images" title="Link to this heading">#</a></h2>
+<p>Now, we search for the Euclid ERO images using the <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> package.
+Note that the Euclid ERO images are no in the cloud currently, but we access them directly from IRSA using IRSA’s <em>Simple Image Access</em> (SIA) methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following only works for combined images (either extended or point source stacks). This would not work if there are multiple, let’s say, H-band images of Euclid at a given position. Therefore, no time domain studies here (which is anyway not one of the main goals of Euclid).</p>
+</div>
+<p>The IRSA SIA products can be listed via</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_collections</span><span class="p">(</span><span class="n">servicetype</span><span class="o">=</span><span class="s1">&#39;SIA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we use the collection <em>euclid_ero</em>, containing the Euclid ERO images. We first create a <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code> object and then query the SIA.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_tab</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_ero&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of images available: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_tab</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of images available: 25
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sort the queried table by wavelength (column <code class="docutils literal notranslate"><span class="pre">em_min</span></code>). This allows us later when we plot the images to keep them sorted by wavelength (VIS, Y, J, H).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_tab</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;em_min&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s inspec the table that was downloaded.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_tab</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=3</i>
+<table id="table140612849126480" class="table-striped table-bordered table-condensed">
+<thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
+<thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
+<tr><td>265.1744234</td><td>-53.6588139</td><td>Euclid</td><td>VIS</td><td>weight</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>VIS-ERO-NGC6397</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid Early Release Observations</td><td>https://irsa.ipac.caltech.edu/data/Euclid/ERO/images/NGC6397/ERO-NGC6397/Euclid-VIS-ERO-NGC6397-Flattened.DR3.weight.fits</td><td>image/fits</td><td>5184009</td><td>--</td><td>POLYGON ICRS 266.0282156 -54.1557675 266.0082 -53.1559013 264.3406 -53.1559013 264.3205844 -54.1557675 266.0282156 -54.1557675</td><td>euclid_ero</td><td>science</td><td>coadd</td><td></td><td></td><td>--</td><td></td><td></td><td>Euclid</td><td>NGC 6397</td><td>object</td><td>False</td><td>False</td><td></td><td>2024-05-23 00:00:00</td><td>36000</td><td>36000</td><td>0.1000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_ero?VIS-ERO-NGC6397/Flattened</td><td>1.000000000008</td><td>--</td><td></td><td>--</td><td>{}</td><td></td><td>1</td></tr>
+<tr><td>265.1744234</td><td>-53.6588139</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>VIS-ERO-NGC6397</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid Early Release Observations</td><td>https://irsa.ipac.caltech.edu/data/Euclid/ERO/images/NGC6397/ERO-NGC6397/Euclid-VIS-ERO-NGC6397-Flattened.DR3.fits</td><td>image/fits</td><td>5184009</td><td>--</td><td>POLYGON ICRS 266.0282156 -54.1557675 266.0082 -53.1559013 264.3406 -53.1559013 264.3205844 -54.1557675 266.0282156 -54.1557675</td><td>euclid_ero</td><td>science</td><td>coadd</td><td></td><td></td><td>--</td><td></td><td></td><td>Euclid</td><td>NGC 6397</td><td>object</td><td>False</td><td>False</td><td></td><td>2024-05-23 00:00:00</td><td>36000</td><td>36000</td><td>0.1000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_ero?VIS-ERO-NGC6397/Flattened</td><td>1.000000000008</td><td>--</td><td></td><td>--</td><td>{}</td><td></td><td>1</td></tr>
+<tr><td>265.1744234</td><td>-53.6588139</td><td>Euclid</td><td>VIS</td><td>auxiliary</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>VIS-ERO-NGC6397</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid Early Release Observations</td><td>https://irsa.ipac.caltech.edu/data/Euclid/ERO/images/NGC6397/ERO-NGC6397/Euclid-VIS-Mask-ERO-NGC6397-LSB.DR3.fits</td><td>image/fits</td><td>5184006</td><td>--</td><td>POLYGON ICRS 266.0282156 -54.1557675 266.0082 -53.1559013 264.3406 -53.1559013 264.3205844 -54.1557675 266.0282156 -54.1557675</td><td>euclid_ero</td><td>science</td><td>coadd</td><td></td><td></td><td>--</td><td></td><td></td><td>Euclid</td><td>NGC 6397</td><td>object</td><td>False</td><td>False</td><td></td><td>2024-05-23 00:00:00</td><td>36000</td><td>36000</td><td>0.1000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_ero?VIS-ERO-NGC6397/LSB</td><td>1.000000000008</td><td>--</td><td></td><td>--</td><td>{}</td><td></td><td>1</td></tr>
+</table></div></div></div>
+</div>
+<p>Next, we add additional restrictions to narrow down the images.</p>
+<p>The Euclid ERO images come in two different flavors:</p>
+<ul class="simple">
+<li><p><em>Flattened</em> images: idealized for compact sources (for example stars)</p></li>
+<li><p><em>LSB</em> images: idealized for low surface brightness objects (for example galaxies)</p></li>
+</ul>
+<p>Maybe counter-intuitively, we select the <em>LSB</em> images here by checking if the file name given in the URL (<code class="docutils literal notranslate"><span class="pre">access_url</span></code> column) contains that key word. We found that the <em>Flattened</em> images contain many masked pixels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#sel_basic = np.where( [&quot;Flattened&quot; in tt[&quot;access_url&quot;] for tt in image_tab] )[0]</span>
+<span class="n">sel_basic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">[</span><span class="s2">&quot;LSB&quot;</span> <span class="ow">in</span> <span class="n">tt</span><span class="p">[</span><span class="s2">&quot;access_url&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tt</span> <span class="ow">in</span> <span class="n">image_tab</span><span class="p">]</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">image_tab</span> <span class="o">=</span> <span class="n">image_tab</span><span class="p">[</span><span class="n">sel_basic</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we want to check what filteres are available. This can be done by <code class="docutils literal notranslate"><span class="pre">np.unique()</span></code>, however, in that case it would sort the filters alphabetically. We want to keep the sorting based on the wavelength, therefore we opt for a more complicated way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;energy_bandpassname&quot;</span><span class="p">],</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;energy_bandpassname&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">idxs</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filters: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filters</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filters: [&#39;VIS&#39;, &#39;Y&#39;, &#39;J&#39;, &#39;H&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now loop throught the filters and collect the images to create a handy summary table with all the data we have. This way we will have an easier time to later access the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dictionary with all the necessary information (science, weight, noise, mask)</span>
+<span class="n">summary_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span><span class="s2">&quot;products&quot;</span><span class="p">,</span><span class="s2">&quot;facility_name&quot;</span><span class="p">,</span><span class="s2">&quot;instrument_name&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">filt</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">filt</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;dataproduct_subtype&quot;</span><span class="p">][</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;science&quot;</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span> <span class="c1"># sort so that science is the first in the list. This is the order we create the hdu extensions</span>
+        <span class="n">products</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;science&quot;</span><span class="p">)</span>
+        <span class="n">products</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;science&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: no science image found!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">products</span><span class="p">)</span>
+
+    <span class="n">summary_table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span> <span class="p">[</span><span class="n">filt</span> <span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">products</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">][</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;instrument_name&quot;</span><span class="p">][</span><span class="n">sel</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;science&#39;, &#39;auxiliary&#39;]
+[&#39;science&#39;, &#39;auxiliary&#39;]
+[&#39;science&#39;, &#39;auxiliary&#39;]
+[&#39;science&#39;, &#39;auxiliary&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check out the summary table that we have created. We see that we have all the 4 Euclid bands and what data products are available for each of them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=4</i>
+<table id="table140612845722448" class="table-striped table-bordered table-condensed">
+<thead><tr><th>filter</th><th>products</th><th>facility_name</th><th>instrument_name</th></tr></thead>
+<thead><tr><th>str3</th><th>str17</th><th>str6</th><th>str4</th></tr></thead>
+<tr><td>VIS</td><td>science;auxiliary</td><td>Euclid</td><td>VIS</td></tr>
+<tr><td>Y</td><td>science;auxiliary</td><td>Euclid</td><td>NISP</td></tr>
+<tr><td>J</td><td>science;auxiliary</td><td>Euclid</td><td>NISP</td></tr>
+<tr><td>H</td><td>science;auxiliary</td><td>Euclid</td><td>NISP</td></tr>
+</table></div></div></div>
+</div>
+</section>
+<section id="create-cutout-images">
+<h2>Create Cutout Images<a class="headerlink" href="#create-cutout-images" title="Link to this heading">#</a></h2>
+<p>Now that we have a list of data products, we can create the cutouts. This is important as the full Euclid ERO images would be too large to run extraction and photometry software on them (they would simply fail due to memory issues).</p>
+<p>For each image, we create a cutout around the target of interest, using the <code class="docutils literal notranslate"><span class="pre">cutout_size</span></code> defined above. The cutouts are then collected into HDUs. That way we can easily access the different data products. Note that we only use the <em>science</em> products as the <em>ancillary</em> products are not needed.</p>
+<p>We save the HDU to disk as it will be later used when we visualize the Euclid ERO FITS images in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will notice that <code class="docutils literal notranslate"><span class="pre">Cutout2D</span></code> can be applied to an URL. That way, it we do not need to download the full image to create a cutout. This is a useful trick to keep in mind when analyzing large images. This makes creating cutout images very fast.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">filt</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">filters</span><span class="p">)):</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="n">summary_table</span><span class="p">[</span><span class="n">summary_table</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">filt</span><span class="p">][</span><span class="s2">&quot;products&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;energy_bandpassname&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">filt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s2">&quot;dataproduct_subtype&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">product</span><span class="p">)</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_tab</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="n">sel</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">use_fsspec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">))</span> <span class="c1"># create cutout</span>
+
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">product</span> <span class="o">==</span> <span class="s2">&quot;science&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ii</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="c1"># if science image, then create a new hdu.</span>
+                <span class="n">hdu0</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+                <span class="n">hdu0</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span> <span class="c1"># update header with WCS info</span>
+                <span class="n">hdu0</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;EXTNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filt</span><span class="p">,</span><span class="n">product</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                <span class="n">hdu0</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;PRODUCT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">hdu0</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILTER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">hdulcutout</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">HDUList</span><span class="p">([</span><span class="n">hdu0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">product</span> <span class="o">==</span> <span class="s2">&quot;science&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ii</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+                <span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span> <span class="c1"># update header with WCS info</span>
+                <span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;EXTNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filt</span><span class="p">,</span><span class="n">product</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                <span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;PRODUCT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;FILTER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">hdulcutout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hdu</span><span class="p">)</span>
+
+<span class="c1">## Save the HDUL cube:</span>
+<span class="n">hdulcutout</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="s2">&quot;./data/euclid_images_test.fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.42 s, sys: 734 ms, total: 3.15 s
+Wall time: 5min 10s
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0it [00:00, ?it/s]
+1it [03:36, 216.87s/it]
+2it [04:19, 114.17s/it]
+3it [04:55, 78.81s/it]
+4it [05:10, 53.32s/it]
+4it [05:10, 77.53s/it]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the HDU that we created to check what information we have. You see that all filters are collected in different extensions. Also note the different dimensions of the FITS layers as the pixel scale of VIS and NISP are different.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdulcutout</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: (No file associated with this HDUList)
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  VIS_SCIENCE    1 PrimaryHDU     190   (900, 900)   float32   
+  1  Y_SCIENCE     1 ImageHDU       191   (300, 300)   float32   
+  2  J_SCIENCE     1 ImageHDU       191   (300, 300)   float32   
+  3  H_SCIENCE     1 ImageHDU       191   (300, 300)   float32
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now plot the image cutouts that we generated. The globular cluster is clearly visible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nimages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span> <span class="c1"># number of images</span>
+<span class="n">ncols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># number of columns</span>
+<span class="n">nrows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">nimages</span> <span class="o">//</span> <span class="n">ncols</span> <span class="p">)</span> <span class="c1"># number of rows</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">ncols</span><span class="p">,</span><span class="mi">5</span><span class="o">*</span><span class="n">nrows</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span><span class="n">ncols</span><span class="p">,</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nimages</span><span class="p">)]</span>
+
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">filt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filters</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">hdulcutout</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_SCIENCE&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filt</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span> <span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.05</span> <span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summary_table</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">][</span><span class="n">ii</span><span class="p">],</span><span class="n">summary_table</span><span class="p">[</span><span class="s2">&quot;instrument_name&quot;</span><span class="p">][</span><span class="n">ii</span><span class="p">],</span><span class="n">filt</span><span class="p">)</span> <span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span> <span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                 <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span> <span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5124054e8573b0c569e89f846638cb597919dc69e838f9f83c1faaf7ab4efe4e.png" src="../../_images/5124054e8573b0c569e89f846638cb597919dc69e838f9f83c1faaf7ab4efe4e.png" />
+</div>
+</div>
+</section>
+<section id="extract-sources-and-measure-their-photometry-on-the-vis-image">
+<h2>Extract Sources and Measure their Photometry on the VIS Image<a class="headerlink" href="#extract-sources-and-measure-their-photometry-on-the-vis-image" title="Link to this heading">#</a></h2>
+<p>Now that we have the images in memory (and on disk - but we do not need them, yet), we can measure the fluxes of the individual stars.
+Our simple photometry pipeline has different parts:</p>
+<ul class="simple">
+<li><p>First, we are using the Python package <code class="docutils literal notranslate"><span class="pre">sep</span></code> (similar to SExtractor) to extract the position of the sources. We do that on the VIS image, which provides the highest resolution.</p></li>
+<li><p>Second, we use <code class="docutils literal notranslate"><span class="pre">sep</span></code> to perform aperture measurements of the photometry. We will use that to compare the obtained fluxes to our forced photometry method</p></li>
+<li><p>Third, we apply a PSF fitting technique (using the <code class="docutils literal notranslate"><span class="pre">photutils</span></code> Python package) to improve the photometry measurement</p></li>
+</ul>
+<p>We start by extracting the sources using <code class="docutils literal notranslate"><span class="pre">sep</span></code>. We first isolate the data that we want to look at (the VIS image only).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Get Data (this will be replaced later)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">hdulcutout</span><span class="p">[</span><span class="s2">&quot;VIS_SCIENCE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">hdr</span> <span class="o">=</span> <span class="n">hdulcutout</span><span class="p">[</span><span class="s2">&quot;VIS_SCIENCE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">img</span><span class="p">[</span><span class="n">img</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are some NaN value on the image that we need to mask out. For this we create a mask image that we later feed to <code class="docutils literal notranslate"><span class="pre">sep</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we compute the background statistics what will be used by <code class="docutils literal notranslate"><span class="pre">sep</span></code> to extract the sources above a certain threshold.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span><span class="p">,</span> <span class="n">median</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">sigma_clipped_stats</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">mean</span><span class="p">,</span> <span class="n">median</span><span class="p">,</span> <span class="n">std</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[135.95872  99.62191 100.63356]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we perform object detection with <code class="docutils literal notranslate"><span class="pre">sep</span></code>. There are also modules in <code class="docutils literal notranslate"><span class="pre">photutils</span></code> to do that, however, we found that <code class="docutils literal notranslate"><span class="pre">sep</span></code> works best here. We output the number of objects found on the image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">objects</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">img</span><span class="o">-</span><span class="n">median</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">std</span><span class="p">,</span> <span class="n">minarea</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">deblend_cont</span><span class="o">=</span><span class="mf">0.0002</span><span class="p">,</span> <span class="n">deblend_nthresh</span><span class="o">=</span><span class="mi">64</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of sources extracted: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of sources extracted:  2759
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we perform simple aperture photometry on the detected sources. Again, we use the <code class="docutils literal notranslate"><span class="pre">sep</span></code> package for this. We will use these aperture photometry later to compare to the PSF photometry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">flux</span><span class="p">,</span> <span class="n">fluxerr</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">sum_circle</span><span class="p">(</span><span class="n">img</span><span class="o">-</span><span class="n">median</span><span class="p">,</span> <span class="n">objects</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">objects</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span><span class="n">r</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">std</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we use the <code class="docutils literal notranslate"><span class="pre">photutils</span></code> Python package to perform PSF fitting. Here we assume a simple Gaussian with a FWHM given by <code class="docutils literal notranslate"><span class="pre">psf_fwhm</span></code> as PSF.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars).</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psf_fwhm</span> <span class="o">=</span> <span class="mf">0.16</span> <span class="c1"># PSF FWHM in arcsec</span>
+<span class="n">pixscale</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># VIS pixel scale in arcsec/px</span>
+
+<span class="n">init_params</span> <span class="o">=</span> <span class="n">Table</span><span class="p">([</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]]</span> <span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">])</span> <span class="c1"># initial positions</span>
+<span class="n">psf_model</span> <span class="o">=</span> <span class="n">CircularGaussianSigmaPRF</span><span class="p">(</span><span class="n">flux</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">psf_fwhm</span><span class="o">/</span><span class="n">pixscale</span> <span class="o">/</span> <span class="mf">2.35</span><span class="p">)</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">x_0</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">y_0</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">fit_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">psfphot</span> <span class="o">=</span> <span class="n">PSFPhotometry</span><span class="p">(</span><span class="n">psf_model</span><span class="p">,</span>
+                        <span class="n">fit_shape</span><span class="p">,</span>
+                        <span class="n">finder</span> <span class="o">=</span> <span class="n">DAOStarFinder</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.</span><span class="o">*</span><span class="n">std</span><span class="p">,</span> <span class="n">exclude_border</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># not needed because we are using fixed initial positions.</span>
+                        <span class="n">aperture_radius</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+                        <span class="n">progress_bar</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After initiating the <code class="docutils literal notranslate"><span class="pre">PSFPhotometry</span></code> object, we can run the PSF photometry measurement. This can take a while (typically between 1 and 2 minutes).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot</span> <span class="o">=</span> <span class="n">psfphot</span><span class="p">(</span><span class="n">img</span><span class="o">-</span><span class="n">median</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">init_params</span><span class="o">=</span><span class="n">init_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit source/group:   0%|          | 0/2759 [00:00&lt;?, ?it/s]
+Fit source/group:   1%|          | 25/2759 [00:00&lt;00:10, 249.27it/s]
+Fit source/group:   2%|▏         | 50/2759 [00:00&lt;00:11, 238.48it/s]
+Fit source/group:   3%|▎         | 76/2759 [00:00&lt;00:10, 246.13it/s]
+Fit source/group:   4%|▎         | 101/2759 [00:00&lt;00:10, 247.54it/s]
+Fit source/group:   5%|▍         | 129/2759 [00:00&lt;00:10, 255.44it/s]
+Fit source/group:   6%|▌         | 155/2759 [00:00&lt;00:10, 245.91it/s]
+Fit source/group:   7%|▋         | 180/2759 [00:00&lt;00:10, 244.97it/s]
+Fit source/group:   7%|▋         | 205/2759 [00:00&lt;00:10, 245.58it/s]
+Fit source/group:   8%|▊         | 231/2759 [00:00&lt;00:10, 249.08it/s]
+Fit source/group:   9%|▉         | 258/2759 [00:01&lt;00:09, 254.26it/s]
+Fit source/group:  10%|█         | 284/2759 [00:01&lt;00:09, 248.24it/s]
+Fit source/group:  11%|█▏        | 311/2759 [00:01&lt;00:09, 252.04it/s]
+Fit source/group:  12%|█▏        | 337/2759 [00:01&lt;00:09, 252.90it/s]
+Fit source/group:  13%|█▎        | 363/2759 [00:01&lt;00:09, 254.52it/s]
+Fit source/group:  14%|█▍        | 389/2759 [00:01&lt;00:10, 233.22it/s]
+Fit source/group:  15%|█▍        | 413/2759 [00:01&lt;00:09, 235.06it/s]
+Fit source/group:  16%|█▌        | 437/2759 [00:01&lt;00:12, 192.75it/s]
+Fit source/group:  17%|█▋        | 461/2759 [00:01&lt;00:11, 204.44it/s]
+Fit source/group:  18%|█▊        | 486/2759 [00:02&lt;00:10, 214.43it/s]
+Fit source/group:  19%|█▊        | 511/2759 [00:02&lt;00:10, 222.35it/s]
+Fit source/group:  19%|█▉        | 534/2759 [00:02&lt;00:09, 223.89it/s]
+Fit source/group:  20%|██        | 558/2759 [00:02&lt;00:09, 226.24it/s]
+Fit source/group:  21%|██        | 582/2759 [00:02&lt;00:09, 225.91it/s]
+Fit source/group:  22%|██▏       | 606/2759 [00:02&lt;00:09, 228.93it/s]
+Fit source/group:  23%|██▎       | 630/2759 [00:02&lt;00:09, 216.79it/s]
+Fit source/group:  24%|██▍       | 656/2759 [00:02&lt;00:09, 226.41it/s]
+Fit source/group:  25%|██▍       | 679/2759 [00:02&lt;00:09, 211.88it/s]
+Fit source/group:  25%|██▌       | 702/2759 [00:03&lt;00:09, 216.62it/s]
+Fit source/group:  26%|██▋       | 726/2759 [00:03&lt;00:09, 218.63it/s]
+Fit source/group:  27%|██▋       | 749/2759 [00:03&lt;00:09, 220.53it/s]
+Fit source/group:  28%|██▊       | 773/2759 [00:03&lt;00:08, 225.24it/s]
+Fit source/group:  29%|██▉       | 797/2759 [00:03&lt;00:08, 228.84it/s]
+Fit source/group:  30%|██▉       | 821/2759 [00:03&lt;00:08, 231.90it/s]
+Fit source/group:  31%|███       | 845/2759 [00:03&lt;00:08, 234.04it/s]
+Fit source/group:  32%|███▏      | 870/2759 [00:03&lt;00:07, 236.70it/s]
+Fit source/group:  32%|███▏      | 896/2759 [00:03&lt;00:07, 241.67it/s]
+Fit source/group:  33%|███▎      | 921/2759 [00:03&lt;00:07, 238.14it/s]
+Fit source/group:  34%|███▍      | 945/2759 [00:04&lt;00:08, 225.22it/s]
+Fit source/group:  35%|███▌      | 968/2759 [00:04&lt;00:07, 225.58it/s]
+Fit source/group:  36%|███▌      | 992/2759 [00:04&lt;00:07, 227.44it/s]
+Fit source/group:  37%|███▋      | 1015/2759 [00:04&lt;00:07, 221.36it/s]
+Fit source/group:  38%|███▊      | 1038/2759 [00:04&lt;00:07, 221.90it/s]
+Fit source/group:  39%|███▊      | 1063/2759 [00:04&lt;00:07, 228.72it/s]
+Fit source/group:  39%|███▉      | 1087/2759 [00:04&lt;00:07, 230.01it/s]
+Fit source/group:  40%|████      | 1112/2759 [00:04&lt;00:07, 233.83it/s]
+Fit source/group:  41%|████      | 1138/2759 [00:04&lt;00:06, 240.55it/s]
+Fit source/group:  42%|████▏     | 1164/2759 [00:05&lt;00:06, 245.27it/s]
+Fit source/group:  43%|████▎     | 1189/2759 [00:05&lt;00:06, 244.79it/s]
+Fit source/group:  44%|████▍     | 1214/2759 [00:05&lt;00:06, 245.03it/s]
+Fit source/group:  45%|████▍     | 1239/2759 [00:05&lt;00:06, 241.35it/s]
+Fit source/group:  46%|████▌     | 1265/2759 [00:05&lt;00:06, 244.09it/s]
+Fit source/group:  47%|████▋     | 1290/2759 [00:05&lt;00:06, 240.08it/s]
+Fit source/group:  48%|████▊     | 1315/2759 [00:05&lt;00:06, 229.86it/s]
+Fit source/group:  49%|████▊     | 1339/2759 [00:05&lt;00:06, 229.43it/s]
+Fit source/group:  49%|████▉     | 1363/2759 [00:05&lt;00:06, 230.80it/s]
+Fit source/group:  50%|█████     | 1387/2759 [00:05&lt;00:06, 224.47it/s]
+Fit source/group:  51%|█████     | 1410/2759 [00:06&lt;00:06, 213.94it/s]
+Fit source/group:  52%|█████▏    | 1434/2759 [00:06&lt;00:06, 219.98it/s]
+Fit source/group:  53%|█████▎    | 1460/2759 [00:06&lt;00:05, 230.15it/s]
+Fit source/group:  54%|█████▍    | 1485/2759 [00:06&lt;00:05, 232.61it/s]
+Fit source/group:  55%|█████▍    | 1509/2759 [00:06&lt;00:05, 232.70it/s]
+Fit source/group:  56%|█████▌    | 1533/2759 [00:06&lt;00:05, 215.58it/s]
+Fit source/group:  56%|█████▋    | 1557/2759 [00:06&lt;00:05, 220.47it/s]
+Fit source/group:  57%|█████▋    | 1584/2759 [00:06&lt;00:05, 232.24it/s]
+Fit source/group:  58%|█████▊    | 1608/2759 [00:06&lt;00:05, 229.67it/s]
+Fit source/group:  59%|█████▉    | 1632/2759 [00:07&lt;00:04, 231.64it/s]
+Fit source/group:  60%|██████    | 1656/2759 [00:07&lt;00:04, 223.38it/s]
+Fit source/group:  61%|██████    | 1680/2759 [00:07&lt;00:04, 227.17it/s]
+Fit source/group:  62%|██████▏   | 1706/2759 [00:07&lt;00:04, 235.11it/s]
+Fit source/group:  63%|██████▎   | 1732/2759 [00:07&lt;00:04, 240.72it/s]
+Fit source/group:  64%|██████▎   | 1757/2759 [00:07&lt;00:04, 228.47it/s]
+Fit source/group:  65%|██████▍   | 1781/2759 [00:07&lt;00:04, 222.06it/s]
+Fit source/group:  65%|██████▌   | 1807/2759 [00:07&lt;00:04, 232.12it/s]
+Fit source/group:  66%|██████▋   | 1831/2759 [00:07&lt;00:03, 232.31it/s]
+Fit source/group:  67%|██████▋   | 1860/2759 [00:08&lt;00:03, 246.29it/s]
+Fit source/group:  68%|██████▊   | 1885/2759 [00:08&lt;00:03, 244.12it/s]
+Fit source/group:  69%|██████▉   | 1910/2759 [00:08&lt;00:03, 245.20it/s]
+Fit source/group:  70%|███████   | 1936/2759 [00:08&lt;00:03, 245.71it/s]
+Fit source/group:  71%|███████   | 1962/2759 [00:08&lt;00:03, 241.76it/s]
+Fit source/group:  72%|███████▏  | 1987/2759 [00:08&lt;00:03, 221.83it/s]
+Fit source/group:  73%|███████▎  | 2012/2759 [00:08&lt;00:03, 227.58it/s]
+Fit source/group:  74%|███████▍  | 2038/2759 [00:08&lt;00:03, 236.11it/s]
+Fit source/group:  75%|███████▍  | 2062/2759 [00:08&lt;00:03, 232.29it/s]
+Fit source/group:  76%|███████▌  | 2086/2759 [00:09&lt;00:03, 211.32it/s]
+Fit source/group:  76%|███████▋  | 2108/2759 [00:09&lt;00:03, 209.45it/s]
+Fit source/group:  77%|███████▋  | 2131/2759 [00:09&lt;00:02, 214.60it/s]
+Fit source/group:  78%|███████▊  | 2158/2759 [00:09&lt;00:02, 227.88it/s]
+Fit source/group:  79%|███████▉  | 2185/2759 [00:09&lt;00:02, 238.75it/s]
+Fit source/group:  80%|████████  | 2210/2759 [00:09&lt;00:02, 241.52it/s]
+Fit source/group:  81%|████████  | 2236/2759 [00:09&lt;00:02, 244.76it/s]
+Fit source/group:  82%|████████▏ | 2264/2759 [00:09&lt;00:01, 253.20it/s]
+Fit source/group:  83%|████████▎ | 2291/2759 [00:09&lt;00:01, 254.93it/s]
+Fit source/group:  84%|████████▍ | 2318/2759 [00:09&lt;00:01, 259.23it/s]
+Fit source/group:  85%|████████▍ | 2344/2759 [00:10&lt;00:01, 255.44it/s]
+Fit source/group:  86%|████████▌ | 2371/2759 [00:10&lt;00:01, 258.07it/s]
+Fit source/group:  87%|████████▋ | 2397/2759 [00:10&lt;00:01, 253.87it/s]
+Fit source/group:  88%|████████▊ | 2423/2759 [00:10&lt;00:01, 254.66it/s]
+Fit source/group:  89%|████████▉ | 2449/2759 [00:10&lt;00:01, 222.16it/s]
+Fit source/group:  90%|████████▉ | 2474/2759 [00:10&lt;00:01, 229.42it/s]
+Fit source/group:  91%|█████████ | 2498/2759 [00:10&lt;00:01, 189.79it/s]
+Fit source/group:  91%|█████████▏| 2519/2759 [00:10&lt;00:01, 182.64it/s]
+Fit source/group:  92%|█████████▏| 2539/2759 [00:11&lt;00:01, 170.83it/s]
+Fit source/group:  93%|█████████▎| 2557/2759 [00:11&lt;00:01, 169.16it/s]
+Fit source/group:  93%|█████████▎| 2575/2759 [00:11&lt;00:01, 165.57it/s]
+Fit source/group:  94%|█████████▍| 2592/2759 [00:11&lt;00:01, 140.20it/s]
+Fit source/group:  94%|█████████▍| 2607/2759 [00:11&lt;00:01, 131.93it/s]
+Fit source/group:  95%|█████████▌| 2624/2759 [00:11&lt;00:00, 139.26it/s]
+Fit source/group:  96%|█████████▌| 2639/2759 [00:11&lt;00:00, 132.00it/s]
+Fit source/group:  96%|█████████▌| 2654/2759 [00:11&lt;00:00, 125.49it/s]
+Fit source/group:  97%|█████████▋| 2669/2759 [00:12&lt;00:00, 130.48it/s]
+Fit source/group:  97%|█████████▋| 2685/2759 [00:12&lt;00:00, 133.25it/s]
+Fit source/group:  98%|█████████▊| 2699/2759 [00:12&lt;00:00, 100.50it/s]
+Fit source/group:  98%|█████████▊| 2715/2759 [00:12&lt;00:00, 112.65it/s]
+Fit source/group:  99%|█████████▉| 2728/2759 [00:12&lt;00:00, 113.80it/s]
+Fit source/group: 100%|█████████▉| 2753/2759 [00:12&lt;00:00, 146.88it/s]
+Fit source/group: 100%|██████████| 2759/2759 [00:12&lt;00:00, 216.21it/s]
+WARNING: One or more fit(s) may not have converged. Please check the &quot;flags&quot; column in the output table. [photutils.psf.photometry]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once this is done, we can create a residual image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resimage</span> <span class="o">=</span> <span class="n">psfphot</span><span class="o">.</span><span class="n">make_residual_image</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">img</span><span class="o">-</span><span class="n">median</span><span class="p">,</span> <span class="n">psf_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Add model sources:   0%|          | 0/2759 [00:00&lt;?, ?it/s]
+Add model sources:  20%|█▉        | 539/2759 [00:00&lt;00:00, 5386.87it/s]
+Add model sources:  39%|███▉      | 1078/2759 [00:00&lt;00:00, 5061.69it/s]
+Add model sources:  58%|█████▊    | 1597/2759 [00:00&lt;00:00, 5113.59it/s]
+Add model sources:  76%|███████▋  | 2110/2759 [00:00&lt;00:00, 5085.15it/s]
+Add model sources:  96%|█████████▋| 2656/2759 [00:00&lt;00:00, 5217.43it/s]
+Add model sources: 100%|██████████| 2759/2759 [00:00&lt;00:00, 5175.52it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now want to add the best-fit coordinates (R.A. and Decl.) to the VIS photometry catalog. For this, we have to convert the image coordinates into sky coordinates using the WCS information. We will need these coordinates because we want to use them as positional priors for the photometry measurement on the NISP images.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Add coordinates to catalog</span>
+<span class="n">wcs1</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="c1"># VIS</span>
+<span class="n">radec</span> <span class="o">=</span> <span class="n">wcs1</span><span class="o">.</span><span class="n">all_pix2world</span><span class="p">(</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">phot</span><span class="p">[</span><span class="s2">&quot;ra_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">phot</span><span class="p">[</span><span class="s2">&quot;dec_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we plot the VIS image and the residual with the extracted sources overlaid.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span> <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">resimage</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="o">*</span><span class="n">std</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">std</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span> <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5310e7d4e4d3ddae2b8fd76a93c625e9a91fd785f6b5d4a6913c3aa0c8a499d8.png" src="../../_images/5310e7d4e4d3ddae2b8fd76a93c625e9a91fd785f6b5d4a6913c3aa0c8a499d8.png" />
+</div>
+</div>
+<p>As an additional check, we can compare the aperture photometry and the PSF photometry. We should find a good agreement between those two measurement methods. However, note that the PSF photometry should do a better job in deblending the fluxes of sources that are close by.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;flux_fit&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span> <span class="p">,</span> <span class="n">y</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">minlim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+<span class="n">maxlim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">/</span><span class="mf">1.5</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">*</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">/</span><span class="mf">1.2</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">*</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Aperture Photometry [flux]&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;PSF forced-photometry [flux]&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/17aa75c20aa9ce7d5bcf9073811354441aa9c0803b1b8dfa46eef8ca6bfdfbfe.png" src="../../_images/17aa75c20aa9ce7d5bcf9073811354441aa9c0803b1b8dfa46eef8ca6bfdfbfe.png" />
+</div>
+</div>
+</section>
+<section id="measure-the-photometry-on-the-nisp-images">
+<h2>Measure the Photometry on the NISP Images<a class="headerlink" href="#measure-the-photometry-on-the-nisp-images" title="Link to this heading">#</a></h2>
+<p>We now have the photometry and the position of sources on the VIS image. We can now proceed with similar steps on the NISP images. Because the NISP PSF and pixel scale are larger that those of the VIS images, we utilize the advantage of position prior-based forced photometry.
+For this, we use the positions of the VIS measurements and perform PSF fitting on the NISP image using these priors.</p>
+<p>The steps below are almost identical to the ones applied to the VIS images.</p>
+<p>We first isolate the data, which is in this case the NISP <em>H</em>-band filter. Note that this is an arbitrary choice and you should be encouraged to try other filters as well!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img2</span> <span class="o">=</span> <span class="n">hdulcutout</span><span class="p">[</span><span class="s2">&quot;H_SCIENCE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">hdr2</span> <span class="o">=</span> <span class="n">hdulcutout</span><span class="p">[</span><span class="s2">&quot;H_SCIENCE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">img2</span><span class="p">[</span><span class="n">img2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We again need to create a mask that will be fed to the PSF fitting module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">img2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>… and we also get some statistics on the sky background.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean2</span><span class="p">,</span> <span class="n">median2</span><span class="p">,</span> <span class="n">std2</span> <span class="o">=</span> <span class="n">sigma_clipped_stats</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">mean2</span><span class="p">,</span> <span class="n">median2</span><span class="p">,</span> <span class="n">std2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2626.302  1889.8518 2043.9843]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we need to obtain the (x,y) image coordinates on the NISP image that correspond to the extracted sources on the VIS image. We use the WCS information from the NISP image for this case and apply it to the sky coordinates obtained on the VIS image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="c1"># VIS</span>
+<span class="n">wcs2</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr2</span><span class="p">)</span> <span class="c1"># NISP</span>
+<span class="n">radec</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_pix2world</span><span class="p">(</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span><span class="n">objects</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="n">wcs2</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">radec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">radec</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Having all this set up, we can now again perform the PSF photometry using <code class="docutils literal notranslate"><span class="pre">PSFPhotometry()</span></code> from the <code class="docutils literal notranslate"><span class="pre">photutils</span></code> package. This again can take a while, typically 1 minute.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psf_fwhm</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># arcsec</span>
+<span class="n">pixscale</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># arcsec/px</span>
+
+<span class="n">init_params</span> <span class="o">=</span> <span class="n">Table</span><span class="p">([</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">])</span> <span class="c1"># initial positions</span>
+<span class="n">psf_model</span> <span class="o">=</span> <span class="n">CircularGaussianSigmaPRF</span><span class="p">(</span><span class="n">flux</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">psf_fwhm</span><span class="o">/</span><span class="n">pixscale</span> <span class="o">/</span> <span class="mf">2.35</span><span class="p">)</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">x_0</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">y_0</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">psf_model</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">fit_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">psfphot2</span> <span class="o">=</span> <span class="n">PSFPhotometry</span><span class="p">(</span><span class="n">psf_model</span><span class="p">,</span>
+                        <span class="n">fit_shape</span><span class="p">,</span>
+                        <span class="n">finder</span> <span class="o">=</span> <span class="n">DAOStarFinder</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.</span><span class="o">*</span><span class="n">std2</span><span class="p">,</span> <span class="n">exclude_border</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># not needed because we are using fixed initial positions.</span>
+                        <span class="n">aperture_radius</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+                        <span class="n">progress_bar</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">phot2</span> <span class="o">=</span> <span class="n">psfphot2</span><span class="p">(</span><span class="n">img2</span><span class="o">-</span><span class="n">median2</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask2</span><span class="p">,</span> <span class="n">init_params</span><span class="o">=</span><span class="n">init_params</span><span class="p">)</span>
+<span class="n">resimage2</span> <span class="o">=</span> <span class="n">psfphot2</span><span class="o">.</span><span class="n">make_residual_image</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">img2</span><span class="o">-</span><span class="n">median2</span><span class="p">,</span> <span class="n">psf_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit source/group:   0%|          | 0/2759 [00:00&lt;?, ?it/s]
+Fit source/group:   0%|          | 9/2759 [00:00&lt;00:30, 89.06it/s]
+Fit source/group:   1%|          | 24/2759 [00:00&lt;00:22, 122.05it/s]
+Fit source/group:   1%|▏         | 41/2759 [00:00&lt;00:19, 137.45it/s]
+Fit source/group:   2%|▏         | 55/2759 [00:00&lt;00:21, 126.08it/s]
+Fit source/group:   3%|▎         | 75/2759 [00:00&lt;00:19, 139.30it/s]
+Fit source/group:   3%|▎         | 89/2759 [00:00&lt;00:22, 116.49it/s]
+Fit source/group:   4%|▍         | 104/2759 [00:00&lt;00:21, 123.31it/s]
+Fit source/group:   4%|▍         | 117/2759 [00:00&lt;00:22, 116.41it/s]
+Fit source/group:   5%|▍         | 133/2759 [00:01&lt;00:20, 126.66it/s]
+Fit source/group:   5%|▌         | 147/2759 [00:01&lt;00:23, 109.45it/s]
+Fit source/group:   6%|▌         | 159/2759 [00:01&lt;00:23, 108.56it/s]
+Fit source/group:   6%|▌         | 171/2759 [00:01&lt;00:25, 100.83it/s]
+Fit source/group:   7%|▋         | 192/2759 [00:01&lt;00:21, 118.64it/s]
+Fit source/group:   8%|▊         | 208/2759 [00:01&lt;00:19, 127.84it/s]
+Fit source/group:   8%|▊         | 229/2759 [00:01&lt;00:17, 141.49it/s]
+Fit source/group:   9%|▉         | 244/2759 [00:01&lt;00:17, 142.55it/s]
+Fit source/group:   9%|▉         | 259/2759 [00:02&lt;00:17, 142.24it/s]
+Fit source/group:  10%|▉         | 274/2759 [00:02&lt;00:18, 134.20it/s]
+Fit source/group:  11%|█         | 290/2759 [00:02&lt;00:17, 139.63it/s]
+Fit source/group:  11%|█         | 305/2759 [00:02&lt;00:18, 130.92it/s]
+Fit source/group:  12%|█▏        | 319/2759 [00:02&lt;00:24, 99.59it/s]
+Fit source/group:  12%|█▏        | 341/2759 [00:02&lt;00:19, 125.32it/s]
+Fit source/group:  13%|█▎        | 361/2759 [00:02&lt;00:17, 137.30it/s]
+Fit source/group:  14%|█▎        | 377/2759 [00:03&lt;00:18, 129.14it/s]
+Fit source/group:  14%|█▍        | 391/2759 [00:03&lt;00:18, 129.16it/s]
+Fit source/group:  15%|█▍        | 406/2759 [00:03&lt;00:17, 133.51it/s]
+Fit source/group:  15%|█▌        | 427/2759 [00:03&lt;00:15, 152.78it/s]
+Fit source/group:  16%|█▌        | 443/2759 [00:03&lt;00:15, 153.53it/s]
+Fit source/group:  17%|█▋        | 459/2759 [00:03&lt;00:16, 138.29it/s]
+Fit source/group:  17%|█▋        | 474/2759 [00:03&lt;00:17, 129.99it/s]
+Fit source/group:  18%|█▊        | 494/2759 [00:03&lt;00:15, 147.41it/s]
+Fit source/group:  18%|█▊        | 510/2759 [00:03&lt;00:16, 137.68it/s]
+Fit source/group:  19%|█▉        | 528/2759 [00:04&lt;00:15, 142.66it/s]
+Fit source/group:  20%|█▉        | 543/2759 [00:04&lt;00:18, 122.21it/s]
+Fit source/group:  20%|██        | 557/2759 [00:04&lt;00:17, 126.38it/s]
+Fit source/group:  21%|██        | 571/2759 [00:04&lt;00:17, 122.26it/s]
+Fit source/group:  21%|██        | 584/2759 [00:04&lt;00:18, 117.42it/s]
+Fit source/group:  22%|██▏       | 598/2759 [00:04&lt;00:17, 122.34it/s]
+Fit source/group:  22%|██▏       | 611/2759 [00:04&lt;00:23, 91.28it/s]
+Fit source/group:  23%|██▎       | 633/2759 [00:05&lt;00:17, 118.56it/s]
+Fit source/group:  24%|██▎       | 649/2759 [00:05&lt;00:16, 128.35it/s]
+Fit source/group:  24%|██▍       | 664/2759 [00:05&lt;00:17, 122.39it/s]
+Fit source/group:  25%|██▍       | 680/2759 [00:05&lt;00:15, 131.24it/s]
+Fit source/group:  25%|██▌       | 695/2759 [00:05&lt;00:16, 126.15it/s]
+Fit source/group:  26%|██▌       | 709/2759 [00:05&lt;00:19, 103.52it/s]
+Fit source/group:  26%|██▌       | 721/2759 [00:05&lt;00:19, 103.78it/s]
+Fit source/group:  27%|██▋       | 737/2759 [00:05&lt;00:17, 116.51it/s]
+Fit source/group:  27%|██▋       | 751/2759 [00:06&lt;00:17, 114.17it/s]
+Fit source/group:  28%|██▊       | 764/2759 [00:06&lt;00:17, 111.56it/s]
+Fit source/group:  28%|██▊       | 779/2759 [00:06&lt;00:16, 120.86it/s]
+Fit source/group:  29%|██▉       | 796/2759 [00:06&lt;00:15, 127.12it/s]
+Fit source/group:  30%|██▉       | 818/2759 [00:06&lt;00:14, 138.17it/s]
+Fit source/group:  30%|███       | 832/2759 [00:06&lt;00:15, 127.10it/s]
+Fit source/group:  31%|███       | 848/2759 [00:06&lt;00:14, 134.31it/s]
+Fit source/group:  31%|███▏      | 864/2759 [00:06&lt;00:14, 128.73it/s]
+Fit source/group:  32%|███▏      | 878/2759 [00:07&lt;00:15, 124.12it/s]
+Fit source/group:  32%|███▏      | 893/2759 [00:07&lt;00:14, 129.63it/s]
+Fit source/group:  33%|███▎      | 909/2759 [00:07&lt;00:13, 136.38it/s]
+Fit source/group:  34%|███▎      | 925/2759 [00:07&lt;00:12, 141.38it/s]
+Fit source/group:  34%|███▍      | 940/2759 [00:07&lt;00:12, 142.76it/s]
+Fit source/group:  35%|███▍      | 955/2759 [00:07&lt;00:14, 122.38it/s]
+Fit source/group:  35%|███▌      | 970/2759 [00:07&lt;00:13, 128.51it/s]
+Fit source/group:  36%|███▌      | 984/2759 [00:07&lt;00:16, 104.71it/s]
+Fit source/group:  36%|███▌      | 996/2759 [00:08&lt;00:17, 98.48it/s]
+Fit source/group:  37%|███▋      | 1018/2759 [00:08&lt;00:13, 125.37it/s]
+Fit source/group:  37%|███▋      | 1034/2759 [00:08&lt;00:12, 132.88it/s]
+Fit source/group:  38%|███▊      | 1049/2759 [00:08&lt;00:13, 122.88it/s]
+Fit source/group:  39%|███▊      | 1063/2759 [00:08&lt;00:13, 127.09it/s]
+Fit source/group:  39%|███▉      | 1077/2759 [00:08&lt;00:13, 122.01it/s]
+Fit source/group:  40%|███▉      | 1093/2759 [00:08&lt;00:12, 130.62it/s]
+Fit source/group:  40%|████      | 1109/2759 [00:08&lt;00:12, 135.20it/s]
+Fit source/group:  41%|████      | 1123/2759 [00:08&lt;00:13, 124.24it/s]
+Fit source/group:  41%|████      | 1136/2759 [00:09&lt;00:13, 118.80it/s]
+Fit source/group:  42%|████▏     | 1149/2759 [00:09&lt;00:15, 106.10it/s]
+Fit source/group:  42%|████▏     | 1165/2759 [00:09&lt;00:13, 118.55it/s]
+Fit source/group:  43%|████▎     | 1183/2759 [00:09&lt;00:12, 129.74it/s]
+Fit source/group:  43%|████▎     | 1197/2759 [00:09&lt;00:12, 127.14it/s]
+Fit source/group:  44%|████▍     | 1211/2759 [00:09&lt;00:13, 110.83it/s]
+Fit source/group:  44%|████▍     | 1223/2759 [00:09&lt;00:14, 107.74it/s]
+Fit source/group:  45%|████▍     | 1235/2759 [00:09&lt;00:14, 105.38it/s]
+Fit source/group:  45%|████▌     | 1246/2759 [00:10&lt;00:14, 100.99it/s]
+Fit source/group:  46%|████▌     | 1267/2759 [00:10&lt;00:11, 128.28it/s]
+Fit source/group:  47%|████▋     | 1285/2759 [00:10&lt;00:10, 138.27it/s]
+Fit source/group:  47%|████▋     | 1300/2759 [00:10&lt;00:10, 140.46it/s]
+Fit source/group:  48%|████▊     | 1315/2759 [00:10&lt;00:11, 125.85it/s]
+Fit source/group:  48%|████▊     | 1329/2759 [00:10&lt;00:15, 90.75it/s]
+Fit source/group:  49%|████▊     | 1340/2759 [00:10&lt;00:15, 91.57it/s]
+Fit source/group:  49%|████▉     | 1351/2759 [00:11&lt;00:15, 93.24it/s]
+Fit source/group:  49%|████▉     | 1364/2759 [00:11&lt;00:14, 93.73it/s]
+Fit source/group:  50%|████▉     | 1375/2759 [00:11&lt;00:15, 90.64it/s]
+Fit source/group:  50%|█████     | 1385/2759 [00:11&lt;00:15, 89.72it/s]
+Fit source/group:  51%|█████     | 1395/2759 [00:11&lt;00:15, 89.54it/s]
+Fit source/group:  51%|█████     | 1408/2759 [00:11&lt;00:14, 91.28it/s]
+Fit source/group:  51%|█████▏    | 1418/2759 [00:11&lt;00:14, 90.65it/s]
+Fit source/group:  52%|█████▏    | 1441/2759 [00:11&lt;00:10, 125.95it/s]
+Fit source/group:  53%|█████▎    | 1456/2759 [00:12&lt;00:09, 131.15it/s]
+Fit source/group:  54%|█████▎    | 1481/2759 [00:12&lt;00:07, 162.26it/s]
+Fit source/group:  54%|█████▍    | 1498/2759 [00:12&lt;00:07, 163.88it/s]
+Fit source/group:  55%|█████▍    | 1515/2759 [00:12&lt;00:08, 142.45it/s]
+Fit source/group:  55%|█████▌    | 1530/2759 [00:12&lt;00:09, 123.22it/s]
+Fit source/group:  56%|█████▌    | 1544/2759 [00:12&lt;00:10, 118.92it/s]
+Fit source/group:  57%|█████▋    | 1560/2759 [00:12&lt;00:09, 128.10it/s]
+Fit source/group:  57%|█████▋    | 1574/2759 [00:12&lt;00:09, 122.33it/s]
+Fit source/group:  58%|█████▊    | 1593/2759 [00:12&lt;00:08, 139.28it/s]
+Fit source/group:  58%|█████▊    | 1608/2759 [00:13&lt;00:08, 128.35it/s]
+Fit source/group:  59%|█████▉    | 1622/2759 [00:13&lt;00:10, 112.73it/s]
+Fit source/group:  59%|█████▉    | 1636/2759 [00:13&lt;00:09, 118.33it/s]
+Fit source/group:  60%|█████▉    | 1649/2759 [00:13&lt;00:10, 101.29it/s]
+Fit source/group:  60%|██████    | 1663/2759 [00:13&lt;00:09, 109.61it/s]
+Fit source/group:  61%|██████    | 1676/2759 [00:13&lt;00:10, 106.84it/s]
+Fit source/group:  61%|██████▏   | 1690/2759 [00:13&lt;00:09, 113.87it/s]
+Fit source/group:  62%|██████▏   | 1708/2759 [00:14&lt;00:08, 123.67it/s]
+Fit source/group:  62%|██████▏   | 1723/2759 [00:14&lt;00:08, 129.47it/s]
+Fit source/group:  63%|██████▎   | 1737/2759 [00:14&lt;00:09, 111.73it/s]
+Fit source/group:  64%|██████▎   | 1752/2759 [00:14&lt;00:08, 112.11it/s]
+Fit source/group:  64%|██████▍   | 1764/2759 [00:14&lt;00:09, 107.99it/s]
+Fit source/group:  64%|██████▍   | 1776/2759 [00:14&lt;00:09, 105.92it/s]
+Fit source/group:  65%|██████▍   | 1787/2759 [00:14&lt;00:10, 94.46it/s]
+Fit source/group:  65%|██████▌   | 1803/2759 [00:14&lt;00:08, 109.10it/s]
+Fit source/group:  66%|██████▌   | 1820/2759 [00:15&lt;00:07, 123.35it/s]
+Fit source/group:  66%|██████▋   | 1833/2759 [00:15&lt;00:08, 108.68it/s]
+Fit source/group:  67%|██████▋   | 1852/2759 [00:15&lt;00:07, 122.05it/s]
+Fit source/group:  68%|██████▊   | 1865/2759 [00:15&lt;00:07, 115.23it/s]
+Fit source/group:  68%|██████▊   | 1877/2759 [00:15&lt;00:07, 110.38it/s]
+Fit source/group:  69%|██████▊   | 1893/2759 [00:15&lt;00:07, 122.04it/s]
+Fit source/group:  69%|██████▉   | 1907/2759 [00:15&lt;00:06, 124.98it/s]
+Fit source/group:  70%|██████▉   | 1920/2759 [00:15&lt;00:07, 110.44it/s]
+Fit source/group:  70%|███████   | 1934/2759 [00:16&lt;00:07, 117.61it/s]
+Fit source/group:  71%|███████   | 1947/2759 [00:16&lt;00:07, 105.60it/s]
+Fit source/group:  71%|███████   | 1959/2759 [00:16&lt;00:07, 103.73it/s]
+Fit source/group:  72%|███████▏  | 1975/2759 [00:16&lt;00:06, 115.52it/s]
+Fit source/group:  72%|███████▏  | 1987/2759 [00:16&lt;00:07, 102.43it/s]
+Fit source/group:  72%|███████▏  | 1998/2759 [00:16&lt;00:07, 99.44it/s]
+Fit source/group:  73%|███████▎  | 2011/2759 [00:16&lt;00:07, 106.67it/s]
+Fit source/group:  73%|███████▎  | 2023/2759 [00:16&lt;00:07, 100.47it/s]
+Fit source/group:  74%|███████▍  | 2040/2759 [00:17&lt;00:06, 117.76it/s]
+Fit source/group:  74%|███████▍  | 2053/2759 [00:17&lt;00:06, 110.58it/s]
+Fit source/group:  75%|███████▌  | 2072/2759 [00:17&lt;00:05, 130.31it/s]
+Fit source/group:  76%|███████▌  | 2086/2759 [00:17&lt;00:05, 113.83it/s]
+Fit source/group:  76%|███████▌  | 2099/2759 [00:17&lt;00:05, 111.01it/s]
+Fit source/group:  77%|███████▋  | 2117/2759 [00:17&lt;00:05, 124.72it/s]
+Fit source/group:  77%|███████▋  | 2134/2759 [00:17&lt;00:04, 135.19it/s]
+Fit source/group:  78%|███████▊  | 2149/2759 [00:17&lt;00:04, 126.90it/s]
+Fit source/group:  78%|███████▊  | 2163/2759 [00:18&lt;00:05, 112.28it/s]
+Fit source/group:  79%|███████▉  | 2177/2759 [00:18&lt;00:04, 118.51it/s]
+Fit source/group:  80%|███████▉  | 2194/2759 [00:18&lt;00:04, 130.04it/s]
+Fit source/group:  80%|████████  | 2208/2759 [00:18&lt;00:04, 132.19it/s]
+Fit source/group:  81%|████████  | 2222/2759 [00:18&lt;00:05, 104.89it/s]
+Fit source/group:  81%|████████  | 2234/2759 [00:18&lt;00:05, 102.63it/s]
+Fit source/group:  81%|████████▏ | 2246/2759 [00:18&lt;00:05, 100.28it/s]
+Fit source/group:  82%|████████▏ | 2264/2759 [00:18&lt;00:04, 117.40it/s]
+Fit source/group:  83%|████████▎ | 2277/2759 [00:19&lt;00:04, 119.58it/s]
+Fit source/group:  83%|████████▎ | 2290/2759 [00:19&lt;00:04, 116.04it/s]
+Fit source/group:  84%|████████▎ | 2310/2759 [00:19&lt;00:03, 137.72it/s]
+Fit source/group:  84%|████████▍ | 2325/2759 [00:19&lt;00:03, 137.32it/s]
+Fit source/group:  85%|████████▍ | 2340/2759 [00:19&lt;00:03, 137.79it/s]
+Fit source/group:  85%|████████▌ | 2355/2759 [00:19&lt;00:03, 110.89it/s]
+Fit source/group:  86%|████████▌ | 2368/2759 [00:19&lt;00:03, 107.43it/s]
+Fit source/group:  86%|████████▋ | 2380/2759 [00:19&lt;00:03, 105.91it/s]
+Fit source/group:  87%|████████▋ | 2392/2759 [00:20&lt;00:03, 104.83it/s]
+Fit source/group:  87%|████████▋ | 2403/2759 [00:20&lt;00:03, 99.79it/s]
+Fit source/group:  88%|████████▊ | 2419/2759 [00:20&lt;00:02, 114.09it/s]
+Fit source/group:  88%|████████▊ | 2431/2759 [00:20&lt;00:03, 100.99it/s]
+Fit source/group:  89%|████████▊ | 2443/2759 [00:20&lt;00:03, 99.11it/s]
+Fit source/group:  89%|████████▉ | 2455/2759 [00:20&lt;00:03, 98.00it/s]
+Fit source/group:  89%|████████▉ | 2466/2759 [00:20&lt;00:02, 100.96it/s]
+Fit source/group:  90%|████████▉ | 2479/2759 [00:20&lt;00:02, 108.52it/s]
+Fit source/group:  90%|█████████ | 2491/2759 [00:21&lt;00:02, 89.49it/s]
+Fit source/group:  91%|█████████ | 2507/2759 [00:21&lt;00:02, 105.71it/s]
+Fit source/group:  91%|█████████▏| 2521/2759 [00:21&lt;00:02, 114.34it/s]
+Fit source/group:  92%|█████████▏| 2534/2759 [00:21&lt;00:02, 90.23it/s]
+Fit source/group:  92%|█████████▏| 2548/2759 [00:21&lt;00:02, 100.90it/s]
+Fit source/group:  93%|█████████▎| 2560/2759 [00:21&lt;00:01, 100.72it/s]
+Fit source/group:  93%|█████████▎| 2576/2759 [00:21&lt;00:01, 114.94it/s]
+Fit source/group:  94%|█████████▍| 2591/2759 [00:21&lt;00:01, 123.20it/s]
+Fit source/group:  95%|█████████▍| 2614/2759 [00:22&lt;00:01, 139.33it/s]
+Fit source/group:  96%|█████████▌| 2636/2759 [00:22&lt;00:00, 158.95it/s]
+Fit source/group:  96%|█████████▌| 2653/2759 [00:22&lt;00:00, 155.19it/s]
+Fit source/group:  97%|█████████▋| 2669/2759 [00:22&lt;00:00, 154.78it/s]
+Fit source/group:  97%|█████████▋| 2687/2759 [00:22&lt;00:00, 157.68it/s]
+Fit source/group:  98%|█████████▊| 2708/2759 [00:22&lt;00:00, 160.47it/s]
+Fit source/group:  99%|█████████▉| 2725/2759 [00:22&lt;00:00, 116.92it/s]
+Fit source/group:  99%|█████████▉| 2739/2759 [00:22&lt;00:00, 121.02it/s]
+Fit source/group: 100%|██████████| 2759/2759 [00:23&lt;00:00, 119.61it/s]
+WARNING: One or more fit(s) may not have converged. Please check the &quot;flags&quot; column in the output table. [photutils.psf.photometry]
+Add model sources:   0%|          | 0/2759 [00:00&lt;?, ?it/s]
+Add model sources:  20%|██        | 553/2759 [00:00&lt;00:00, 5529.52it/s]
+Add model sources:  40%|████      | 1116/2759 [00:00&lt;00:00, 5582.18it/s]
+Add model sources:  61%|██████    | 1680/2759 [00:00&lt;00:00, 5606.89it/s]
+Add model sources:  81%|████████  | 2241/2759 [00:00&lt;00:00, 5442.56it/s]
+Add model sources: 100%|██████████| 2759/2759 [00:00&lt;00:00, 5470.37it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we convert the pixel coordinates to sky coordinates and add them to the catalog.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs2</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr2</span><span class="p">)</span> <span class="c1"># NISP</span>
+<span class="n">radec</span> <span class="o">=</span> <span class="n">wcs2</span><span class="o">.</span><span class="n">all_pix2world</span><span class="p">(</span><span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span><span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;ra_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;dec_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">radec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we create the same figure as above, showing the NISP image and the residual with the (VIS-extracted) sources overlaid.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">img2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span> <span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">resimage2</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">20</span><span class="o">*</span><span class="n">std2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="o">*</span><span class="n">std2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;x_fit&quot;</span><span class="p">],</span> <span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;y_fit&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/58bf79dea59d97bda9da6ffc6764773aa294520934408b955d2be2dca2b26432.png" src="../../_images/58bf79dea59d97bda9da6ffc6764773aa294520934408b955d2be2dca2b26432.png" />
+</div>
+</div>
+</section>
+<section id="load-gaia-catalog">
+<h2>Load Gaia Catalog<a class="headerlink" href="#load-gaia-catalog" title="Link to this heading">#</a></h2>
+<p>We now load the Gaia sources at the location of the globular clusters. The goal is to compare the photometry of Gaia to the one derived above for the Euclid VIS and NISP images. This is scientifically useful, for example we can compute the colors of the stars in the Gaia optical bands and the Euclid near-IR bands.
+To search for Gaia sources, we use <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> again.</p>
+<p>We first have to elimiate the row limit for the Gaia query by setting</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gaia</span><span class="o">.</span><span class="n">ROW_LIMIT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we request the Gaia catalog around the position of the globular cluster. We use the same size as the cutout size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gaia_objects</span> <span class="o">=</span> <span class="n">Gaia</span><span class="o">.</span><span class="n">query_object_async</span><span class="p">(</span><span class="n">coordinate</span><span class="o">=</span><span class="n">coord</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">cutout_size</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of Gaia stars found: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gaia_objects</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Query finished. [astroquery.utils.tap.core]
+Number of Gaia stars found: 1202
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then convert the sky coordinates of the Gaia stars to (x,y) image coordinates for VIS and NISP images using the corresponding WCS. This makes it more easy to plot the Gaia sources later on the images.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="c1"># VIS</span>
+<span class="n">wcs2</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr2</span><span class="p">)</span> <span class="c1"># NISP</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">],</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xy2</span> <span class="o">=</span> <span class="n">wcs2</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">],</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;x_vis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;y_vis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;x_nisp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;y_nisp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We save the Gaia table to disk as we will later use it for the visualization in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gaia_objects</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;./data/gaiatable.csv&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can overlay the Gaia sources on the VIS and NISP images (here the x/y coordinates become handy).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;x_vis&quot;</span><span class="p">],</span> <span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;y_vis&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;VIS&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">img2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;x_nisp&quot;</span><span class="p">],</span> <span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;y_nisp&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span> <span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NISP&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/536c91360b21ace8c38e6f405642d77bb159028d73b12f3927a3c404148d640c.png" src="../../_images/536c91360b21ace8c38e6f405642d77bb159028d73b12f3927a3c404148d640c.png" />
+</div>
+</div>
+</section>
+<section id="match-the-gaia-catalog-to-the-vis-and-nisp-catalogs">
+<h2>Match the Gaia Catalog to the VIS and NISP Catalogs<a class="headerlink" href="#match-the-gaia-catalog-to-the-vis-and-nisp-catalogs" title="Link to this heading">#</a></h2>
+<p>Now, we match the Gaia source positions to the extracted sources in the VIS and NISP images.</p>
+<p>We first define which Gaia columns to copy to the matched catalog as well as the matching distance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gaia_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source_id&quot;</span><span class="p">,</span> <span class="s2">&quot;phot_g_mean_mag&quot;</span><span class="p">,</span> <span class="s2">&quot;phot_bp_mean_mag&quot;</span><span class="p">,</span> <span class="s2">&quot;phot_rp_mean_mag&quot;</span><span class="p">,</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span><span class="s2">&quot;pmra&quot;</span><span class="p">,</span><span class="s2">&quot;pmdec&quot;</span><span class="p">]</span>
+<span class="n">matching_distance</span> <span class="o">=</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsecond</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First match to the VIS image. We use the <code class="docutils literal notranslate"><span class="pre">astropy</span></code> <em>SkyCoord()</em> function for matching in sky coordinates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;ra_fit&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;dec_fit&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span> <span class="p">)</span>
+<span class="n">catalog</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">gaia_objects</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">idx</span><span class="p">,</span> <span class="n">d2d</span><span class="p">,</span> <span class="n">d3d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">match_to_catalog_sky</span><span class="p">(</span><span class="n">catalog</span><span class="p">)</span>
+
+<span class="n">sel_matched</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">d2d</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arcsecond</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">matching_distance</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gaia Sources matched to VIS: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel_matched</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">phot</span><span class="p">[</span><span class="s2">&quot;gaia_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d2d</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arcsecond</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">gaia_key</span> <span class="ow">in</span> <span class="n">gaia_keys</span><span class="p">:</span>
+    <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;gaia_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gaia_key</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;gaia_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gaia_key</span><span class="p">)][</span><span class="n">sel_matched</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaia_objects</span><span class="p">[</span><span class="n">gaia_key</span><span class="p">][</span><span class="n">idx</span><span class="p">[</span><span class="n">sel_matched</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gaia Sources matched to VIS: 1223
+</pre></div>
+</div>
+</div>
+</div>
+<p>And then we add the NISP sources. Note that we do not have to perform matching here because by design the VIS and NISP sources are matched (spatial prior forced photometry).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;gaia_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d2d</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arcsecond</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">gaia_key</span> <span class="ow">in</span> <span class="n">gaia_keys</span><span class="p">:</span>
+    <span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;gaia_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gaia_key</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">phot2</span><span class="p">[</span><span class="s2">&quot;gaia_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gaia_key</span><span class="p">)][</span><span class="n">sel_matched</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaia_objects</span><span class="p">[</span><span class="n">gaia_key</span><span class="p">][</span><span class="n">idx</span><span class="p">[</span><span class="n">sel_matched</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once matched, we can now compare the Gaia and Euclid/NISP magnitudes of the stars.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">phot</span><span class="p">[</span><span class="s2">&quot;gaia_phot_rp_mean_mag&quot;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;flux_fit&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;ZP_STACK&quot;</span><span class="p">]</span>
+
+<span class="c1"># selection</span>
+<span class="n">sel_good</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">phot</span><span class="p">[</span><span class="s2">&quot;gaia_source_id&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">sel_good</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">sel_good</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span> <span class="p">,</span> <span class="n">y</span> <span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">minlim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+<span class="n">maxlim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">/</span><span class="mf">1.5</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">*</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">/</span><span class="mf">1.2</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">])</span><span class="o">*</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">minlim</span><span class="p">,</span><span class="n">maxlim</span><span class="p">]),</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Gaia Rp [mag]&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;I$_E$ [mag]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/04b5036471dc462ded5483fef537f5c4c3f046b489c3d6258080a044fe534edb.png" src="../../_images/04b5036471dc462ded5483fef537f5c4c3f046b489c3d6258080a044fe534edb.png" />
+</div>
+</div>
+</section>
+<section id="visualization-with-firefly">
+<h2>Visualization with Firefly<a class="headerlink" href="#visualization-with-firefly" title="Link to this heading">#</a></h2>
+<p>At the end of this Notebook, we demonstrate how we can visualize the images and catalogs created above in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>.</p>
+<p>We start by initializing the Firefly client.
+The following line will open a new <code class="docutils literal notranslate"><span class="pre">Firefly</span></code> GUI in a separate tab <strong>inside</strong> the Jupyter Notebook environment. The user can drag the tab onto the currently open tab to create a “split tab”. This the user to see the code and images side-by-side.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
+<span class="c1"># fc = FireflyClient.make_lab_client()</span>
+
+<span class="c1"># Uncomment for contexts other than the above</span>
+<span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/irsaviewer&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to display in image or catalog in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>, it needs to be uploaded to the <code class="docutils literal notranslate"><span class="pre">Firefly</span></code> server. We do this here using the <code class="docutils literal notranslate"><span class="pre">upload_file()</span></code> function.
+We first upload the FITS image that we created above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fval</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s1">&#39;./data/euclid_images_test.fits&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once the image is uploaded we can use the <code class="docutils literal notranslate"><span class="pre">show_fits()</span></code> function to display it.
+Note that our FITS image has multiple extensions (VIS, and NISP bands). We can open them separately in new <code class="docutils literal notranslate"><span class="pre">Firefly</span></code> tabs by looping over the HDUs and specifying the plot ID by the extension’s name.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">hh</span><span class="p">,</span><span class="n">hdu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hdulcutout</span><span class="p">):</span>
+    <span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">fval</span><span class="p">,</span> <span class="n">MultiImageIdx</span><span class="o">=</span><span class="n">hh</span><span class="p">,</span> <span class="n">plot_id</span><span class="o">=</span><span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;EXTNAME&quot;</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can lock the WCS between the images (allowing the user to pan and zoom the images simultaneously) by running:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">align_images</span><span class="p">(</span><span class="n">lock_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the same way, we can upload a table, in this case our Gaia table. We again use <code class="docutils literal notranslate"><span class="pre">upload_file()</span></code> but in this case we use <code class="docutils literal notranslate"><span class="pre">show_table()</span></code> to show it in <code class="docutils literal notranslate"><span class="pre">Firefly</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tval</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s1">&#39;./data/gaiatable.csv&#39;</span><span class="p">)</span>
+<span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">tval</span><span class="p">,</span> <span class="n">tbl_id</span> <span class="o">=</span> <span class="s2">&quot;gaiatable&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, check out the <code class="docutils literal notranslate"><span class="pre">Firefly</span></code> GUI. You can zoom the images, click on sources, filter the table, display different selection, and much more!</p>
+</section>
+<hr class="docutils" />
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author</strong>: Andreas Faisst (IPAC Scientist)</p>
+<p><strong>Updated</strong>: 2025-03-17</p>
+<p><strong>Contact</strong>: the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA Helpdesk</a> with questions or reporting problems.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Analyzing cloud-hosted simulated Roman coadded images</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../firefly/SEDs_in_Firefly.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using Firefly visualization tools in Python to vet SEDs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-volume">Data Volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-environment">Setting up the Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-euclid-ero-images">Search Euclid ERO Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-cutout-images">Create Cutout Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-sources-and-measure-their-photometry-on-the-vis-image">Extract Sources and Measure their Photometry on the VIS Image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-the-photometry-on-the-nisp-images">Measure the Photometry on the NISP Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-gaia-catalog">Load Gaia Catalog</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#match-the-gaia-catalog-to-the-vis-and-nisp-catalogs">Match the Gaia Catalog to the VIS and NISP Catalogs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-with-firefly">Visualization with Firefly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

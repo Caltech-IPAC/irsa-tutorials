@@ -40,6 +40,16 @@ tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
 
 ```
 
+## Accessing Euclid data
+
+```{toctree}
+---
+maxdepth: 1
+caption: Euclid Early Release Observations
+---
+
+tutorials/euclid_access/Euclid_ERO
+```
 
 ## Interactive visualization in Python with Firefly
 

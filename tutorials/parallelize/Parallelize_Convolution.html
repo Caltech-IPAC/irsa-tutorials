@@ -197,6 +197,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
@@ -488,7 +492,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="parallelizing-image-convolution">
+  <section class="tex2jax_ignore mathjax_ignore" id="parallelizing-image-convolution">
 <h1>Parallelizing image convolution<a class="headerlink" href="#parallelizing-image-convolution" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
@@ -540,7 +544,9 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-16 02:57:36,058	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+2025-03-18 07:13:44,320	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -597,7 +603,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.6 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 147.9 seconds
 </pre></div>
 </div>
 </div>
@@ -614,7 +620,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-16 02:58:14,314	INFO worker.py:1841 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-18 07:14:23,454	INFO worker.py:1841 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -674,7 +680,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 85.9, speedup = 1.73
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 85.5, speedup = 1.73
 </pre></div>
 </div>
 </div>
@@ -727,7 +733,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 159.5, speedup = 0.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.2, speedup = 0.92
 </pre></div>
 </div>
 </div>
@@ -751,7 +757,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:38807&#39; processes=4 threads=4, memory=15.62 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:44169&#39; processes=4 threads=4, memory=15.62 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -772,7 +778,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 103.5, speedup = 1.44
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 105.0, speedup = 1.41
 </pre></div>
 </div>
 </div>
@@ -780,6 +786,11 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-18 07:20:17,909 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-2f25053d9af5ce522a9135a7a1de9856&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>

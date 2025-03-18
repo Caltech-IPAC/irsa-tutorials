@@ -44,12 +44,13 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/firefly/SEDs_in_Firefly';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Using Firefly visualization tools to understand the light curves of Solar System objects" href="NEOWISE_light_curve_demo.html" />
-    <link rel="prev" title="Analyzing cloud-hosted simulated Roman coadded images" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html" />
+    <link rel="prev" title="Exploring Star Clusters in the Euclid ERO Data" href="../euclid_access/Euclid_ERO.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -198,6 +199,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="current nav bd-sidenav">
@@ -499,7 +504,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="using-firefly-visualization-tools-in-python-to-vet-seds">
+  <section class="tex2jax_ignore mathjax_ignore" id="using-firefly-visualization-tools-in-python-to-vet-seds">
 <h1>Using Firefly visualization tools in Python to vet SEDs<a class="headerlink" href="#using-firefly-visualization-tools-in-python-to-vet-seds" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
@@ -1069,7 +1074,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=14</i>
-<table id="table140423699507152" class="table-striped table-bordered table-condensed">
+<table id="table139907957051792" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>wavelength</th><th>mag</th><th>magerr</th><th>upper_limit</th><th>zeropoint</th><th>lam_flam</th><th>lam_flam_err</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th>micron</th><th></th><th></th><th></th><th>Jy</th><th>erg / (s cm2)</th><th>erg / (s cm2)</th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1120,7 +1125,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wMy0xNg"" target="_blank">this link</a></div></div>
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wMy0xOA"" target="_blank">this link</a></div></div>
 </div>
 <p>Write the photometry table to a FITS file:</p>
 <div class="cell docutils container">
@@ -1319,12 +1324,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html"
+       href="../euclid_access/Euclid_ERO.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Analyzing cloud-hosted simulated Roman coadded images</p>
+        <p class="prev-next-title">Exploring Star Clusters in the Euclid ERO Data</p>
       </div>
     </a>
     <a class="right-next"
