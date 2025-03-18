@@ -53,7 +53,7 @@ First, we import all necessary packages.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install tqdm numpy matplotlib astropy photutils astroquery>0.4.10 sep>=1.4 firefly_client>=3.2
+# !pip install tqdm numpy matplotlib astropy photutils astroquery>=0.4.10 sep>=1.4 firefly_client>=3.2
 ```
 
 ```{code-cell} ipython3
@@ -161,7 +161,7 @@ Here we use the collection *euclid_ero*, containing the Euclid ERO images. We fi
 
 
 ```{code-cell} ipython3
-image_tab = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_ero').to_table()
+image_tab = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_ero')
 print("Number of images available: {}".format(len(image_tab)))
 ```
 
