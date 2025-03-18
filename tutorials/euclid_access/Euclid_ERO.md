@@ -40,12 +40,14 @@ The total data volume required for running this notebook is less than 20 MB.
 First, we import all necessary packages.
 
 ```python
-!pip install -r requirements_euclid.txt ## BRIGITTA: CHANGE THIS....
+# Uncomment the next line to install dependencies if needed.
+# !pip install tqdm numpy matplotlib astropy photutils astroquery>0.4.10 sep>=1.4 firefly_client>=3.2
+```
 
+```python
 # General imports
-import os, sys
+import os
 import numpy as np
-import glob
 from tqdm import tqdm
 
 # Astroquery
@@ -55,10 +57,10 @@ from astroquery.gaia import Gaia
 # Astropy
 from astropy.coordinates import SkyCoord
 from astropy import units as u
-from astropy.io import fits, ascii
+from astropy.io import fits
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
-from astropy.table import Table, vstack, hstack
+from astropy.table import Table
 from astropy.stats import sigma_clipped_stats
 
 # Photometry tools
@@ -102,16 +104,6 @@ mpl.rcParams['ytick.right'] = True
 mpl.rcParams['hatch.linewidth'] = 1
 
 def_cols = plt.rcParams['axes.prop_cycle'].by_key()['color']
-```
-
-In case `astropy` and `firefly-client` are not up-to-date in the image on the science platform, we can upgrade them here. If all is up-to-date, the following cell can be ignored.
-
-```python
-# Need to do this to upgrade the astroquery version to avoid attribute error.
-#!pip install --upgrade --pre astroquery
-
-# Need to do this to upgrade the firefly-client version to avoid attribute error.
-#!pip install --upgrade --pre firefly-client
 ```
 
 ## Setting up the Environment

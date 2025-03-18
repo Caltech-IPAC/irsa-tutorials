@@ -1,4 +1,5 @@
 # For the content of the tutorials
+tqdm
 numpy
 matplotlib
 astropy
@@ -12,8 +13,10 @@ dask[distributed]
 psutil
 ray
 s3fs
-firefly-client
+firefly-client>=3.2.0
 jupyter-firefly-extensions
 reproject
+photutils
+sep>=1.4
 # For supporting myst-based notebooks
 jupytext
