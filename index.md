@@ -43,6 +43,8 @@ tutorials/cloud_access/euclid-cloud-access
 
 ## Accessing Euclid data
 
+### Euclid Early Release Observation
+
 ```{toctree}
 ---
 maxdepth: 1
@@ -52,6 +54,8 @@ caption: Euclid Early Release Observations
 tutorials/euclid_access/Euclid_ERO
 
 ```
+
+### Euclid Quick Release 1
 
 ```{toctree}
 ---
