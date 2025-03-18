@@ -29,6 +29,10 @@ extensions = [
     'sphinx_copybutton',
 ]
 
+myst_enable_extensions = [
+    'dollarmath',
+]
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -58,9 +62,9 @@ if platform.platform().startswith("mac") or platform.platform().startswith("win"
     nb_execution_excludepatterns += ['Parallelize_Convolution.md', 'neowise-source-table-lightcurves.md']
 
 # Euclid data is not yet available publicly
-nb_execution_excludepatterns += ['*Euclid*', '*euclid*']
+nb_execution_excludepatterns += ['*_Euclid*', '*euclid*']
 
-exclude_patterns += ['tutorials/*/*[Ee]uclid*']
+exclude_patterns += ['tutorials/*/*_Euclid*', 'tutorials/*/euclid*']
 
 # -- Options for HTML output -------------------------------------------------
 
