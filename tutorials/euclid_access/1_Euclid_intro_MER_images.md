@@ -19,7 +19,7 @@ kernelspec:
 
 +++
 
-By the end of this tutorial, you will: 
+By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 MER mosaics.
 - How do download full MER mosaics.
 - How to make smaller cutouts of MER mosaics.
@@ -82,8 +82,8 @@ search_radius = 10 * u.arcsec
 coord = SkyCoord.from_name('HD 168151')
 ```
 
-Use IRSA to search for all Euclid data on this target. 
-This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs. 
+Use IRSA to search for all Euclid data on this target.
+This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
 This query will return any image with pixels that overlap the search region.
 
 ```{code-cell} ipython3
@@ -157,11 +157,12 @@ print(hdu_mer_irsa.info())
 head_mer_irsa = hdu_mer_irsa[0].header
 ```
 
-Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell.
+Please also define a suitable download directory; by default it will be `data` at the same location as your notebook.
 
 ```{code-cell} ipython3
-# download_path='/Users/meshkat/data/Euclid/'
-# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+# download_path = 'data'
+# hdu_mer_irsa.writeto(os.path.join(download_path, 'MER_image_VIS.fits'), overwrite=True)
 ```
 
 Have a look at the header information for this image
@@ -229,8 +230,8 @@ filters
 ## How large do you want the image cutout to be?
 im_cutout= 1.0 * u.arcmin
 
-## What is the center of the cutout? 
-## For now choosing a random location on the image 
+## What is the center of the cutout?
+## For now choosing a random location on the image
 ## because the star itself is saturated
 ra = 273.8667
 dec =  64.525
@@ -253,14 +254,14 @@ for url in urls:
     print(f"Opened {url}")
 
     ## Store the header
-    header = hdu[0].header  
+    header = hdu[0].header
 
     ## Read in the cutout of the image that you want
     cutout_data = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(hdu[0].header))
 
     ## Close the file
     # hdu.close()
-    
+
     ## Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size
     new_hdu = fits.PrimaryHDU(data=cutout_data.data, header=header)
     new_hdu.header.update(cutout_data.wcs.to_header())
@@ -280,7 +281,7 @@ Need to determine the number of images for the grid layout, then we iterate thro
 ```{code-cell} ipython3
 num_images = len(final_hdulist)
 columns = 4
-rows = -(-num_images // columns)  
+rows = -(-num_images // columns)
 
 fig, axes = plt.subplots(rows, columns, figsize=(4 * columns, 4 * rows), subplot_kw={'projection': WCS(final_hdulist[0].header)})
 axes = axes.flatten()
@@ -310,7 +311,7 @@ filters
 ```
 
 ```{code-cell} ipython3
-filt_index = np.where(filters == 'VIS')[0][0]  
+filt_index = np.where(filters == 'VIS')[0][0]
 
 img1=final_hdulist[filt_index].data
 ```
@@ -324,7 +325,7 @@ Need to do some initial steps (swap byte order) with the cutout to prevent sep f
 
 ```{code-cell} ipython3
 img2 = img1.byteswap().view(img1.dtype.newbyteorder())
-c_contiguous_data = np.array(img2, dtype=np.float32)  
+c_contiguous_data = np.array(img2, dtype=np.float32)
 
 bkg = sep.Background(c_contiguous_data)
 
