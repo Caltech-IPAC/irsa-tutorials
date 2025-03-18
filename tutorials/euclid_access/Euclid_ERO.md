@@ -1,6 +1,19 @@
-<!-- #region -->
+---
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
 # Exploring Star Clusters in the Euclid ERO Data
-***
+
 
 ## Learning Goals
 By the end of this tutorial, you will be able to:
@@ -32,19 +45,18 @@ This notebook is written to be used in Fornax which is a cloud based computing p
 ## Data Volume
 The total data volume required for running this notebook is less than 20 MB.
 
-***
-<!-- #endregion -->
++++
 
 ## Imports
 
 First, we import all necessary packages.
 
-```python
+```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install tqdm numpy matplotlib astropy photutils astroquery>0.4.10 sep>=1.4 firefly_client>=3.2
 ```
 
-```python
+```{code-cell} ipython3
 # General imports
 import os
 import numpy as np
@@ -79,7 +91,7 @@ import matplotlib as mpl
 
 Next, we define some parameters for `Matplotlib` plotting.
 
-```python
+```{code-cell} ipython3
 ## Plotting stuff
 mpl.rcParams['font.size'] = 14
 mpl.rcParams['axes.labelpad'] = 7
@@ -117,7 +129,7 @@ Finally, we also define the target of interest here. We can choose between two g
 
 Note that `astropy` units can be attached to the `search_radius` and `cutout_size`.
 
-```python
+```{code-cell} ipython3
 # create output directory
 if os.path.exists("./data/"):
     print("Output directory already created.")
@@ -146,20 +158,20 @@ Irsa.list_collections(servicetype='SIA')
 Here we use the collection *euclid_ero*, containing the Euclid ERO images. We first create a `SkyCoord` object and then query the SIA.
 
 
-```python
+```{code-cell} ipython3
 image_tab = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_ero').to_table()
 print("Number of images available: {}".format(len(image_tab)))
 ```
 
 Sort the queried table by wavelength (column `em_min`). This allows us later when we plot the images to keep them sorted by wavelength (VIS, Y, J, H).
 
-```python
+```{code-cell} ipython3
 image_tab.sort('em_min')
 ```
 
 Let's inspec the table that was downloaded.
 
-```python
+```{code-cell} ipython3
 image_tab[0:3]
 ```
 
@@ -171,7 +183,7 @@ The Euclid ERO images come in two different flavors:
 
 Maybe counter-intuitively, we select the *LSB* images here by checking if the file name given in the URL (`access_url` column) contains that key word. We found that the *Flattened* images contain many masked pixels.
 
-```python
+```{code-cell} ipython3
 #sel_basic = np.where( ["Flattened" in tt["access_url"] for tt in image_tab] )[0]
 sel_basic = np.where( ["LSB" in tt["access_url"] for tt in image_tab] )[0]
 image_tab = image_tab[sel_basic]
@@ -179,7 +191,7 @@ image_tab = image_tab[sel_basic]
 
 Next, we want to check what filteres are available. This can be done by `np.unique()`, however, in that case it would sort the filters alphabetically. We want to keep the sorting based on the wavelength, therefore we opt for a more complicated way.
 
-```python
+```{code-cell} ipython3
 idxs = np.unique(image_tab["energy_bandpassname"], return_index=True)[1]
 filters = [image_tab["energy_bandpassname"][idx] for idx in sorted(idxs)]
 print("Filters: {}".format(filters))
@@ -187,8 +199,8 @@ print("Filters: {}".format(filters))
 
 We can now loop throught the filters and collect the images to create a handy summary table with all the data we have. This way we will have an easier time to later access the data.
 
-```python
-## Create dictionary with all the necessary information (science, weight, noise, mask)
+```{code-cell} ipython3
+# Create a dictionary with all the necessary information (science, weight, noise, mask)
 summary_table = Table(names=["filter","products","facility_name","instrument_name"] , dtype=[str,str,str,str])
 for filt in filters:
     sel = np.where(image_tab['energy_bandpassname'] == filt)[0]
@@ -206,7 +218,7 @@ for filt in filters:
 
 Let's check out the summary table that we have created. We see that we have all the 4 Euclid bands and what data products are available for each of them.
 
-```python
+```{code-cell} ipython3
 summary_table
 ```
 
@@ -220,7 +232,7 @@ We save the HDU to disk as it will be later used when we visualize the Euclid ER
 
 **Note:** You will notice that `Cutout2D` can be applied to an URL. That way, it we do not need to download the full image to create a cutout. This is a useful trick to keep in mind when analyzing large images. This makes creating cutout images very fast.
 
-```python
+```{code-cell} ipython3
 %%time
 for ii,filt in tqdm(enumerate(filters)):
     products = summary_table[summary_table["filter"] == filt]["products"][0].split(";")
@@ -253,13 +265,13 @@ hdulcutout.writeto("./data/euclid_images_test.fits", overwrite=True)
 
 Let's look at the HDU that we created to check what information we have. You see that all filters are collected in different extensions. Also note the different dimensions of the FITS layers as the pixel scale of VIS and NISP are different.
 
-```python
+```{code-cell} ipython3
 hdulcutout.info()
 ```
 
 We can now plot the image cutouts that we generated. The globular cluster is clearly visible.
 
-```python
+```{code-cell} ipython3
 nimages = len(filters) # number of images
 ncols = int(4) # number of columns
 nrows = int( nimages // ncols ) # number of rows
@@ -285,10 +297,11 @@ Our simple photometry pipeline has different parts:
 * Second, we use `sep` to perform aperture measurements of the photometry. We will use that to compare the obtained fluxes to our forced photometry method
 * Third, we apply a PSF fitting technique (using the `photutils` Python package) to improve the photometry measurement
 
++++
 
 We start by extracting the sources using `sep`. We first isolate the data that we want to look at (the VIS image only).
 
-```python
+```{code-cell} ipython3
 ## Get Data (this will be replaced later)
 img = hdulcutout["VIS_SCIENCE"].data
 hdr = hdulcutout["VIS_SCIENCE"].header
@@ -297,27 +310,28 @@ img[img == 0] = np.nan
 
 There are some NaN value on the image that we need to mask out. For this we create a mask image that we later feed to `sep`.
 
-```python
+```{code-cell} ipython3
 mask = np.isnan(img)
 ```
 
 Next, we compute the background statistics what will be used by `sep` to extract the sources above a certain threshold.
 
-```python
+
+```{code-cell} ipython3
 mean, median, std = sigma_clipped_stats(img, sigma=3.0)
 print(np.array((mean, median, std)))
 ```
 
 Finally, we perform object detection with `sep`. There are also modules in `photutils` to do that, however, we found that `sep` works best here. We output the number of objects found on the image.
 
-```python
+```{code-cell} ipython3
 objects = sep.extract(img-median, thresh=1.2, err=std, minarea=3, mask=mask, deblend_cont=0.0002, deblend_nthresh=64 )
 print("Number of sources extracted: ", len(objects))
 ```
 
 Next, we perform simple aperture photometry on the detected sources. Again, we use the `sep` package for this. We will use these aperture photometry later to compare to the PSF photometry.
 
-```python
+```{code-cell} ipython3
 flux, fluxerr, flag = sep.sum_circle(img-median, objects['x'], objects['y'],r=3.0, err=std, gain=1.0)
 ```
 
@@ -325,7 +339,7 @@ Now, we use the `photutils` Python package to perform PSF fitting. Here we assum
 
 **Note:** We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars).
 
-```python
+```{code-cell} ipython3
 psf_fwhm = 0.16 # PSF FWHM in arcsec
 pixscale = 0.1 # VIS pixel scale in arcsec/px
 
@@ -346,19 +360,19 @@ psfphot = PSFPhotometry(psf_model,
 
 After initiating the `PSFPhotometry` object, we can run the PSF photometry measurement. This can take a while (typically between 1 and 2 minutes).
 
-```python
+```{code-cell} ipython3
 phot = psfphot(img-median, error=None, mask=mask, init_params=init_params)
 ```
 
 Once this is done, we can create a residual image.
 
-```python
+```{code-cell} ipython3
 resimage = psfphot.make_residual_image(data = img-median, psf_shape = (9, 9))
 ```
 
 We now want to add the best-fit coordinates (R.A. and Decl.) to the VIS photometry catalog. For this, we have to convert the image coordinates into sky coordinates using the WCS information. We will need these coordinates because we want to use them as positional priors for the photometry measurement on the NISP images.
 
-```python
+```{code-cell} ipython3
 ## Add coordinates to catalog
 wcs1 = WCS(hdr) # VIS
 radec = wcs1.all_pix2world(phot["x_fit"],phot["y_fit"],0)
@@ -368,7 +382,7 @@ phot["dec_fit"] = radec[1]
 
 Finally, we plot the VIS image and the residual with the extracted sources overlaid.
 
-```python
+```{code-cell} ipython3
 fig = plt.figure(figsize=(20,10))
 ax1 = fig.add_subplot(1,2,1)
 ax2 = fig.add_subplot(1,2,2)
@@ -383,7 +397,7 @@ plt.show()
 
 As an additional check, we can compare the aperture photometry and the PSF photometry. We should find a good agreement between those two measurement methods. However, note that the PSF photometry should do a better job in deblending the fluxes of sources that are close by.
 
-```python
+```{code-cell} ipython3
 x = objects["flux"]
 y = phot["flux_fit"]
 
@@ -412,10 +426,11 @@ For this, we use the positions of the VIS measurements and perform PSF fitting o
 
 The steps below are almost identical to the ones applied to the VIS images.
 
++++
 
 We first isolate the data, which is in this case the NISP *H*-band filter. Note that this is an arbitrary choice and you should be encouraged to try other filters as well!
 
-```python
+```{code-cell} ipython3
 img2 = hdulcutout["H_SCIENCE"].data
 hdr2 = hdulcutout["H_SCIENCE"].header
 img2[img2 == 0] = np.nan
@@ -423,20 +438,21 @@ img2[img2 == 0] = np.nan
 
 We again need to create a mask that will be fed to the PSF fitting module.
 
-```python
+```{code-cell} ipython3
 mask2 = np.isnan(img2)
 ```
 
 ... and we also get some statistics on the sky background.
 
-```python
+
+```{code-cell} ipython3
 mean2, median2, std2 = sigma_clipped_stats(img2, sigma=3.0)
 print(np.array((mean2, median2, std2)))
 ```
 
 Now, we need to obtain the (x,y) image coordinates on the NISP image that correspond to the extracted sources on the VIS image. We use the WCS information from the NISP image for this case and apply it to the sky coordinates obtained on the VIS image.
 
-```python
+```{code-cell} ipython3
 wcs = WCS(hdr) # VIS
 wcs2 = WCS(hdr2) # NISP
 radec = wcs.all_pix2world(objects["x"],objects["y"], 0)
@@ -445,7 +461,7 @@ xy = wcs2.all_world2pix(radec[0],radec[1],0)
 
 Having all this set up, we can now again perform the PSF photometry using `PSFPhotometry()` from the `photutils` package. This again can take a while, typically 1 minute.
 
-```python
+```{code-cell} ipython3
 psf_fwhm = 0.3 # arcsec
 pixscale = 0.3 # arcsec/px
 
@@ -466,7 +482,7 @@ resimage2 = psfphot2.make_residual_image(data = img2-median2, psf_shape = (3, 3)
 
 Again, we convert the pixel coordinates to sky coordinates and add them to the catalog.
 
-```python
+```{code-cell} ipython3
 wcs2 = WCS(hdr2) # NISP
 radec = wcs2.all_pix2world(phot2["x_fit"],phot2["y_fit"],0)
 phot2["ra_fit"] = radec[0]
@@ -475,7 +491,7 @@ phot2["dec_fit"] = radec[1]
 
 Finally, we create the same figure as above, showing the NISP image and the residual with the (VIS-extracted) sources overlaid.
 
-```python
+```{code-cell} ipython3
 fig = plt.figure(figsize=(20,10))
 ax1 = fig.add_subplot(1,2,1)
 ax2 = fig.add_subplot(1,2,2)
@@ -495,20 +511,21 @@ To search for Gaia sources, we use `astroquery` again.
 
 We first have to elimiate the row limit for the Gaia query by setting
 
-```python
+```{code-cell} ipython3
 Gaia.ROW_LIMIT = -1
 ```
 
 Next, we request the Gaia catalog around the position of the globular cluster. We use the same size as the cutout size.
 
-```python
+
+```{code-cell} ipython3
 gaia_objects = Gaia.query_object_async(coordinate=coord, radius = cutout_size/2)
 print("Number of Gaia stars found: {}".format(len(gaia_objects)))
 ```
 
 We then convert the sky coordinates of the Gaia stars to (x,y) image coordinates for VIS and NISP images using the corresponding WCS. This makes it more easy to plot the Gaia sources later on the images.
 
-```python
+```{code-cell} ipython3
 wcs = WCS(hdr) # VIS
 wcs2 = WCS(hdr2) # NISP
 xy = wcs.all_world2pix(gaia_objects["ra"],gaia_objects["dec"],0)
@@ -522,13 +539,13 @@ gaia_objects["y_nisp"] = xy2[1]
 
 We save the Gaia table to disk as we will later use it for the visualization in `Firefly`.
 
-```python
+```{code-cell} ipython3
 gaia_objects.write("./data/gaiatable.csv", format="csv", overwrite=True)
 ```
 
 Now we can overlay the Gaia sources on the VIS and NISP images (here the x/y coordinates become handy).
 
-```python
+```{code-cell} ipython3
 fig = plt.figure(figsize=(20,10))
 ax1 = fig.add_subplot(1,2,1)
 ax2 = fig.add_subplot(1,2,2)
@@ -549,14 +566,14 @@ Now, we match the Gaia source positions to the extracted sources in the VIS and 
 
 We first define which Gaia columns to copy to the matched catalog as well as the matching distance.
 
-```python
+```{code-cell} ipython3
 gaia_keys = ["source_id", "phot_g_mean_mag", "phot_bp_mean_mag", "phot_rp_mean_mag","ra","dec","pmra","pmdec"]
 matching_distance = 0.6*u.arcsecond
 ```
 
 First match to the VIS image. We use the `astropy` *SkyCoord()* function for matching in sky coordinates.
 
-```python
+```{code-cell} ipython3
 c = SkyCoord(ra=phot["ra_fit"]*u.degree, dec=phot["dec_fit"]*u.degree )
 catalog = SkyCoord(ra=gaia_objects["ra"].data*u.degree, dec=gaia_objects["dec"].data*u.degree)
 idx, d2d, d3d = c.match_to_catalog_sky(catalog)
@@ -572,7 +589,7 @@ for gaia_key in gaia_keys:
 
 And then we add the NISP sources. Note that we do not have to perform matching here because by design the VIS and NISP sources are matched (spatial prior forced photometry).
 
-```python
+```{code-cell} ipython3
 phot2["gaia_distance"] = d2d.to(u.arcsecond)
 
 for gaia_key in gaia_keys:
@@ -582,7 +599,7 @@ for gaia_key in gaia_keys:
 
 Once matched, we can now compare the Gaia and Euclid/NISP magnitudes of the stars.
 
-```python
+```{code-cell} ipython3
 # Data
 x = phot["gaia_phot_rp_mean_mag"]
 y = -2.5*np.log10(phot["flux_fit"]) + hdr["ZP_STACK"]
@@ -615,7 +632,7 @@ At the end of this Notebook, we demonstrate how we can visualize the images and 
 We start by initializing the Firefly client.
 The following line will open a new `Firefly` GUI in a separate tab **inside** the Jupyter Notebook environment. The user can drag the tab onto the currently open tab to create a "split tab". This the user to see the code and images side-by-side.
 
-```python
+```{code-cell} ipython3
 # Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
 # fc = FireflyClient.make_lab_client()
 
@@ -626,33 +643,34 @@ fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 In order to display in image or catalog in `Firefly`, it needs to be uploaded to the `Firefly` server. We do this here using the `upload_file()` function.
 We first upload the FITS image that we created above.
 
-```python
+```{code-cell} ipython3
 fval = fc.upload_file('./data/euclid_images_test.fits')
 ```
 
 Once the image is uploaded we can use the `show_fits()` function to display it.
 Note that our FITS image has multiple extensions (VIS, and NISP bands). We can open them separately in new `Firefly` tabs by looping over the HDUs and specifying the plot ID by the extension's name.
 
-```python
+```{code-cell} ipython3
 for hh,hdu in enumerate(hdulcutout):
     fc.show_fits(fval, MultiImageIdx=hh, plot_id=hdu.header["EXTNAME"] )
 ```
 
 We can lock the WCS between the images (allowing the user to pan and zoom the images simultaneously) by running:
 
-```python
+```{code-cell} ipython3
 fc.align_images(lock_match=True)
 ```
 
 In the same way, we can upload a table, in this case our Gaia table. We again use `upload_file()` but in this case we use `show_table()` to show it in `Firefly`.
 
-```python
+```{code-cell} ipython3
 tval = fc.upload_file('./data/gaiatable.csv')
 fc.show_table(tval, tbl_id = "gaiatable")
 ```
 
 Now, check out the `Firefly` GUI. You can zoom the images, click on sources, filter the table, display different selection, and much more!
 
++++
 
 ***
 
