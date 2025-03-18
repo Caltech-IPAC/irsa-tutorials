@@ -1,0 +1,569 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+# Euclid Quick Release 1: PHZ catalog matching to MER images
+
++++
+
+## Learning Goals
+
++++
+
+By the end of this tutorial, you will: 
+- Understand the basic characteristics of Euclid Q1 photo-z catalog and how to match it with MER mosaics.
+- Understand what PHZ catalogs are available and how to view the columns in those catalogs.
+- How to query with ADQL in the PHZ catalog to find galaxies between a redshift of 1.4 and 1.6.
+- Pull and plot a spectrum of one of the galaxies in that catalog.
+- Learn how to upload images and catalogs to Firefly to inspect individual sources in greater detail.
+
+
++++
+
+## Introduction
+
++++
+
+Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+
+These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+
+The photometry of every source is processed through a photometric redshift fitting pipeline, producing several different catalogs. This notebook provides an introduction to photo-z catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+
++++
+
+### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
+
++++
+
+## Imports
+
+```{code-cell} ipython3
+# Uncomment the next lines to install dependencies if needed
+
+# Installation for pip
+# !pip install sep
+# !pip install astropy
+# !pip install pyvo
+# !pip install requests
+# !pip install firefly_client
+
+# Installation for conda
+# !conda install -c conda-forge sep
+# !conda install -c conda-forge astropy
+# !conda install -c conda-forge pyvo
+# !conda install requests
+# !conda install conda-forge::firefly-client
+```
+
+```{code-cell} ipython3
+from astropy.io import fits
+from astropy.coordinates import SkyCoord
+from astropy import units
+from astropy.visualization import astropy_mpl_style, ImageNormalize, PercentileInterval, AsinhStretch, LogStretch, ZScaleInterval, SquaredStretch
+from astropy.nddata import Cutout2D
+from astropy.wcs import WCS
+from astropy.io.votable import parse
+from astropy.table import Table
+from astropy.utils.data import download_file
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+from matplotlib.ticker import FormatStrFormatter
+import os
+from os import listdir
+from os.path import isfile, join
+import pandas as pd
+import glob
+import sep
+import pyvo as vo
+import re
+from firefly_client import FireflyClient
+from io import BytesIO
+import requests
+```
+
+```{code-cell} ipython3
+## Update the firely client to make sure it works later
+!pip install --upgrade --pre firefly-client
+```
+
+# Introduction to Euclid Q1 PHZ catalog
+
++++
+
+## 1. Find the MER Tile ID that corresponds to a given RA and Dec
+
+In this case, choose random coordinates to show a different MER mosaic image. Search a radius around these coordinates. 
+
+```{code-cell} ipython3
+## User selected inputs:
+ra=268
+dec=66
+search_radius= 10*units.arcsec
+
+pos = SkyCoord(ra=ra, dec=dec, unit='deg')
+coord = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+```
+
+### Use IRSA to search for all Euclid data on this target
+
+This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
+
+```{code-cell} ipython3
+irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
+
+im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, search_radius),
+                                collection='euclid_DpdMerBksMosaic')
+
+## Convert the table to pandas dataframe
+df_im_irsa=im_table.to_table().to_pandas()
+```
+
+```{code-cell} ipython3
+## Change the settings so we can see all the columns in the dataframe and the full column width 
+## (to see the full long URL)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_colwidth', None)
+```
+
+#### This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see here: https://euclid.caltech.edu/page/euclid-faq-tech/
+
+```{code-cell} ipython3
+df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science') &  (df_im_irsa['facility_name']=='Euclid')]
+
+df_im_euclid.head()
+```
+
+## Choose the VIS image and pull the filename and tileID
+
+```{code-cell} ipython3
+filename=df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].to_list()[0]
+
+tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
+print('The MER tile ID for this object is :',tileID)
+```
+
+## 2. Download PHZ catalog from IRSA directly to this notebook
+
+```{code-cell} ipython3
+## Use IRSA to search for catalogs
+
+service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
+
+
+## Search for all tables in IRSA labled as euclid_q1 
+tables = service.tables
+for tablename in tables.keys():
+    if "tap_schema" not in tablename and "euclid_q1" in tablename:
+            tables[tablename].describe()  
+```
+
+```{code-cell} ipython3
+table_mer= 'euclid_q1_mer_catalogue'
+table_phz= 'euclid_q1_phz_photo_z'
+table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
+```
+
+### Learn some information about the table:
+- How many columns are there?
+- List the column names
+
+```{code-cell} ipython3
+columns = tables[table_phz].columns
+print(len(columns))
+```
+
+```{code-cell} ipython3
+for col in columns:
+    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
+```
+
+## Note that the phz catalog contains 67 columns, below are a few highlights:
+
+- object_id
+- flux_vis_unif, flux_y_unif, flux_j_unif, flux_h_unif
+- median redshift (phz_median)
+- phz_classification
+- phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)
+
+We note that the phz_catalog on IRSA has more columns than it does on the ESA archive. This is because the ESA catalog stores some information in one column (for example, phz_90_int is stored as [lower, upper], rather than in two separate columns)
+
+The fluxes are different from the fluxes derived in the MER catalog. The _unif fluxes are: "Unified flux recomputed after correction from galactic extinction and filter shifts"
+
+```{code-cell} ipython3
+## Change the settings so we can see all the columns in the dataframe and the full column width 
+## (to see the full long URL)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_colwidth', None)
+
+
+## Can use the following lines to reset the max columns and column width of pandas
+# pd.reset_option('display.max_columns')
+# pd.reset_option('display.max_colwidth')
+```
+
+## Find some galaxies between 1.4 and 1.6 at a selected RA and Dec
+
+We specify the following conditions on our search: 
+- We select just the galaxies where the flux is greater than zero, to ensure the appear in all four of the Euclid MER images.
+- Select only objects in a circle (search radius selected below) around our selected RA and Dec
+- phz_classification =2 means we select only galaxies
+- Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 15%
+- Select just the galaxies between a median redshift of 1.4 and 1.6
+
+```{code-cell} ipython3
+
+```
+
+### Search based on tileID
+
+```{code-cell} ipython3
+adql = f"SELECT DISTINCT mer.object_id,mer.ra, mer.dec, phz.flux_vis_unif, phz.flux_y_unif, \
+phz.flux_j_unif, phz.flux_h_unif, phz.phz_classification, phz.phz_median, phz.phz_90_int1, phz.phz_90_int2 \
+FROM {table_mer} AS mer \
+JOIN {table_phz} as phz \
+ON mer.object_id = phz.object_id \
+WHERE phz.flux_vis_unif> 0 \
+AND  phz.flux_y_unif > 0 \
+AND phz.flux_j_unif > 0 \
+AND phz.flux_h_unif > 0 \
+AND phz.phz_classification = 2 \
+AND mer.tileid = {tileID} \
+AND ((phz.phz_90_int2 - phz.phz_90_int1) / (1 + phz.phz_median)) < 0.20 \
+AND phz.phz_median BETWEEN 1.4 AND 1.6 \
+"
+adql
+
+
+## Use TAP with this ADQL string using pyvo
+result = service.search(adql)
+
+
+## Convert table to pandas dataframe
+df_g_irsa = result.to_table().to_pandas()
+
+# Display first few rows
+df_g_irsa.head()
+```
+
+
+
+```{code-cell} ipython3
+
+```
+
+## 3. Read in the MER image from IRSA directly
+
+```{code-cell} ipython3
+print(filename)
+```
+
+```{code-cell} ipython3
+######### TEMP
+######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsadev
+######## This will not be the same after the data are made public so this cell will be deleted at that time
+def add_dev_to_domain(domain):
+    parts = domain.split('.', 1)  # Split at the first dot
+    if len(parts) == 2:
+        return f"{parts[0]}dev.{parts[1]}"
+    return domain
+
+filename_dev = add_dev_to_domain(filename)
+print(filename_dev)  
+
+#####################
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+##Download the MER image -- note this file is about 1.46 GB
+
+fname = download_file(filename_dev, cache=True)
+hdu_mer_irsa = fits.open(fname)
+head_mer_irsa = hdu_mer_irsa[0].header
+
+print(hdu_mer_irsa.info())
+```
+
+#### Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+
+```{code-cell} ipython3
+# download_path='/yourlocalpath/'
+# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+```
+
+```{code-cell} ipython3
+## Great! Now we have the data, lets extract just the primary image
+
+im_mer_irsa=hdu_mer_irsa[0].data
+```
+
+```{code-cell} ipython3
+## Plot a quick simple plot to show the full MER image, large FOV!
+
+plt.imshow(im_mer_irsa, cmap='gray', origin='lower', 
+           norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+colorbar = plt.colorbar()
+```
+
+
+
+## 4. Overplot the catalog on the MER mosaic image
+
+```{code-cell} ipython3
+df_g_irsa.head()
+```
+
+```{code-cell} ipython3
+## Use the WCS package to extract the coordinates from the header of the image
+wcs_irsa=WCS(head_mer_irsa) # VIS
+```
+
+```{code-cell} ipython3
+## Convert the catalog to match the pixels in the image
+xy_irsa = wcs_irsa.all_world2pix(df_g_irsa["ra"],df_g_irsa["dec"],0)
+```
+
+```{code-cell} ipython3
+df_g_irsa['x_pix']=xy_irsa[0]
+df_g_irsa['y_pix']=xy_irsa[1]
+```
+
+```{code-cell} ipython3
+## Save the dataframe as a csv  
+# df_g_irsa.to_csv("./df_table_irsa.csv", index=False)
+```
+
+```{code-cell} ipython3
+df_g_irsa
+```
+
+```{code-cell} ipython3
+## Plot MER catalog sources on the Euclid VIS image 
+
+plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=LogStretch()))
+colorbar = plt.colorbar()
+plt.scatter(df_g_irsa["x_pix"], df_g_irsa["y_pix"], s=36, facecolors='none', edgecolors='red')
+
+plt.title('Galaxies between z = 1.4 and 1.6')
+plt.show()
+```
+
+```{code-cell} ipython3
+
+```
+
+## Pull the spectra on the top brightest source based on object ID
+
+```{code-cell} ipython3
+df_g_irsa_sort=df_g_irsa.sort_values(by='flux_vis_unif',ascending=False)
+```
+
+```{code-cell} ipython3
+df_g_irsa_sort[0:3]
+```
+
+```{code-cell} ipython3
+obj_id=df_g_irsa_sort['object_id'].iloc[1]
+
+## Pull the data on these objects 
+adql_object = f"SELECT * \
+FROM {table_1dspectra} \
+WHERE objectid = {obj_id} \
+AND uri IS NOT NULL "
+
+## Pull the data on this particular galaxy
+result2 = service.search(adql_object)
+df2=result2.to_table().to_pandas()
+df2
+```
+
+```{code-cell} ipython3
+## Create the full filename/url
+irsa_url='https://irsadev.ipac.caltech.edu/'
+
+file_url=irsa_url+df2['uri'].iloc[0]
+file_url
+```
+
+```{code-cell} ipython3
+## Open the large FITS file without loading it entirely into memory
+## pulling out just the extension we want for the 1D spectra of our object
+response = requests.get(file_url)
+
+with fits.open(BytesIO(response.content), memmap=True) as hdul:
+    hdu = hdul[df2['hdu'].iloc[0]]
+    dat = Table.read(hdu, format='fits', hdu=1)
+    df_obj_irsa = dat.to_pandas()
+```
+
+```{code-cell} ipython3
+## Now the data are read in, show an image
+
+plt.plot(df_obj_irsa['WAVELENGTH'], df_obj_irsa['SIGNAL'])
+
+plt.xlabel('Wavelength ($\AA$)')
+plt.ylabel('Flux (erg / (Angstrom s cm2))')
+# plt.ylim(10,50)
+plt.title('Object ID is '+str(obj_id))
+```
+
+## Lets cut out a very small patch of the MER image to see what this galaxy looks like 
+
+```{code-cell} ipython3
+df_g_irsa[df_g_irsa['object_id']==obj_id]['ra']
+```
+
+```{code-cell} ipython3
+## How large do you want the image cutout to be?
+im_cutout= 2.0 * units.arcsec
+
+## Use the ra and dec of the galaxy
+ra = df_g_irsa[df_g_irsa['object_id']==obj_id]['ra'].iloc[0]
+dec =  df_g_irsa[df_g_irsa['object_id']==obj_id]['dec'].iloc[0]
+
+coords_cutout = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+```
+
+### Use fsspec to download a cutout of the fits file
+
+```{code-cell} ipython3
+hdu = fits.open(filename_dev, use_fsspec=True)
+
+header = hdu[0].header
+```
+
+```{code-cell} ipython3
+## Read in the cutout of the image that you want
+cutout_data = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(hdu[0].header))
+```
+
+```{code-cell} ipython3
+new_hdu = fits.PrimaryHDU(data=cutout_data.data, header=header)
+new_hdu.header.update(cutout_data.wcs.to_header())
+```
+
+```{code-cell} ipython3
+## Plot a quick simple plot to show the cutout on the galaxy
+
+plt.imshow(new_hdu.data, cmap='gray', origin='lower', 
+           norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+colorbar = plt.colorbar()
+```
+
+# 5. Load the image on Firefly to be able to interact with the data directly
+
++++
+
+### Save the data locally if you have not already done so, in order to upload to IRSA viewer
+
+```{code-cell} ipython3
+# download_path = '/your_path/'
+# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+```
+
+### Vizualize the image with Firefly
+
+First initialize the client, then set the path to the image, upload it to firefly, load it and align with WCS.
+
+Note this can take a while to upload the full MER image. 
+
+```{code-cell} ipython3
+fc = FireflyClient.make_client('https://irsa.ipac.caltech.edu/irsaviewer')
+
+fc.show_fits(url=filename_dev)
+
+fc.align_images(lock_match=True)
+```
+
+### Save the table as a CSV for Firefly upload
+
+```{code-cell} ipython3
+# csv_path = download_path+'/mer_df.csv'
+# df_g_irsa.to_csv(csv_path, index=False)
+```
+
+### Upload the CSV table to Firefly and display as an overlay on the FITS image
+
+```{code-cell} ipython3
+uploaded_table = fc.upload_file(csv_path)
+print(f"Uploaded Table URL: {uploaded_table}")
+
+fc.show_table(uploaded_table)
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+### Optional -- Access the data from the ESA archive website directly
+
++++
+
+#### 1. Download and read in data from the ESA archive
+
+- Go to https://easidr.esac.esa.int/sas/ and sign in with your credentials.
+- Click Search and go to the ADQL form and enter a query which matches the query above.
+
++++
+
+Download the results, gunzip in the command line. You should now have a VOT table
+
+NOTE: Need to do the following in the command line: 
+
+mv original_cat.vot.gz to mer_cat.vot 
+
+to remove the .gz extension
+
++++
+
+## Additional Resources
+
+If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+
++++
+
+## About this Notebook
+
+**Author(s)**: Tiffany Meshkat <br>
+**Keyword(s)**: Euclid, Q1, phz catalog <br>
+**First published**: March 19, 2025 <br>
+**Last updated**: March 19, 2025
+
++++
+
+
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
