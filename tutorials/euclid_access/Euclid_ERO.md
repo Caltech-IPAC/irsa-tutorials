@@ -66,7 +66,7 @@ from astropy.stats import sigma_clipped_stats
 # Photometry tools
 import sep
 from photutils.detection import DAOStarFinder
-from photutils.psf import PSFPhotometry, IterativePSFPhotometry, IntegratedGaussianPRF, make_psf_model_image
+from photutils.psf import PSFPhotometry, IterativePSFPhotometry, CircularGaussianSigmaPRF, make_psf_model_image
 from photutils.background import LocalBackground, MMMBackground
 
 # Firefly
@@ -337,7 +337,7 @@ psf_fwhm = 0.16 # PSF FWHM in arcsec
 pixscale = 0.1 # VIS pixel scale in arcsec/px
 
 init_params = Table([objects["x"],objects["y"]] , names=["x","y"]) # initial positions
-psf_model = IntegratedGaussianPRF(flux=1, sigma=psf_fwhm/pixscale / 2.35)
+psf_model = CircularGaussianSigmaPRF(flux=1, sigma=psf_fwhm/pixscale / 2.35)
 psf_model.x_0.fixed = True
 psf_model.y_0.fixed = True
 psf_model.sigma.fixed = False
@@ -457,7 +457,7 @@ psf_fwhm = 0.3 # arcsec
 pixscale = 0.3 # arcsec/px
 
 init_params = Table([xy[0],xy[1]] , names=["x","y"]) # initial positions
-psf_model = IntegratedGaussianPRF(flux=1, sigma=psf_fwhm/pixscale / 2.35)
+psf_model = CircularGaussianSigmaPRF(flux=1, sigma=psf_fwhm/pixscale / 2.35)
 psf_model.x_0.fixed = True
 psf_model.y_0.fixed = True
 psf_model.sigma.fixed = False
