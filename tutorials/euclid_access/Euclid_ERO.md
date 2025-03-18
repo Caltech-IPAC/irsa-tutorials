@@ -2,7 +2,7 @@
 # Exploring Star Clusters in the Euclid ERO Data
 ***
 
-## Learning Goals    
+## Learning Goals
 By the end of this tutorial, you will be able to:
 
  &bull; Access the Euclid ERO images using `astroquery`
@@ -15,7 +15,7 @@ By the end of this tutorial, you will be able to:
 
  &bull; Visualize the Euclid ERO image and the Gaia catalog in `Firefly`
 
- 
+
 ## Introduction
 Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. As part of its first observations, Euclid publicly released so-called *Early Release Observations* (ERO) targeting some press-worthy targets on the sky such as star clusters or local galaxies.
 
@@ -138,7 +138,7 @@ Note that the Euclid ERO images are no in the cloud currently, but we access the
 
 **Note:** The following only works for combined images (either extended or point source stacks). This would not work if there are multiple, let's say, H-band images of Euclid at a given position. Therefore, no time domain studies here (which is anyway not one of the main goals of Euclid).
 
-The IRSA SIA products can be listed via 
+The IRSA SIA products can be listed via
 ```
 Irsa.list_collections(servicetype='SIA')
 ```
@@ -230,7 +230,7 @@ for ii,filt in tqdm(enumerate(filters)):
 
         with fits.open(image_tab['access_url'][sel[0]], use_fsspec=True) as hdul:
             tmp = Cutout2D(hdul[0].section, position=coord, size=cutout_size, wcs=WCS(hdul[0].header)) # create cutout
-            
+
 
             if (product == "science") & (ii == 0): # if science image, then create a new hdu.
                 hdu0 = fits.PrimaryHDU(data = tmp.data, header=hdul[0].header)
@@ -304,8 +304,8 @@ mask = np.isnan(img)
 Next, we compute the background statistics what will be used by `sep` to extract the sources above a certain threshold.
 
 ```python
-mean, median, std = sigma_clipped_stats(img, sigma=3.0)  
-print(np.array((mean, median, std))) 
+mean, median, std = sigma_clipped_stats(img, sigma=3.0)
+print(np.array((mean, median, std)))
 ```
 
 Finally, we perform object detection with `sep`. There are also modules in `photutils` to do that, however, we found that `sep` works best here. We output the number of objects found on the image.
@@ -323,7 +323,7 @@ flux, fluxerr, flag = sep.sum_circle(img-median, objects['x'], objects['y'],r=3.
 
 Now, we use the `photutils` Python package to perform PSF fitting. Here we assume a simple Gaussian with a FWHM given by `psf_fwhm` as PSF.
 
-**Note:** We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars). 
+**Note:** We use a Gaussian PSF here for simplicity. The photometry can be improved by using a pixelated PSF measured directly from the Euclid images (for example by stacking stars).
 
 ```python
 psf_fwhm = 0.16 # PSF FWHM in arcsec
@@ -407,7 +407,7 @@ plt.show()
 
 ## Measure the Photometry on the NISP Images
 
-We now have the photometry and the position of sources on the VIS image. We can now proceed with similar steps on the NISP images. Because the NISP PSF and pixel scale are larger that those of the VIS images, we utilize the advantage of position prior-based forced photometry. 
+We now have the photometry and the position of sources on the VIS image. We can now proceed with similar steps on the NISP images. Because the NISP PSF and pixel scale are larger that those of the VIS images, we utilize the advantage of position prior-based forced photometry.
 For this, we use the positions of the VIS measurements and perform PSF fitting on the NISP image using these priors.
 
 The steps below are almost identical to the ones applied to the VIS images.
@@ -430,8 +430,8 @@ mask2 = np.isnan(img2)
 ... and we also get some statistics on the sky background.
 
 ```python
-mean2, median2, std2 = sigma_clipped_stats(img2, sigma=3.0)  
-print(np.array((mean2, median2, std2))) 
+mean2, median2, std2 = sigma_clipped_stats(img2, sigma=3.0)
+print(np.array((mean2, median2, std2)))
 ```
 
 Now, we need to obtain the (x,y) image coordinates on the NISP image that correspond to the extracted sources on the VIS image. We use the WCS information from the NISP image for this case and apply it to the sky coordinates obtained on the VIS image.
@@ -502,7 +502,6 @@ Gaia.ROW_LIMIT = -1
 Next, we request the Gaia catalog around the position of the globular cluster. We use the same size as the cutout size.
 
 ```python
-coord = SkyCoord(ra=ra, dec=dec, unit=(u.degree, u.degree), frame='icrs')
 gaia_objects = Gaia.query_object_async(coordinate=coord, radius = cutout_size/2)
 print("Number of Gaia stars found: {}".format(len(gaia_objects)))
 ```
@@ -620,7 +619,7 @@ The following line will open a new `Firefly` GUI in a separate tab **inside** th
 # Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
 # fc = FireflyClient.make_lab_client()
 
-# Uncomment for contexts other than the above 
+# Uncomment for contexts other than the above
 fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 ```
 
