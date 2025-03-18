@@ -108,7 +108,7 @@ List all Simple Image Access (SIA) collections for IRSA with names containing "e
 
 ```{code-cell} ipython3
 collections = Irsa.list_collections(servicetype='SIA', filter='euclid')
-len(collections)
+collections
 ```
 
 As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) and above table, we identify that MER Mosiacs are available as the following collection:
@@ -226,7 +226,7 @@ First, list the Euclid catalogs provided by IRSA:
 
 ```{code-cell} ipython3
 catalogs = Irsa.list_catalogs(full=True, filter='euclid')
-len(catalogs)
+catalogs
 ```
 
 From this table, we can extract the MER catalog name. We also see several other interesting catalogs, let's also extract spectral file association catalog for retrieving spectra later.
