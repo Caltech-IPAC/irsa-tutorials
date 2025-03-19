@@ -19,7 +19,7 @@ kernelspec:
 
 +++
 
-By the end of this tutorial, you will: 
+By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 SPE catalogs.
 - Understand what SPE catalogs are available and how to view the columns in those catalogs.
 - How to query with ADQL in the SPE lines catalog to find strong H-alpha detections.
@@ -31,11 +31,16 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
-These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
-Every one dimensional spectrum is processed through a template and line fitting pipeline, producing several different 'SPE' catalogs. This notebook provides an introduction to the SPE catalogs released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Every one dimensional spectrum is processed through a template and line fitting pipeline, producing several different 'SPE' catalogs.
+This notebook provides an introduction to the SPE catalogs released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
 +++
 
@@ -87,7 +92,7 @@ df_im_irsa=im_table.to_table().to_pandas()
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width 
+## Change the settings so we can see all the columns in the dataframe and the full column width
 ## (to see the full long URL)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
@@ -134,7 +139,7 @@ im_mer_irsa=hdu_mer_irsa[0].data
 #### Make a quick and simple plot to show the full MER image, with its large FOV
 
 ```{code-cell} ipython3
-plt.imshow(im_mer_irsa, cmap='gray', origin='lower', 
+plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
            norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 colorbar = plt.colorbar()
 ```
@@ -150,7 +155,7 @@ tables = service.tables
 for tablename in tables.keys():
     if "tap_schema" not in tablename and "euclid" in tablename:
             tables[tablename].describe()
-            
+
 ```
 
 ```{code-cell} ipython3
@@ -175,7 +180,7 @@ for col in columns:
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width 
+## Change the settings so we can see all the columns in the dataframe and the full column width
 ## (to see the full long URL)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
@@ -188,7 +193,7 @@ pd.set_option('display.max_colwidth', None)
 
 ## Find some objects with spectra in our tileID
 
-We specify the following conditions on our search: 
+We specify the following conditions on our search:
 - The two signal to noise ratio columns (spe_line_snr_gf and spe_line_snr_di) should be greater than 5
 - We want to detect H-alpha.
 - We choose in which tileID to search, usign the tileID from the first notebook.
@@ -257,7 +262,7 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
     hdu = hdul[df2['hdu'].iloc[0]]
     dat = Table.read(hdu, format='fits', hdu=1)
     df_obj_irsa = dat.to_pandas()
-    
+
 ```
 
 ### Now the data are read in, plot the spectrum with the H-alpha line labeled
