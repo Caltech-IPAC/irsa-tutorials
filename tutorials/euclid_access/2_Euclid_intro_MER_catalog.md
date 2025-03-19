@@ -19,7 +19,7 @@ kernelspec:
 
 +++
 
-By the end of this tutorial, you will: 
+By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 MER catalogs.
 - What columns are available in the MER catalog.
 - How to query with ADQL in the MER catalog.
@@ -31,11 +31,17 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
-These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
-Each entry in the MER catalog is a single source containing all its photometry from the MER Mosaics (VIS, Y, J, H and any accompanying external ground observations) along with other basic measurements, like size and shape. This notebook provides an introduction to the MER catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Each entry in the MER catalog is a single source containing all its photometry from the MER Mosaics (VIS, Y, J, H and any accompanying external ground observations) along with other basic measurements, like size and shape.
+
+This notebook provides an introduction to the MER catalog released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
 +++
 
@@ -56,7 +62,7 @@ import pyvo as vo
 ## 1. Download MER catalog from IRSA directly to this notebook
 
 ```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
+service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 ```
 
 ```{code-cell} ipython3
@@ -83,7 +89,7 @@ print(len(columns))
 
 ```{code-cell} ipython3
 for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') 
+    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}')
 ```
 
 ### Define the following ADQL query to find the first 10k stars in the MER catalog
@@ -127,7 +133,7 @@ mag_h_s_irsa=-2.5*np.log10(df_s_irsa["flux_h_templfit"]) + 23.9 # H
 x_s_irsa = mag_y_s_irsa - mag_h_s_irsa # Y - H
 y_s_irsa = mag_y_s_irsa
 
-xerr_s_irsa= 2.5 / np.log(10) * np.sqrt((df_s_irsa["fluxerr_y_templfit"] / df_s_irsa["flux_y_templfit"])**2 
+xerr_s_irsa= 2.5 / np.log(10) * np.sqrt((df_s_irsa["fluxerr_y_templfit"] / df_s_irsa["flux_y_templfit"])**2
                                  + (df_s_irsa["fluxerr_h_templfit"] / df_s_irsa["flux_h_templfit"])**2)
 yerr_s_irsa= 2.5 / np.log(10) * (df_s_irsa["fluxerr_y_templfit"] / df_s_irsa["flux_y_templfit"])
 
@@ -144,6 +150,6 @@ plt.title('10k Stars in MER catalog -- IRSA')
 
 **Author**: Tiffany Meshkat (IPAC Scientist)
 
-**Updated**: March 19, 2025
+**Updated**: 2025-03-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

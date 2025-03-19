@@ -19,7 +19,7 @@ kernelspec:
 
 +++
 
-By the end of this tutorial, you will: 
+By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 MER mosaics.
 - How do download full MER mosaics.
 - How to make smaller cutouts of MER mosaics.
@@ -32,11 +32,17 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
-These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
-MER mosaic images are all the images from Level 2 images in different filters mapped to a common pixel scale. This notebook provides an introduction to MER mosaics released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+MER mosaic images are all the images from Level 2 images in different filters mapped to a common pixel scale.
+
+This notebook provides an introduction to MER mosaics released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
 +++
 
@@ -82,12 +88,12 @@ search_radius = 10 * u.arcsec
 coord = SkyCoord.from_name('HD 168151')
 ```
 
-Use IRSA to search for all Euclid data on this target. 
-This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs. 
+Use IRSA to search for all Euclid data on this target.
+This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
 This query will return any image with pixels that overlap the search region.
 
 ```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
+irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
 
 image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
@@ -147,37 +153,22 @@ tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 print('The MER tile ID for this object is :',tileID)
 ```
 
-```{code-cell} ipython3
-######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsadev
-######## This will not be the same after the data are made public so this cell will be deleted at that time
-def add_dev_to_domain(domain):
-    parts = domain.split('.', 1)  # Split at the first dot
-    if len(parts) == 2:
-        return f"{parts[0]}dev.{parts[1]}"
-    return domain
-
-filename_dev = add_dev_to_domain(filename)
-print(filename_dev)  
-
-#####################
-```
-
 Download the MER image -- note this file is about 1.46 GB
 
 ```{code-cell} ipython3
-fname = download_file(filename_dev, cache=True)
+fname = download_file(filename, cache=True)
 hdu_mer_irsa = fits.open(fname)
 print(hdu_mer_irsa.info())
 
 head_mer_irsa = hdu_mer_irsa[0].header
 ```
 
-Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell.
+Please also define a suitable download directory; by default it will be `data` at the same location as your notebook.
 
 ```{code-cell} ipython3
-# download_path='/Users/meshkat/data/Euclid/'
-# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+# download_path = 'data'
+# hdu_mer_irsa.writeto(os.path.join(download_path, 'MER_image_VIS.fits'), overwrite=True)
 ```
 
 Have a look at the header information for this image
@@ -215,17 +206,6 @@ urls = df_im_euclid['access_url'].to_list()
 urls
 ```
 
-```{code-cell} ipython3
-######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsadev
-######## reusing the add_dev_to_domain function from before
-######## This will not be the same after the data are made public so this cell will be deleted at that time
-
-urls = list(map(add_dev_to_domain, urls))
-print(urls)
-#####################
-```
-
 Create an array with the instrument and filter name so we can add this to the plots.
 
 ```{code-cell} ipython3
@@ -245,8 +225,8 @@ filters
 ## How large do you want the image cutout to be?
 im_cutout= 1.0 * u.arcmin
 
-## What is the center of the cutout? 
-## For now choosing a random location on the image 
+## What is the center of the cutout?
+## For now choosing a random location on the image
 ## because the star itself is saturated
 ra = 273.8667
 dec =  64.525
@@ -269,14 +249,14 @@ for url in urls:
     print(f"Opened {url}")
 
     ## Store the header
-    header = hdu[0].header  
+    header = hdu[0].header
 
     ## Read in the cutout of the image that you want
     cutout_data = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(hdu[0].header))
 
     ## Close the file
     # hdu.close()
-    
+
     ## Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size
     new_hdu = fits.PrimaryHDU(data=cutout_data.data, header=header)
     new_hdu.header.update(cutout_data.wcs.to_header())
@@ -296,7 +276,7 @@ Need to determine the number of images for the grid layout, then we iterate thro
 ```{code-cell} ipython3
 num_images = len(final_hdulist)
 columns = 4
-rows = -(-num_images // columns)  
+rows = -(-num_images // columns)
 
 fig, axes = plt.subplots(rows, columns, figsize=(4 * columns, 4 * rows), subplot_kw={'projection': WCS(final_hdulist[0].header)})
 axes = axes.flatten()
@@ -326,7 +306,7 @@ filters
 ```
 
 ```{code-cell} ipython3
-filt_index = np.where(filters == 'VIS')[0][0]  
+filt_index = np.where(filters == 'VIS')[0][0]
 
 img1=final_hdulist[filt_index].data
 ```
@@ -340,7 +320,7 @@ Need to do some initial steps (swap byte order) with the cutout to prevent sep f
 
 ```{code-cell} ipython3
 img2 = img1.byteswap().view(img1.dtype.newbyteorder())
-c_contiguous_data = np.array(img2, dtype=np.float32)  
+c_contiguous_data = np.array(img2, dtype=np.float32)
 
 bkg = sep.Background(c_contiguous_data)
 
@@ -414,6 +394,6 @@ for i in range(len(sources_thr)):
 
 **Author**: Tiffany Meshkat (IPAC Scientist)
 
-**Updated**: March 19, 2025
+**Updated**: 2025-03-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

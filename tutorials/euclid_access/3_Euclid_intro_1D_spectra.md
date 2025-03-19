@@ -19,7 +19,7 @@ kernelspec:
 
 +++
 
-By the end of this tutorial, you will: 
+By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 SIR 1D spectra.
 - What columns are available in the MER catalog.
 - How to query with ADQL in the MER catalog.
@@ -29,17 +29,27 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-+++
+++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
-These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
-For the Euclid Wide Survey standard operating mode, the telescope undertakes a 4-point dither pattern. At each position VIS and NISP each take a 570s exposure, consisting of a direct visible image and a red grism exposure. This is followed by further NISP exposures in the Y, J, and H band filters (112 seconds each). The telescope is then dithered, and the sequence is repeated starting with a different grism position angle. There are actually two operational grisms oriented 180 degrees from each other. Each grism which will be used twice in this sequence, but with slight angular offsets (+/- 4 degrees), effectively creating the four different grism angles (Scaramella et al. 2022, A&A 662, A112).	
+For the Euclid Wide Survey standard operating mode, the telescope undertakes a 4-point dither pattern.
+At each position VIS and NISP each take a 570s exposure, consisting of a direct visible image and a red grism exposure.
+This is followed by further NISP exposures in the Y, J, and H band filters (112 seconds each).
+The telescope is then dithered, and the sequence is repeated starting with a different grism position angle.
+There are actually two operational grisms oriented 180 degrees from each other. Each grism which will be used twice in this sequence, but with slight angular offsets (+/- 4 degrees), effectively creating the four different grism angles (Scaramella et al. 2022, A&A 662, A112).
 
-Data which can be obtained for SIR include: SIR "images", which effectively show the full image of objects with the spectral traces overlapping, and SIR 1D spectra for individual objects. Below we will describe how to access and process the 1D spectra products. For most users, simply accessing th 1D spectra is probably the preferred option, unless they would like to extract the spectrum again, or inspect the images to see if there is any artifact which might add noise to the spectrum.
+Data which can be obtained for SIR include: SIR "images", which effectively show the full image of objects with the spectral traces overlapping, and SIR 1D spectra for individual objects.
+In this notebook we describe how to access and process the 1D spectra products.
+For most users, simply accessing th 1D spectra is probably the preferred option, unless they would like to extract the spectrum again, or inspect the images to see if there is any artifact which might add noise to the spectrum.
 
-This notebook provides an introduction to the SIR 1D spectra released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+This notebook provides an introduction to the SIR 1D spectra released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
 
 +++
 
@@ -68,7 +78,7 @@ import pyvo as vo
 Search for all tables in IRSA labeled as euclid
 
 ```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsadev.ipac.caltech.edu/TAP")
+service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 
 tables = service.tables
 for tablename in tables.keys():
@@ -84,7 +94,7 @@ table_galaxy_candidates= 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width 
+## Change the settings so we can see all the columns in the dataframe and the full column width
 ## (to see the full long URL)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
@@ -100,7 +110,7 @@ pd.set_option('display.max_colwidth', None)
 ```{code-cell} ipython3
 obj_id=2739401293646823742
 
-## Pull the data on these objects 
+## Pull the data on these objects
 adql_object = f"SELECT * \
 FROM {table_1dspectra} \
 WHERE objectid = {obj_id} \
@@ -115,7 +125,7 @@ df2
 ### Create the full filename/url
 
 ```{code-cell} ipython3
-irsa_url='https://irsadev.ipac.caltech.edu/'
+irsa_url='https://irsa.ipac.caltech.edu/'
 
 file_url=irsa_url+df2['uri'].iloc[0]
 file_url
@@ -130,7 +140,7 @@ Currently IRSA has the spectra stored in very large files containing multiple (1
 #### Currently commented out
 
 # ## Complete file url with the irsa url at the start
-# url = file_url  
+# url = file_url
 # response = requests.get(url)
 
 # hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory
@@ -167,6 +177,6 @@ plt.title(obj_id)
 
 **Author**: Tiffany Meshkat (IPAC Scientist)
 
-**Updated**: March 19, 2025
+**Updated**: 2025-03-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
