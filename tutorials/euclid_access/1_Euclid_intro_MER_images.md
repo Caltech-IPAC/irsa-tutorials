@@ -206,17 +206,6 @@ urls = df_im_euclid['access_url'].to_list()
 urls
 ```
 
-```{code-cell} ipython3
-######### TEMP
-######## Note to testers, for now we need to replace the irsa.ipac.caltech.edu url with irsa
-######## reusing the add_dev_to_domain function from before
-######## This will not be the same after the data are made public so this cell will be deleted at that time
-
-urls = list(map(add_dev_to_domain, urls))
-print(urls)
-#####################
-```
-
 Create an array with the instrument and filter name so we can add this to the plots.
 
 ```{code-cell} ipython3
