@@ -48,54 +48,29 @@ The photometry of every source is processed through a photometric redshift fitti
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next lines to install dependencies if needed
-
-# Installation for pip
-# !pip install sep
-# !pip install astropy
-# !pip install pyvo
-# !pip install requests
-# !pip install firefly_client
-
-# Installation for conda
-# !conda install -c conda-forge sep
-# !conda install -c conda-forge astropy
-# !conda install -c conda-forge pyvo
-# !conda install requests
-# !conda install conda-forge::firefly-client
+# Uncomment the next line to install dependencies if needed.
+# !pip install requests matplotlib pandas astropy pyvo fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
-from astropy.coordinates import SkyCoord
-from astropy import units
-from astropy.visualization import astropy_mpl_style, ImageNormalize, PercentileInterval, AsinhStretch, LogStretch, ZScaleInterval, SquaredStretch
-from astropy.nddata import Cutout2D
-from astropy.wcs import WCS
-from astropy.io.votable import parse
-from astropy.table import Table
-from astropy.utils.data import download_file
-
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse
-from matplotlib.ticker import FormatStrFormatter
-import os
-from os import listdir
-from os.path import isfile, join
-import pandas as pd
-import glob
-import sep
-import pyvo as vo
-import re
-from firefly_client import FireflyClient
 from io import BytesIO
-import requests
-```
+import os
+import re
 
-```{code-cell} ipython3
-## Update the firely client to make sure it works later
-!pip install --upgrade --pre firefly-client
+import requests
+import matplotlib.pyplot as plt
+
+from astropy.coordinates import SkyCoord
+from astropy.io import fits
+from astropy.nddata import Cutout2D
+from astropy.table import Table
+from astropy import units as u
+from astropy.utils.data import download_file
+from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch, LogStretch
+from astropy.wcs import WCS
+
+from firefly_client import FireflyClient
+import pyvo as vo
 ```
 
 # Introduction to Euclid Q1 PHZ catalog
