@@ -37,7 +37,7 @@ The Quick Data Release 1 (Q1) are the first data release from the Euclid mission
 On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
 These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
 MER mosaic images are all the images from Level 2 images in different filters mapped to a common pixel scale.
 
