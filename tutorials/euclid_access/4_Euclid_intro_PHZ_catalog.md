@@ -26,7 +26,6 @@ By the end of this tutorial, you will:
 - Pull and plot a spectrum of one of the galaxies in that catalog.
 - Learn how to upload images and catalogs to Firefly to inspect individual sources in greater detail.
 
-
 +++
 
 ## Introduction
@@ -38,10 +37,6 @@ Euclid is a European Space Agency (ESA) space mission with NASA participation, t
 These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
 
 The photometry of every source is processed through a photometric redshift fitting pipeline, producing several different catalogs. This notebook provides an introduction to photo-z catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
-
-+++
-
-### NOTE to testers -- please log in to IPAC vpn to access the IRSAdev data. After the Q1 data release, we will not need to use the IPAC VPN or the irsadev site.
 
 +++
 
@@ -79,16 +74,14 @@ import pyvo as vo
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
 
-In this case, choose random coordinates to show a different MER mosaic image. Search a radius around these coordinates. 
+In this case, choose random coordinates to show a different MER mosaic image. Search a radius around these coordinates.
 
 ```{code-cell} ipython3
-## User selected inputs:
-ra=268
-dec=66
-search_radius= 10*units.arcsec
+ra = 268
+dec = 66
+search_radius= 10 * u.arcsec
 
-pos = SkyCoord(ra=ra, dec=dec, unit='deg')
-coord = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+coord = SkyCoord(ra, dec, unit='deg', frame='icrs')
 ```
 
 ### Use IRSA to search for all Euclid data on this target
@@ -98,21 +91,17 @@ This searches specifically in the euclid_DpdMerBksMosaic "collection" which is t
 ```{code-cell} ipython3
 irsa_service= vo.dal.sia2.SIA2Service('https://irsadev.ipac.caltech.edu/SIA')
 
-im_table = irsa_service.search(pos=(pos.ra.deg, pos.dec.deg, search_radius),
-                                collection='euclid_DpdMerBksMosaic')
+image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic').to_table()
+```
 
-## Convert the table to pandas dataframe
-df_im_irsa=im_table.to_table().to_pandas()
+```{note}
+This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the [Euclid documentation at IPAC](https://euclid.caltech.edu/page/euclid-faq-tech/). 
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width 
-## (to see the full long URL)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
+# Convert the table to pandas dataframe
+df_im_irsa=image_table.to_pandas()
 ```
-
-#### This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see here: https://euclid.caltech.edu/page/euclid-faq-tech/
 
 ```{code-cell} ipython3
 df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science') &  (df_im_irsa['facility_name']=='Euclid')]
@@ -176,17 +165,7 @@ We note that the phz_catalog on IRSA has more columns than it does on the ESA ar
 
 The fluxes are different from the fluxes derived in the MER catalog. The _unif fluxes are: "Unified flux recomputed after correction from galactic extinction and filter shifts"
 
-```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width 
-## (to see the full long URL)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-
-
-## Can use the following lines to reset the max columns and column width of pandas
-# pd.reset_option('display.max_columns')
-# pd.reset_option('display.max_colwidth')
-```
++++
 
 ## Find some galaxies between 1.4 and 1.6 at a selected RA and Dec
 
@@ -197,9 +176,7 @@ We specify the following conditions on our search:
 - Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 15%
 - Select just the galaxies between a median redshift of 1.4 and 1.6
 
-```{code-cell} ipython3
-
-```
++++
 
 ### Search based on tileID
 
@@ -232,12 +209,6 @@ df_g_irsa = result.to_table().to_pandas()
 df_g_irsa.head()
 ```
 
-
-
-```{code-cell} ipython3
-
-```
-
 ## 3. Read in the MER image from IRSA directly
 
 ```{code-cell} ipython3
@@ -258,10 +229,6 @@ filename_dev = add_dev_to_domain(filename)
 print(filename_dev)  
 
 #####################
-```
-
-```{code-cell} ipython3
-
 ```
 
 ```{code-cell} ipython3
@@ -294,8 +261,6 @@ plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
            norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 colorbar = plt.colorbar()
 ```
-
-
 
 ## 4. Overplot the catalog on the MER mosaic image
 
@@ -336,10 +301,6 @@ plt.scatter(df_g_irsa["x_pix"], df_g_irsa["y_pix"], s=36, facecolors='none', edg
 
 plt.title('Galaxies between z = 1.4 and 1.6')
 plt.show()
-```
-
-```{code-cell} ipython3
-
 ```
 
 ## Pull the spectra on the top brightest source based on object ID
@@ -397,7 +358,7 @@ plt.ylabel('Flux (erg / (Angstrom s cm2))')
 plt.title('Object ID is '+str(obj_id))
 ```
 
-## Lets cut out a very small patch of the MER image to see what this galaxy looks like 
+## Lets cut out a very small patch of the MER image to see what this galaxy looks like
 
 ```{code-cell} ipython3
 df_g_irsa[df_g_irsa['object_id']==obj_id]['ra']
@@ -405,13 +366,13 @@ df_g_irsa[df_g_irsa['object_id']==obj_id]['ra']
 
 ```{code-cell} ipython3
 ## How large do you want the image cutout to be?
-im_cutout= 2.0 * units.arcsec
+im_cutout= 2.0 * u.arcsec
 
 ## Use the ra and dec of the galaxy
 ra = df_g_irsa[df_g_irsa['object_id']==obj_id]['ra'].iloc[0]
 dec =  df_g_irsa[df_g_irsa['object_id']==obj_id]['dec'].iloc[0]
 
-coords_cutout = SkyCoord(ra, dec, unit=(units.deg,units.deg), frame='icrs')
+coords_cutout = SkyCoord(ra, dec, unit=(u.deg,u.deg), frame='icrs')
 ```
 
 ### Use fsspec to download a cutout of the fits file
@@ -444,18 +405,22 @@ colorbar = plt.colorbar()
 
 +++
 
-### Save the data locally if you have not already done so, in order to upload to IRSA viewer
+Save the data locally if you have not already done so, in order to upload to IRSA viewer.
 
 ```{code-cell} ipython3
-# download_path = '/your_path/'
-# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+download_path = "data"
+if os.path.exists(download_path):
+    print("Output directory already created.")
+else:
+    print("Creating data directory.")
+    os.mkdir(dowload_path)
 ```
 
 ### Vizualize the image with Firefly
 
 First initialize the client, then set the path to the image, upload it to firefly, load it and align with WCS.
 
-Note this can take a while to upload the full MER image. 
+Note this can take a while to upload the full MER image.
 
 ```{code-cell} ipython3
 fc = FireflyClient.make_client('https://irsa.ipac.caltech.edu/irsaviewer')
@@ -468,8 +433,8 @@ fc.align_images(lock_match=True)
 ### Save the table as a CSV for Firefly upload
 
 ```{code-cell} ipython3
-# csv_path = download_path+'/mer_df.csv'
-# df_g_irsa.to_csv(csv_path, index=False)
+csv_path = os.path.join(download_path, "mer_df.csv")
+df_g_irsa.to_csv(csv_path, index=False)
 ```
 
 ### Upload the CSV table to Firefly and display as an overlay on the FITS image
@@ -481,64 +446,10 @@ print(f"Uploaded Table URL: {uploaded_table}")
 fc.show_table(uploaded_table)
 ```
 
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-### Optional -- Access the data from the ESA archive website directly
-
-+++
-
-#### 1. Download and read in data from the ESA archive
-
-- Go to https://easidr.esac.esa.int/sas/ and sign in with your credentials.
-- Click Search and go to the ADQL form and enter a query which matches the query above.
-
-+++
-
-Download the results, gunzip in the command line. You should now have a VOT table
-
-NOTE: Need to do the following in the command line: 
-
-mv original_cat.vot.gz to mer_cat.vot 
-
-to remove the .gz extension
-
-+++
-
-## Additional Resources
-
-If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
-
-+++
-
 ## About this Notebook
 
-**Author(s)**: Tiffany Meshkat <br>
-**Keyword(s)**: Euclid, Q1, phz catalog <br>
-**First published**: March 19, 2025 <br>
-**Last updated**: March 19, 2025
+**Author**: Tiffany Meshkat (IPAC Scientist)
 
-+++
+**Updated**: 2025-03-19
 
-
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
+**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
