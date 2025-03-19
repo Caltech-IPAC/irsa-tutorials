@@ -1,0 +1,821 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to Euclid Q1 1D spectra &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/3_Euclid_intro_1D_spectra';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Euclid Quick Release 1: SPE catalog" href="5_Euclid_intro_SPE_catalog.html" />
+    <link rel="prev" title="Introduction to Euclid Q1 MER catalog" href="2_Euclid_intro_MER_catalog.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="NASA/IPAC Infrared Science Archive - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/euclid_access/3_Euclid_intro_1D_spectra.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/euclid_access/3_Euclid_intro_1D_spectra.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/euclid_access/3_Euclid_intro_1D_spectra.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/3_Euclid_intro_1D_spectra.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/3_Euclid_intro_1D_spectra.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to Euclid Q1 1D spectra</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-1d-spectra-from-irsa-directly-to-this-notebook">1. Download 1D spectra from IRSA directly to this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-full-filename-url">Create the full filename/url</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">3. Read in the spectrum using the file_url and the extension just for this object</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">Plot the image of the extracted spectrum</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-1d-spectra">
+<h1>Introduction to Euclid Q1 1D spectra<a class="headerlink" href="#introduction-to-euclid-q1-1d-spectra" title="Link to this heading">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This notebook requires public access to the Euclid Q1 data, therefore is expected to not work before the 19th of March 2025.</p>
+<p>We will update the rendered HTML pages with the expected outputs of the code cells once the data is public.</p>
+</div>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand the basic characteristics of Euclid Q1 SIR 1D spectra.</p></li>
+<li><p>What columns are available in the MER catalog.</p></li>
+<li><p>How to query with ADQL in the MER catalog.</p></li>
+<li><p>How to make a simple color-magnitude diagram with the data.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>++</p>
+<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the <a class="reference external" href="https://easidr.esac.esa.int/sas/">ESA archive</a> and on the <a class="reference external" href="https://irsa.ipac.caltech.edu">IRSA archive</a>.</p>
+<p>These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a> and <a class="reference external" href="https://support.cosmos.esa.int/euclid">ESA Euclid Helpdesk</a>.</p>
+<p>For the Euclid Wide Survey standard operating mode, the telescope undertakes a 4-point dither pattern.
+At each position VIS and NISP each take a 570s exposure, consisting of a direct visible image and a red grism exposure.
+This is followed by further NISP exposures in the Y, J, and H band filters (112 seconds each).
+The telescope is then dithered, and the sequence is repeated starting with a different grism position angle.
+There are actually two operational grisms oriented 180 degrees from each other. Each grism which will be used twice in this sequence, but with slight angular offsets (+/- 4 degrees), effectively creating the four different grism angles (Scaramella et al. 2022, A&amp;A 662, A112).</p>
+<p>Data which can be obtained for SIR include: SIR “images”, which effectively show the full image of objects with the spectral traces overlapping, and SIR 1D spectra for individual objects.
+In this notebook we describe how to access and process the 1D spectra products.
+For most users, simply accessing th 1D spectra is probably the preferred option, unless they would like to extract the spectrum again, or inspect the images to see if there is any artifact which might add noise to the spectrum.</p>
+<p>This notebook provides an introduction to the SIR 1D spectra released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed</span>
+<span class="c1"># !pip install matplotlib pandas requests astropy pyvo</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="download-1d-spectra-from-irsa-directly-to-this-notebook">
+<h2>1. Download 1D spectra from IRSA directly to this notebook<a class="headerlink" href="#download-1d-spectra-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
+<p>Search for all tables in IRSA labeled as euclid</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
+
+<span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
+<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span> <span class="ow">and</span> <span class="s2">&quot;euclid&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
+            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
+<span class="n">table_1dspectra</span><span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
+<span class="n">table_phz</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
+<span class="n">table_galaxy_candidates</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Change the settings so we can see all the columns in the dataframe and the full column width</span>
+<span class="c1">## (to see the full long URL)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_colwidth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="c1">## Can use the following lines to reset the max columns and column width of pandas</span>
+<span class="c1"># pd.reset_option(&#39;display.max_columns&#39;)</span>
+<span class="c1"># pd.reset_option(&#39;display.max_colwidth&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">
+<h2>2. Search for the spectrum of a specific galaxy in the 1D spectra table<a class="headerlink" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span><span class="o">=</span><span class="mi">2739401293646823742</span>
+
+<span class="c1">## Pull the data on these objects</span>
+<span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * </span><span class="se">\</span>
+<span class="s2">FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">AND uri IS NOT NULL &quot;</span>
+
+<span class="c1">## Pull the data on this particular galaxy</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
+<span class="n">df2</span><span class="o">=</span><span class="n">result2</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">df2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="create-the-full-filename-url">
+<h3>Create the full filename/url<a class="headerlink" href="#create-the-full-filename-url" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_url</span><span class="o">=</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/&#39;</span>
+
+<span class="n">file_url</span><span class="o">=</span><span class="n">irsa_url</span><span class="o">+</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">file_url</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">
+<h2>3. Read in the spectrum using the file_url and the extension just for this object<a class="headerlink" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object" title="Link to this heading">#</a></h2>
+<p>Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#### Code to read in the large file with many extensions and spectra from a tile</span>
+<span class="c1">#### Currently commented out</span>
+
+<span class="c1"># ## Complete file url with the irsa url at the start</span>
+<span class="c1"># url = file_url</span>
+<span class="c1"># response = requests.get(url)</span>
+
+<span class="c1"># hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory</span>
+<span class="c1"># hdul.info()  # Show file info</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">
+<h3>Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object<a class="headerlink" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">memmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">hdu</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdu</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df_obj_irsa</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-image-of-the-extracted-spectrum">
+<h3>Plot the image of the extracted spectrum<a class="headerlink" href="#plot-the-image-of-the-extracted-spectrum" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Convert the wavelength to microns</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Now the data are read in, show an image</span>
+
+<span class="c1">## Converting from Angstrom to microns</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span><span class="p">,</span> <span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (microns)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux&#39;</span><span class="o">+</span><span class="n">dat</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="s1">&#39;latex_inline&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author</strong>: Tiffany Meshkat (IPAC Scientist)</p>
+<p><strong>Updated</strong>: 2025-03-19</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_Euclid_intro_MER_catalog.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to Euclid Q1 MER catalog</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5_Euclid_intro_SPE_catalog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Euclid Quick Release 1: SPE catalog</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-1d-spectra-from-irsa-directly-to-this-notebook">1. Download 1D spectra from IRSA directly to this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-full-filename-url">Create the full filename/url</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">3. Read in the spectrum using the file_url and the extension just for this object</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">Plot the image of the extracted spectrum</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

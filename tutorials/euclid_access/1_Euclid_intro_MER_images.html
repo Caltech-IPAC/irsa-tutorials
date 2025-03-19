@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to Euclid Q1 MER mosaics &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/1_Euclid_intro_MER_images';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Introduction to Euclid Q1 MER catalog" href="2_Euclid_intro_MER_catalog.html" />
+    <link rel="prev" title="Exploring Star Clusters in the Euclid ERO Data" href="Euclid_ERO.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="NASA/IPAC Infrared Science Archive - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/euclid_access/1_Euclid_intro_MER_images.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/euclid_access/1_Euclid_intro_MER_images.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/euclid_access/1_Euclid_intro_MER_images.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/1_Euclid_intro_MER_images.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/1_Euclid_intro_MER_images.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to Euclid Q1 MER mosaics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-volume">Data volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-multiwavelength-euclid-q1-mer-mosaics-that-cover-the-star-hd-168151">1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieve-a-euclid-q1-mer-mosaic-image-in-the-vis-bandpass">2. Retrieve a Euclid Q1 MER mosaic image in the VIS bandpass</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-first-look-at-one-example-full-image-the-vis-image">Lets first look at one example full image, the VIS image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-future-notebooks-extract-the-tileid-of-this-image-from-the-filename-and-extract-the-tileid">For future notebooks, extract the tileID of this image from the filename and extract the tileID</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-multiwavelength-euclid-q1-mer-cutouts-of-a-region-of-interest">3. Create multiwavelength Euclid Q1 MER cutouts of a region of interest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-image-above-is-very-large-so-lets-cut-out-a-smaller-image-to-inspect-these-data">The image above is very large, so lets cut out a smaller image to inspect these data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-multiwavelength-euclid-q1-mer-cutouts">3. Visualize multiwavelength Euclid Q1 MER cutouts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-python-package-sep-to-identify-and-measure-sources-in-the-euclid-q1-mer-cutouts">4. Use the Python package sep to identify and measure sources in the Euclid Q1 MER cutouts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-some-sources-from-the-cutout-using-sep-python-package-based-on-source-extractor">Extract some sources from the cutout using sep (python package based on source extractor)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-background-rms-as-well">Inspect the background rms as well</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtract-the-background">Subtract the background</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#source-extraction-via-sep">Source extraction via sep</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-have-a-look-at-the-objects-that-were-detected-with-sep-in-the-cutout">Lets have a look at the objects that were detected with sep in the cutout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-mer-mosaics">
+<h1>Introduction to Euclid Q1 MER mosaics<a class="headerlink" href="#introduction-to-euclid-q1-mer-mosaics" title="Link to this heading">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This notebook requires public access to the Euclid Q1 data, therefore is expected to not work before the 19th of March 2025.</p>
+<p>We will update the rendered HTML pages with the expected outputs of the code cells once the data is public.</p>
+</div>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand the basic characteristics of Euclid Q1 MER mosaics.</p></li>
+<li><p>How do download full MER mosaics.</p></li>
+<li><p>How to make smaller cutouts of MER mosaics.</p></li>
+<li><p>Use matplotlib to plot a grid of cutouts.</p></li>
+<li><p>Identify sources in the cutouts and make basic measurements.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
+The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
+On March 19, 2025 the data will be available on the <a class="reference external" href="https://easidr.esac.esa.int/sas/">ESA archive</a> and on the <a class="reference external" href="https://irsa.ipac.caltech.edu">IRSA archive</a>.</p>
+<p>These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
+If you have any issues accessing data from the archives, please contact the helpdesk directly: <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a> and <a class="reference external" href="https://support.cosmos.esa.int/euclid">ESA Euclid Helpdesk</a>.</p>
+<p>MER mosaic images are all the images from Level 2 images in different filters mapped to a common pixel scale.</p>
+<p>This notebook provides an introduction to MER mosaics released as part of Euclid Q1.
+Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+</section>
+<section id="data-volume">
+<h2>Data volume<a class="headerlink" href="#data-volume" title="Link to this heading">#</a></h2>
+<p>Each MER image is approximately 1.47 GB. Downloading can take some time.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install numpy astropy matplotlib pyvo sep&gt;=1.4 fsspec pandas</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ellipse</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.nddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageNormalize</span><span class="p">,</span> <span class="n">PercentileInterval</span><span class="p">,</span> <span class="n">AsinhStretch</span><span class="p">,</span>  <span class="n">ZScaleInterval</span><span class="p">,</span> <span class="n">SquaredStretch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sep</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="search-for-multiwavelength-euclid-q1-mer-mosaics-that-cover-the-star-hd-168151">
+<h2>1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151<a class="headerlink" href="#search-for-multiwavelength-euclid-q1-mer-mosaics-that-cover-the-star-hd-168151" title="Link to this heading">#</a></h2>
+<p>Below are the object name and coordinates and our search radius</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search_radius</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;HD 168151&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use IRSA to search for all Euclid data on this target.
+This searches specifically in the euclid_DpdMerBksMosaic “collection” which is the MER images and catalogs.
+This query will return any image with pixels that overlap the search region.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_service</span><span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">sia2</span><span class="o">.</span><span class="n">SIA2Service</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/SIA&#39;</span><span class="p">)</span>
+
+<span class="n">image_table</span> <span class="o">=</span> <span class="n">irsa_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert the table to pandas dataframe</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span><span class="o">=</span><span class="n">image_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Change the settings so we can see all the columns in the dataframe and the full column width (to see the full long URL)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_colwidth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="c1">## Can use the following lines to reset the max columns and column width of pandas</span>
+<span class="c1"># pd.reset_option(&#39;display.max_columns&#39;)</span>
+<span class="c1"># pd.reset_option(&#39;display.max_colwidth&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This dataframe contains lots of other datasets that have been “Euclidized”, so put on the same pixel scale as the Euclid data. For this example choose science as the data product subtype to see all images of this tile</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">=</span><span class="n">df_im_irsa</span><span class="p">[</span> <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;science&#39;</span><span class="p">)]</span>
+
+<span class="n">df_im_euclid</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df_im_euclid</span><span class="p">),</span><span class="s1">&#39;MER images of this object/MER tile.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="retrieve-a-euclid-q1-mer-mosaic-image-in-the-vis-bandpass">
+<h2>2. Retrieve a Euclid Q1 MER mosaic image in the VIS bandpass<a class="headerlink" href="#retrieve-a-euclid-q1-mer-mosaic-image-in-the-vis-bandpass" title="Link to this heading">#</a></h2>
+<section id="lets-first-look-at-one-example-full-image-the-vis-image">
+<h3>Lets first look at one example full image, the VIS image<a class="headerlink" href="#lets-first-look-at-one-example-full-image-the-vis-image" title="Link to this heading">#</a></h3>
+<p>Note that ‘access_estsize’ is in units of kb</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">filesize</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_estsize&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">1000000</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Please note this image is </span><span class="si">{</span><span class="n">filesize</span><span class="si">}</span><span class="s1"> GB. With 230 Mbps internet download speed, it takes about 1 minute to download.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="for-future-notebooks-extract-the-tileid-of-this-image-from-the-filename-and-extract-the-tileid">
+<h3>For future notebooks, extract the tileID of this image from the filename and extract the tileID<a class="headerlink" href="#for-future-notebooks-extract-the-tileid-of-this-image-from-the-filename-and-extract-the-tileid" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tileID</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;TILE\s*(\d</span><span class="si">{9}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The MER tile ID for this object is :&#39;</span><span class="p">,</span><span class="n">tileID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Download the MER image – note this file is about 1.46 GB</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hdu_mer_irsa</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hdu_mer_irsa</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+
+<span class="n">head_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you’ve downloaded this large file, if you would like to save it to disk, uncomment the following cell.
+Please also define a suitable download directory; by default it will be <code class="docutils literal notranslate"><span class="pre">data</span></code> at the same location as your notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># download_path = &#39;data&#39;</span>
+<span class="c1"># hdu_mer_irsa.writeto(os.path.join(download_path, &#39;MER_image_VIS.fits&#39;), overwrite=True)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Have a look at the header information for this image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">head_mer_irsa</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lets extract just the primary image</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">im_mer_irsa</span><span class="o">=</span><span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make a simple plot to show the full MER image, large FOV!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
+<span class="n">colorbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="create-multiwavelength-euclid-q1-mer-cutouts-of-a-region-of-interest">
+<h2>3. Create multiwavelength Euclid Q1 MER cutouts of a region of interest<a class="headerlink" href="#create-multiwavelength-euclid-q1-mer-cutouts-of-a-region-of-interest" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We’d like to take a look at the other MER images but only in a specific cutout of interest so we don’t have to download 9 full MER images.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="n">urls</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create an array with the instrument and filter name so we can add this to the plots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;instrument_name&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;energy_bandpassname&quot;</span><span class="p">]</span>
+
+<span class="c1">## Note that VIS_VIS appears in the filters, so update that filter to just say VIS</span>
+<span class="n">df_im_euclid</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;VIS_VIS&quot;</span><span class="p">,</span> <span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;VIS&quot;</span>
+
+<span class="n">filters</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">filters</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-image-above-is-very-large-so-lets-cut-out-a-smaller-image-to-inspect-these-data">
+<h2>The image above is very large, so lets cut out a smaller image to inspect these data.<a class="headerlink" href="#the-image-above-is-very-large-so-lets-cut-out-a-smaller-image-to-inspect-these-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
+<span class="c1">## How large do you want the image cutout to be?</span>
+<span class="n">im_cutout</span><span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span>
+
+<span class="c1">## What is the center of the cutout?</span>
+<span class="c1">## For now choosing a random location on the image</span>
+<span class="c1">## because the star itself is saturated</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="mf">273.8667</span>
+<span class="n">dec</span> <span class="o">=</span>  <span class="mf">64.525</span>
+
+<span class="c1">## Bright star position</span>
+<span class="c1"># ra = 273.474451</span>
+<span class="c1"># dec = 64.397273</span>
+
+<span class="n">coords_cutout</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+
+<span class="c1">##########################################################################</span>
+
+<span class="c1">## Iterate through each filter</span>
+
+<span class="n">cutout_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+    <span class="c1">## Use fsspec to interact with the fits file without downloading the full file</span>
+    <span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">use_fsspec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Opened </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1">## Store the header</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+
+    <span class="c1">## Read in the cutout of the image that you want</span>
+    <span class="n">cutout_data</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coords_cutout</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">im_cutout</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">))</span>
+
+    <span class="c1">## Close the file</span>
+    <span class="c1"># hdu.close()</span>
+
+    <span class="c1">## Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size</span>
+    <span class="n">new_hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">cutout_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">new_hdu</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cutout_data</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span>
+
+    <span class="c1">## Append the cutout to the list</span>
+    <span class="n">cutout_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_hdu</span><span class="p">)</span>
+
+<span class="c1">## Combine all cutouts into a single HDUList and display information</span>
+<span class="n">final_hdulist</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">HDUList</span><span class="p">(</span><span class="n">cutout_list</span><span class="p">)</span>
+<span class="n">final_hdulist</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-multiwavelength-euclid-q1-mer-cutouts">
+<h2>3. Visualize multiwavelength Euclid Q1 MER cutouts<a class="headerlink" href="#visualize-multiwavelength-euclid-q1-mer-cutouts" title="Link to this heading">#</a></h2>
+<p>Need to determine the number of images for the grid layout, then we iterate through the images and plot each one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_hdulist</span><span class="p">)</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">num_images</span> <span class="o">//</span> <span class="n">columns</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">columns</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">rows</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">WCS</span><span class="p">(</span><span class="n">final_hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)})</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">filt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">filters</span><span class="p">)):</span>
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">final_hdulist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">ImageNormalize</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;RA&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Dec&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">filt</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1">## Remove empty subplots if any</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[</span><span class="n">num_images</span><span class="p">:]:</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-the-python-package-sep-to-identify-and-measure-sources-in-the-euclid-q1-mer-cutouts">
+<h2>4. Use the Python package sep to identify and measure sources in the Euclid Q1 MER cutouts<a class="headerlink" href="#use-the-python-package-sep-to-identify-and-measure-sources-in-the-euclid-q1-mer-cutouts" title="Link to this heading">#</a></h2>
+<p>First we list all the filters so you can choose which cutout you want to extract sources on. We will choose VIS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filt_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">filters</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">img1</span><span class="o">=</span><span class="n">final_hdulist</span><span class="p">[</span><span class="n">filt_index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="extract-some-sources-from-the-cutout-using-sep-python-package-based-on-source-extractor">
+<h3>Extract some sources from the cutout using sep (python package based on source extractor)<a class="headerlink" href="#extract-some-sources-from-the-cutout-using-sep-python-package-based-on-source-extractor" title="Link to this heading">#</a></h3>
+<p>Following the sep tutorial, first create a background for the cutout
+https://sep.readthedocs.io/en/stable/tutorial.html</p>
+<p>Need to do some initial steps (swap byte order) with the cutout to prevent sep from crashing. Then create a background model with sep.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">img2</span> <span class="o">=</span> <span class="n">img1</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">())</span>
+<span class="n">c_contiguous_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">bkg</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">Background</span><span class="p">(</span><span class="n">c_contiguous_data</span><span class="p">)</span>
+
+<span class="n">bkg_image</span> <span class="o">=</span> <span class="n">bkg</span><span class="o">.</span><span class="n">back</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bkg_image</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inspect-the-background-rms-as-well">
+<h3>Inspect the background rms as well<a class="headerlink" href="#inspect-the-background-rms-as-well" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bkg_rms</span> <span class="o">=</span> <span class="n">bkg</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bkg_rms</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="subtract-the-background">
+<h3>Subtract the background<a class="headerlink" href="#subtract-the-background" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_sub</span> <span class="o">=</span> <span class="n">img2</span> <span class="o">-</span> <span class="n">bkg</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="source-extraction-via-sep">
+<h3>Source extraction via sep<a class="headerlink" href="#source-extraction-via-sep" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
+
+<span class="c1">## Sigma threshold to consider this a detection above the global RMS</span>
+<span class="n">threshold</span><span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1">## Minimum number of pixels required for an object. Default is 5.</span>
+<span class="n">minarea_0</span><span class="o">=</span><span class="mi">2</span>
+
+<span class="c1">## Minimum contrast ratio used for object deblending. Default is 0.005. To entirely disable deblending, set to 1.0.</span>
+<span class="n">deblend_cont_0</span><span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">flux_threshold</span><span class="o">=</span> <span class="mf">0.01</span>
+<span class="c1">##########################################################################</span>
+
+
+<span class="n">sources</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">data_sub</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">err</span><span class="o">=</span><span class="n">bkg</span><span class="o">.</span><span class="n">globalrms</span><span class="p">,</span> <span class="n">minarea</span><span class="o">=</span><span class="n">minarea_0</span><span class="p">,</span> <span class="n">deblend_cont</span><span class="o">=</span><span class="n">deblend_cont_0</span><span class="p">)</span>
+<span class="n">sources_thr</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="n">sources</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">flux_threshold</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sources_thr</span><span class="p">),</span> <span class="s2">&quot;objects above flux threshold&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="lets-have-a-look-at-the-objects-that-were-detected-with-sep-in-the-cutout">
+<h2>Lets have a look at the objects that were detected with sep in the cutout<a class="headerlink" href="#lets-have-a-look-at-the-objects-that-were-detected-with-sep-in-the-cutout" title="Link to this heading">#</a></h2>
+<p>We plot the VIS cutout with the sources detected overplotted with a red ellipse</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_sub</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data_sub</span><span class="p">)</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data_sub</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">ZScaleInterval</span><span class="p">(),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">SquaredStretch</span><span class="p">()))</span>
+
+<span class="c1">## Plot an ellipse for each object detected with sep</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sources_thr</span><span class="p">)):</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">sources_thr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">sources_thr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]),</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">6</span><span class="o">*</span><span class="n">sources_thr</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">height</span><span class="o">=</span><span class="mi">6</span><span class="o">*</span><span class="n">sources_thr</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">angle</span><span class="o">=</span><span class="n">sources_thr</span><span class="p">[</span><span class="s1">&#39;theta&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author</strong>: Tiffany Meshkat (IPAC Scientist)</p>
+<p><strong>Updated</strong>: 2025-03-19</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Euclid_ERO.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Exploring Star Clusters in the Euclid ERO Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Euclid_intro_MER_catalog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Introduction to Euclid Q1 MER catalog</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-volume">Data volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-multiwavelength-euclid-q1-mer-mosaics-that-cover-the-star-hd-168151">1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieve-a-euclid-q1-mer-mosaic-image-in-the-vis-bandpass">2. Retrieve a Euclid Q1 MER mosaic image in the VIS bandpass</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-first-look-at-one-example-full-image-the-vis-image">Lets first look at one example full image, the VIS image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-future-notebooks-extract-the-tileid-of-this-image-from-the-filename-and-extract-the-tileid">For future notebooks, extract the tileID of this image from the filename and extract the tileID</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-multiwavelength-euclid-q1-mer-cutouts-of-a-region-of-interest">3. Create multiwavelength Euclid Q1 MER cutouts of a region of interest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-image-above-is-very-large-so-lets-cut-out-a-smaller-image-to-inspect-these-data">The image above is very large, so lets cut out a smaller image to inspect these data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-multiwavelength-euclid-q1-mer-cutouts">3. Visualize multiwavelength Euclid Q1 MER cutouts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-python-package-sep-to-identify-and-measure-sources-in-the-euclid-q1-mer-cutouts">4. Use the Python package sep to identify and measure sources in the Euclid Q1 MER cutouts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-some-sources-from-the-cutout-using-sep-python-package-based-on-source-extractor">Extract some sources from the cutout using sep (python package based on source extractor)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-background-rms-as-well">Inspect the background rms as well</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subtract-the-background">Subtract the background</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#source-extraction-via-sep">Source extraction via sep</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-have-a-look-at-the-objects-that-were-detected-with-sep-in-the-cutout">Lets have a look at the objects that were detected with sep in the cutout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

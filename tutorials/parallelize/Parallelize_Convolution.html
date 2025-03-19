@@ -196,10 +196,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../euclid_access/Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -546,7 +555,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
-2025-03-19 02:37:12,209	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+2025-03-19 03:51:52,213	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -603,7 +612,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.5 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.2 seconds
 </pre></div>
 </div>
 </div>
@@ -620,7 +629,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 02:37:50,420	INFO worker.py:1841 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 03:52:31,500	INFO worker.py:1841 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -680,7 +689,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.9, speedup = 1.71
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.1, speedup = 1.72
 </pre></div>
 </div>
 </div>
@@ -733,7 +742,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 164.1, speedup = 0.90
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.0, speedup = 0.93
 </pre></div>
 </div>
 </div>
@@ -757,7 +766,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:36485&#39; processes=4 threads=4, memory=15.62 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:37457&#39; processes=4 threads=4, memory=15.62 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -778,7 +787,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.6, speedup = 1.42
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.8, speedup = 1.41
 </pre></div>
 </div>
 </div>
@@ -790,8 +799,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 02:43:50,379 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-18cf1ace0c115f2e3e49e0d7c63018db&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
-2025-03-19 02:43:50,806 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-0058c4a179ae625415b3e164ee85d43f&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 03:58:26,451 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-a60f60f9be393473d6cecb3a5d51e6c8&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+2025-03-19 03:58:26,789 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-ef823bf1194a70ac0ccee4c02487a2ce&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>

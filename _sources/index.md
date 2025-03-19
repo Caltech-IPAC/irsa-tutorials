@@ -37,10 +37,13 @@ tutorials/parquet-catalog-demos/neowise-source-table-strategies
 tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
+tutorials/cloud_access/euclid-cloud-access
 
 ```
 
 ## Accessing Euclid data
+
+### Euclid Early Release Observation
 
 ```{toctree}
 ---
@@ -49,6 +52,23 @@ caption: Euclid Early Release Observations
 ---
 
 tutorials/euclid_access/Euclid_ERO
+
+```
+
+### Euclid Quick Release 1
+
+```{toctree}
+---
+maxdepth: 1
+caption: Euclid Quick Release 1
+---
+
+tutorials/euclid_access/1_Euclid_intro_MER_images
+tutorials/euclid_access/2_Euclid_intro_MER_catalog
+tutorials/euclid_access/3_Euclid_intro_1D_spectra
+tutorials/euclid_access/5_Euclid_intro_SPE_catalog
+tutorials/cloud_access/euclid-cloud-access
+
 ```
 
 ## Interactive visualization in Python with Firefly
