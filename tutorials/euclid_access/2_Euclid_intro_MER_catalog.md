@@ -50,27 +50,25 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install numpy matplotlib pyvo
+# !pip install numpy matplotlib astroquery>=0.4.10
 ```
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Download MER catalog from IRSA directly to this notebook
 
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-```
++++
+
+First, have a look at what Euclid catalogs are available. With the ``list_catalogs`` functionality, we'll receive a list of the name of the catalogs as well as their brief desciption.
 
 ```{code-cell} ipython3
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid_q1" in tablename:
-            tables[tablename].describe()
+tables = Irsa.list_catalogs(filter='euclid')
+tables
 ```
 
 ### Choose the Euclid MER table
@@ -84,13 +82,12 @@ table_mer = 'euclid_q1_mer_catalogue'
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_mer].columns
-print(len(columns))
+columns_info = Irsa.list_columns(catalog=table_mer)
+print(len(columns_info))
 ```
 
 ```{code-cell} ipython3
-for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}')
+columns_info
 ```
 
 ```{tip}
@@ -121,7 +118,7 @@ adql_stars = ("SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf
 
 # Run the query
 
-result_stars = service.search(adql_stars)
+result_stars = Irsa.query_tap(adql_stars)
 ```
 
 ```{code-cell} ipython3
