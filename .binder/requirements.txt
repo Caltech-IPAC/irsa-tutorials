@@ -17,6 +17,7 @@ firefly-client>=3.2.0
 jupyter-firefly-extensions
 reproject
 photutils
+fsspec
 sep>=1.4
 # For supporting myst-based notebooks
 jupytext

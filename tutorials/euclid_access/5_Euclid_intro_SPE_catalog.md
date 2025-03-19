@@ -15,6 +15,13 @@ kernelspec:
 
 +++
 
+
+```{warning}
+This notebook requires public access to the Euclid Q1 data, therefore is expected to not work before the 19th of March 2025.
+
+We will update the rendered HTML pages with the expected outputs of the code cells once the data is public.
+```
+
 ## Learning Goals
 
 +++
@@ -36,7 +43,7 @@ The Quick Data Release 1 (Q1) are the first data release from the Euclid mission
 On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
 
 These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](irsasupport@ipac.caltech.edu) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
+If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
 
 Every one dimensional spectrum is processed through a template and line fitting pipeline, producing several different 'SPE' catalogs.
 This notebook provides an introduction to the SPE catalogs released as part of Euclid Q1.
