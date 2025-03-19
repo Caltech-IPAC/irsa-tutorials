@@ -237,6 +237,8 @@ result_table = result.to_qtable()
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
 
 ```{code-cell} ipython3
+result_table['object_id'] = result['object_id'].astype('int64')
+
 obj_id = 2739401293646823742
 
 obj_2739401293646823742 = result_table[(result_table['object_id'] == obj_id)]
