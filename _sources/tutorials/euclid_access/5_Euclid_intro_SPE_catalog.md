@@ -63,6 +63,7 @@ from io import BytesIO
 import re
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import requests
 
@@ -236,6 +237,8 @@ result_table = result.to_qtable()
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
 
 ```{code-cell} ipython3
+result_table['object_id'] = result['object_id'].astype('int64')
+
 obj_id = 2739401293646823742
 
 obj_2739401293646823742 = result_table[(result_table['object_id'] == obj_id)]
@@ -277,16 +280,15 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
 Divide by 10000 to convert from Angstrom to micron
 
 ```{code-cell} ipython3
-wavelengths = df_obj['spe_line_central_wl_gf']/10000.
-line_names = df_obj['spe_line_name']
-snr_gf=df_obj['spe_line_snr_gf']
+wavelengths = obj_2739401293646823742['spe_line_central_wl_gf']/10000.
+line_names = obj_2739401293646823742['spe_line_name']
+snr_gf = obj_2739401293646823742['spe_line_snr_gf']
 
 plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
 
-for wl, name,snr in zip(wavelengths, line_names,snr_gf):
+for wl, name, snr in zip(np.atleast_1d(wavelengths), np.atleast_1d(line_names), np.atleast_1d(snr_gf)):
     plt.axvline(wl, color='b', linestyle='--', alpha=0.3)
     plt.text(wl+0.02, .1, name+' SNR='+str(round(snr)), rotation=90, ha='center', va='bottom', fontsize=10)
-
 
 plt.xlabel('Wavelength (microns)')
 plt.ylabel('Flux (erg / (Angstrom s cm2))')

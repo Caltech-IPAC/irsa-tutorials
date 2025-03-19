@@ -566,6 +566,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
@@ -793,7 +794,9 @@ Other Euclid notebooks show how to use other data products released as part of E
 <h3>Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.<a class="headerlink" href="#choose-an-object-of-interest-lets-look-at-an-object-with-a-strong-halpha-line-detected-with-high-snr" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span> <span class="o">=</span> <span class="mi">2739401293646823742</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result_table</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+
+<span class="n">obj_id</span> <span class="o">=</span> <span class="mi">2739401293646823742</span>
 
 <span class="n">obj_2739401293646823742</span> <span class="o">=</span> <span class="n">result_table</span><span class="p">[(</span><span class="n">result_table</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">obj_id</span><span class="p">)]</span>
 
@@ -843,16 +846,15 @@ Other Euclid notebooks show how to use other data products released as part of E
 <p>Divide by 10000 to convert from Angstrom to micron</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">df_obj</span><span class="p">[</span><span class="s1">&#39;spe_line_central_wl_gf&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span>
-<span class="n">line_names</span> <span class="o">=</span> <span class="n">df_obj</span><span class="p">[</span><span class="s1">&#39;spe_line_name&#39;</span><span class="p">]</span>
-<span class="n">snr_gf</span><span class="o">=</span><span class="n">df_obj</span><span class="p">[</span><span class="s1">&#39;spe_line_snr_gf&#39;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_central_wl_gf&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span>
+<span class="n">line_names</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_name&#39;</span><span class="p">]</span>
+<span class="n">snr_gf</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_snr_gf&#39;</span><span class="p">]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span><span class="p">,</span> <span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
 
-<span class="k">for</span> <span class="n">wl</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span><span class="n">snr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">line_names</span><span class="p">,</span><span class="n">snr_gf</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">wl</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">line_names</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">snr_gf</span><span class="p">)):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">wl</span><span class="o">+</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="s1">&#39; SNR=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">snr</span><span class="p">)),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (microns)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (erg / (Angstrom s cm2))&#39;</span><span class="p">)</span>
