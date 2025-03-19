@@ -290,6 +290,6 @@ plt.title(obj_id)
 
 **Author**: Tiffany Meshkat (IPAC Scientist)
 
-**Updated**: March 19, 2025
+**Updated**: 2025-03-19
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
