@@ -576,6 +576,9 @@ Other Euclid notebooks show how to use other data products released as part of E
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sep</span>
+
+<span class="c1"># Copy-on-write is more performant and avoids unexpected modifications of the original DataFrame.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">copy_on_write</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>

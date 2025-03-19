@@ -84,6 +84,9 @@ from astropy import units as u
 
 import pyvo as vo
 import sep
+
+# Copy-on-write is more performant and avoids unexpected modifications of the original DataFrame.
+pd.options.mode.copy_on_write = True
 ```
 
 ## 1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151

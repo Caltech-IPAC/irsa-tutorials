@@ -555,7 +555,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
-2025-03-19 19:52:29,261	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+2025-03-19 23:00:10,082	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -629,7 +629,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 19:53:08,684	INFO worker.py:1841 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 23:00:49,506	INFO worker.py:1841 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -689,7 +689,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 85.7, speedup = 1.74
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.1, speedup = 1.73
 </pre></div>
 </div>
 </div>
@@ -742,7 +742,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.6, speedup = 0.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 162.4, speedup = 0.92
 </pre></div>
 </div>
 </div>
@@ -766,7 +766,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:34551&#39; processes=4 threads=4, memory=15.62 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:37563&#39; processes=4 threads=4, memory=15.62 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -787,7 +787,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.9, speedup = 1.42
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.5, speedup = 1.43
 </pre></div>
 </div>
 </div>
@@ -795,6 +795,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-03-19 23:06:46,396 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-0db183fbe9261a374fcf96120c2aa098&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+2025-03-19 23:06:46,514 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-d381a386ece06e59f247a060443095ed&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>
