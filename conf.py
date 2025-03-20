@@ -49,13 +49,17 @@ nb_execution_excludepatterns = []
 
 if 'CIRCLECI' in os.environ:
     # Workaround for https://github.com/Caltech-IPAC/irsa-tutorials/issues/6
-    # Some of the notebooks run into a DeadKernelError on CircleCI, but do execute and render on GHA.
-    # Ignore them here.
+    # Some of the notebooks run into a DeadKernelError (hitting the memory limit) on CircleCI,
+    # but do execute and render on GHA. Ignore them here.
     nb_execution_excludepatterns += ['wise-allwise-catalog-demo.md', 'Parallelize_Convolution.md']
+
 
 if 'CI' in os.environ:
     # Both NEOWISE parquet notebooks work with large data that doesn't work within CircleCI or GHA resource limits
-    nb_execution_excludepatterns += ['neowise-source-table-strategies.md', 'neowise-source-table-lightcurves.md']
+    # Some Euclid notebooks are also hitting limits on both platforms
+    nb_execution_excludepatterns += ['neowise-source-table-strategies.md',
+                                     'neowise-source-table-lightcurves.md',
+                                     '1_Euclid_intro_MER_images.md', '5_Euclid_intro_SPE_catalog.md']
 
 if platform.platform().startswith("mac") or platform.platform().startswith("win"):
     # The way the notebooks use the multiprocessing module is known to not work on non-Linux
