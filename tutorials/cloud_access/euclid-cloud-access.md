@@ -15,13 +15,6 @@ kernelspec:
 
 +++
 
-
-```{warning}
-This notebook requires public access to the Euclid Q1 data, therefore is expected to not work before the 19th of March 2025.
-
-We will update the rendered HTML pages with the expected outputs of the code cells once the data is public.
-```
-
 ## Learning Goals
 By the end of this tutorial, you will:
 - Learn where Euclid Q1 data are stored in the cloud.
