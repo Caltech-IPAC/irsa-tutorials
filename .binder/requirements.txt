@@ -1,11 +1,11 @@
 # For the content of the tutorials
 tqdm
-numpy
-matplotlib
-astropy
+numpy>=1.24
+matplotlib>=3.7
+astropy>=5.3
 pyvo>=1.5
 astroquery>=0.4.10
-scipy
+scipy>=1.10
 pyarrow>=10.0.1
 hpgeom
 pandas>=1.5.2
@@ -16,7 +16,7 @@ s3fs
 firefly-client>=3.2.0
 jupyter-firefly-extensions
 reproject
-photutils
+photutils>=2.0
 fsspec
 sep>=1.4
 # For supporting myst-based notebooks
