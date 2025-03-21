@@ -53,7 +53,7 @@ First, we import all necessary packages.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install tqdm numpy matplotlib astropy photutils astroquery>=0.4.10 sep>=1.4 firefly_client>=3.2
+# !pip install tqdm numpy matplotlib astropy photutils>=2.0 astroquery>=0.4.10 sep>=1.4 firefly_client>=3.2
 ```
 
 ```{code-cell} ipython3
