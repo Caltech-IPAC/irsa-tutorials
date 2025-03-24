@@ -104,7 +104,7 @@ image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid
 Convert the table to pandas dataframe
 
 ```{code-cell} ipython3
-df_im_irsa=image_table.to_table().to_pandas()
+df_im_irsa=image_table.to_table().to_pandas().reset_index()
 ```
 
 Change the settings so we can see all the columns in the dataframe and the full column width (to see the full long URL)
@@ -119,12 +119,16 @@ pd.set_option('display.max_colwidth', None)
 # pd.reset_option('display.max_colwidth')
 ```
 
+```{code-cell} ipython3
+df_im_irsa
+```
+
 This dataframe contains lots of other datasets that have been "Euclidized", so put on the same pixel scale as the Euclid data. For this example choose science as the data product subtype to see all images of this tile
 
 ```{code-cell} ipython3
-df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science')]
+df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science')].reset_index()
 
-df_im_euclid.head()
+df_im_euclid
 ```
 
 ```{code-cell} ipython3

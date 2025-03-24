@@ -605,7 +605,7 @@ This query will return any image with pixels that overlap the search region.</p>
 <p>Convert the table to pandas dataframe</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span><span class="o">=</span><span class="n">image_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span><span class="o">=</span><span class="n">image_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -624,12 +624,19 @@ This query will return any image with pixels that overlap the search region.</p>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>This dataframe contains lots of other datasets that have been “Euclidized”, so put on the same pixel scale as the Euclid data. For this example choose science as the data product subtype to see all images of this tile</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">=</span><span class="n">df_im_irsa</span><span class="p">[</span> <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;science&#39;</span><span class="p">)]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">=</span><span class="n">df_im_irsa</span><span class="p">[</span> <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;science&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-<span class="n">df_im_euclid</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">df_im_euclid</span>
 </pre></div>
 </div>
 </div>
