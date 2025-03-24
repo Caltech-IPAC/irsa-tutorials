@@ -156,7 +156,6 @@ tables = service.tables
 for tablename in tables.keys():
     if "tap_schema" not in tablename and "euclid" in tablename:
             tables[tablename].describe()
-
 ```
 
 ```{code-cell} ipython3
@@ -171,7 +170,7 @@ table_spe= 'euclid_q1_spe_lines_line_features'
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_galaxy_candidates].columns
+columns = tables[table_spe].columns
 print(len(columns))
 ```
 
@@ -195,28 +194,30 @@ pd.set_option('display.max_colwidth', None)
 ## Find some objects with spectra in our tileID
 
 We specify the following conditions on our search:
-- The two signal to noise ratio columns (spe_line_snr_gf and spe_line_snr_di) should be greater than 5
+- Signal to noise ratio column (_gf = gaussian fit) should be greater than 5
 - We want to detect H-alpha.
 - We choose in which tileID to search, usign the tileID from the first notebook.
 - Choose spectroscopic redshift (spe_z) beween 1.4 and 1.6 and spe_z_prob greater than 0.999
+- H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
+- Join the lines and galaxy candidates tables on object_id and spe_rank
 
 Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.
 
 ```{code-cell} ipython3
 adql = f"SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.flux_y_templfit, \
 spe.spe_line_snr_gf,spe.spe_line_snr_di, spe.spe_line_name, spe.spe_line_central_wl_gf,\
-spe.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob \
+spe.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, spe.spe_line_flux_gf, spe.spe_line_flux_err_gf \
 FROM {table_mer} AS mer \
 JOIN {table_spe} AS spe \
 ON mer.object_id = spe.object_id \
 JOIN {table_galaxy_candidates} AS galaxy \
-ON mer.object_id = galaxy.object_id \
+ON spe.object_id = galaxy.object_id AND spe.spe_rank = galaxy.spe_rank \
 WHERE spe.spe_line_snr_gf >5 \
-AND spe.spe_line_snr_di > 5 \
 AND spe.spe_line_name = 'Halpha' \
 AND mer.tileid = {tileID} \
-AND galaxy.spe_z_prob > 0.999 \
+AND galaxy.spe_z_prob > 0.99 \
 AND galaxy.spe_z BETWEEN 1.4 AND 1.6 \
+AND spe.spe_line_flux_gf > 2E-16 \
 ORDER BY spe.spe_line_snr_gf DESC \
 "
 
@@ -225,18 +226,20 @@ result = service.search(adql)
 
 # Convert table to pandas dataframe and drop duplicates
 result_table = result.to_qtable()
+
+result_table['spe_line_flux_gf'].info.format = ".8e"  # Scientific notation with 8 decimal places
+result_table['spe_line_flux_err_gf'].info.format = ".8e"
+result_table['object_id'] = result['object_id'].astype('int64')
 ```
 
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
 
 ```{code-cell} ipython3
-result_table['object_id'] = result['object_id'].astype('int64')
+obj_id = 2737659721646729968
 
-obj_id = 2739401293646823742
+obj_tab = result_table[(result_table['object_id'] == obj_id)]
 
-obj_2739401293646823742 = result_table[(result_table['object_id'] == obj_id)]
-
-obj_2739401293646823742
+obj_tab
 ```
 
 ### Pull the spectrum of this object
@@ -265,7 +268,6 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
     hdu = hdul[df2['hdu'].iloc[0]]
     dat = Table.read(hdu, format='fits', hdu=1)
     df_obj_irsa = dat.to_pandas()
-
 ```
 
 ### Now the data are read in, plot the spectrum with the H-alpha line labeled
