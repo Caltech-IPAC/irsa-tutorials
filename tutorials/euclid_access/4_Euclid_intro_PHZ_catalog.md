@@ -231,7 +231,6 @@ print(hdu_mer_irsa.info())
 ```{code-cell} ipython3
 # download_path='/yourlocalpath/'
 # hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
-# df_g_irsa.to_csv(download_path+'./df_table_irsa.csv', index=False)
 ```
 
 ```{code-cell} ipython3
@@ -267,11 +266,6 @@ xy_irsa = wcs_irsa.all_world2pix(df_g_irsa["ra"],df_g_irsa["dec"],0)
 ```{code-cell} ipython3
 df_g_irsa['x_pix']=xy_irsa[0]
 df_g_irsa['y_pix']=xy_irsa[1]
-```
-
-```{code-cell} ipython3
-## Save the dataframe as a csv
-# df_g_irsa.to_csv("./df_table_irsa.csv", index=False)
 ```
 
 ```{code-cell} ipython3
@@ -346,7 +340,6 @@ plt.title('Object ID is '+str(obj_id))
 
 ## Lets cut out a very small patch of the MER image to see what this galaxy looks like
 
-
 ```{code-cell} ipython3
 ## How large do you want the image cutout to be?
 im_cutout= 2.0 * u.arcsec
@@ -396,7 +389,7 @@ if os.path.exists(download_path):
     print("Output directory already created.")
 else:
     print("Creating data directory.")
-    os.mkdir(dowload_path)
+    os.mkdir(download_path)
 ```
 
 ### Vizualize the image with Firefly
@@ -417,6 +410,7 @@ fc.align_images(lock_match=True)
 
 ```{code-cell} ipython3
 csv_path = os.path.join(download_path, "mer_df.csv")
+df_g_irsa.to_csv(csv_path, index=False)
 ```
 
 ### Upload the CSV table to Firefly and display as an overlay on the FITS image
