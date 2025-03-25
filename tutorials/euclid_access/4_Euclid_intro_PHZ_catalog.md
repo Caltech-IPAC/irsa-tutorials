@@ -233,20 +233,6 @@ print(hdu_mer_irsa.info())
 # hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
 ```
 
-```{code-cell} ipython3
-## Great! Now we have the data, lets extract just the primary image
-
-im_mer_irsa=hdu_mer_irsa[0].data
-```
-
-```{code-cell} ipython3
-## Plot a quick simple plot to show the full MER image, large FOV!
-
-plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
-           norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
-colorbar = plt.colorbar()
-```
-
 ## 4. Overplot the catalog on the MER mosaic image
 
 ```{code-cell} ipython3
@@ -270,17 +256,6 @@ df_g_irsa['y_pix']=xy_irsa[1]
 
 ```{code-cell} ipython3
 df_g_irsa
-```
-
-```{code-cell} ipython3
-## Plot MER catalog sources on the Euclid VIS image
-
-plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=LogStretch()))
-colorbar = plt.colorbar()
-plt.scatter(df_g_irsa["x_pix"], df_g_irsa["y_pix"], s=36, facecolors='none', edgecolors='red')
-
-plt.title('Galaxies between z = 1.4 and 1.6')
-plt.show()
 ```
 
 ## Pull the spectra on the top brightest source based on object ID
@@ -373,7 +348,7 @@ new_hdu.header.update(cutout_data.wcs.to_header())
 ## Plot a quick simple plot to show the cutout on the galaxy
 
 plt.imshow(new_hdu.data, cmap='gray', origin='lower',
-           norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+           norm=ImageNormalize(new_hdu.data, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 colorbar = plt.colorbar()
 ```
 
