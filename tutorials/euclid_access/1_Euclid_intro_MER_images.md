@@ -20,11 +20,11 @@ kernelspec:
 +++
 
 By the end of this tutorial, you will:
-- Understand the basic characteristics of Euclid Q1 MER mosaics.
-- How do download full MER mosaics.
-- How to make smaller cutouts of MER mosaics.
-- Use matplotlib to plot a grid of cutouts.
-- Identify sources in the cutouts and make basic measurements.
+- understand the basic characteristics of Euclid Q1 MER mosaics;
+- know how to download full MER mosaics;
+- know how to make smaller cutouts of MER mosaics;
+- know how to use matplotlib to plot a grid of cutouts;
+- know how to identify sources in the cutouts and make basic measurements.
 
 +++
 
@@ -32,17 +32,11 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
-The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
-On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA. The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe. The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals. These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
 
-MER mosaic images are all the images from Level 2 images in different filters mapped to a common pixel scale.
-
-This notebook provides an introduction to MER mosaics released as part of Euclid Q1.
-Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Among the data products included in the Q1 release are the Level 2 MER mosaics. These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based telescopes. All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale. This notebook provides a quick introduction to accessing MER mosaics from IRSA. If you have questions about it, please contact the [IRSA helpdesk].
 
 +++
 
@@ -84,16 +78,14 @@ pd.options.mode.copy_on_write = True
 ```
 
 ## 1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151
-Below are the object name and coordinates and our search radius
+Below we set a search radius of 10 arcsec and convert the name "HD 168151" into coordinates.
 
 ```{code-cell} ipython3
 search_radius = 10 * u.arcsec
 coord = SkyCoord.from_name('HD 168151')
 ```
 
-Use IRSA to search for all Euclid data on this target.
-This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
-This query will return any image with pixels that overlap the search region.
+Use IRSA's Simple Image Access (SIA) API to search for all Euclid MER mosaics that overlap with the search region you have specified. We specify the euclid_DpdMerBksMosaic "collection" because it lists all of the multiwavelength MER mosaics, along with their associated catalogs.
 
 ```{code-cell} ipython3
 irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
@@ -123,7 +115,7 @@ pd.set_option('display.max_colwidth', None)
 df_im_irsa
 ```
 
-This dataframe contains lots of other datasets that have been "Euclidized", so put on the same pixel scale as the Euclid data. For this example choose science as the data product subtype to see all images of this tile
+This dataframe contains lots of datasets that have been "Euclidized", which means that they have been put on a common pixel scale chosen for the Euclid mission. Choose "science" as the data product subtype to see all science images of this tile.
 
 ```{code-cell} ipython3
 df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science')].reset_index()
@@ -139,7 +131,7 @@ print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
 
 +++
 
-### Lets first look at one example full image, the VIS image
+### Let's first look at one example full image, the VIS image
 
 Note that 'access_estsize' is in units of kb
 
@@ -152,7 +144,7 @@ print(filename)
 print(f'Please note this image is {filesize} GB. With 230 Mbps internet download speed, it takes about 1 minute to download.')
 ```
 
-### For future notebooks, extract the tileID of this image from the filename and extract the tileID
+### Extract the tileID of this image from the filename
 
 ```{code-cell} ipython3
 tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
@@ -160,7 +152,7 @@ tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 print('The MER tile ID for this object is :',tileID)
 ```
 
-Download the MER image -- note this file is about 1.46 GB
+Retrieve the MER image -- note this file is about 1.46 GB
 
 ```{code-cell} ipython3
 fname = download_file(filename, cache=True)
@@ -170,7 +162,7 @@ print(hdu_mer_irsa.info())
 head_mer_irsa = hdu_mer_irsa[0].header
 ```
 
-Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell.
+If you would like to save the MER mosaic to disk, uncomment the following cell.
 Please also define a suitable download directory; by default it will be `data` at the same location as your notebook.
 
 ```{code-cell} ipython3
@@ -178,13 +170,13 @@ Please also define a suitable download directory; by default it will be `data` a
 # hdu_mer_irsa.writeto(os.path.join(download_path, 'MER_image_VIS.fits'), overwrite=True)
 ```
 
-Have a look at the header information for this image
+Have a look at the header information for this image.
 
 ```{code-cell} ipython3
 head_mer_irsa
 ```
 
-Lets extract just the primary image
+Lets extract just the primary image.
 
 ```{code-cell} ipython3
 im_mer_irsa=hdu_mer_irsa[0].data
@@ -192,7 +184,7 @@ im_mer_irsa=hdu_mer_irsa[0].data
 print(im_mer_irsa.shape)
 ```
 
-Make a simple plot to show the full MER image, large FOV!
+Make a simple plot to show the large field of view of the full MER mosaic.
 
 ```{code-cell} ipython3
 plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
@@ -204,7 +196,7 @@ colorbar = plt.colorbar()
 +++
 
 ```{note}
-We'd like to take a look at the other MER images but only in a specific cutout of interest so we don't have to download 9 full MER images.
+We'd like to take a look at the multiwavelength images of our object, but the full MER mosaics are very large, so we will inspect the multiwavelength cutouts.
 ```
 
 ```{code-cell} ipython3
@@ -225,7 +217,7 @@ filters = df_im_euclid['filters'].to_numpy()
 filters
 ```
 
-## The image above is very large, so lets cut out a smaller image to inspect these data.
+## The image above is very large, so let's cut out a smaller image to inspect these data.
 
 ```{code-cell} ipython3
 ######################## User defined section ############################
@@ -278,7 +270,7 @@ final_hdulist.info()
 
 ## 3. Visualize multiwavelength Euclid Q1 MER cutouts
 
-Need to determine the number of images for the grid layout, then we iterate through the images and plot each one.
+We need to determine the number of images for the grid layout, and then plot each cutout.
 
 ```{code-cell} ipython3
 num_images = len(final_hdulist)
