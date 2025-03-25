@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: PHZ catalog matching to MER images
+# Introduction to Euclid Q1 PHZ catalog
 
 +++
 
@@ -69,8 +69,6 @@ from firefly_client import FireflyClient
 import pyvo as vo
 ```
 
-# Introduction to Euclid Q1 PHZ catalog
-
 +++
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -110,7 +108,7 @@ df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science') &  (df_i
 df_im_euclid.head()
 ```
 
-## Choose the VIS image and pull the filename and tileID
+Choose the VIS image and pull the filename and tileID
 
 ```{code-cell} ipython3
 filename=df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].to_list()[0]
@@ -119,7 +117,7 @@ tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 print('The MER tile ID for this object is :',tileID)
 ```
 
-## 2. Download PHZ catalog from IRSA directly to this notebook
+## 2. Download PHZ catalog from IRSA
 
 ```{code-cell} ipython3
 ## Use IRSA to search for catalogs
@@ -141,6 +139,7 @@ table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
 ```
 
 ### Learn some information about the table:
+
 - How many columns are there?
 - List the column names
 
@@ -154,7 +153,7 @@ for col in columns:
     print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
 ```
 
-## Note that the phz catalog contains 67 columns, below are a few highlights:
+The PHZ catalog contains 67 columns, below are a few highlights:
 
 - object_id
 - flux_vis_unif, flux_y_unif, flux_j_unif, flux_h_unif
@@ -162,13 +161,17 @@ for col in columns:
 - phz_classification
 - phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)
 
-We note that the phz_catalog on IRSA has more columns than it does on the ESA archive. This is because the ESA catalog stores some information in one column (for example, phz_90_int is stored as [lower, upper], rather than in two separate columns)
+```{note}
+The phz_catalog on IRSA has more columns than it does on the ESA archive.
+This is because the ESA catalog stores some information in one column (for example, phz_90_int is stored as [lower, upper], rather than in two separate columns).
 
-The fluxes are different from the fluxes derived in the MER catalog. The _unif fluxes are: "Unified flux recomputed after correction from galactic extinction and filter shifts"
+The fluxes are different from the fluxes derived in the MER catalog.
+The _unif fluxes are: "Unified flux recomputed after correction from galactic extinction and filter shifts".
+```
 
 +++
 
-## Find some galaxies between 1.4 and 1.6 at a selected RA and Dec
+### Find some galaxies between 1.4 and 1.6 at a selected RA and Dec
 
 We specify the following conditions on our search:
 - We select just the galaxies where the flux is greater than zero, to ensure the appear in all four of the Euclid MER images.
@@ -179,7 +182,7 @@ We specify the following conditions on our search:
 
 +++
 
-### Search based on tileID
+Search based on ``tileID``:
 
 ```{code-cell} ipython3
 adql = f"SELECT DISTINCT mer.object_id,mer.ra, mer.dec, phz.flux_vis_unif, phz.flux_y_unif, \
@@ -212,13 +215,14 @@ df_g_irsa.head()
 
 ## 3. Read in the MER image from IRSA directly
 
+
 ```{code-cell} ipython3
 print(filename)
 ```
 
-```{code-cell} ipython3
-##Download the MER image -- note this file is about 1.46 GB
+Download the MER image -- note this file is about 1.46 GB
 
+```{code-cell} ipython3
 fname = download_file(filename, cache=True)
 hdu_mer_irsa = fits.open(fname)
 head_mer_irsa = hdu_mer_irsa[0].header
@@ -226,7 +230,9 @@ head_mer_irsa = hdu_mer_irsa[0].header
 print(hdu_mer_irsa.info())
 ```
 
-#### Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+```{tip}
+Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+```
 
 ```{code-cell} ipython3
 # download_path='/yourlocalpath/'
@@ -258,7 +264,7 @@ df_g_irsa['y_pix']=xy_irsa[1]
 df_g_irsa
 ```
 
-## Pull the spectra on the top brightest source based on object ID
+Pull the spectra on the top brightest source based on object ID
 
 ```{code-cell} ipython3
 df_g_irsa_sort=df_g_irsa.sort_values(by='flux_vis_unif',ascending=False)
@@ -303,6 +309,7 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
 ```
 
 ```{code-cell} ipython3
+
 ## Now the data are read in, show an image
 
 plt.plot(df_obj_irsa['WAVELENGTH'], df_obj_irsa['SIGNAL'])
@@ -313,7 +320,7 @@ plt.ylabel('Flux (erg / (Angstrom s cm2))')
 plt.title('Object ID is '+str(obj_id))
 ```
 
-## Lets cut out a very small patch of the MER image to see what this galaxy looks like
+Let's cut out a very small patch of the MER image to see what this galaxy looks like
 
 ```{code-cell} ipython3
 ## How large do you want the image cutout to be?
@@ -326,7 +333,7 @@ dec =  df_g_irsa[df_g_irsa['object_id']==obj_id]['dec'].iloc[0]
 coords_cutout = SkyCoord(ra, dec, unit=(u.deg,u.deg), frame='icrs')
 ```
 
-### Use fsspec to download a cutout of the fits file
+Use ``fsspec`` to obtain a cutout of the fits file
 
 ```{code-cell} ipython3
 hdu = fits.open(filename, use_fsspec=True)
@@ -352,7 +359,7 @@ plt.imshow(new_hdu.data, cmap='gray', origin='lower',
 colorbar = plt.colorbar()
 ```
 
-# 5. Load the image on Firefly to be able to interact with the data directly
+## 5. Load the image on Firefly to be able to interact with the data directly
 
 +++
 
