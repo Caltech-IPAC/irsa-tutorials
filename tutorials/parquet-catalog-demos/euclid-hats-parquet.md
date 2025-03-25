@@ -18,7 +18,8 @@ kernelspec:
 ## Learning Goals
 By the end of this tutorial, you will:
 
-- # [TODO]
+- Understand the format, partitioning, and schema of this dataset.
+- Be able to query this dataset for likely stars.
 
 +++
 
@@ -26,10 +27,23 @@ By the end of this tutorial, you will:
 
 +++
 
-This notebook explores the HATS version of the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) MER Catalogs that has been created by IRSA.
-In this version, the three MER Catalogs (MER, MER Morphology, and MER Cutouts) have been joined by Object ID into a single Parquet dataset.
-It contains 29,953,430 rows and 601 columns. The total size is 32 GB.
-The dataset is partitioned following [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme).
+This notebook demonstrates accesses to a copy of the
+[Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) MER Catalogs
+that is in Apache Parquet format, partitioned according to the
+Hierarchical Adaptive Tiling Scheme (HATS), and stored in an AWS S3 bucket.
+
+This is a single parquet dataset which comprises all three MER Catalogs
+-- MER, MER Morphology, and MER Cutouts -- which have been joined by Object ID.
+Their schemas (pre-join) can be seen at
+[Euclid Final Catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html).
+Minor modifications were made to the parquet schema to accommodate the join (de-duplicating column names)
+and for the HATS standard. These differences are shown below.
+
+HATS is a spatial partitioning scheme based on HEALPix that aims to
+produce partitions (files) of roughly equal size.
+This makes them more efficient to work with,
+especially for large-scale analyses and/or parallel processing.
+This notebook demonstrates the basics.
 
 +++
 
@@ -63,7 +77,7 @@ s3_key = "EUCLID/q1/mer_catalogue/hats"
 euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}")
 ```
 
-We will use the [`hats`](https://hats.readthedocs.io/) library to visualize the catalog and access the schema.
+We will use [`hats`](https://hats.readthedocs.io/) to visualize the catalog and access the schema.
 
 ```{code-cell}
 # Load the parquet dataset using hats.
@@ -82,9 +96,6 @@ We can visualize the Object density in the four fields using `hats`.
 hats.inspection.plot_density(euclid_hats)
 ```
 
-HATS (Hierarchical Adaptive Tiling Scheme) is a spatial partitioning based on HEALPix that aims to
-produce partitions (files) of roughly equal size. This makes them more efficient to work with,
-especially for large-scale analyses and/or parallel processing.
 HATS does this by adjusting the partitioning order (i.e., HEALPix order at which data is partitioned)
 according to the on-sky density of the objects or sources (rows) in the dataset.
 In other words, dense regions are partitioned at a
@@ -174,6 +185,10 @@ client.close()
 
 ## 4. Schema
 
++++
+
+The three catalogs MER, MER Morphology, and MER Cutouts have been joined together in this parquet version.
+
 IRSA's
 [Cloud Access](https://caltech-ipac.github.io/irsa-tutorials/tutorials/cloud_access/cloud-access-intro.html#navigate-a-catalog-and-perform-a-basic-query)
 notebook shows how to work with parquet schemas.
@@ -184,10 +199,6 @@ notebook shows how to work with parquet schemas.
 schema = euclid_hats.schema
 print(f"{len(schema)} columns in the combined Euclid Q1 MER Catalogs")
 ```
-
-The three catalogs MER, MER Morphology, and MER Cutouts have been joined together in this parquet version.
-You can see their original schemas at
-[Euclid Final Catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html).
 
 Two columns have been added to the top of the schema.
 '_healpix_29' is the pixel index at HEALPix order 29.
@@ -230,6 +241,6 @@ print(schema.field("RIGHT_ASCENSION-CUTOUTS").metadata)
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
-
 **Updated:** 2025-03-24
+
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
