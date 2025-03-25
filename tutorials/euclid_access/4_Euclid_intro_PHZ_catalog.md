@@ -24,6 +24,7 @@ By the end of this tutorial, you will:
 - Understand what PHZ catalogs are available and how to view the columns in those catalogs.
 - How to query with ADQL in the PHZ catalog to find galaxies between a redshift of 1.4 and 1.6.
 - Pull and plot a spectrum of one of the galaxies in that catalog.
+- Cutout an image of the galaxy to view it close up.
 - Learn how to upload images and catalogs to Firefly to inspect individual sources in greater detail.
 
 +++
@@ -173,7 +174,7 @@ We specify the following conditions on our search:
 - We select just the galaxies where the flux is greater than zero, to ensure the appear in all four of the Euclid MER images.
 - Select only objects in a circle (search radius selected below) around our selected RA and Dec
 - phz_classification =2 means we select only galaxies
-- Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 15%
+- Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 20%
 - Select just the galaxies between a median redshift of 1.4 and 1.6
 
 +++
@@ -230,6 +231,7 @@ print(hdu_mer_irsa.info())
 ```{code-cell} ipython3
 # download_path='/yourlocalpath/'
 # hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+# df_g_irsa.to_csv(download_path+'./df_table_irsa.csv', index=False)
 ```
 
 ```{code-cell} ipython3
@@ -344,9 +346,6 @@ plt.title('Object ID is '+str(obj_id))
 
 ## Lets cut out a very small patch of the MER image to see what this galaxy looks like
 
-```{code-cell} ipython3
-df_g_irsa[df_g_irsa['object_id']==obj_id]['ra']
-```
 
 ```{code-cell} ipython3
 ## How large do you want the image cutout to be?
@@ -418,7 +417,6 @@ fc.align_images(lock_match=True)
 
 ```{code-cell} ipython3
 csv_path = os.path.join(download_path, "mer_df.csv")
-df_g_irsa.to_csv(csv_path, index=False)
 ```
 
 ### Upload the CSV table to Firefly and display as an overlay on the FITS image
