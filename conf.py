@@ -59,6 +59,8 @@ if 'CI' in os.environ:
     # Both NEOWISE parquet notebooks work with large data that doesn't work within CircleCI or GHA resource limits
     nb_execution_excludepatterns += ['neowise-source-table-strategies.md',
                                      'neowise-source-table-lightcurves.md',]
+    # Data is not yet public
+    nb_execution_excludepatterns += ['euclid-hats-parquet.md', ]
 
 if platform.platform().startswith("mac") or platform.platform().startswith("win"):
     # The way the notebooks use the multiprocessing module is known to not work on non-Linux
