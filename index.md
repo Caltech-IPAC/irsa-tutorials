@@ -32,12 +32,13 @@ caption: Cloud data access
 ---
 
 tutorials/cloud_access/cloud-access-intro
+tutorials/cloud_access/euclid-cloud-access
+tutorials/parquet-catalog-demos/euclid-hats-parquet
 tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
 tutorials/parquet-catalog-demos/neowise-source-table-strategies
 tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
-tutorials/cloud_access/euclid-cloud-access
 
 ```
 
@@ -69,6 +70,7 @@ tutorials/euclid_access/3_Euclid_intro_1D_spectra
 tutorials/euclid_access/4_Euclid_intro_PHZ_catalog
 tutorials/euclid_access/5_Euclid_intro_SPE_catalog
 tutorials/cloud_access/euclid-cloud-access
+tutorials/parquet-catalog-demos/euclid-hats-parquet
 
 ```
 
