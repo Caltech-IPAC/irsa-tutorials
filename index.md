@@ -44,7 +44,7 @@ tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
 
 ## Accessing Euclid data
 
-### Euclid Early Release Observation
+### Euclid Early Release Observation (ERO)
 
 ```{toctree}
 ---
@@ -56,7 +56,7 @@ tutorials/euclid_access/Euclid_ERO
 
 ```
 
-### Euclid Quick Release 1
+### Euclid Quick Release 1 (Q1)
 
 ```{toctree}
 ---
