@@ -118,34 +118,7 @@ tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
 print('The MER tile ID for this object is :',tileID)
 ```
 
-## 2. Read in the MER image from IRSA directly
-
-### Download the MER image to this notebook
-Note this file is about 1.46 GB
-
-```{code-cell} ipython3
-# fname = download_file(filename, cache=True)
-# hdu_mer_irsa = fits.open(fname)
-# head_mer_irsa = hdu_mer_irsa[0].header
-
-# print(hdu_mer_irsa.info())
-```
-
-#### Extract just the primary image
-
-```{code-cell} ipython3
-# im_mer_irsa=hdu_mer_irsa[0].data
-```
-
-#### Make a quick and simple plot to show the full MER image, with its large FOV
-
-```{code-cell} ipython3
-# plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
-#            norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
-# colorbar = plt.colorbar()
-```
-
-## 3. Download SPE catalog from IRSA directly to this notebook
+## 2. Download SPE catalog from IRSA directly to this notebook
 
 Search for all tables in IRSA labeled as euclid
 
