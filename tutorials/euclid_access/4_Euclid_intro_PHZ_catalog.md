@@ -45,7 +45,7 @@ The photometry of every source is processed through a photometric redshift fitti
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas astropy pyvo fsspec firefly_client
+# !pip install requests matplotlib pandas astropy>5.2 pyvo fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
@@ -68,8 +68,6 @@ from astropy.wcs import WCS
 from firefly_client import FireflyClient
 import pyvo as vo
 ```
-
-+++
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
 
@@ -215,10 +213,7 @@ df_g_irsa.head()
 
 ## 3. Read in the MER image from IRSA directly
 
-
-```{code-cell} ipython3
-print(filename)
-```
++++
 
 Download the MER image -- note this file is about 1.46 GB
 
@@ -228,6 +223,12 @@ hdu_mer_irsa = fits.open(fname)
 head_mer_irsa = hdu_mer_irsa[0].header
 
 print(hdu_mer_irsa.info())
+```
+
+Extract just the primary image
+
+```{code-cell} ipython3
+im_mer_irsa=hdu_mer_irsa[0].data
 ```
 
 ```{tip}
@@ -240,10 +241,6 @@ Now you've downloaded this large file, if you would like to save it to disk, unc
 ```
 
 ## 4. Overplot the catalog on the MER mosaic image
-
-```{code-cell} ipython3
-df_g_irsa.head()
-```
 
 ```{code-cell} ipython3
 ## Use the WCS package to extract the coordinates from the header of the image
@@ -260,14 +257,39 @@ df_g_irsa['x_pix']=xy_irsa[0]
 df_g_irsa['y_pix']=xy_irsa[1]
 ```
 
+Due to the large field of view of the MER mosaic, let's cut out a smaller section (30'x30')of the MER mosaic to inspect the image
+
 ```{code-cell} ipython3
-df_g_irsa
+cutout_x0=7200
+cutout_x1=9000
+cutout_y0=7200
+cutout_y1=9000
+
+im_cutout=im_mer_irsa[cutout_x0:cutout_x1, cutout_y0:cutout_y1]
+
+# Filter galaxy positions within the cutout region
+cutout_mask = (df_g_irsa['x_pix'] >= cutout_x0) & (df_g_irsa['x_pix'] < cutout_x1) & \
+       (df_g_irsa['y_pix'] >= cutout_y0) & (df_g_irsa['y_pix'] < cutout_y1)
+
+x_cutout = df_g_irsa['x_pix'][cutout_mask] - cutout_x0  # Shift to cutout frame
+y_cutout = df_g_irsa['y_pix'][cutout_mask] - cutout_y0
+```
+
+Plot MER catalog sources on the Euclid VIS image 30'x30' cutout
+
+```{code-cell} ipython3
+plt.imshow(im_cutout, cmap='gray', origin='lower', norm=ImageNormalize(im_cutout, interval=PercentileInterval(99.9), stretch=LogStretch()))
+colorbar = plt.colorbar()
+plt.scatter(x_cutout, y_cutout, s=36, facecolors='none', edgecolors='red')
+
+plt.title('Galaxies between z = 1.4 and 1.6')
+plt.show()
 ```
 
 Pull the spectra on the top brightest source based on object ID
 
 ```{code-cell} ipython3
-df_g_irsa_sort=df_g_irsa.sort_values(by='flux_vis_unif',ascending=False)
+df_g_irsa_sort=df_g_irsa[cutout_mask].sort_values(by='flux_h_unif',ascending=False)
 ```
 
 ```{code-cell} ipython3
@@ -276,12 +298,12 @@ df_g_irsa_sort[0:3]
 
 ```{code-cell} ipython3
 obj_id=df_g_irsa_sort['object_id'].iloc[1]
+redshift = df_g_irsa_sort['phz_median'].iloc[1]
 
 ## Pull the data on these objects
 adql_object = f"SELECT * \
 FROM {table_1dspectra} \
-WHERE objectid = {obj_id} \
-AND uri IS NOT NULL "
+WHERE objectid = {obj_id}"
 
 ## Pull the data on this particular galaxy
 result2 = service.search(adql_object)
@@ -308,16 +330,18 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
     df_obj_irsa = dat.to_pandas()
 ```
 
+### Now the data are read in, plot the spectrum
+
+Divide by 10000 to convert from Angstrom to micron
+
 ```{code-cell} ipython3
+plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
 
-## Now the data are read in, show an image
-
-plt.plot(df_obj_irsa['WAVELENGTH'], df_obj_irsa['SIGNAL'])
-
-plt.xlabel('Wavelength ($\AA$)')
-plt.ylabel('Flux (erg / (Angstrom s cm2))')
-# plt.ylim(10,50)
-plt.title('Object ID is '+str(obj_id))
+plt.xlabel('Wavelength (microns)')
+plt.ylabel('Flux (erg / (s cm2))')
+plt.xlim(1.25, 1.85)
+plt.ylim(-0.5,0.5)
+plt.title('Object ID is '+str(obj_id)+'with phz_median='+str(redshift))
 ```
 
 Let's cut out a very small patch of the MER image to see what this galaxy looks like
@@ -406,8 +430,8 @@ fc.show_table(uploaded_table)
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat (IPAC Scientist)
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal,  Shoubaneh Hemmati.
 
-**Updated**: 2025-03-19
+**Updated**: 2025-03-26
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
