@@ -48,7 +48,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib pandas astropy pyvo
+# !pip install matplotlib pandas astropy>=6.0 pyvo
 ```
 
 ```{code-cell} ipython3
@@ -124,25 +124,25 @@ print('The MER tile ID for this object is :',tileID)
 Note this file is about 1.46 GB
 
 ```{code-cell} ipython3
-fname = download_file(filename, cache=True)
-hdu_mer_irsa = fits.open(fname)
-head_mer_irsa = hdu_mer_irsa[0].header
+# fname = download_file(filename, cache=True)
+# hdu_mer_irsa = fits.open(fname)
+# head_mer_irsa = hdu_mer_irsa[0].header
 
-print(hdu_mer_irsa.info())
+# print(hdu_mer_irsa.info())
 ```
 
 #### Extract just the primary image
 
 ```{code-cell} ipython3
-im_mer_irsa=hdu_mer_irsa[0].data
+# im_mer_irsa=hdu_mer_irsa[0].data
 ```
 
 #### Make a quick and simple plot to show the full MER image, with its large FOV
 
 ```{code-cell} ipython3
-plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
-           norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
-colorbar = plt.colorbar()
+# plt.imshow(im_mer_irsa, cmap='gray', origin='lower',
+#            norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+# colorbar = plt.colorbar()
 ```
 
 ## 3. Download SPE catalog from IRSA directly to this notebook
@@ -162,7 +162,7 @@ for tablename in tables.keys():
 table_mer= 'euclid_q1_mer_catalogue'
 table_galaxy_candidates= 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
 table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
-table_spe= 'euclid_q1_spe_lines_line_features'
+table_lines= 'euclid_q1_spe_lines_line_features'
 ```
 
 ### Learn some information about the table:
@@ -170,7 +170,7 @@ table_spe= 'euclid_q1_spe_lines_line_features'
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_spe].columns
+columns = tables[table_lines].columns
 print(len(columns))
 ```
 
@@ -205,20 +205,20 @@ Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H
 
 ```{code-cell} ipython3
 adql = f"SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.flux_y_templfit, \
-spe.spe_line_snr_gf,spe.spe_line_snr_di, spe.spe_line_name, spe.spe_line_central_wl_gf,\
-spe.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, spe.spe_line_flux_gf, spe.spe_line_flux_err_gf \
+lines.spe_line_snr_gf,lines.spe_line_snr_di, lines.spe_line_name, lines.spe_line_central_wl_gf,\
+lines.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, lines.spe_line_flux_gf, lines.spe_line_flux_err_gf \
 FROM {table_mer} AS mer \
-JOIN {table_spe} AS spe \
-ON mer.object_id = spe.object_id \
+JOIN {table_lines} AS lines \
+ON mer.object_id = lines.object_id \
 JOIN {table_galaxy_candidates} AS galaxy \
-ON spe.object_id = galaxy.object_id AND spe.spe_rank = galaxy.spe_rank \
-WHERE spe.spe_line_snr_gf >5 \
-AND spe.spe_line_name = 'Halpha' \
+ON lines.object_id = galaxy.object_id AND lines.spe_rank = galaxy.spe_rank \
+WHERE lines.spe_line_snr_gf >5 \
+AND lines.spe_line_name = 'Halpha' \
 AND mer.tileid = {tileID} \
 AND galaxy.spe_z_prob > 0.99 \
 AND galaxy.spe_z BETWEEN 1.4 AND 1.6 \
-AND spe.spe_line_flux_gf > 2E-16 \
-ORDER BY spe.spe_line_snr_gf DESC \
+AND lines.spe_line_flux_gf > 2E-16 \
+ORDER BY lines.spe_line_snr_gf DESC \
 "
 
 # Use TAP with this ADQL string using pyvo
@@ -245,7 +245,7 @@ obj_tab
 ### Pull the spectrum of this object
 
 ```{code-cell} ipython3
-adql_object = f"SELECT *  FROM {table_1dspectra}  WHERE objectid = {obj_id} AND uri IS NOT NULL "
+adql_object = f"SELECT *  FROM {table_1dspectra}  WHERE objectid = {obj_id}"
 
 result2 = service.search(adql_object)
 df2 = result2.to_table().to_pandas()
@@ -275,19 +275,20 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
 Divide by 10000 to convert from Angstrom to micron
 
 ```{code-cell} ipython3
-wavelengths = obj_2739401293646823742['spe_line_central_wl_gf']/10000.
-line_names = obj_2739401293646823742['spe_line_name']
-snr_gf = obj_2739401293646823742['spe_line_snr_gf']
+wavelengths = obj_tab['spe_line_central_wl_gf']/10000.
+line_names = obj_tab['spe_line_name']
+snr_gf = obj_tab['spe_line_snr_gf']
 
 plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
 
 for wl, name, snr in zip(np.atleast_1d(wavelengths), np.atleast_1d(line_names), np.atleast_1d(snr_gf)):
     plt.axvline(wl, color='b', linestyle='--', alpha=0.3)
-    plt.text(wl+0.02, .1, name+' SNR='+str(round(snr)), rotation=90, ha='center', va='bottom', fontsize=10)
+    plt.text(wl+0.02, .2, name+' SNR='+str(round(snr)), rotation=90, ha='center', va='bottom', fontsize=10)
 
 plt.xlabel('Wavelength (microns)')
-plt.ylabel('Flux (erg / (Angstrom s cm2))')
-plt.title(obj_id)
+plt.ylabel('Flux (erg / (s cm2))')
+plt.xlim(1.25, 1.85)
+plt.title('Object ID is '+str(obj_id))
 ```
 
 ## About this Notebook
