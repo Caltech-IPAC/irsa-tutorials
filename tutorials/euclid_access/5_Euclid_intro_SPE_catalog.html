@@ -492,15 +492,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-vis-image-and-pull-the-filename">Choose the VIS image and pull the filename:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mer-image-from-irsa-directly">2. Read in the MER image from IRSA directly</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-mer-image-to-this-notebook">Download the MER image to this notebook</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-just-the-primary-image">Extract just the primary image</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-quick-and-simple-plot-to-show-the-full-mer-image-with-its-large-fov">Make a quick and simple plot to show the full MER image, with its large FOV</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-spe-catalog-from-irsa-directly-to-this-notebook">3. Download SPE catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-spe-catalog-from-irsa-directly-to-this-notebook">2. Download SPE catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
 </ul>
 </li>
@@ -644,48 +636,8 @@ Other Euclid notebooks show how to use other data products released as part of E
 </div>
 </div>
 </section>
-<section id="read-in-the-mer-image-from-irsa-directly">
-<h2>2. Read in the MER image from IRSA directly<a class="headerlink" href="#read-in-the-mer-image-from-irsa-directly" title="Link to this heading">#</a></h2>
-<section id="download-the-mer-image-to-this-notebook">
-<h3>Download the MER image to this notebook<a class="headerlink" href="#download-the-mer-image-to-this-notebook" title="Link to this heading">#</a></h3>
-<p>Note this file is about 1.46 GB</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">hdu_mer_irsa</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-<span class="n">head_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">hdu_mer_irsa</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="extract-just-the-primary-image">
-<h4>Extract just the primary image<a class="headerlink" href="#extract-just-the-primary-image" title="Link to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">im_mer_irsa</span><span class="o">=</span><span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="make-a-quick-and-simple-plot-to-show-the-full-mer-image-with-its-large-fov">
-<h4>Make a quick and simple plot to show the full MER image, with its large FOV<a class="headerlink" href="#make-a-quick-and-simple-plot-to-show-the-full-mer-image-with-its-large-fov" title="Link to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
-           <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
-<span class="n">colorbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
-</section>
 <section id="download-spe-catalog-from-irsa-directly-to-this-notebook">
-<h2>3. Download SPE catalog from IRSA directly to this notebook<a class="headerlink" href="#download-spe-catalog-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
+<h2>2. Download SPE catalog from IRSA directly to this notebook<a class="headerlink" href="#download-spe-catalog-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
 <p>Search for all tables in IRSA labeled as euclid</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -704,7 +656,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
 <span class="n">table_galaxy_candidates</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;</span>
 <span class="n">table_1dspectra</span><span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
-<span class="n">table_spe</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_spe_lines_line_features&#39;</span>
+<span class="n">table_lines</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_spe_lines_line_features&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -717,7 +669,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">table_spe</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">table_lines</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -763,20 +715,20 @@ Other Euclid notebooks show how to use other data products released as part of E
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.flux_y_templfit, </span><span class="se">\</span>
-<span class="s2">spe.spe_line_snr_gf,spe.spe_line_snr_di, spe.spe_line_name, spe.spe_line_central_wl_gf,</span><span class="se">\</span>
-<span class="s2">spe.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, spe.spe_line_flux_gf, spe.spe_line_flux_err_gf </span><span class="se">\</span>
+<span class="s2">lines.spe_line_snr_gf,lines.spe_line_snr_di, lines.spe_line_name, lines.spe_line_central_wl_gf,</span><span class="se">\</span>
+<span class="s2">lines.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, lines.spe_line_flux_gf, lines.spe_line_flux_err_gf </span><span class="se">\</span>
 <span class="s2">FROM </span><span class="si">{</span><span class="n">table_mer</span><span class="si">}</span><span class="s2"> AS mer </span><span class="se">\</span>
-<span class="s2">JOIN </span><span class="si">{</span><span class="n">table_spe</span><span class="si">}</span><span class="s2"> AS spe </span><span class="se">\</span>
-<span class="s2">ON mer.object_id = spe.object_id </span><span class="se">\</span>
+<span class="s2">JOIN </span><span class="si">{</span><span class="n">table_lines</span><span class="si">}</span><span class="s2"> AS lines </span><span class="se">\</span>
+<span class="s2">ON mer.object_id = lines.object_id </span><span class="se">\</span>
 <span class="s2">JOIN </span><span class="si">{</span><span class="n">table_galaxy_candidates</span><span class="si">}</span><span class="s2"> AS galaxy </span><span class="se">\</span>
-<span class="s2">ON spe.object_id = galaxy.object_id AND spe.spe_rank = galaxy.spe_rank </span><span class="se">\</span>
-<span class="s2">WHERE spe.spe_line_snr_gf &gt;5 </span><span class="se">\</span>
-<span class="s2">AND spe.spe_line_name = &#39;Halpha&#39; </span><span class="se">\</span>
+<span class="s2">ON lines.object_id = galaxy.object_id AND lines.spe_rank = galaxy.spe_rank </span><span class="se">\</span>
+<span class="s2">WHERE lines.spe_line_snr_gf &gt;5 </span><span class="se">\</span>
+<span class="s2">AND lines.spe_line_name = &#39;Halpha&#39; </span><span class="se">\</span>
 <span class="s2">AND mer.tileid = </span><span class="si">{</span><span class="n">tileID</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
 <span class="s2">AND galaxy.spe_z_prob &gt; 0.99 </span><span class="se">\</span>
 <span class="s2">AND galaxy.spe_z BETWEEN 1.4 AND 1.6 </span><span class="se">\</span>
-<span class="s2">AND spe.spe_line_flux_gf &gt; 2E-16 </span><span class="se">\</span>
-<span class="s2">ORDER BY spe.spe_line_snr_gf DESC </span><span class="se">\</span>
+<span class="s2">AND lines.spe_line_flux_gf &gt; 2E-16 </span><span class="se">\</span>
+<span class="s2">ORDER BY lines.spe_line_snr_gf DESC </span><span class="se">\</span>
 <span class="s2">&quot;</span>
 
 <span class="c1"># Use TAP with this ADQL string using pyvo</span>
@@ -810,7 +762,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 <h3>Pull the spectrum of this object<a class="headerlink" href="#pull-the-spectrum-of-this-object" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT *  FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2">  WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2"> AND uri IS NOT NULL &quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT *  FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2">  WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
 <span class="n">df2</span> <span class="o">=</span> <span class="n">result2</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
@@ -846,19 +798,20 @@ Other Euclid notebooks show how to use other data products released as part of E
 <p>Divide by 10000 to convert from Angstrom to micron</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_central_wl_gf&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span>
-<span class="n">line_names</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_name&#39;</span><span class="p">]</span>
-<span class="n">snr_gf</span> <span class="o">=</span> <span class="n">obj_2739401293646823742</span><span class="p">[</span><span class="s1">&#39;spe_line_snr_gf&#39;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">obj_tab</span><span class="p">[</span><span class="s1">&#39;spe_line_central_wl_gf&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span>
+<span class="n">line_names</span> <span class="o">=</span> <span class="n">obj_tab</span><span class="p">[</span><span class="s1">&#39;spe_line_name&#39;</span><span class="p">]</span>
+<span class="n">snr_gf</span> <span class="o">=</span> <span class="n">obj_tab</span><span class="p">[</span><span class="s1">&#39;spe_line_snr_gf&#39;</span><span class="p">]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span><span class="p">,</span> <span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
 
 <span class="k">for</span> <span class="n">wl</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">line_names</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">snr_gf</span><span class="p">)):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">wl</span><span class="o">+</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="s1">&#39; SNR=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">snr</span><span class="p">)),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">wl</span><span class="o">+</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="s1">&#39; SNR=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">snr</span><span class="p">)),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (microns)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (erg / (Angstrom s cm2))&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (erg / (s cm2))&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.85</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Object ID is &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">obj_id</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -929,15 +882,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-vis-image-and-pull-the-filename">Choose the VIS image and pull the filename:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mer-image-from-irsa-directly">2. Read in the MER image from IRSA directly</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-mer-image-to-this-notebook">Download the MER image to this notebook</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-just-the-primary-image">Extract just the primary image</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-quick-and-simple-plot-to-show-the-full-mer-image-with-its-large-fov">Make a quick and simple plot to show the full MER image, with its large FOV</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-spe-catalog-from-irsa-directly-to-this-notebook">3. Download SPE catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-spe-catalog-from-irsa-directly-to-this-notebook">2. Download SPE catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
 </ul>
 </li>

@@ -542,7 +542,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
-<span class="c1"># !pip install numpy astropy matplotlib pyvo sep&gt;=1.4 fsspec pandas</span>
+<span class="c1"># !pip install numpy astropy&gt;=5.3 matplotlib pyvo sep&gt;=1.4 fsspec pandas</span>
 </pre></div>
 </div>
 </div>
@@ -712,11 +712,21 @@ Please also define a suitable download directory; by default it will be <code cl
 </div>
 </div>
 </div>
-<p>Make a simple plot to show the large field of view of the full MER mosaic.</p>
+<p>Due to the large field of view of the MER mosaic, let’s cut out a smaller section (2”x2”)of the MER mosaic to inspect the image</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
 <span class="n">colorbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Uncomment the code below to plot an image of the entire field of view of the MER mosaic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Full MER mosaic, may take a minute for python to create this image</span>
+<span class="c1"># plt.imshow(im_mer_irsa, cmap=&#39;gray&#39;, origin=&#39;lower&#39;, norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))</span>
+<span class="c1"># colorbar = plt.colorbar()</span>
 </pre></div>
 </div>
 </div>
