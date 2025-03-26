@@ -50,7 +50,7 @@ Each MER image is approximately 1.47 GB. Downloading can take some time.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy matplotlib pyvo sep>=1.4 fsspec pandas
+# !pip install numpy astropy>=6.0 matplotlib pyvo sep>=1.4 fsspec pandas
 ```
 
 ```{code-cell} ipython3
@@ -184,11 +184,19 @@ im_mer_irsa=hdu_mer_irsa[0].data
 print(im_mer_irsa.shape)
 ```
 
-Make a simple plot to show the large field of view of the full MER mosaic.
+Due to the large field of view of the MER mosaic, let's cut out a smaller section (2"x2")of the MER mosaic to inspect the image
 
 ```{code-cell} ipython3
-plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+plt.imshow(im_mer_irsa[0:1200,0:1200], cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa[0:1200,0:1200], interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 colorbar = plt.colorbar()
+```
+
+Uncomment the code below to an image of the full field of view of the MER mosaic.
+
+```{code-cell} ipython3
+# # Full MER mosaic, may take a minute for python to create this image
+# plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+# colorbar = plt.colorbar()
 ```
 
 ## 3. Create multiwavelength Euclid Q1 MER cutouts of a region of interest
