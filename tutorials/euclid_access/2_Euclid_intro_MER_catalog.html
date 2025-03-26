@@ -208,6 +208,7 @@
 <li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 MER catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Introduction to Euclid Q1 PHZ catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
 </ul>
@@ -1123,6 +1124,15 @@ cntr                            None  None
 </div>
 </div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The MER catalog contains 476 columns, below are a few highlights:</p>
+<ul class="simple">
+<li><p>object_id</p></li>
+<li><p>flux_vis_psf, mer.flux_y_templfit,flux_j_templfit, mer.flux_h_templfit</p></li>
+<li><p>fwhm</p></li>
+</ul>
+</div>
 </section>
 <section id="define-the-following-adql-query-to-find-the-first-10k-stars-in-the-mer-catalog">
 <h3>Define the following ADQL query to find the first 10k stars in the MER catalog<a class="headerlink" href="#define-the-following-adql-query-to-find-the-first-10k-stars-in-the-mer-catalog" title="Link to this heading">#</a></h3>
@@ -1130,7 +1140,7 @@ cntr                            None  None
 <p>Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_stars</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;SELECT TOP 10000 mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, &quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_stars</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, &quot;</span>
     <span class="s2">&quot;mer.flux_j_templfit, mer.fluxerr_j_templfit, mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob &quot;</span>
     <span class="sa">f</span><span class="s2">&quot;FROM </span><span class="si">{</span><span class="n">table_mer</span><span class="si">}</span><span class="s2"> AS mer &quot;</span>
     <span class="s2">&quot;WHERE  mer.flux_vis_psf &gt; 0 &quot;</span>
@@ -1174,6 +1184,7 @@ cntr                            None  None
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>object_id</th>
       <th>ra</th>
       <th>dec</th>
       <th>flux_vis_psf</th>
@@ -1191,6 +1202,7 @@ cntr                            None  None
   <tbody>
     <tr>
       <th>0</th>
+      <td>-590786812514737214</td>
       <td>59.078681</td>
       <td>-51.473721</td>
       <td>22.240271</td>
@@ -1206,6 +1218,7 @@ cntr                            None  None
     </tr>
     <tr>
       <th>1</th>
+      <td>-589579380514737675</td>
       <td>58.957938</td>
       <td>-51.473768</td>
       <td>22.773048</td>
@@ -1221,6 +1234,7 @@ cntr                            None  None
     </tr>
     <tr>
       <th>2</th>
+      <td>-589734969514776458</td>
       <td>58.973497</td>
       <td>-51.477646</td>
       <td>8.983518</td>
@@ -1236,6 +1250,7 @@ cntr                            None  None
     </tr>
     <tr>
       <th>3</th>
+      <td>-590771690514661391</td>
       <td>59.077169</td>
       <td>-51.466139</td>
       <td>131.335403</td>
@@ -1251,6 +1266,7 @@ cntr                            None  None
     </tr>
     <tr>
       <th>4</th>
+      <td>-585180135514680938</td>
       <td>58.518014</td>
       <td>-51.468094</td>
       <td>38.494297</td>

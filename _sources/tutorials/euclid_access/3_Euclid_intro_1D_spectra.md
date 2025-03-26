@@ -29,8 +29,6 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-++
-
 Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
 The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
 On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).

@@ -1,0 +1,1994 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to Euclid Q1 PHZ catalog &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/4_Euclid_intro_PHZ_catalog';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Euclid Quick Release 1: SPE catalog" href="5_Euclid_intro_SPE_catalog.html" />
+    <link rel="prev" title="Introduction to Euclid Q1 1D spectra" href="3_Euclid_intro_1D_spectra.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="NASA/IPAC Infrared Science Archive - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 PHZ catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/euclid_access/4_Euclid_intro_PHZ_catalog.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to Euclid Q1 PHZ catalog</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec">1. Find the MER Tile ID that corresponds to a given RA and Dec</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-irsa-to-search-for-all-euclid-data-on-this-target">Use IRSA to search for all Euclid data on this target</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-phz-catalog-from-irsa">2. Download PHZ catalog from IRSA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec">Find some galaxies between 1.4 and 1.6 at a selected RA and Dec</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mer-image-from-irsa-directly">3. Read in the MER image from IRSA directly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overplot-the-catalog-on-the-mer-mosaic-image">4. Overplot the catalog on the MER mosaic image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly">5. Load the image on Firefly to be able to interact with the data directly</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vizualize-the-image-with-firefly">Vizualize the image with Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-table-as-a-csv-for-firefly-upload">Save the table as a CSV for Firefly upload</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image">Upload the CSV table to Firefly and display as an overlay on the FITS image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-phz-catalog">
+<h1>Introduction to Euclid Q1 PHZ catalog<a class="headerlink" href="#introduction-to-euclid-q1-phz-catalog" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<p>By the end of this tutorial, you will:</p>
+<ul class="simple">
+<li><p>Understand the basic characteristics of Euclid Q1 photo-z catalog and how to match it with MER mosaics.</p></li>
+<li><p>Understand what PHZ catalogs are available and how to view the columns in those catalogs.</p></li>
+<li><p>How to query with ADQL in the PHZ catalog to find galaxies between a redshift of 1.4 and 1.6.</p></li>
+<li><p>Pull and plot a spectrum of one of the galaxies in that catalog.</p></li>
+<li><p>Cutout an image of the galaxy to view it close up.</p></li>
+<li><p>Learn how to upload images and catalogs to Firefly to inspect individual sources in greater detail.</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).</p>
+<p>These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport&#64;ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).</p>
+<p>The photometry of every source is processed through a photometric redshift fitting pipeline, producing several different catalogs. This notebook provides an introduction to photo-z catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install requests matplotlib pandas astropy pyvo fsspec firefly_client</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.nddata</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cutout2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageNormalize</span><span class="p">,</span> <span class="n">PercentileInterval</span><span class="p">,</span> <span class="n">AsinhStretch</span><span class="p">,</span> <span class="n">LogStretch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec">
+<h2>1. Find the MER Tile ID that corresponds to a given RA and Dec<a class="headerlink" href="#find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec" title="Link to this heading">#</a></h2>
+<p>In this case, choose random coordinates to show a different MER mosaic image. Search a radius around these coordinates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra</span> <span class="o">=</span> <span class="mi">268</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="mi">66</span>
+<span class="n">search_radius</span><span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="use-irsa-to-search-for-all-euclid-data-on-this-target">
+<h3>Use IRSA to search for all Euclid data on this target<a class="headerlink" href="#use-irsa-to-search-for-all-euclid-data-on-this-target" title="Link to this heading">#</a></h3>
+<p>This searches specifically in the euclid_DpdMerBksMosaic “collection” which is the MER images and catalogs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_service</span><span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">sia2</span><span class="o">.</span><span class="n">SIA2Service</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/SIA&#39;</span><span class="p">)</span>
+
+<span class="n">image_table</span> <span class="o">=</span> <span class="n">irsa_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the <a class="reference external" href="https://euclid.caltech.edu/page/euclid-faq-tech/">Euclid documentation at IPAC</a>.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert the table to pandas dataframe</span>
+<span class="n">df_im_irsa</span><span class="o">=</span><span class="n">image_table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">=</span><span class="n">df_im_irsa</span><span class="p">[</span> <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;science&#39;</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;facility_name&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Euclid&#39;</span><span class="p">)]</span>
+
+<span class="n">df_im_euclid</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>s_ra</th>
+      <th>s_dec</th>
+      <th>facility_name</th>
+      <th>instrument_name</th>
+      <th>dataproduct_subtype</th>
+      <th>calib_level</th>
+      <th>dataproduct_type</th>
+      <th>energy_bandpassname</th>
+      <th>energy_emband</th>
+      <th>obs_id</th>
+      <th>...</th>
+      <th>t_resolution</th>
+      <th>t_xel</th>
+      <th>obs_publisher_did</th>
+      <th>s_fov</th>
+      <th>em_xel</th>
+      <th>pol_states</th>
+      <th>pol_xel</th>
+      <th>cloud_access</th>
+      <th>o_ucd</th>
+      <th>upload_row_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>267.667698</td>
+      <td>66.000014</td>
+      <td>Euclid</td>
+      <td>NISP</td>
+      <td>science</td>
+      <td>3</td>
+      <td>image</td>
+      <td>H</td>
+      <td>Infrared</td>
+      <td>102159190_NISP</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+      <td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?1021591...</td>
+      <td>0.533333</td>
+      <td>&lt;NA&gt;</td>
+      <td></td>
+      <td>&lt;NA&gt;</td>
+      <td>{"aws": {"bucket_name": "nasa-irsa-euclid-q1",...</td>
+      <td></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>267.667698</td>
+      <td>66.000014</td>
+      <td>Euclid</td>
+      <td>NISP</td>
+      <td>science</td>
+      <td>3</td>
+      <td>image</td>
+      <td>Y</td>
+      <td>Infrared</td>
+      <td>102159190_NISP</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+      <td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?1021591...</td>
+      <td>0.533333</td>
+      <td>&lt;NA&gt;</td>
+      <td></td>
+      <td>&lt;NA&gt;</td>
+      <td>{"aws": {"bucket_name": "nasa-irsa-euclid-q1",...</td>
+      <td></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>267.667698</td>
+      <td>66.000014</td>
+      <td>Euclid</td>
+      <td>NISP</td>
+      <td>science</td>
+      <td>3</td>
+      <td>image</td>
+      <td>J</td>
+      <td>Infrared</td>
+      <td>102159190_NISP</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+      <td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?1021591...</td>
+      <td>0.533333</td>
+      <td>&lt;NA&gt;</td>
+      <td></td>
+      <td>&lt;NA&gt;</td>
+      <td>{"aws": {"bucket_name": "nasa-irsa-euclid-q1",...</td>
+      <td></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>267.667698</td>
+      <td>66.000014</td>
+      <td>Euclid</td>
+      <td>VIS</td>
+      <td>science</td>
+      <td>3</td>
+      <td>image</td>
+      <td>VIS</td>
+      <td>Optical</td>
+      <td>102159190_VIS</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+      <td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?1021591...</td>
+      <td>0.533333</td>
+      <td>&lt;NA&gt;</td>
+      <td></td>
+      <td>&lt;NA&gt;</td>
+      <td>{"aws": {"bucket_name": "nasa-irsa-euclid-q1",...</td>
+      <td></td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>4 rows × 51 columns</p>
+</div></div></div>
+</div>
+<p>Choose the VIS image and pull the filename and tileID</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span><span class="o">=</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">tileID</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;TILE\s*(\d</span><span class="si">{9}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The MER tile ID for this object is :&#39;</span><span class="p">,</span><span class="n">tileID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The MER tile ID for this object is : 102159190
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="download-phz-catalog-from-irsa">
+<h2>2. Download PHZ catalog from IRSA<a class="headerlink" href="#download-phz-catalog-from-irsa" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Use IRSA to search for catalogs</span>
+
+<span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
+
+
+<span class="c1">## Search for all tables in IRSA labled as euclid_q1</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
+<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span> <span class="ow">and</span> <span class="s2">&quot;euclid_q1&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
+            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>euclid.artifact_euclid_q1
+    Euclid Q1 CAOM Artifact Table
+
+euclid.observation_euclid_q1
+    Euclid Q1 CAOM Observation Table
+euclid.plane_euclid_q1
+    Euclid Q1 CAOM Plane Table
+euclid_q1_mer_catalogue
+    Euclid Q1 MER Catalog
+
+euclid_q1_mer_morphology
+    Euclid Q1 MER Morphology
+euclid_q1_phz_photo_z
+    Euclid Q1 PHZ Photo-z Catalog
+
+euclid_q1_spe_lines_atomic_indices
+    Euclid Q1 SPE Lines Catalog - Atomic Indices
+euclid_q1_spe_lines_continuum_features
+    Euclid Q1 SPE Lines Catalog - Continuum Features
+
+euclid_q1_spe_lines_line_features
+    Euclid Q1 SPE Lines Catalog - Spectral Lines
+euclid_q1_spe_lines_molecular_indices
+    Euclid Q1 SPE Lines Catalog - Molecular Indices
+
+euclid_q1_spectro_zcatalog_spe_classification
+    Euclid Q1 SPE Redshift Catalog - Classification
+euclid_q1_spectro_zcatalog_spe_galaxy_candidates
+    Euclid Q1 SPE Redshift Catalog - Galaxy Candidates
+
+euclid_q1_spectro_zcatalog_spe_qso_candidates
+    Euclid Q1 SPE Redshift Catalog - QSO Candidates
+euclid_q1_spectro_zcatalog_spe_quality
+    Euclid Q1 SPE Redshift Catalog - Quality
+
+euclid_q1_spectro_zcatalog_spe_star_candidates
+    Euclid Q1 SPE Redshift Catalog - Star Candidates
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
+<span class="n">table_phz</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
+<span class="n">table_1dspectra</span><span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="learn-some-information-about-the-table">
+<h3>Learn some information about the table:<a class="headerlink" href="#learn-some-information-about-the-table" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>How many columns are there?</p></li>
+<li><p>List the column names</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">table_phz</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>67
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">## Currently no descriptions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>object_id                       None  Unique ID of the object in the survey, as set by MER
+phz_median                      None  The median of the PHZ PDF
+phz_mode_1                      None  The first mode of the PHZ PDF
+phz_mode_1_area                 None  The total area of the first mode
+phz_mode_2                      None  The second mode of the PHZ PDF
+phz_mode_2_area                 None  The total area of the second mode
+bias_id                         None  The identifier to be used for retrieving the bias correction shift from the bias correction map
+tom_bin_id                      None  The identifier of the tomographic bin the source belongs to (Equipopulated-bins)
+alt_tom_bin_id                  None  The identifier of the alternate tomographic bin the source belongs to (Equidistant-bins)
+pos_tom_bin_id                  None  The identifier of the photometric clustering tomographic bin the source belongs to (Equipopulated-bins)
+flag_som_tomobin                None  Flag telling if the source belong to a combination of SOM cell and Tom. bin which can be calibrated (=1) or not (=0).
+flag_som_alt_tomobin            None  Flag telling if the source belong to a combination of SOM cell and Alt Tom. bin which can be calibrated (=1) or not (=0).
+flag_som_pos_tomobin            None  Flag telling if the source belong to a combination of SOM cell and POS Tom. bin which can be calibrated (=1) or not (=0).
+flux_u_ext_decam_unif           uJy  Unified flux recomputed after correction from galactic extinction and filter shifts
+flux_g_ext_decam_unif           uJy  None
+flux_r_ext_decam_unif           uJy  None
+flux_i_ext_decam_unif           uJy  None
+flux_z_ext_decam_unif           uJy  None
+flux_u_ext_lsst_unif            uJy  None
+flux_g_ext_lsst_unif            uJy  None
+flux_r_ext_lsst_unif            uJy  None
+flux_i_ext_lsst_unif            uJy  None
+flux_z_ext_lsst_unif            uJy  None
+flux_u_ext_megacam_unif         uJy  None
+flux_g_ext_hsc_unif             uJy  None
+flux_r_ext_megacam_unif         uJy  None
+flux_i_ext_panstarrs_unif       uJy  None
+flux_z_ext_hsc_unif             uJy  None
+flux_vis_unif                   uJy  None
+flux_y_unif                     uJy  None
+flux_j_unif                     uJy  None
+flux_h_unif                     uJy  None
+fluxerr_u_ext_decam_unif        uJy  None
+fluxerr_g_ext_decam_unif        uJy  None
+fluxerr_r_ext_decam_unif        uJy  None
+fluxerr_i_ext_decam_unif        uJy  None
+fluxerr_z_ext_decam_unif        uJy  None
+fluxerr_u_ext_lsst_unif         uJy  None
+fluxerr_g_ext_lsst_unif         uJy  None
+fluxerr_r_ext_lsst_unif         uJy  None
+fluxerr_i_ext_lsst_unif         uJy  None
+fluxerr_z_ext_lsst_unif         uJy  None
+fluxerr_u_ext_megacam_unif      uJy  None
+fluxerr_g_ext_hsc_unif          uJy  None
+fluxerr_r_ext_megacam_unif      uJy  None
+fluxerr_i_ext_panstarrs_unif    uJy  None
+fluxerr_z_ext_hsc_unif          uJy  None
+fluxerr_vis_unif                uJy  None
+fluxerr_y_unif                  uJy  None
+fluxerr_j_unif                  uJy  None
+fluxerr_h_unif                  uJy  None
+photometric_system              None  Encode the Photometric band configuration (indicating also the number of missing columns)
+phz_classification              None  Classification flag: 1 if the source is accepted as star, 2 if it is accepted as a galaxy, 4 if it is accepted as a QSO, 8 if the source is acce...&quot;
+phz_flags                       None  An integer containing the flags of the PHZ processing. Meaning: 0 =&gt; OK, 1 =&gt; NNPZ flag: no close neighbor, 10 not VIS detected, 11 missing band, 12 t...
+phz_weight                      NA  Probability to be a usable source at VIS MAG=23.5
+best_chi2                       None  Chi2 of the best fit model or the closest neighbor
+phz_70_int1                     None  The smallest PHZ PDF interval containing 70% of the probability - lower value
+phz_70_int2                     None  The smallest PHZ PDF interval containing 70% of the probability - upper value
+phz_90_int1                     None  The smallest PHZ PDF interval containing 90% of the probability - lower value
+phz_90_int2                     None  The smallest PHZ PDF interval containing 90% of the probability - upper value
+phz_95_int1                     None  The smallest PHZ PDF interval containing 95% of the probability - upper value
+phz_95_int2                     None  None
+ie_cuts_weights1                None  Vector of probability to be a usable source for VIS MAG cut 20.25
+ie_cuts_weights2                None  Vector of probability to be a usable source for VIS MAG cut 21.25
+ie_cuts_weights3                None  Vector of probability to be a usable source for VIS MAG cut 22.25
+ie_cuts_weights4                None  Vector of probability to be a usable source for VIS MAG cut 24.5
+cntr                            None  entry counter (key) number (unique within table)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The PHZ catalog contains 67 columns, below are a few highlights:</p>
+<ul class="simple">
+<li><p>object_id</p></li>
+<li><p>flux_vis_unif, flux_y_unif, flux_j_unif, flux_h_unif</p></li>
+<li><p>median redshift (phz_median)</p></li>
+<li><p>phz_classification</p></li>
+<li><p>phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The phz_catalog on IRSA has more columns than it does on the ESA archive.
+This is because the ESA catalog stores some information in one column (for example, phz_90_int is stored as [lower, upper], rather than in two separate columns).</p>
+<p>The fluxes are different from the fluxes derived in the MER catalog.
+The _unif fluxes are: “Unified flux recomputed after correction from galactic extinction and filter shifts”.</p>
+</div>
+</section>
+<section id="find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec">
+<h3>Find some galaxies between 1.4 and 1.6 at a selected RA and Dec<a class="headerlink" href="#find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec" title="Link to this heading">#</a></h3>
+<p>We specify the following conditions on our search:</p>
+<ul class="simple">
+<li><p>We select just the galaxies where the flux is greater than zero, to ensure the appear in all four of the Euclid MER images.</p></li>
+<li><p>Select only objects in a circle (search radius selected below) around our selected RA and Dec</p></li>
+<li><p>phz_classification =2 means we select only galaxies</p></li>
+<li><p>Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 20%</p></li>
+<li><p>Select just the galaxies between a median redshift of 1.4 and 1.6</p></li>
+</ul>
+<p>Search based on <code class="docutils literal notranslate"><span class="pre">tileID</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT DISTINCT mer.object_id,mer.ra, mer.dec, phz.flux_vis_unif, phz.flux_y_unif, </span><span class="se">\</span>
+<span class="s2">phz.flux_j_unif, phz.flux_h_unif, phz.phz_classification, phz.phz_median, phz.phz_90_int1, phz.phz_90_int2 </span><span class="se">\</span>
+<span class="s2">FROM </span><span class="si">{</span><span class="n">table_mer</span><span class="si">}</span><span class="s2"> AS mer </span><span class="se">\</span>
+<span class="s2">JOIN </span><span class="si">{</span><span class="n">table_phz</span><span class="si">}</span><span class="s2"> as phz </span><span class="se">\</span>
+<span class="s2">ON mer.object_id = phz.object_id </span><span class="se">\</span>
+<span class="s2">WHERE phz.flux_vis_unif&gt; 0 </span><span class="se">\</span>
+<span class="s2">AND  phz.flux_y_unif &gt; 0 </span><span class="se">\</span>
+<span class="s2">AND phz.flux_j_unif &gt; 0 </span><span class="se">\</span>
+<span class="s2">AND phz.flux_h_unif &gt; 0 </span><span class="se">\</span>
+<span class="s2">AND phz.phz_classification = 2 </span><span class="se">\</span>
+<span class="s2">AND mer.tileid = </span><span class="si">{</span><span class="n">tileID</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">AND ((phz.phz_90_int2 - phz.phz_90_int1) / (1 + phz.phz_median)) &lt; 0.20 </span><span class="se">\</span>
+<span class="s2">AND phz.phz_median BETWEEN 1.4 AND 1.6 </span><span class="se">\</span>
+<span class="s2">&quot;</span>
+<span class="n">adql</span>
+
+
+<span class="c1">## Use TAP with this ADQL string using pyvo</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
+
+
+<span class="c1">## Convert table to pandas dataframe</span>
+<span class="n">df_g_irsa</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># Display first few rows</span>
+<span class="n">df_g_irsa</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>object_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>flux_vis_unif</th>
+      <th>flux_y_unif</th>
+      <th>flux_j_unif</th>
+      <th>flux_h_unif</th>
+      <th>phz_classification</th>
+      <th>phz_median</th>
+      <th>phz_90_int1</th>
+      <th>phz_90_int2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2673280431657627046</td>
+      <td>267.328043</td>
+      <td>65.762705</td>
+      <td>0.720124</td>
+      <td>1.799514</td>
+      <td>1.940637</td>
+      <td>2.235945</td>
+      <td>2</td>
+      <td>1.60</td>
+      <td>1.40</td>
+      <td>1.88</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2679336843657639155</td>
+      <td>267.933684</td>
+      <td>65.763916</td>
+      <td>0.722766</td>
+      <td>2.488486</td>
+      <td>3.256962</td>
+      <td>2.976399</td>
+      <td>2</td>
+      <td>1.45</td>
+      <td>1.27</td>
+      <td>1.68</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2676882513657739200</td>
+      <td>267.688251</td>
+      <td>65.773920</td>
+      <td>0.825096</td>
+      <td>2.388377</td>
+      <td>3.044882</td>
+      <td>3.187040</td>
+      <td>2</td>
+      <td>1.58</td>
+      <td>1.43</td>
+      <td>1.79</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2670811296657533436</td>
+      <td>267.081130</td>
+      <td>65.753344</td>
+      <td>0.358990</td>
+      <td>1.459581</td>
+      <td>2.318835</td>
+      <td>2.682667</td>
+      <td>2</td>
+      <td>1.57</td>
+      <td>1.34</td>
+      <td>1.85</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2677216612657726127</td>
+      <td>267.721661</td>
+      <td>65.772613</td>
+      <td>1.411104</td>
+      <td>4.948132</td>
+      <td>7.667105</td>
+      <td>11.122022</td>
+      <td>2</td>
+      <td>1.47</td>
+      <td>1.33</td>
+      <td>1.79</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="read-in-the-mer-image-from-irsa-directly">
+<h2>3. Read in the MER image from IRSA directly<a class="headerlink" href="#read-in-the-mer-image-from-irsa-directly" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102159190-6E6EF8_20241025T010045.358775Z_00.00.fits
+</pre></div>
+</div>
+</div>
+</div>
+<p>Download the MER image – note this file is about 1.46 GB</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hdu_mer_irsa</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">head_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">hdu_mer_irsa</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/80f0c2770fde7676368babbee90552ed/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      48   (19200, 19200)   float32
+None
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Now you’ve downloaded this large file, if you would like to save it to disk, uncomment the following cell</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># download_path=&#39;/yourlocalpath/&#39;</span>
+<span class="c1"># hdu_mer_irsa.writeto(download_path+&#39;./MER_image_VIS.fits&#39;, overwrite=True)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="overplot-the-catalog-on-the-mer-mosaic-image">
+<h2>4. Overplot the catalog on the MER mosaic image<a class="headerlink" href="#overplot-the-catalog-on-the-mer-mosaic-image" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_g_irsa</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>object_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>flux_vis_unif</th>
+      <th>flux_y_unif</th>
+      <th>flux_j_unif</th>
+      <th>flux_h_unif</th>
+      <th>phz_classification</th>
+      <th>phz_median</th>
+      <th>phz_90_int1</th>
+      <th>phz_90_int2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2673280431657627046</td>
+      <td>267.328043</td>
+      <td>65.762705</td>
+      <td>0.720124</td>
+      <td>1.799514</td>
+      <td>1.940637</td>
+      <td>2.235945</td>
+      <td>2</td>
+      <td>1.60</td>
+      <td>1.40</td>
+      <td>1.88</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2679336843657639155</td>
+      <td>267.933684</td>
+      <td>65.763916</td>
+      <td>0.722766</td>
+      <td>2.488486</td>
+      <td>3.256962</td>
+      <td>2.976399</td>
+      <td>2</td>
+      <td>1.45</td>
+      <td>1.27</td>
+      <td>1.68</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2676882513657739200</td>
+      <td>267.688251</td>
+      <td>65.773920</td>
+      <td>0.825096</td>
+      <td>2.388377</td>
+      <td>3.044882</td>
+      <td>3.187040</td>
+      <td>2</td>
+      <td>1.58</td>
+      <td>1.43</td>
+      <td>1.79</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2670811296657533436</td>
+      <td>267.081130</td>
+      <td>65.753344</td>
+      <td>0.358990</td>
+      <td>1.459581</td>
+      <td>2.318835</td>
+      <td>2.682667</td>
+      <td>2</td>
+      <td>1.57</td>
+      <td>1.34</td>
+      <td>1.85</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2677216612657726127</td>
+      <td>267.721661</td>
+      <td>65.772613</td>
+      <td>1.411104</td>
+      <td>4.948132</td>
+      <td>7.667105</td>
+      <td>11.122022</td>
+      <td>2</td>
+      <td>1.47</td>
+      <td>1.33</td>
+      <td>1.79</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Use the WCS package to extract the coordinates from the header of the image</span>
+<span class="n">wcs_irsa</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">head_mer_irsa</span><span class="p">)</span> <span class="c1"># VIS</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Convert the catalog to match the pixels in the image</span>
+<span class="n">xy_irsa</span> <span class="o">=</span> <span class="n">wcs_irsa</span><span class="o">.</span><span class="n">all_world2pix</span><span class="p">(</span><span class="n">df_g_irsa</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">],</span><span class="n">df_g_irsa</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_g_irsa</span><span class="p">[</span><span class="s1">&#39;x_pix&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">xy_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df_g_irsa</span><span class="p">[</span><span class="s1">&#39;y_pix&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">xy_irsa</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_g_irsa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>object_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>flux_vis_unif</th>
+      <th>flux_y_unif</th>
+      <th>flux_j_unif</th>
+      <th>flux_h_unif</th>
+      <th>phz_classification</th>
+      <th>phz_median</th>
+      <th>phz_90_int1</th>
+      <th>phz_90_int2</th>
+      <th>x_pix</th>
+      <th>y_pix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2673280431657627046</td>
+      <td>267.328043</td>
+      <td>65.762705</td>
+      <td>0.720124</td>
+      <td>1.799514</td>
+      <td>1.940637</td>
+      <td>2.235945</td>
+      <td>2</td>
+      <td>1.60</td>
+      <td>1.40</td>
+      <td>1.88</td>
+      <td>14619.163517</td>
+      <td>1069.886708</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2679336843657639155</td>
+      <td>267.933684</td>
+      <td>65.763916</td>
+      <td>0.722766</td>
+      <td>2.488486</td>
+      <td>3.256962</td>
+      <td>2.976399</td>
+      <td>2</td>
+      <td>1.45</td>
+      <td>1.27</td>
+      <td>1.68</td>
+      <td>5668.763659</td>
+      <td>1108.228521</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2676882513657739200</td>
+      <td>267.688251</td>
+      <td>65.773920</td>
+      <td>0.825096</td>
+      <td>2.388377</td>
+      <td>3.044882</td>
+      <td>3.187040</td>
+      <td>2</td>
+      <td>1.58</td>
+      <td>1.43</td>
+      <td>1.79</td>
+      <td>9295.890760</td>
+      <td>1460.130383</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2670811296657533436</td>
+      <td>267.081130</td>
+      <td>65.753344</td>
+      <td>0.358990</td>
+      <td>1.459581</td>
+      <td>2.318835</td>
+      <td>2.682667</td>
+      <td>2</td>
+      <td>1.57</td>
+      <td>1.34</td>
+      <td>1.85</td>
+      <td>18271.321853</td>
+      <td>759.795144</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2677216612657726127</td>
+      <td>267.721661</td>
+      <td>65.772613</td>
+      <td>1.411104</td>
+      <td>4.948132</td>
+      <td>7.667105</td>
+      <td>11.122022</td>
+      <td>2</td>
+      <td>1.47</td>
+      <td>1.33</td>
+      <td>1.79</td>
+      <td>8802.310105</td>
+      <td>1413.356173</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1058</th>
+      <td>2675930466661025639</td>
+      <td>267.593047</td>
+      <td>66.102564</td>
+      <td>1.016183</td>
+      <td>2.997036</td>
+      <td>2.813130</td>
+      <td>3.143612</td>
+      <td>2</td>
+      <td>1.40</td>
+      <td>1.23</td>
+      <td>1.52</td>
+      <td>10688.193297</td>
+      <td>13291.955780</td>
+    </tr>
+    <tr>
+      <th>1059</th>
+      <td>2674621723661132945</td>
+      <td>267.462172</td>
+      <td>66.113295</td>
+      <td>1.068499</td>
+      <td>4.550787</td>
+      <td>6.249454</td>
+      <td>9.407725</td>
+      <td>2</td>
+      <td>1.41</td>
+      <td>1.26</td>
+      <td>1.49</td>
+      <td>12595.549086</td>
+      <td>13682.523420</td>
+    </tr>
+    <tr>
+      <th>1060</th>
+      <td>2677653637660969756</td>
+      <td>267.765364</td>
+      <td>66.096976</td>
+      <td>0.735132</td>
+      <td>2.869823</td>
+      <td>3.954275</td>
+      <td>6.066887</td>
+      <td>2</td>
+      <td>1.44</td>
+      <td>1.27</td>
+      <td>1.65</td>
+      <td>8174.868957</td>
+      <td>13091.234368</td>
+    </tr>
+    <tr>
+      <th>1061</th>
+      <td>2680471357662336316</td>
+      <td>268.047136</td>
+      <td>66.233632</td>
+      <td>0.301620</td>
+      <td>9.871189</td>
+      <td>0.980113</td>
+      <td>0.709466</td>
+      <td>2</td>
+      <td>1.40</td>
+      <td>1.35</td>
+      <td>1.46</td>
+      <td>4094.482406</td>
+      <td>18026.464045</td>
+    </tr>
+    <tr>
+      <th>1062</th>
+      <td>2680136216662261821</td>
+      <td>268.013622</td>
+      <td>66.226182</td>
+      <td>0.246667</td>
+      <td>0.316894</td>
+      <td>26.278128</td>
+      <td>0.231523</td>
+      <td>2</td>
+      <td>1.46</td>
+      <td>1.41</td>
+      <td>1.51</td>
+      <td>4579.234613</td>
+      <td>17755.464918</td>
+    </tr>
+  </tbody>
+</table>
+<p>1063 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>Pull the spectra on the top brightest source based on object ID</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_g_irsa_sort</span><span class="o">=</span><span class="n">df_g_irsa</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;flux_vis_unif&#39;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_g_irsa_sort</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>object_id</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>flux_vis_unif</th>
+      <th>flux_y_unif</th>
+      <th>flux_j_unif</th>
+      <th>flux_h_unif</th>
+      <th>phz_classification</th>
+      <th>phz_median</th>
+      <th>phz_90_int1</th>
+      <th>phz_90_int2</th>
+      <th>x_pix</th>
+      <th>y_pix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1033</th>
+      <td>2680858111662070857</td>
+      <td>268.085811</td>
+      <td>66.207086</td>
+      <td>12.238280</td>
+      <td>17.500370</td>
+      <td>19.604701</td>
+      <td>24.011402</td>
+      <td>2</td>
+      <td>1.50</td>
+      <td>1.49</td>
+      <td>1.50</td>
+      <td>3527.000647</td>
+      <td>17074.390142</td>
+    </tr>
+    <tr>
+      <th>1044</th>
+      <td>2674866190661231946</td>
+      <td>267.486619</td>
+      <td>66.123195</td>
+      <td>11.316831</td>
+      <td>17.058222</td>
+      <td>23.351348</td>
+      <td>28.275347</td>
+      <td>2</td>
+      <td>1.49</td>
+      <td>1.48</td>
+      <td>1.50</td>
+      <td>12238.148681</td>
+      <td>14037.826856</td>
+    </tr>
+    <tr>
+      <th>164</th>
+      <td>2677723345659208915</td>
+      <td>267.772335</td>
+      <td>65.920892</td>
+      <td>9.386899</td>
+      <td>19.839620</td>
+      <td>28.795505</td>
+      <td>41.933002</td>
+      <td>2</td>
+      <td>1.44</td>
+      <td>1.43</td>
+      <td>1.44</td>
+      <td>8062.614014</td>
+      <td>6752.374608</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span><span class="o">=</span><span class="n">df_g_irsa_sort</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">## Pull the data on these objects</span>
+<span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * </span><span class="se">\</span>
+<span class="s2">FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">AND uri IS NOT NULL &quot;</span>
+
+<span class="c1">## Pull the data on this particular galaxy</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
+<span class="n">df2</span><span class="o">=</span><span class="n">result2</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">df2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>objectid</th>
+      <th>tileid</th>
+      <th>uri</th>
+      <th>hdu</th>
+      <th>cntr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2674866190661231946</td>
+      <td>102159190</td>
+      <td>ibe/data/euclid/q1/SIR/102159190/EUC_SIR_W-COM...</td>
+      <td>951</td>
+      <td>58096</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Create the full filename/url</span>
+<span class="n">irsa_url</span><span class="o">=</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/&#39;</span>
+
+<span class="n">file_url</span><span class="o">=</span><span class="n">irsa_url</span><span class="o">+</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">file_url</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/SIR/102159190/EUC_SIR_W-COMBSPEC_102159190_2024-11-05T16:23:16.962976Z.fits&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Open the large FITS file without loading it entirely into memory</span>
+<span class="c1">## pulling out just the extension we want for the 1D spectra of our object</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">memmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">hdu</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdu</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df_obj_irsa</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: &#39;erg/s/cm2/Angstrom&#39; contains multiple slashes, which is discouraged by the FITS standard [astropy.units.format.generic]
+WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
+WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
+WARNING: UnitsWarning: &#39;erg2/s2/cm4/Angstrom2&#39; contains multiple slashes, which is discouraged by the FITS standard [astropy.units.format.generic]
+WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Now the data are read in, show an image</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength ($\AA$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux (erg / (Angstrom s cm2))&#39;</span><span class="p">)</span>
+<span class="c1"># plt.ylim(10,50)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Object ID is &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">obj_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Object ID is 2674866190661231946&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/f038cd21590d3ef25a093e7abacf5d314ae680373c5d7458e738f1b17796862f.png" src="../../_images/f038cd21590d3ef25a093e7abacf5d314ae680373c5d7458e738f1b17796862f.png" />
+</div>
+</div>
+<p>Let’s cut out a very small patch of the MER image to see what this galaxy looks like</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## How large do you want the image cutout to be?</span>
+<span class="n">im_cutout</span><span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+
+<span class="c1">## Use the ra and dec of the galaxy</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="n">df_g_irsa</span><span class="p">[</span><span class="n">df_g_irsa</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">obj_id</span><span class="p">][</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dec</span> <span class="o">=</span>  <span class="n">df_g_irsa</span><span class="p">[</span><span class="n">df_g_irsa</span><span class="p">[</span><span class="s1">&#39;object_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">obj_id</span><span class="p">][</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">coords_cutout</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">fsspec</span></code> to obtain a cutout of the fits file</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">use_fsspec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">header</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Read in the cutout of the image that you want</span>
+<span class="n">cutout_data</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coords_cutout</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">im_cutout</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">cutout_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+<span class="n">new_hdu</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cutout_data</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">to_header</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Plot a quick simple plot to show the cutout on the galaxy</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">new_hdu</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+           <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">new_hdu</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
+<span class="n">colorbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/39e9df7ac0a2f299e7c4a99aadf2d64dc690c44a7af5366f564c96f06934f4f7.png" src="../../_images/39e9df7ac0a2f299e7c4a99aadf2d64dc690c44a7af5366f564c96f06934f4f7.png" />
+</div>
+</div>
+</section>
+<section id="load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly">
+<h2>5. Load the image on Firefly to be able to interact with the data directly<a class="headerlink" href="#load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly" title="Link to this heading">#</a></h2>
+<p>Save the data locally if you have not already done so, in order to upload to IRSA viewer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">download_path</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output directory already created.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating data directory.&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating data directory.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="vizualize-the-image-with-firefly">
+<h3>Vizualize the image with Firefly<a class="headerlink" href="#vizualize-the-image-with-firefly" title="Link to this heading">#</a></h3>
+<p>First initialize the client, then set the path to the image, upload it to firefly, load it and align with WCS.</p>
+<p>Note this can take a while to upload the full MER image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/irsaviewer&#39;</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">align_images</span><span class="p">(</span><span class="n">lock_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wMy0yNg"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="save-the-table-as-a-csv-for-firefly-upload">
+<h3>Save the table as a CSV for Firefly upload<a class="headerlink" href="#save-the-table-as-a-csv-for-firefly-upload" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_path</span><span class="p">,</span> <span class="s2">&quot;mer_df.csv&quot;</span><span class="p">)</span>
+<span class="n">df_g_irsa</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image">
+<h3>Upload the CSV table to Firefly and display as an overlay on the FITS image<a class="headerlink" href="#upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uploaded_table</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded Table URL: </span><span class="si">{</span><span class="n">uploaded_table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">uploaded_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_9887740898610742451_mer_df.csv
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="about-this-notebook">
+<h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Author</strong>: Tiffany Meshkat (IPAC Scientist)</p>
+<p><strong>Updated</strong>: 2025-03-19</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="3_Euclid_intro_1D_spectra.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to Euclid Q1 1D spectra</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5_Euclid_intro_SPE_catalog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Euclid Quick Release 1: SPE catalog</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec">1. Find the MER Tile ID that corresponds to a given RA and Dec</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-irsa-to-search-for-all-euclid-data-on-this-target">Use IRSA to search for all Euclid data on this target</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-phz-catalog-from-irsa">2. Download PHZ catalog from IRSA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec">Find some galaxies between 1.4 and 1.6 at a selected RA and Dec</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mer-image-from-irsa-directly">3. Read in the MER image from IRSA directly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overplot-the-catalog-on-the-mer-mosaic-image">4. Overplot the catalog on the MER mosaic image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly">5. Load the image on Firefly to be able to interact with the data directly</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vizualize-the-image-with-firefly">Vizualize the image with Firefly</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-table-as-a-csv-for-firefly-upload">Save the table as a CSV for Firefly upload</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image">Upload the CSV table to Firefly and display as an overlay on the FITS image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
