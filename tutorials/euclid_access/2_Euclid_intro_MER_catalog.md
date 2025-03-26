@@ -92,6 +92,16 @@ for col in columns:
     print(f'{f"{col.name}":30s}  {col.unit}  {col.description}')
 ```
 
+```{tip}
+The MER catalog contains 476 columns, below are a few highlights:
+
+- object_id
+- flux_vis_psf, mer.flux_y_templfit,flux_j_templfit, mer.flux_h_templfit
+- fwhm
+```
+
++++
+
 ### Define the following ADQL query to find the first 10k stars in the MER catalog
 
 Since we are just using the MER catalog alone, it does not have a column for classification. We can use the point_like_flag = 1 or point_like_prob>0.99 for stars.
@@ -99,7 +109,7 @@ Since we are just using the MER catalog alone, it does not have a column for cla
 Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images
 
 ```{code-cell} ipython3
-adql_stars = ("SELECT TOP 10000 mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, "
+adql_stars = ("SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, "
     "mer.flux_j_templfit, mer.fluxerr_j_templfit, mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob "
     f"FROM {table_mer} AS mer "
     "WHERE  mer.flux_vis_psf > 0 "
