@@ -31,6 +31,9 @@ This notebook demonstrates accesses to a copy of the
 [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) MER Catalogs
 that is in Apache Parquet format, partitioned according to the
 Hierarchical Adaptive Tiling Scheme (HATS), and stored in an AWS S3 bucket.
+Parquet is a file format that enables flexible and efficient data access by, among other things,
+supporting the application of both column and row filters when reading the data (very similar to a SQL query)
+so that only the desired data is loaded into memory.
 
 This is a single parquet dataset which comprises all three MER Catalogs
 -- MER, MER Morphology, and MER Cutouts -- which have been joined by Object ID.
@@ -241,6 +244,6 @@ print(schema.field("RIGHT_ASCENSION-CUTOUTS").metadata)
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-03-24
+**Updated:** 2025-03-25
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
