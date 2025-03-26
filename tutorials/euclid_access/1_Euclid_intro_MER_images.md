@@ -50,7 +50,7 @@ Each MER image is approximately 1.47 GB. Downloading can take some time.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy>=6.0 matplotlib pyvo sep>=1.4 fsspec pandas
+# !pip install numpy astropy>=5.3 matplotlib pyvo sep>=1.4 fsspec pandas
 ```
 
 ```{code-cell} ipython3
@@ -191,7 +191,7 @@ plt.imshow(im_mer_irsa[0:1200,0:1200], cmap='gray', origin='lower', norm=ImageNo
 colorbar = plt.colorbar()
 ```
 
-Uncomment the code below to an image of the full field of view of the MER mosaic.
+Uncomment the code below to plot an image of the entire field of view of the MER mosaic.
 
 ```{code-cell} ipython3
 # # Full MER mosaic, may take a minute for python to create this image

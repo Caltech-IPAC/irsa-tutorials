@@ -48,7 +48,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib pandas astropy>=6.0 pyvo
+# !pip install matplotlib pandas astropy pyvo
 ```
 
 ```{code-cell} ipython3
