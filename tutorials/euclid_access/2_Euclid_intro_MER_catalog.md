@@ -92,11 +92,13 @@ for col in columns:
     print(f'{f"{col.name}":30s}  {col.unit}  {col.description}')
 ```
 
-## Note that the mer catalog contains 476 columns, below are a few highlights:
+```{tip}
+The MER catalog contains 476 columns, below are a few highlights:
 
 - object_id
 - flux_vis_psf, mer.flux_y_templfit,flux_j_templfit, mer.flux_h_templfit
 - fwhm
+```
 
 +++
 
