@@ -45,7 +45,7 @@ The photometry of every source is processed through a photometric redshift fitti
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas astropy pyvo fsspec firefly_client
+# !pip install requests matplotlib pandas astropy>5.2 pyvo fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
@@ -68,8 +68,6 @@ from astropy.wcs import WCS
 from firefly_client import FireflyClient
 import pyvo as vo
 ```
-
-+++
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
 
@@ -179,10 +177,32 @@ We specify the following conditions on our search:
 - phz_classification =2 means we select only galaxies
 - Using the phz_90_int1 and phz_90_int2, we select just the galaxies where the error on the photometric redshift is less than 20%
 - Select just the galaxies between a median redshift of 1.4 and 1.6
+- We search just a 3 arcminute box around an RA and Dec
 
 +++
 
 Search based on ``tileID``:
+
+```{code-cell} ipython3
+######################## User defined section ############################
+## How large do you want the image cutout to be?
+im_cutout= 5 * u.arcmin
+
+## What is the center of the cutout?
+ra_cutout = 267.8
+dec_cutout =  66
+ 
+coords_cutout = SkyCoord(ra_cutout, dec_cutout, unit=(u.deg, u.deg), frame='icrs')
+##########################################################################
+im_cutout_deg=im_cutout.to(u.deg).value
+
+## Create ra and dec bounds for the box
+ra0=ra_cutout-im_cutout_deg/2
+ra1=ra_cutout+im_cutout_deg/2
+
+dec0=dec_cutout-im_cutout_deg/2
+dec1=dec_cutout+im_cutout_deg/2
+```
 
 ```{code-cell} ipython3
 adql = f"SELECT DISTINCT mer.object_id,mer.ra, mer.dec, phz.flux_vis_unif, phz.flux_y_unif, \
@@ -190,12 +210,12 @@ phz.flux_j_unif, phz.flux_h_unif, phz.phz_classification, phz.phz_median, phz.ph
 FROM {table_mer} AS mer \
 JOIN {table_phz} as phz \
 ON mer.object_id = phz.object_id \
-WHERE phz.flux_vis_unif> 0 \
+WHERE 1 = CONTAINS(POINT('ICRS', mer.ra, mer.dec), CIRCLE('ICRS', {ra_cutout}, {dec_cutout}, {im_cutout_deg/2})) \
+AND phz.flux_vis_unif> 0 \
 AND  phz.flux_y_unif > 0 \
 AND phz.flux_j_unif > 0 \
 AND phz.flux_h_unif > 0 \
 AND phz.phz_classification = 2 \
-AND mer.tileid = {tileID} \
 AND ((phz.phz_90_int2 - phz.phz_90_int1) / (1 + phz.phz_median)) < 0.20 \
 AND phz.phz_median BETWEEN 1.4 AND 1.6 \
 "
@@ -213,40 +233,45 @@ df_g_irsa = result.to_table().to_pandas()
 df_g_irsa.head()
 ```
 
-## 3. Read in the MER image from IRSA directly
-
-
 ```{code-cell} ipython3
-print(filename)
+len(df_g_irsa)
 ```
 
-Download the MER image -- note this file is about 1.46 GB
+## 3. Read in a cutout of the MER image from IRSA directly
 
 ```{code-cell} ipython3
-fname = download_file(filename, cache=True)
-hdu_mer_irsa = fits.open(fname)
-head_mer_irsa = hdu_mer_irsa[0].header
+## Use fsspec to interact with the fits file without downloading the full file
+hdu = fits.open(filename, use_fsspec=True)
 
-print(hdu_mer_irsa.info())
-```
+## Store the header
+header = hdu[0].header
 
-```{tip}
-Now you've downloaded this large file, if you would like to save it to disk, uncomment the following cell
+## Read in the cutout of the image that you want
+cutout_data = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(hdu[0].header))
+
+## Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size
+new_hdu = fits.PrimaryHDU(data=cutout_data.data, header=header)
+new_hdu.header.update(cutout_data.wcs.to_header())
 ```
 
 ```{code-cell} ipython3
-# download_path='/yourlocalpath/'
-# hdu_mer_irsa.writeto(download_path+'./MER_image_VIS.fits', overwrite=True)
+im_mer_irsa = new_hdu.data
+```
+
+```{code-cell} ipython3
+im_mer_irsa.shape
+```
+
+```{code-cell} ipython3
+norm = ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch())
+plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=norm)
 ```
 
 ## 4. Overplot the catalog on the MER mosaic image
 
 ```{code-cell} ipython3
-df_g_irsa.head()
-```
-
-```{code-cell} ipython3
 ## Use the WCS package to extract the coordinates from the header of the image
+head_mer_irsa=new_hdu.header
 wcs_irsa=WCS(head_mer_irsa) # VIS
 ```
 
@@ -260,28 +285,39 @@ df_g_irsa['x_pix']=xy_irsa[0]
 df_g_irsa['y_pix']=xy_irsa[1]
 ```
 
+Due to the large field of view of the MER mosaic, let's cut out a smaller section (3'x3')of the MER mosaic to inspect the image
+
++++
+
+Plot MER catalog sources on the Euclid VIS image 3'x3' cutout
+
 ```{code-cell} ipython3
-df_g_irsa
+plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=LogStretch()))
+colorbar = plt.colorbar()
+plt.scatter(df_g_irsa['x_pix'], df_g_irsa['y_pix'], s=36, facecolors='none', edgecolors='red')
+
+plt.title('Galaxies between z = 1.4 and 1.6')
+plt.show()
 ```
 
 Pull the spectra on the top brightest source based on object ID
 
 ```{code-cell} ipython3
-df_g_irsa_sort=df_g_irsa.sort_values(by='flux_vis_unif',ascending=False)
+df_g_irsa_sort=df_g_irsa.sort_values(by='flux_h_unif',ascending=False)
 ```
 
 ```{code-cell} ipython3
-df_g_irsa_sort[0:3]
+df_g_irsa_sort.iloc[0:3]
 ```
 
 ```{code-cell} ipython3
-obj_id=df_g_irsa_sort['object_id'].iloc[1]
+obj_id=df_g_irsa_sort['object_id'].iloc[2]
+redshift = df_g_irsa_sort['phz_median'].iloc[2]
 
 ## Pull the data on these objects
 adql_object = f"SELECT * \
 FROM {table_1dspectra} \
-WHERE objectid = {obj_id} \
-AND uri IS NOT NULL "
+WHERE objectid = {obj_id}"
 
 ## Pull the data on this particular galaxy
 result2 = service.search(adql_object)
@@ -308,16 +344,18 @@ with fits.open(BytesIO(response.content), memmap=True) as hdul:
     df_obj_irsa = dat.to_pandas()
 ```
 
+### Now the data are read in, plot the spectrum
+
+Divide by 10000 to convert from Angstrom to micron
+
 ```{code-cell} ipython3
+plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
 
-## Now the data are read in, show an image
-
-plt.plot(df_obj_irsa['WAVELENGTH'], df_obj_irsa['SIGNAL'])
-
-plt.xlabel('Wavelength ($\AA$)')
-plt.ylabel('Flux (erg / (Angstrom s cm2))')
-# plt.ylim(10,50)
-plt.title('Object ID is '+str(obj_id))
+plt.xlabel('Wavelength (microns)')
+plt.ylabel('Flux (erg / (s cm2))')
+plt.xlim(1.25, 1.85)
+plt.ylim(-0.5,0.5)
+plt.title('Object ID is '+str(obj_id)+'with phz_median='+str(redshift))
 ```
 
 Let's cut out a very small patch of the MER image to see what this galaxy looks like
@@ -406,8 +444,8 @@ fc.show_table(uploaded_table)
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat (IPAC Scientist)
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal,  Shoubaneh Hemmati.
 
-**Updated**: 2025-03-19
+**Updated**: 2025-03-26
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
