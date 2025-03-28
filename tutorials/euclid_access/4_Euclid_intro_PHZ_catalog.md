@@ -221,8 +221,8 @@ AND phz.phz_median BETWEEN 1.4 AND 1.6 \
 adql
 
 
-## Use TAP with this ADQL string using pyvo
-result = service.search(adql)
+## Use TAP with this ADQL string
+result = Irsa.query_tap(adql)
 
 
 ## Convert table to pandas dataframe
@@ -319,7 +319,7 @@ FROM {table_1dspectra} \
 WHERE objectid = {obj_id}"
 
 ## Pull the data on this particular galaxy
-result2 = service.search(adql_object)
+result2 = Irsa.query_tap(adql_object)
 df2=result2.to_table().to_pandas()
 df2
 ```

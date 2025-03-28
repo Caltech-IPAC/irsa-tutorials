@@ -50,7 +50,7 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install numpy matplotlib astroquery>=0.4.10
+# !pip install numpy matplotlib 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
@@ -67,8 +67,7 @@ from astroquery.ipac.irsa import Irsa
 First, have a look at what Euclid catalogs are available. With the ``list_catalogs`` functionality, we'll receive a list of the name of the catalogs as well as their brief desciption.
 
 ```{code-cell} ipython3
-tables = Irsa.list_catalogs(filter='euclid')
-tables
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ### Choose the Euclid MER table
@@ -77,7 +76,7 @@ tables
 table_mer = 'euclid_q1_mer_catalogue'
 ```
 
-### Learn some information about the table:
+### Learn some information about the MER catalog:
 - How many columns are there?
 - List the column names
 
