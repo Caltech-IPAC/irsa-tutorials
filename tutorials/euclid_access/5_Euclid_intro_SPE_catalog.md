@@ -54,13 +54,12 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 ```
 
 ```{code-cell} ipython3
-from io import BytesIO
 import re
+import urllib
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import requests
 
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
@@ -213,14 +212,12 @@ df2
 This involves reading in the spectrum without readin in the full FITS file, just pulling the extension we want.
 
 ```{code-cell} ipython3
-irsa_url = 'https://irsa.ipac.caltech.edu/'
+file_uri = urllib.parse.urljoin(Irsa.tap_url, result2['uri'][0])
+file_uri
+```
 
-file_url = irsa_url + df2['uri'].iloc[0]
-file_url
-
-response = requests.get(file_url)
-
-with fits.open(BytesIO(response.content), memmap=True) as hdul:
+```{code-cell} ipython3
+with fits.open(file_uri) as hdul:
     hdu = hdul[df2['hdu'].iloc[0]]
     dat = Table.read(hdu, format='fits', hdu=1)
     df_obj_irsa = dat.to_pandas()
