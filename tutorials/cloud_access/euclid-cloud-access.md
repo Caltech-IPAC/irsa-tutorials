@@ -41,7 +41,7 @@ Euclid Q1 data were released on-premises at IPAC and in the cloud via Amazon Web
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs astropy astroquery>=0.4.10 matploltib
+# !pip install s3fs astropy astroquery>=0.4.10 matplotlib
 ```
 
 ```{code-cell} ipython3
