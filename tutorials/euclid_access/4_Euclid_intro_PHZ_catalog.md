@@ -51,15 +51,14 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
+# !pip install matplotlib pandas 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
-from io import BytesIO
 import os
 import re
+import urllib
 
-import requests
 import matplotlib.pyplot as plt
 
 from astropy.coordinates import SkyCoord
@@ -324,20 +323,15 @@ df2=result2.to_table().to_pandas()
 df2
 ```
 
-```{code-cell} ipython3
-## Create the full filename/url
-irsa_url='https://irsa.ipac.caltech.edu/'
+Pull out the file name from the ``result`` table:
 
-file_url=irsa_url+df2['uri'].iloc[0]
-file_url
+```{code-cell} ipython3
+file_uri = urllib.parse.urljoin(Irsa.tap_url, result2['uri'][0])
+file_uri
 ```
 
 ```{code-cell} ipython3
-## Open the large FITS file without loading it entirely into memory
-## pulling out just the extension we want for the 1D spectra of our object
-response = requests.get(file_url)
-
-with fits.open(BytesIO(response.content), memmap=True) as hdul:
+with fits.open(file_uri) as hdul:
     hdu = hdul[df2['hdu'].iloc[0]]
     dat = Table.read(hdu, format='fits', hdu=1)
     df_obj_irsa = dat.to_pandas()
