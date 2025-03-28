@@ -143,7 +143,7 @@ columns = [
     "FLUX_H_TEMPLFIT",
     "POINT_LIKE_FLAG",
 ]
-euclid_lsdb = lsdb.read_hats(UPath(f"s3://{s3_bucket}/{s3_key}"), columns=columns)
+euclid_lsdb = lsdb.read_hats(euclid_s3_path, columns=columns)
 
 # Set up the query for likely stars.
 star_cuts = "FLUX_VIS_PSF > 0 & FLUX_Y_TEMPLFIT > 0 & FLUX_J_TEMPLFIT > 0 & FLUX_H_TEMPLFIT > 0 & POINT_LIKE_FLAG == 1"
