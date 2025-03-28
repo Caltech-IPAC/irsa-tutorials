@@ -53,6 +53,7 @@ This notebook demonstrates the basics.
 ## Installs and imports
 
 ```{code-cell}
+# !pip uninstall -y numpy pyerfa
 # !pip install 'hats>=0.5' 'lsdb>=0.5' matplotlib numpy s3fs
 ```
 
@@ -65,6 +66,9 @@ import lsdb
 import matplotlib.colors
 import matplotlib.pyplot as plt
 import numpy as np
+# NOTE: If you run into an error that starts with,
+# "A module that was compiled using NumPy 1.x cannot be run in NumPy 2.1.3 as it may crash.",
+# make sure you have restarted the kernel since doing `pip install`. Then re-run the cell.
 ```
 
 ## 1. Setup
