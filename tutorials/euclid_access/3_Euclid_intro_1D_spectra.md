@@ -51,7 +51,7 @@ If you have questions about it, please contact the [IRSA helpdesk](https://irsa.
 ```
 
 ```{code-cell} ipython3
-import os
+import urllib
 import matplotlib.pyplot as plt
 
 from astropy.io import fits
@@ -93,7 +93,7 @@ result = Irsa.query_tap(adql_object).to_table()
 Pull out the file name from the ``result`` table:
 
 ```{code-cell} ipython3
-file_uri = os.path.join(os.path.dirname(Irsa.tap_url), result['uri'][0])
+file_uri = urllib.parse.urljoin(Irsa.tap_url, result['uri'][0])
 file_uri
 ```
 
