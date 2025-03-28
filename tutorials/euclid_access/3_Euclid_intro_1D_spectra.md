@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 1D spectra
+# Euclid Q1: 1D spectra
 
 +++
 

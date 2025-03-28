@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: Cloud Access
+# Euclid Q1: cloud access
 
 +++
 

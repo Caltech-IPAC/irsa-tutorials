@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: SPE catalog
+# Euclid Q1: SPE catalogs
 
 +++
 

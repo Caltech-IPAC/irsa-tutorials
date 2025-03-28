@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 MER catalog
+# Euclid Q1: MER catalogs
 
 +++
 
