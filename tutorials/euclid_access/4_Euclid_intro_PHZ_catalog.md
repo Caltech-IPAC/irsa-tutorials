@@ -45,7 +45,7 @@ The photometry of every source is processed through a photometric redshift fitti
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas astropy>5.2 pyvo fsspec firefly_client
+# !pip install requests matplotlib pandas 'astropy>=5.3' pyvo fsspec firefly_client
 ```
 
 ```{code-cell} ipython3

@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -86,7 +86,7 @@ This cell will install them if needed:
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy hpgeom pandas pyarrow pyvo>=1.5 s3fs matplotlib astroquery
+# !pip install astropy hpgeom pandas pyarrow 'pyvo>=1.5' s3fs matplotlib astroquery
 ```
 
 ## 4. Browse buckets
@@ -166,7 +166,6 @@ To request that additional datasets be made available in cloud storage, please c
 # from astroquery.ipac.irsa import Irsa
 
 # Irsa.list_collections()
-
 ```
 
 Use PyVO to execute a search for Spitzer SEIP Super Mosaics and find cloud access information:
@@ -339,6 +338,7 @@ results_df["W1-W2"] = results_df["w1mpro"] - results_df["w2mpro"]
 results_df["W2-W3"] = results_df["w2mpro"] - results_df["w3mpro"]
 results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))
 ```
+
 ***
 
 ## About this notebook

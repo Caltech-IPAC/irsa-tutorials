@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: parquet
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -43,7 +43,7 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install pandas>=1.5.2 pyarrow>=10.0.1 matplotlib hpgeom astropy
+# !pip install 'pandas>=1.5.2' 'pyarrow>=10.0.1' matplotlib hpgeom astropy
 ```
 
 ```{code-cell} ipython3
