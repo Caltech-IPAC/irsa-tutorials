@@ -53,7 +53,7 @@ This notebook demonstrates the basics.
 ## Installs and imports
 
 ```{code-cell}
-# !pip uninstall -y numpy pyerfa
+# !pip uninstall -y numpy pyerfa  # Helps resolve numpy>=2.0 dependency issues.
 # !pip install 'hats>=0.5' 'lsdb>=0.5' matplotlib numpy s3fs
 ```
 
@@ -82,6 +82,9 @@ from upath import UPath
 s3_bucket = "irsa-fornax-testdata"
 s3_key = "EUCLID/q1/mer_catalogue/hats"
 euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}")
+
+# Note: If running from IPAC, you need an anonymous connection. Uncomment the next line.
+# euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}", anon=True)
 ```
 
 We will use [`hats`](https://hats.readthedocs.io/) to visualize the catalog and access the schema.
