@@ -51,7 +51,7 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas 'astropy>=5.3' pyvo fsspec firefly_client
+# !pip install requests matplotlib pandas 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
@@ -72,7 +72,7 @@ from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStret
 from astropy.wcs import WCS
 
 from firefly_client import FireflyClient
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -92,9 +92,7 @@ coord = SkyCoord(ra, dec, unit='deg', frame='icrs')
 This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
 
 ```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
-
-image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic').to_table()
+image_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
 
 ```{note}
@@ -123,40 +121,29 @@ print('The MER tile ID for this object is :',tileID)
 
 ## 2. Download PHZ catalog from IRSA
 
+Use IRSA's TAP to search catalogs
+
 ```{code-cell} ipython3
-## Use IRSA to search for catalogs
-
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-
-## Search for all tables in IRSA labled as euclid_q1
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid_q1" in tablename:
-            tables[tablename].describe()
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-table_phz= 'euclid_q1_phz_photo_z'
-table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
+table_mer = 'euclid_q1_mer_catalogue'
+table_phz = 'euclid_q1_phz_photo_z'
+table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
 ```
 
-### Learn some information about the table:
+### Learn some information about the photo-z catalog:
 
 - How many columns are there?
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_phz].columns
-print(len(columns))
+columns_info = Irsa.list_columns(catalog=table_phz)
+print(len(columns_info))
 ```
 
-```{code-cell} ipython3
-for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
-```
-
+```{tip}
 The PHZ catalog contains 67 columns, below are a few highlights:
 
 - object_id
@@ -164,6 +151,12 @@ The PHZ catalog contains 67 columns, below are a few highlights:
 - median redshift (phz_median)
 - phz_classification
 - phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)
+```
+
+```{code-cell} ipython3
+# Full list of columns and their description
+columns_info
+```
 
 ```{note}
 The phz_catalog on IRSA has more columns than it does on the ESA archive.
