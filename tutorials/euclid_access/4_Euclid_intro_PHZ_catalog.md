@@ -51,7 +51,7 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas astropy>5.2 pyvo fsspec firefly_client
+# !pip install requests matplotlib pandas 'astropy>=5.3' pyvo fsspec firefly_client
 ```
 
 ```{code-cell} ipython3

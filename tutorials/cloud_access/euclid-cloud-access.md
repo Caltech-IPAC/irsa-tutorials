@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.3
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -48,7 +48,7 @@ If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.calt
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs astropy astroquery>=0.4.10 matploltib
+# !pip install s3fs astropy 'astroquery>=0.4.10' matplotlib
 ```
 
 ```{code-cell} ipython3
