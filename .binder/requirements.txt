@@ -1,6 +1,6 @@
 # For the content of the tutorials
 tqdm
-numpy>=1.24
+numpy>=2
 matplotlib>=3.7
 astropy>=5.3
 pyvo>=1.5
@@ -19,6 +19,8 @@ reproject
 photutils>=2.0
 fsspec
 sep>=1.4
+hats>=0.5
+lsdb>=0.5
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
