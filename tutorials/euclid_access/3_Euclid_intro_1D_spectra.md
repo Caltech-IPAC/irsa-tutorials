@@ -47,119 +47,88 @@ If you have questions about it, please contact the [IRSA helpdesk](https://irsa.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib pandas requests astropy pyvo
+# !pip install matplotlib astropy 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
-from io import BytesIO
-
+import os
 import matplotlib.pyplot as plt
-import pandas as pd
-import requests
 
 from astropy.io import fits
-from astropy.table import Table
+from astropy.table import QTable
+from astropy.visualization import quantity_support
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
-## 1. Download 1D spectra from IRSA directly to this notebook
+## 1. Search for the spectra of a specific galaxy
 
-Search for all tables in IRSA labeled as euclid
+First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.
 
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid" in tablename:
-            tables[tablename].describe()
-```
+Search for all tables in IRSA labeled as "euclid".
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
-table_phz= 'euclid_q1_phz_photo_z'
-table_galaxy_candidates= 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width
-## (to see the full long URL)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-
-
-## Can use the following lines to reset the max columns and column width of pandas
-# pd.reset_option('display.max_columns')
-# pd.reset_option('display.max_colwidth')
+table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
 ```
 
 ## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
 
 ```{code-cell} ipython3
-obj_id=2739401293646823742
-
-## Pull the data on these objects
-adql_object = f"SELECT * \
-FROM {table_1dspectra} \
-WHERE objectid = {obj_id} \
-AND uri IS NOT NULL "
-
-## Pull the data on this particular galaxy
-result2 = service.search(adql_object)
-df2=result2.to_table().to_pandas()
-df2
+obj_id = 2739401293646823742
 ```
 
-### Create the full filename/url
+We will use TAP and an ASQL query to find the spectral data for our galaxy. (ADQL is the [IVOA Astronomical Data Query Language](https://www.ivoa.net/documents/latest/ADQL.html) and is based on SQL.)
 
 ```{code-cell} ipython3
-irsa_url='https://irsa.ipac.caltech.edu/'
+adql_object = f"SELECT * FROM {table_1dspectra} WHERE objectid = {obj_id} AND uri IS NOT NULL "
 
-file_url=irsa_url+df2['uri'].iloc[0]
-file_url
+# Pull the data on this particular galaxy
+result = Irsa.query_tap(adql_object).to_table()
 ```
 
-## 3. Read in the spectrum using the file_url and the extension just for this object
+Pull out the file name from the ``result`` table:
+
+```{code-cell} ipython3
+file_uri = os.path.join(os.path.dirname(Irsa.tap_url), result['uri'][0])
+file_uri
+```
+
+## 3. Read in the spectrum for only our specific object
 
 Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).
 
 ```{code-cell} ipython3
-#### Code to read in the large file with many extensions and spectra from a tile
-#### Currently commented out
-
-# ## Complete file url with the irsa url at the start
-# url = file_url
-# response = requests.get(url)
-
-# hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory
-# hdul.info()  # Show file info
+# hdul = fits.open(file_uri)
+# hdul.info()
 ```
 
-### Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
+Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
 
 ```{code-cell} ipython3
-response = requests.get(file_url)
-
-with fits.open(BytesIO(response.content), memmap=True) as hdul:
-    hdu = hdul[df2['hdu'].iloc[0]]
-    dat = Table.read(hdu, format='fits', hdu=1)
-    df_obj_irsa = dat.to_pandas()
+with fits.open(file_uri) as hdul:
+    spectra = QTable.read(hdul[result['hdu'][0]], format='fits')
 ```
 
-### Plot the image of the extracted spectrum
+```{code-cell} ipython3
+spectra
+```
 
-- Convert the wavelength to microns
+## 4. Plot the image of the extracted spectrum
+
+```{tip}
+As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
+```
 
 ```{code-cell} ipython3
-## Now the data are read in, show an image
+quantity_support()
+```
 
-## Converting from Angstrom to microns
-plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
-
-plt.xlabel('Wavelength (microns)')
-plt.ylabel('Flux'+dat['SIGNAL'].unit.to_string('latex_inline'))
+```{code-cell} ipython3
+plt.plot(spectra['WAVELENGTH'], spectra['SIGNAL'])
 plt.title(obj_id)
 ```
 
