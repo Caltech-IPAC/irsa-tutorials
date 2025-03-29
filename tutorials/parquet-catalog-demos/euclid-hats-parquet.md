@@ -18,8 +18,11 @@ kernelspec:
 ## Learning Goals
 By the end of this tutorial, you will:
 
-- Understand the format, partitioning, and schema of this dataset.
-- Be able to query this dataset for likely stars.
+- Access basic metadata to understand the format and schema of this unified HATS Parquet dataset.
+- Visualize the HATS partitioning of this dataset.
+- Query this dataset for likely stars and create a color-magnitude diagram. (Recreate the figure from
+  [Introduction to Euclid Q1 MER catalog](https://caltech-ipac.github.io/irsa-tutorials/tutorials/euclid_access/2_Euclid_intro_MER_catalog.html),
+  this time with *all* likely stars.)
 
 +++
 
@@ -27,34 +30,41 @@ By the end of this tutorial, you will:
 
 +++
 
-This notebook demonstrates accesses to a copy of the
+This notebook demonstrates accesses to a version of the
 [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) MER Catalogs
 that is in Apache Parquet format, partitioned according to the
 Hierarchical Adaptive Tiling Scheme (HATS), and stored in an AWS S3 bucket.
-Parquet is a file format that enables flexible and efficient data access by, among other things,
-supporting the application of both column and row filters when reading the data (very similar to a SQL query)
-so that only the desired data is loaded into memory.
 
-This is a single parquet dataset which comprises all three MER Catalogs
+The catalog version accessed here is a single dataset which comprises all three MER Catalogs
 -- MER, MER Morphology, and MER Cutouts -- which have been joined by Object ID.
 Their schemas (pre-join) can be seen at
 [Euclid Final Catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html).
 Minor modifications were made to the parquet schema to accommodate the join (de-duplicating column names)
 and for the HATS standard. These differences are shown below.
 
+Parquet is a file format that enables flexible and efficient data access by, among other things,
+supporting the application of both column and row filters when reading the data (very similar to a SQL query)
+so that only the desired data is loaded into memory.
+
 HATS is a spatial partitioning scheme based on HEALPix that aims to
 produce partitions (files) of roughly equal size.
-This makes them more efficient to work with,
+This makes the files more efficient to work with,
 especially for large-scale analyses and/or parallel processing.
-This notebook demonstrates the basics.
+It does this by adapting the HEALPix order at which data is partitioned in a given catalog based
+on the on-sky density of the rows it contains.
+In other words, data from dense regions of sky will be partitioned at a higher order
+(i.e., higher resolution; smaller pixel size) than data in sparse regions.
+HATS-aware python packages are being developed to take full advantage of the partitioning.
+In this notebook, we will use the [hats](https://hats.readthedocs.io/) library to visualize the
+catalog and access the schema, and [lsdb](https://docs.lsdb.io/) to do a query for all likely stars.
 
 +++
 
 ## Installs and imports
 
 ```{code-cell}
-# !pip uninstall -y numpy pyerfa  # Helps resolve numpy>=2.0 dependency issues.
-# !pip install 'hats>=0.5' 'lsdb>=0.5' matplotlib numpy s3fs
+# # Uncomment the next line to install dependencies if needed.
+# !pip install 'hats>=0.5' 'lsdb>=0.5' matplotlib 'numpy>=2.0' 'pyerfa>=2.0.1.3' s3fs
 ```
 
 ```{code-cell}
@@ -74,27 +84,28 @@ If you run into an error that starts with,
 make sure you have restarted the kernel since doing `pip install`. Then re-run the cell.
 ```
 
++++
+
 ## 1. Setup
 
 ```{code-cell}
-# Need UPath for the testing bucket. Otherwise hats will ignore the credentials that Fornax
-# provides under the hood. Will be unnecessary after the dataset is released in a public bucket.
-from upath import UPath
-
 # AWS S3 path where this dataset is stored.
 s3_bucket = "irsa-fornax-testdata"
 s3_key = "EUCLID/q1/mer_catalogue/hats"
-euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}")
+euclid_s3_path = f"s3://{s3_bucket}/{s3_key}"
 
-# Note: If running from IPAC, you need an anonymous connection. Uncomment the next line.
-# euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}", anon=True)
-```
+# Temporary try/except to handle credentials in different environments before public release.
+try:
+    # If running from within IPAC's network (maybe VPN'd in with "tunnel-all"),
+    # your IP address acts as your credentials and this should just work.
+    hats.read_hats(euclid_s3_path)
+except FileNotFoundError:
+    # If running from Fornax, credentials are provided automatically under the hood, but
+    # hats ignores them in the call above and raises a FileNotFoundError.
+    # Construct a UPath which will pick up the credentials.
+    from upath import UPath
 
-We will use [`hats`](https://hats.readthedocs.io/) to visualize the catalog and access the schema.
-
-```{code-cell}
-# Load the parquet dataset using hats.
-euclid_hats = hats.read_hats(euclid_s3_path)
+    euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}")
 ```
 
 ## 2. Visualize the on-sky density of Q1 Objects and HATS partitions
@@ -105,20 +116,17 @@ Euclid Q1 covers four non-contiguous fields: Euclid Deep Field North (22.9 sq de
 We can visualize the Object density in the four fields using `hats`.
 
 ```{code-cell}
+# Load the dataset.
+euclid_hats = hats.read_hats(euclid_s3_path)
+
 # Visualize the on-sky distribution of objects in the Q1 MER Catalog.
 hats.inspection.plot_density(euclid_hats)
 ```
 
-HATS does this by adjusting the partitioning order (i.e., HEALPix order at which data is partitioned)
-according to the on-sky density of the objects or sources (rows) in the dataset.
-In other words, dense regions are partitioned at a
-higher HEALPix order (smaller pixel size) to reduce the number of objects in those partitions towards the mean;
-vice versa for sparse regions.
-
-We can see this by plotting the partitioning orders.
+We can see how the on-sky density maps to the HATS partitions by calling `plot_pixels`.
 
 ```{code-cell}
-# Visualize the HEALPix order of each partition.
+# Visualize the HEALPix orders of the dataset partitions.
 hats.inspection.plot_pixels(euclid_hats)
 ```
 
@@ -128,12 +136,10 @@ hats.inspection.plot_pixels(euclid_hats)
 
 In this section, we query the Euclid Q1 MER catalogs for likely stars and create a color-magnitude diagram (CMD), following
 [Introduction to Euclid Q1 MER catalog](https://caltech-ipac.github.io/irsa-tutorials/tutorials/euclid_access/2_Euclid_intro_MER_catalog.html).
-Here, we'll use [`lsdb`](https://docs.lsdb.io/) to query the parquet files that are sitting in an S3 bucket (the intro notebook uses `pyvo` to query the TAP service).
+Here, we use `lsdb` to query the parquet files that are sitting in an S3 bucket (the intro notebook uses `pyvo` to query the TAP service).
 `lsdb` enables efficient, large-scale queries on HATS catalogs, so let's look at *all* likely stars in Euclid Q1 instead of limiting to 10,000.
 
-+++
-
-`lsdb` uses Dask for parallelization. Set up the workers.
+`lsdb` uses Dask for parallelization. So first, set up the workers.
 
 ```{code-cell}
 client = dask.distributed.Client(
@@ -144,7 +150,7 @@ client = dask.distributed.Client(
 The data will be lazy-loaded. This means that commands like `query` are not executed until the data is actually required.
 
 ```{code-cell}
-# Load the parquet dataset using lsdb.
+# Load the dataset.
 columns = [
     "TILEID",
     "FLUX_VIS_PSF",
@@ -209,7 +215,9 @@ notebook shows how to work with parquet schemas.
 
 ```{code-cell}
 # Fetch the pyarrow schema from hats.
+euclid_hats = hats.read_hats(euclid_s3_path)
 schema = euclid_hats.schema
+
 print(f"{len(schema)} columns in the combined Euclid Q1 MER Catalogs")
 ```
 
@@ -254,6 +262,6 @@ print(schema.field("RIGHT_ASCENSION-CUTOUTS").metadata)
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-03-25
+**Updated:** 2025-03-29
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
