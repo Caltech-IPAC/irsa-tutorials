@@ -50,7 +50,7 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib pandas astropy pyvo
+# !pip install matplotlib pandas astropy 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
@@ -69,7 +69,7 @@ from astropy import units as u
 from astropy.utils.data import download_file
 from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -86,12 +86,10 @@ coord = SkyCoord.from_name('HD 168151')
 This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
 
 ```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
-
-im_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
+im_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 
 ## Convert the table to pandas dataframe
-df_im_irsa=im_table.to_table().to_pandas()
+df_im_irsa=im_table.to_pandas()
 ```
 
 ```{code-cell} ipython3
@@ -125,19 +123,14 @@ print('The MER tile ID for this object is :',tileID)
 Search for all tables in IRSA labeled as euclid
 
 ```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid" in tablename:
-            tables[tablename].describe()
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-table_galaxy_candidates= 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
-table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
-table_lines= 'euclid_q1_spe_lines_line_features'
+table_mer = 'euclid_q1_mer_catalogue'
+table_galaxy_candidates = 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
+table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
+table_lines = 'euclid_q1_spe_lines_line_features'
 ```
 
 ### Learn some information about the table:
@@ -145,25 +138,13 @@ table_lines= 'euclid_q1_spe_lines_line_features'
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_lines].columns
-print(len(columns))
+columns_info = Irsa.list_columns(catalog=table_lines)
+print(len(columns_info))
 ```
 
 ```{code-cell} ipython3
-for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
-```
-
-```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width
-## (to see the full long URL)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-
-
-## Can use the following lines to reset the max columns and column width of pandas
-# pd.reset_option('display.max_columns')
-# pd.reset_option('display.max_colwidth')
+# Full list of columns and their description
+columns_info
 ```
 
 ## Find some objects with spectra in our tileID
@@ -196,8 +177,8 @@ AND lines.spe_line_flux_gf > 2E-16 \
 ORDER BY lines.spe_line_snr_gf DESC \
 "
 
-# Use TAP with this ADQL string using pyvo
-result = service.search(adql)
+# Use TAP with this ADQL string
+result = Irsa.query_tap(adql)
 
 # Convert table to pandas dataframe and drop duplicates
 result_table = result.to_qtable()
@@ -222,7 +203,7 @@ obj_tab
 ```{code-cell} ipython3
 adql_object = f"SELECT *  FROM {table_1dspectra}  WHERE objectid = {obj_id}"
 
-result2 = service.search(adql_object)
+result2 = Irsa.query_tap(adql_object)
 df2 = result2.to_table().to_pandas()
 df2
 ```
