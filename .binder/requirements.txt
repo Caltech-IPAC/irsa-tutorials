@@ -25,6 +25,7 @@ h5py
 requests
 hats>=0.5.2
 lsdb>=0.5.2
+pyerfa>=2.0.1.3
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
