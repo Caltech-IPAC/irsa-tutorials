@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Quick Release 1: MER Catalogs in HATS Parquet
+# Euclid Q1: MER Catalogs in HATS Parquet
 
 +++
 
