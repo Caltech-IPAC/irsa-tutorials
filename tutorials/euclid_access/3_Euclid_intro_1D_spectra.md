@@ -56,6 +56,7 @@ import matplotlib.pyplot as plt
 
 from astropy.io import fits
 from astropy.table import QTable
+from astropy import units as u
 from astropy.visualization import quantity_support
 
 from astroquery.ipac.irsa import Irsa
@@ -128,7 +129,7 @@ quantity_support()
 ```
 
 ```{code-cell} ipython3
-plt.plot(spectra['WAVELENGTH'], spectra['SIGNAL'])
+plt.plot(spectra['WAVELENGTH'].to(u.micron), spectra['SIGNAL'])
 plt.title(obj_id)
 ```
 
