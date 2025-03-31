@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 MER mosaics
+# Euclid Q1: MER mosaics
 
 +++
 
@@ -32,11 +32,19 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA. The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe. The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals. These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
 
-Among the data products included in the Q1 release are the Level 2 MER mosaics. These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based telescopes. All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale. This notebook provides a quick introduction to accessing MER mosaics from IRSA. If you have questions about it, please contact the [IRSA helpdesk].
+Among the data products included in the Q1 release are the Level 2 MER mosaics.
+These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based telescopes.
+All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale.
+This notebook provides a quick introduction to accessing MER mosaics from IRSA.
+If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
@@ -50,7 +58,7 @@ Each MER image is approximately 1.47 GB. Downloading can take some time.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy>=5.3 matplotlib pyvo sep>=1.4 fsspec pandas
+# !pip install numpy 'astropy>=5.3' matplotlib 'astroquery>=0.4.10' 'sep>=1.4' fsspec
 ```
 
 ```{code-cell} ipython3
@@ -70,7 +78,7 @@ from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStret
 from astropy.wcs import WCS
 from astropy import units as u
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 import sep
 
 # Copy-on-write is more performant and avoids unexpected modifications of the original DataFrame.
@@ -87,44 +95,23 @@ coord = SkyCoord.from_name('HD 168151')
 
 Use IRSA's Simple Image Access (SIA) API to search for all Euclid MER mosaics that overlap with the search region you have specified. We specify the euclid_DpdMerBksMosaic "collection" because it lists all of the multiwavelength MER mosaics, along with their associated catalogs.
 
-```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
+```{tip}
+The IRSA SIA collections can be listed using using the ``list_collections`` method, we can filter on the ones containing "euclid" in the collection name:
 
-image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
-```
-
-Convert the table to pandas dataframe
-
-```{code-cell} ipython3
-df_im_irsa=image_table.to_table().to_pandas().reset_index()
-```
-
-Change the settings so we can see all the columns in the dataframe and the full column width (to see the full long URL)
-
-```{code-cell} ipython3
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-
-
-## Can use the following lines to reset the max columns and column width of pandas
-# pd.reset_option('display.max_columns')
-# pd.reset_option('display.max_colwidth')
+    Irsa.list_collections(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-df_im_irsa
+image_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
 
-This dataframe contains lots of datasets that have been "Euclidized", which means that they have been put on a common pixel scale chosen for the Euclid mission. Choose "science" as the data product subtype to see all science images of this tile.
+This table lists all MER mosaic images available in this search position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the [Euclid documentation at IPAC](https://euclid.caltech.edu/page/euclid-faq-tech/).
+
+Note that there are various image types are returned as well, we filter out the `science` images from these:
 
 ```{code-cell} ipython3
-df_im_euclid=df_im_irsa[ (df_im_irsa['dataproduct_subtype']=='science')].reset_index()
-
-df_im_euclid
-```
-
-```{code-cell} ipython3
-print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
+science_images = image_table[image_table['dataproduct_subtype'] == 'science']
+science_images
 ```
 
 ## 2. Retrieve a Euclid Q1 MER mosaic image in the VIS bandpass
@@ -136,8 +123,8 @@ print('There are',len(df_im_euclid),'MER images of this object/MER tile.')
 Note that 'access_estsize' is in units of kb
 
 ```{code-cell} ipython3
-filename = df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_url'].to_list()[0]
-filesize = df_im_euclid[df_im_euclid['energy_bandpassname']=='VIS']['access_estsize'].to_list()[0]/1000000
+filename = science_images[science_images['energy_bandpassname']=='VIS']['access_url'][0]
+filesize = science_images[science_images['energy_bandpassname']=='VIS']['access_estsize'][0]/1000000
 
 print(filename)
 
@@ -208,7 +195,7 @@ We'd like to take a look at the multiwavelength images of our object, but the fu
 ```
 
 ```{code-cell} ipython3
-urls = df_im_euclid['access_url'].to_list()
+urls = science_images['access_url']
 
 urls
 ```

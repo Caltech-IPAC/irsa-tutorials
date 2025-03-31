@@ -53,7 +53,7 @@ First, we import all necessary packages.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install tqdm numpy matplotlib astropy photutils>=2.0 astroquery>=0.4.10 sep>=1.4 firefly_client>=3.2
+# !pip install tqdm numpy matplotlib astropy 'photutils>=2.0' 'astroquery>=0.4.10' 'sep>=1.4' 'firefly_client>=3.2'
 ```
 
 ```{code-cell} ipython3
@@ -158,7 +158,6 @@ Irsa.list_collections(servicetype='SIA')
 ```
 
 Here we use the collection *euclid_ero*, containing the Euclid ERO images. We first create a `SkyCoord` object and then query the SIA.
-
 
 ```{code-cell} ipython3
 image_tab = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_ero')
@@ -319,7 +318,6 @@ mask = np.isnan(img)
 
 Next, we compute the background statistics what will be used by `sep` to extract the sources above a certain threshold.
 
-
 ```{code-cell} ipython3
 mean, median, std = sigma_clipped_stats(img, sigma=3.0)
 print(np.array((mean, median, std)))
@@ -359,7 +357,6 @@ psfphot = PSFPhotometry(psf_model,
                         finder = DAOStarFinder(fwhm=0.1, threshold=3.*std, exclude_border=True), # not needed because we are using fixed initial positions.
                         aperture_radius = 4,
                         progress_bar = True)
-
 ```
 
 After initiating the `PSFPhotometry` object, we can run the PSF photometry measurement. This can take a while (typically between 1 and 2 minutes).
@@ -448,7 +445,6 @@ mask2 = np.isnan(img2)
 
 ... and we also get some statistics on the sky background.
 
-
 ```{code-cell} ipython3
 mean2, median2, std2 = sigma_clipped_stats(img2, sigma=3.0)
 print(np.array((mean2, median2, std2)))
@@ -520,7 +516,6 @@ Gaia.ROW_LIMIT = -1
 ```
 
 Next, we request the Gaia catalog around the position of the globular cluster. We use the same size as the cutout size.
-
 
 ```{code-cell} ipython3
 gaia_objects = Gaia.query_object_async(coordinate=coord, radius = cutout_size/2)
