@@ -55,7 +55,6 @@ import urllib
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 
 from astropy.io import fits
 from astropy.table import QTable
@@ -123,36 +122,6 @@ with fits.open(file_uri) as hdul:
 spectra
 ```
 
-## 4. Plot the image of the extracted spectrum
-
-```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
-```
-
-```{code-cell} ipython3
-quantity_support()
-```
-
-
-```{note}
-The 1D combined spectra table contains 6 columns, below are a few highlights:
-
-- WAVELENGTH is in Angstroms by default
-- SIGNAL is the flux and should be multiplied by the FSCALE factor in the header
-- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
-```
-
-+++
-
-We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
-
-```{code-cell} ipython3
-plt.plot(spectra['WAVELENGTH']/10000., spectra['MASK'])
-plt.xlabel('Wavelength ($\mu$m)')
-plt.ylabel('Mask value')
-plt.title('Values of MASK by flux bin')
-```
-
 ```{code-cell} ipython3
 spec_header
 ```
@@ -163,55 +132,52 @@ spec_header
 As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
 ```
 
-- Convert the wavelength to microns
-- Multiple the signal by FSCALE from the header
-- Use the MASK column to discard any values where MASK = odd or >=64
-- Use the VAR column (variance) to plot the error on the data
-
 ```{code-cell} ipython3
-signal_scaled = spectra['SIGNAL'] * spec_header['FSCALE']
+quantity_support()
+```
 
-plt.plot(spectra['WAVELENGTH'].to(u.micron), signal_scaled)
-plt.title(obj_id)
+```{note}
+The 1D combined spectra table contains 6 columns, below are a few highlights:
+
+- WAVELENGTH is in Angstroms by default
+- SIGNAL is the flux and should be multiplied by the FSCALE factor in the header
+- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
 ```
 
 ```{code-cell} ipython3
-## Use the MASK column to create a "good mask", just the flux bins to use
+signal_scaled = spectra['SIGNAL'] * spec_header['FSCALE']
+```
+
+We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
+
+```{code-cell} ipython3
+plt.plot(spectra['WAVELENGTH'].to(u.micron), spectra['MASK'])
+plt.ylabel('Mask value')
+plt.title('Values of MASK by flux bin')
+```
+
+We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
+
+```{code-cell} ipython3
 bad_mask = (spectra['MASK'].value % 2 == 1) | (spectra['MASK'].value >= 64)
-good_mask = ~bad_mask
 
-## Plot the spectrum in black for the good flux bins and in red for the masked (do not use) flux bins.
-for i in range(1, len(wavelength)):
-    ## Plot good data (black)
-    if good_mask[i]:
-        plt.plot(wavelength[i-1:i+1], signal_scaled[i-1:i+1], color='black')
-    ## Plot bad data (red)
-    elif bad_mask[i]:
-        plt.plot(wavelength[i-1:i+1], signal_scaled[i-1:i+1], color='red')
+plt.plot(spectra['WAVELENGTH'][~bad_mask].to(u.micron), signal_scaled[~bad_mask], color='black', label='Spectrum')
+plt.plot(spectra['WAVELENGTH'][bad_mask], signal_scaled[bad_mask], color='red', label='Do not use')
+plt.plot(spectra['WAVELENGTH'], np.sqrt(spectra['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
 
-
-plt.plot(wavelength, np.sqrt(spectra['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
-
-## Add the line names to the legend
-spectrum_line = Line2D([0], [0], color='black', lw=2, label='Spectrum')
-bad_line = Line2D([0], [0], color='red', lw=2, label='Do Not Use')
-error_line = Line2D([0], [0], color='grey', lw=2, label='Error')
-plt.legend(handles=[spectrum_line, bad_line,error_line], loc='upper right')
-
-
-plt.xlabel('Wavelength ($\mu$m)')
-plt.ylabel('Flux ($\mathrm{erg\,\mu m^{-1}\,s^{-1}\,cm^{-2}}$)')
+plt.legend(loc='upper right')
 plt.ylim(-0.15E-16, 0.25E-16)
-# plt.xlim(1.25,1.85)
-plt.title('Object ID is ' + str(obj_id))
-
-plt.show()
+plt.title(f'Object ID {obj_id}')
 ```
 
 ## About this Notebook
 
 **Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
 
-**Updated**: 2025-03-28
+**Updated**: 2025-03-31
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+
+```{code-cell} ipython3
+
+```
