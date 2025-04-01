@@ -274,7 +274,7 @@ rows = -(-num_images // columns)
 fig, axes = plt.subplots(rows, columns, figsize=(4 * columns, 4 * rows), subplot_kw={'projection': WCS(final_hdulist[0].header)})
 axes = axes.flatten()
 
-for idx, (ax, filt) in enumerate(zip(axes, filters)):
+for idx, (ax, filt) in enumerate(zip(axes, science_images['filters'])):
     image_data = final_hdulist[idx].data
     norm = ImageNormalize(image_data, interval=PercentileInterval(99.9), stretch=AsinhStretch())
     ax.imshow(image_data, cmap='gray', origin='lower', norm=norm)
