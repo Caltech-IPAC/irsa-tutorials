@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to Euclid Q1 1D spectra &#8212; IRSA Demo Notebooks</title>
+    <title>Euclid Q1: 1D spectra &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/3_Euclid_intro_1D_spectra';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction to Euclid Q1 PHZ catalog" href="4_Euclid_intro_PHZ_catalog.html" />
-    <link rel="prev" title="Introduction to Euclid Q1 MER catalog" href="2_Euclid_intro_MER_catalog.html" />
+    <link rel="next" title="Euclid Q1: PHZ catalogs" href="4_Euclid_intro_PHZ_catalog.html" />
+    <link rel="prev" title="Euclid Q1: MER catalogs" href="2_Euclid_intro_MER_catalog.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,12 +205,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 1D spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Introduction to Euclid Q1 PHZ catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -471,7 +471,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction to Euclid Q1 1D spectra</h1>
+    <h1>Euclid Q1: 1D spectra</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -484,16 +484,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-1d-spectra-from-irsa-directly-to-this-notebook">1. Download 1D spectra from IRSA directly to this notebook</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-full-filename-url">Create the full filename/url</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">3. Read in the spectrum using the file_url and the extension just for this object</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">Plot the image of the extracted spectrum</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy">1. Search for the spectrum of a specific galaxy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-for-only-our-specific-object">3. Read in the spectrum for only our specific object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">4. Plot the image of the extracted spectrum</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
 </ul>
             </nav>
@@ -506,8 +500,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-1d-spectra">
-<h1>Introduction to Euclid Q1 1D spectra<a class="headerlink" href="#introduction-to-euclid-q1-1d-spectra" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="euclid-q1-1d-spectra">
+<h1>Euclid Q1: 1D spectra<a class="headerlink" href="#euclid-q1-1d-spectra" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
 <p>By the end of this tutorial, you will:</p>
@@ -520,131 +514,79 @@ document.write(`
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
-The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
-On March 19, 2025 the data will be available on the <a class="reference external" href="https://easidr.esac.esa.int/sas/">ESA archive</a> and on the <a class="reference external" href="https://irsa.ipac.caltech.edu">IRSA archive</a>.</p>
-<p>These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a> and <a class="reference external" href="https://support.cosmos.esa.int/euclid">ESA Euclid Helpdesk</a>.</p>
-<p>For the Euclid Wide Survey standard operating mode, the telescope undertakes a 4-point dither pattern.
-At each position VIS and NISP each take a 570s exposure, consisting of a direct visible image and a red grism exposure.
-This is followed by further NISP exposures in the Y, J, and H band filters (112 seconds each).
-The telescope is then dithered, and the sequence is repeated starting with a different grism position angle.
-There are actually two operational grisms oriented 180 degrees from each other. Each grism which will be used twice in this sequence, but with slight angular offsets (+/- 4 degrees), effectively creating the four different grism angles (Scaramella et al. 2022, A&amp;A 662, A112).</p>
-<p>Data which can be obtained for SIR include: SIR “images”, which effectively show the full image of objects with the spectral traces overlapping, and SIR 1D spectra for individual objects.
-In this notebook we describe how to access and process the 1D spectra products.
-For most users, simply accessing th 1D spectra is probably the preferred option, unless they would like to extract the spectrum again, or inspect the images to see if there is any artifact which might add noise to the spectrum.</p>
-<p>This notebook provides an introduction to the SIR 1D spectra released as part of Euclid Q1.
-Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+<p>Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.</p>
+<p>Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.</p>
+<p>Among the data products included in the Q1 release are the 1D spectra created by the SIR Processing Function.
+This notebook provides an introduction to these SIR 1D spectra.
+If you have questions about it, please contact the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a>.</p>
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed</span>
-<span class="c1"># !pip install matplotlib pandas requests astropy pyvo</span>
+<span class="c1"># !pip install matplotlib astropy &#39;astroquery&gt;=0.4.10&#39;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">quantity_support</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="download-1d-spectra-from-irsa-directly-to-this-notebook">
-<h2>1. Download 1D spectra from IRSA directly to this notebook<a class="headerlink" href="#download-1d-spectra-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
-<p>Search for all tables in IRSA labeled as euclid</p>
+<section id="search-for-the-spectrum-of-a-specific-galaxy">
+<h2>1. Search for the spectrum of a specific galaxy<a class="headerlink" href="#search-for-the-spectrum-of-a-specific-galaxy" title="Link to this heading">#</a></h2>
+<p>First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.</p>
+<p>Search for all tables in IRSA labeled as “euclid”.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
-
-<span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
-<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span> <span class="ow">and</span> <span class="s2">&quot;euclid&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
-            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>euclid.artifact_euclid_q1
-    Euclid Q1 CAOM Artifact Table
-
-euclid.objectid_spectrafile_association_q1
-    Euclid Q1 Object ID to Spectral File Association Table
-euclid.observation_euclid_q1
-    Euclid Q1 CAOM Observation Table
-
-euclid.plane_euclid_q1
-    Euclid Q1 CAOM Plane Table
-euclid.tileid_association_q1
-    Euclid Q1 TILEID to Observation ID Association Table
-euclid_q1_mer_catalogue
-    Euclid Q1 MER Catalog
-
-euclid_q1_mer_morphology
-    Euclid Q1 MER Morphology
-euclid_q1_phz_photo_z
-    Euclid Q1 PHZ Photo-z Catalog
-
-euclid_q1_spe_lines_atomic_indices
-    Euclid Q1 SPE Lines Catalog - Atomic Indices
-euclid_q1_spe_lines_continuum_features
-    Euclid Q1 SPE Lines Catalog - Continuum Features
-
-euclid_q1_spe_lines_line_features
-    Euclid Q1 SPE Lines Catalog - Spectral Lines
-euclid_q1_spe_lines_molecular_indices
-    Euclid Q1 SPE Lines Catalog - Molecular Indices
-
-euclid_q1_spectro_zcatalog_spe_classification
-    Euclid Q1 SPE Redshift Catalog - Classification
-euclid_q1_spectro_zcatalog_spe_galaxy_candidates
-    Euclid Q1 SPE Redshift Catalog - Galaxy Candidates
-
-euclid_q1_spectro_zcatalog_spe_qso_candidates
-    Euclid Q1 SPE Redshift Catalog - QSO Candidates
-euclid_q1_spectro_zcatalog_spe_quality
-    Euclid Q1 SPE Redshift Catalog - Quality
-
-euclid_q1_spectro_zcatalog_spe_star_candidates
-    Euclid Q1 SPE Redshift Catalog - Star Candidates
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
+ &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
+ &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_quality&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Quality&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_classification&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Classification&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Galaxy Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_star_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Star Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_qso_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - QSO Candidates&#39;,
+ &#39;euclid_q1_spe_lines_line_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Spectral Lines&#39;,
+ &#39;euclid_q1_spe_lines_continuum_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Continuum Features&#39;,
+ &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
+ &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
+ &#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
+ &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
+ &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
+ &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
+ &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
-<span class="n">table_1dspectra</span><span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
-<span class="n">table_phz</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
-<span class="n">table_galaxy_candidates</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Change the settings so we can see all the columns in the dataframe and the full column width</span>
-<span class="c1">## (to see the full long URL)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_colwidth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-
-<span class="c1">## Can use the following lines to reset the max columns and column width of pandas</span>
-<span class="c1"># pd.reset_option(&#39;display.max_columns&#39;)</span>
-<span class="c1"># pd.reset_option(&#39;display.max_colwidth&#39;)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_1dspectra</span> <span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -654,107 +596,55 @@ euclid_q1_spectro_zcatalog_spe_star_candidates
 <h2>2. Search for the spectrum of a specific galaxy in the 1D spectra table<a class="headerlink" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span><span class="o">=</span><span class="mi">2739401293646823742</span>
-
-<span class="c1">## Pull the data on these objects</span>
-<span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * </span><span class="se">\</span>
-<span class="s2">FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">AND uri IS NOT NULL &quot;</span>
-
-<span class="c1">## Pull the data on this particular galaxy</span>
-<span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
-<span class="n">df2</span><span class="o">=</span><span class="n">result2</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
-<span class="n">df2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span> <span class="o">=</span> <span class="mi">2689918641685825137</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>objectid</th>
-      <th>tileid</th>
-      <th>uri</th>
-      <th>hdu</th>
-      <th>cntr</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2739401293646823742</td>
-      <td>102158277</td>
-      <td>ibe/data/euclid/q1/SIR/102158277/EUC_SIR_W-COMBSPEC_102158277_2024-11-05T15:54:45.882858Z.fits</td>
-      <td>1633</td>
-      <td>138385</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
-<section id="create-the-full-filename-url">
-<h3>Create the full filename/url<a class="headerlink" href="#create-the-full-filename-url" title="Link to this heading">#</a></h3>
+<p>We will use TAP and an ASQL query to find the spectral data for our galaxy. (ADQL is the <a class="reference external" href="https://www.ivoa.net/documents/latest/ADQL.html">IVOA Astronomical Data Query Language</a> and is based on SQL.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_url</span><span class="o">=</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="n">file_url</span><span class="o">=</span><span class="n">irsa_url</span><span class="o">+</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">file_url</span>
+<span class="c1"># Pull the data on this particular galaxy</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_tap</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pull out the file name from the <code class="docutils literal notranslate"><span class="pre">result</span></code> table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">file_uri</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/SIR/102158277/EUC_SIR_W-COMBSPEC_102158277_2024-11-05T15:54:45.882858Z.fits&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/SIR/102160608/EUC_SIR_W-COMBSPEC_102160608_2024-11-05T16:42:00.741819Z.fits&#39;
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-</section>
-<section id="read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">
-<h2>3. Read in the spectrum using the file_url and the extension just for this object<a class="headerlink" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object" title="Link to this heading">#</a></h2>
+<section id="read-in-the-spectrum-for-only-our-specific-object">
+<h2>3. Read in the spectrum for only our specific object<a class="headerlink" href="#read-in-the-spectrum-for-only-our-specific-object" title="Link to this heading">#</a></h2>
 <p>Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#### Code to read in the large file with many extensions and spectra from a tile</span>
-<span class="c1">#### Currently commented out</span>
-
-<span class="c1"># ## Complete file url with the irsa url at the start</span>
-<span class="c1"># url = file_url</span>
-<span class="c1"># response = requests.get(url)</span>
-
-<span class="c1"># hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory</span>
-<span class="c1"># hdul.info()  # Show file info</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hdul = fits.open(file_uri)</span>
+<span class="c1"># hdul.info()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section id="open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">
-<h3>Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object<a class="headerlink" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object" title="Link to this heading">#</a></h3>
+<p>Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
 
-<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">memmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
-    <span class="n">hdu</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">dat</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdu</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">df_obj_irsa</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+    <span class="n">spec_header</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">header</span>
 </pre></div>
 </div>
 </div>
@@ -768,38 +658,162 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 </div>
-</section>
-<section id="plot-the-image-of-the-extracted-spectrum">
-<h3>Plot the image of the extracted spectrum<a class="headerlink" href="#plot-the-image-of-the-extracted-spectrum" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Convert the wavelength to microns</p></li>
-</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Now the data are read in, show an image</span>
-
-<span class="c1">## Converting from Angstrom to microns</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">10000.</span><span class="p">,</span> <span class="n">df_obj_irsa</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (microns)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux&#39;</span><span class="o">+</span><span class="n">dat</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="s1">&#39;latex_inline&#39;</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;2739401293646823742&#39;)
+<div class="output text_html"><div><i>QTable length=531</i>
+<table id="table140288614402512" class="table-striped table-bordered table-condensed">
+<thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th></tr></thead>
+<thead><tr><th>Angstrom</th><th>erg / (Angstrom s cm2)</th><th>Number</th><th>Number</th><th>erg2 / (Angstrom2 s2 cm4)</th><th>Number</th></tr></thead>
+<thead><tr><th>float32</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float64</th></tr></thead>
+<tr><td>11900.0</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>11913.400390625</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>11926.7998046875</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>11940.2001953125</td><td>-0.42825955152511597</td><td>64.0</td><td>0.924927830696106</td><td>0.05231768637895584</td><td>2.0</td></tr>
+<tr><td>11953.599609375</td><td>-0.019433781504631042</td><td>66.0</td><td>0.8561765551567078</td><td>0.010498150251805782</td><td>2.0</td></tr>
+<tr><td>11967.0</td><td>0.02915639616549015</td><td>64.0</td><td>0.8876305818557739</td><td>0.003435363294556737</td><td>4.0</td></tr>
+<tr><td>11980.400390625</td><td>0.08275385200977325</td><td>80.0</td><td>0.0</td><td>0.0017151220235973597</td><td>4.0</td></tr>
+<tr><td>11993.7998046875</td><td>0.018765779212117195</td><td>64.0</td><td>0.8546596765518188</td><td>0.0009618347976356745</td><td>4.0</td></tr>
+<tr><td>12007.2001953125</td><td>0.009108440019190311</td><td>64.0</td><td>0.8887824416160583</td><td>0.0005876092473044991</td><td>4.0</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>18894.80078125</td><td>0.004414212889969349</td><td>64.0</td><td>0.9155963659286499</td><td>0.0002704685612116009</td><td>4.0</td></tr>
+<tr><td>18908.19921875</td><td>-0.034835416823625565</td><td>64.0</td><td>0.738968014717102</td><td>0.0005062822601757944</td><td>3.0</td></tr>
+<tr><td>18921.599609375</td><td>0.002581549109891057</td><td>66.0</td><td>0.8868578672409058</td><td>0.0006160042248666286</td><td>4.0</td></tr>
+<tr><td>18935.0</td><td>-0.03595489263534546</td><td>66.0</td><td>0.9000127911567688</td><td>0.0009402198484167457</td><td>4.0</td></tr>
+<tr><td>18948.400390625</td><td>-0.0484054833650589</td><td>64.0</td><td>0.9134283065795898</td><td>0.001895991968922317</td><td>4.0</td></tr>
+<tr><td>18961.80078125</td><td>-0.12392819672822952</td><td>64.0</td><td>0.922426164150238</td><td>0.0031691163312643766</td><td>3.0</td></tr>
+<tr><td>18975.19921875</td><td>-0.08269069343805313</td><td>64.0</td><td>0.8407320976257324</td><td>0.005587479565292597</td><td>3.0</td></tr>
+<tr><td>18988.599609375</td><td>-0.14132308959960938</td><td>66.0</td><td>0.7666888236999512</td><td>0.0100048603489995</td><td>3.0</td></tr>
+<tr><td>19002.0</td><td>-0.33820343017578125</td><td>66.0</td><td>0.809532642364502</td><td>0.01680051162838936</td><td>4.0</td></tr>
+</table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spec_header</span>
 </pre></div>
 </div>
-<img alt="../../_images/2b46c56bef128beb9f53f577c376be09b1b71e821a249570f9d57516020d1e2a.png" src="../../_images/2b46c56bef128beb9f53f577c376be09b1b71e821a249570f9d57516020d1e2a.png" />
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XTENSION= &#39;BINTABLE&#39;           / binary table extension                         
+BITPIX  =                    8 / 8-bit bytes                                    
+NAXIS   =                    2 / 2-dimensional binary table                     
+NAXIS1  =                   22 / width of table in bytes                        
+NAXIS2  =                  531 / number of rows in table                        
+PCOUNT  =                    0 / size of special data area                      
+GCOUNT  =                    1 / one data group (required keyword)              
+TFIELDS =                    6 / number of fields in each row                   
+TTYPE1  = &#39;WAVELENGTH&#39;         / label for field   1                            
+TFORM1  = &#39;1E      &#39;           / data format of field: 4-byte REAL              
+TUNIT1  = &#39;Angstrom&#39;           / physical unit of field                         
+TTYPE2  = &#39;SIGNAL  &#39;           / label for field   2                            
+TFORM2  = &#39;1E      &#39;           / data format of field: 4-byte REAL              
+TUNIT2  = &#39;erg/s/cm2/Angstrom&#39; / physical unit of field                         
+EXTNAME = &#39;94_COMBINED1D_SIGNAL&#39; / name of this binary table extension          
+WMIN    =               11900. / [Angstrom] Minimum wavelength of the binning   
+BINWIDTH=                 13.4 / [Angstrom] Wavelength bin width                
+BINCOUNT=                  531 / Wavelength bin count                           
+TTYPE3  = &#39;MASK    &#39;           / label for field                                
+TFORM3  = &#39;1J      &#39;           / format of field                                
+TUNIT3  = &#39;Number  &#39;           / physical unit of field                         
+TTYPE4  = &#39;QUALITY &#39;           / label for field                                
+TFORM4  = &#39;1E      &#39;           / format of field                                
+TUNIT4  = &#39;Number  &#39;           / physical unit of field                         
+TTYPE5  = &#39;VAR     &#39;           / label for field                                
+TFORM5  = &#39;1E      &#39;           / format of field                                
+TUNIT5  = &#39;erg2/s2/cm4/Angstrom2&#39; / physical unit of field                      
+TTYPE6  = &#39;NDITH   &#39;           / label for field                                
+TFORM6  = &#39;1I      &#39;           / format of field                                
+TUNIT6  = &#39;Number  &#39;           / physical unit of field                         
+FSCALE  =              1.0E-16 / Scaling factor                                 
+EXPTIME =             2198.569 / Exposure time                                  
+LSF_SIG =             20.28061 / [Angstrom] Std dev of the Gaussian LSF model   
+EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_THUMB,OPT_
+</pre></div>
+</div>
 </div>
 </div>
 </section>
+<section id="plot-the-image-of-the-extracted-spectrum">
+<h2>4. Plot the image of the extracted spectrum<a class="headerlink" href="#plot-the-image-of-the-extracted-spectrum" title="Link to this heading">#</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>As we use astropy.visualization’s <code class="docutils literal notranslate"><span class="pre">quantity_support</span></code>, matplotlib automatically picks up the axis units from the quantitites we plot.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quantity_support</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f975c104e10&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The 1D combined spectra table contains 6 columns, below are a few highlights:</p>
+<ul class="simple">
+<li><p>WAVELENGTH is in Angstroms by default</p></li>
+<li><p>SIGNAL is the flux and should be multiplied by the FSCALE factor in the header</p></li>
+<li><p>MASK values can be used to determine which flux bins to discard. MASK = odd and MASK &gt;=64 means the flux bins not be used.</p></li>
+</ul>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signal_scaled</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">spec_header</span><span class="p">[</span><span class="s1">&#39;FSCALE&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We investigate the MASK column to see which flux bins are recommended to keep vs “Do Not Use”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Mask value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Values of MASK by flux bin&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Values of MASK by flux bin&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/9044c40c5d0b825c609445f03762d84298ce79118d93a38cf1984aa093ffc3ec.png" src="../../_images/9044c40c5d0b825c609445f03762d84298ce79118d93a38cf1984aa093ffc3ec.png" />
+</div>
+</div>
+<p>We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">signal_scaled</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="o">~</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">signal_scaled</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Do not use&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;VAR&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">spec_header</span><span class="p">[</span><span class="s1">&#39;FSCALE&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15E-16</span><span class="p">,</span> <span class="mf">0.25E-16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Object ID </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Object ID 2689918641685825137&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/ab0233736cfc8c80426106b446c837fc41af4bf5b3a831a0ff86fbdb130e39d5.png" src="../../_images/ab0233736cfc8c80426106b446c837fc41af4bf5b3a831a0ff86fbdb130e39d5.png" />
+</div>
+</div>
 </section>
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
-<p><strong>Author</strong>: Tiffany Meshkat (IPAC Scientist)</p>
-<p><strong>Updated</strong>: 2025-03-19</p>
+<p><strong>Author</strong>: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai</p>
+<p><strong>Updated</strong>: 2025-03-31</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>
@@ -821,7 +835,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 MER catalog</p>
+        <p class="prev-next-title">Euclid Q1: MER catalogs</p>
       </div>
     </a>
     <a class="right-next"
@@ -829,7 +843,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 PHZ catalog</p>
+        <p class="prev-next-title">Euclid Q1: PHZ catalogs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -852,16 +866,10 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-1d-spectra-from-irsa-directly-to-this-notebook">1. Download 1D spectra from IRSA directly to this notebook</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-full-filename-url">Create the full filename/url</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-using-the-file-url-and-the-extension-just-for-this-object">3. Read in the spectrum using the file_url and the extension just for this object</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-the-large-fits-file-without-loading-it-entirely-into-memory-pulling-out-just-the-extension-we-want-for-the-1d-spectra-of-our-object">Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">Plot the image of the extracted spectrum</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy">1. Search for the spectrum of a specific galaxy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">2. Search for the spectrum of a specific galaxy in the 1D spectra table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-spectrum-for-only-our-specific-object">3. Read in the spectrum for only our specific object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-of-the-extracted-spectrum">4. Plot the image of the extracted spectrum</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this Notebook</a></li>
 </ul>
   </nav></div>

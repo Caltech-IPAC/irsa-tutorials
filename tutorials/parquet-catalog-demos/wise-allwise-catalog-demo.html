@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,12 +205,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../euclid_access/1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../euclid_access/2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../euclid_access/3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../euclid_access/4_Euclid_intro_PHZ_catalog.html">Introduction to Euclid Q1 PHZ catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../euclid_access/5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/1_Euclid_intro_MER_images.html">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/2_Euclid_intro_MER_catalog.html">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/3_Euclid_intro_1D_spectra.html">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/4_Euclid_intro_PHZ_catalog.html">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -530,7 +530,7 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
-<span class="c1"># !pip install pandas&gt;=1.5.2 pyarrow&gt;=10.0.1 matplotlib hpgeom astropy</span>
+<span class="c1"># !pip install &#39;pandas&gt;=1.5.2&#39; &#39;pyarrow&gt;=10.0.1&#39; matplotlib hpgeom astropy</span>
 </pre></div>
 </div>
 </div>
@@ -678,8 +678,8 @@ For filter options, see the <code class="docutils literal notranslate"><span cla
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.08 s, sys: 1.59 s, total: 7.67 s
-Wall time: 26.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.13 s, sys: 1.6 s, total: 7.73 s
+Wall time: 27.4 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -827,8 +827,8 @@ In other examples this is recognized automatically, but here we must pass it exp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.41 s, sys: 2.45 s, total: 6.86 s
-Wall time: 21.7 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.15 s, sys: 2.41 s, total: 6.57 s
+Wall time: 13.7 s
 </pre></div>
 </div>
 </div>
@@ -939,8 +939,8 @@ neighbor 3, corner (25, 72): 243172601351003808 at on-sky dist [22.86047987] arc
 neighbor 1, corner (25, 62): 252162001351031532 at on-sky dist [7.458129] arcsec
 neighbor 2, corner (25, 62): 252162001351031550 at on-sky dist [14.2719862] arcsec
 neighbor 3, corner (25, 62): 252162001351031549 at on-sky dist [18.96407889] arcsec
-CPU times: user 7.35 s, sys: 9.78 s, total: 17.1 s
-Wall time: 1min 12s
+CPU times: user 7.61 s, sys: 9.8 s, total: 17.4 s
+Wall time: 55.3 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[157162001351035963,
@@ -974,8 +974,8 @@ Wall time: 1min 12s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.22 s, sys: 2.14 s, total: 4.36 s
-Wall time: 6.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.27 s, sys: 2.29 s, total: 4.57 s
+Wall time: 4.63 s
 </pre></div>
 </div>
 <div class="output text_html"><div>

@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 1D spectra
+# Euclid Q1: 1D spectra
 
 +++
 
@@ -29,25 +29,17 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
-The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
-On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
 
-For the Euclid Wide Survey standard operating mode, the telescope undertakes a 4-point dither pattern.
-At each position VIS and NISP each take a 570s exposure, consisting of a direct visible image and a red grism exposure.
-This is followed by further NISP exposures in the Y, J, and H band filters (112 seconds each).
-The telescope is then dithered, and the sequence is repeated starting with a different grism position angle.
-There are actually two operational grisms oriented 180 degrees from each other. Each grism which will be used twice in this sequence, but with slight angular offsets (+/- 4 degrees), effectively creating the four different grism angles (Scaramella et al. 2022, A&A 662, A112).
-
-Data which can be obtained for SIR include: SIR "images", which effectively show the full image of objects with the spectral traces overlapping, and SIR 1D spectra for individual objects.
-In this notebook we describe how to access and process the 1D spectra products.
-For most users, simply accessing th 1D spectra is probably the preferred option, unless they would like to extract the spectrum again, or inspect the images to see if there is any artifact which might add noise to the spectrum.
-
-This notebook provides an introduction to the SIR 1D spectra released as part of Euclid Q1.
-Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Among the data products included in the Q1 release are the 1D spectra created by the SIR Processing Function.
+This notebook provides an introduction to these SIR 1D spectra.
+If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
@@ -55,126 +47,133 @@ Other Euclid notebooks show how to use other data products released as part of E
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib pandas requests astropy pyvo
+# !pip install matplotlib astropy 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
-from io import BytesIO
+import urllib
 
+import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import requests
 
 from astropy.io import fits
-from astropy.table import Table
+from astropy.table import QTable
+from astropy import units as u
+from astropy.visualization import quantity_support
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
-## 1. Download 1D spectra from IRSA directly to this notebook
+## 1. Search for the spectrum of a specific galaxy
 
-Search for all tables in IRSA labeled as euclid
+First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.
 
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid" in tablename:
-            tables[tablename].describe()
-```
+Search for all tables in IRSA labeled as "euclid".
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
-table_phz= 'euclid_q1_phz_photo_z'
-table_galaxy_candidates= 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-## Change the settings so we can see all the columns in the dataframe and the full column width
-## (to see the full long URL)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-
-
-## Can use the following lines to reset the max columns and column width of pandas
-# pd.reset_option('display.max_columns')
-# pd.reset_option('display.max_colwidth')
+table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
 ```
 
 ## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
 
 ```{code-cell} ipython3
-obj_id=2739401293646823742
-
-## Pull the data on these objects
-adql_object = f"SELECT * \
-FROM {table_1dspectra} \
-WHERE objectid = {obj_id} \
-AND uri IS NOT NULL "
-
-## Pull the data on this particular galaxy
-result2 = service.search(adql_object)
-df2=result2.to_table().to_pandas()
-df2
+obj_id = 2689918641685825137
 ```
 
-### Create the full filename/url
+We will use TAP and an ASQL query to find the spectral data for our galaxy. (ADQL is the [IVOA Astronomical Data Query Language](https://www.ivoa.net/documents/latest/ADQL.html) and is based on SQL.)
 
 ```{code-cell} ipython3
-irsa_url='https://irsa.ipac.caltech.edu/'
+adql_object = f"SELECT * FROM {table_1dspectra} WHERE objectid = {obj_id}"
 
-file_url=irsa_url+df2['uri'].iloc[0]
-file_url
+# Pull the data on this particular galaxy
+result = Irsa.query_tap(adql_object).to_table()
 ```
 
-## 3. Read in the spectrum using the file_url and the extension just for this object
+Pull out the file name from the ``result`` table:
+
+```{code-cell} ipython3
+file_uri = urllib.parse.urljoin(Irsa.tap_url, result['uri'][0])
+file_uri
+```
+
+## 3. Read in the spectrum for only our specific object
 
 Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).
 
 ```{code-cell} ipython3
-#### Code to read in the large file with many extensions and spectra from a tile
-#### Currently commented out
-
-# ## Complete file url with the irsa url at the start
-# url = file_url
-# response = requests.get(url)
-
-# hdul = fits.open(BytesIO(response.content))  # Open FITS file from memory
-# hdul.info()  # Show file info
+# hdul = fits.open(file_uri)
+# hdul.info()
 ```
 
-### Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
+Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
 
 ```{code-cell} ipython3
-response = requests.get(file_url)
+with fits.open(file_uri) as hdul:
+    spectrum = QTable.read(hdul[result['hdu'][0]], format='fits')
 
-with fits.open(BytesIO(response.content), memmap=True) as hdul:
-    hdu = hdul[df2['hdu'].iloc[0]]
-    dat = Table.read(hdu, format='fits', hdu=1)
-    df_obj_irsa = dat.to_pandas()
+    spec_header = hdul[result['hdu'][0]].header
 ```
 
-### Plot the image of the extracted spectrum
-
-- Convert the wavelength to microns
+```{code-cell} ipython3
+spectrum
+```
 
 ```{code-cell} ipython3
-## Now the data are read in, show an image
+spec_header
+```
 
-## Converting from Angstrom to microns
-plt.plot(df_obj_irsa['WAVELENGTH']/10000., df_obj_irsa['SIGNAL'])
+## 4. Plot the image of the extracted spectrum
 
-plt.xlabel('Wavelength (microns)')
-plt.ylabel('Flux'+dat['SIGNAL'].unit.to_string('latex_inline'))
-plt.title(obj_id)
+```{tip}
+As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
+```
+
+```{code-cell} ipython3
+quantity_support()
+```
+
+```{note}
+The 1D combined spectra table contains 6 columns, below are a few highlights:
+
+- WAVELENGTH is in Angstroms by default
+- SIGNAL is the flux and should be multiplied by the FSCALE factor in the header
+- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
+```
+
+```{code-cell} ipython3
+signal_scaled = spectrum['SIGNAL'] * spec_header['FSCALE']
+```
+
+We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
+
+```{code-cell} ipython3
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
+plt.ylabel('Mask value')
+plt.title('Values of MASK by flux bin')
+```
+
+We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
+
+```{code-cell} ipython3
+bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, signal_scaled), color='black', label='Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, signal_scaled), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
+
+plt.legend(loc='upper right')
+plt.ylim(-0.15E-16, 0.25E-16)
+plt.title(f'Object ID {obj_id}')
 ```
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat (IPAC Scientist)
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
 
-**Updated**: 2025-03-19
+**Updated**: 2025-03-31
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.

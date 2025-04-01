@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 PHZ catalog
+# Euclid Q1: PHZ catalogs
 
 +++
 
@@ -33,11 +33,17 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport@ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
 
-The photometry of every source is processed through a photometric redshift fitting pipeline, producing several different catalogs. This notebook provides an introduction to photo-z catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Among the data products included in the Q1 release are multiple catalogs created by the PHZ Processing Function.
+This notebook provides an introduction to the main PHZ catalog, which contains 61 columns describing the photometric redshift probability distribution, fluxes, and classification for each source.
+If you have questions about this notebook, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
@@ -45,15 +51,14 @@ The photometry of every source is processed through a photometric redshift fitti
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install requests matplotlib pandas astropy>5.2 pyvo fsspec firefly_client
+# !pip install matplotlib pandas 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
 ```
 
 ```{code-cell} ipython3
-from io import BytesIO
 import os
 import re
+import urllib
 
-import requests
 import matplotlib.pyplot as plt
 
 from astropy.coordinates import SkyCoord
@@ -66,7 +71,7 @@ from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStret
 from astropy.wcs import WCS
 
 from firefly_client import FireflyClient
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -86,9 +91,7 @@ coord = SkyCoord(ra, dec, unit='deg', frame='icrs')
 This searches specifically in the euclid_DpdMerBksMosaic "collection" which is the MER images and catalogs.
 
 ```{code-cell} ipython3
-irsa_service= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
-
-image_table = irsa_service.search(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic').to_table()
+image_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
 ```
 
 ```{note}
@@ -117,40 +120,29 @@ print('The MER tile ID for this object is :',tileID)
 
 ## 2. Download PHZ catalog from IRSA
 
+Use IRSA's TAP to search catalogs
+
 ```{code-cell} ipython3
-## Use IRSA to search for catalogs
-
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-
-## Search for all tables in IRSA labled as euclid_q1
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid_q1" in tablename:
-            tables[tablename].describe()
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ```{code-cell} ipython3
-table_mer= 'euclid_q1_mer_catalogue'
-table_phz= 'euclid_q1_phz_photo_z'
-table_1dspectra= 'euclid.objectid_spectrafile_association_q1'
+table_mer = 'euclid_q1_mer_catalogue'
+table_phz = 'euclid_q1_phz_photo_z'
+table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
 ```
 
-### Learn some information about the table:
+### Learn some information about the photo-z catalog:
 
 - How many columns are there?
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_phz].columns
-print(len(columns))
+columns_info = Irsa.list_columns(catalog=table_phz)
+print(len(columns_info))
 ```
 
-```{code-cell} ipython3
-for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}') ## Currently no descriptions
-```
-
+```{tip}
 The PHZ catalog contains 67 columns, below are a few highlights:
 
 - object_id
@@ -158,6 +150,12 @@ The PHZ catalog contains 67 columns, below are a few highlights:
 - median redshift (phz_median)
 - phz_classification
 - phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)
+```
+
+```{code-cell} ipython3
+# Full list of columns and their description
+columns_info
+```
 
 ```{note}
 The phz_catalog on IRSA has more columns than it does on the ESA archive.
@@ -191,7 +189,7 @@ im_cutout= 5 * u.arcmin
 ## What is the center of the cutout?
 ra_cutout = 267.8
 dec_cutout =  66
- 
+
 coords_cutout = SkyCoord(ra_cutout, dec_cutout, unit=(u.deg, u.deg), frame='icrs')
 ##########################################################################
 im_cutout_deg=im_cutout.to(u.deg).value
@@ -222,8 +220,8 @@ AND phz.phz_median BETWEEN 1.4 AND 1.6 \
 adql
 
 
-## Use TAP with this ADQL string using pyvo
-result = service.search(adql)
+## Use TAP with this ADQL string
+result = Irsa.query_tap(adql)
 
 
 ## Convert table to pandas dataframe
@@ -320,25 +318,20 @@ FROM {table_1dspectra} \
 WHERE objectid = {obj_id}"
 
 ## Pull the data on this particular galaxy
-result2 = service.search(adql_object)
+result2 = Irsa.query_tap(adql_object)
 df2=result2.to_table().to_pandas()
 df2
 ```
 
-```{code-cell} ipython3
-## Create the full filename/url
-irsa_url='https://irsa.ipac.caltech.edu/'
+Pull out the file name from the ``result`` table:
 
-file_url=irsa_url+df2['uri'].iloc[0]
-file_url
+```{code-cell} ipython3
+file_uri = urllib.parse.urljoin(Irsa.tap_url, result2['uri'][0])
+file_uri
 ```
 
 ```{code-cell} ipython3
-## Open the large FITS file without loading it entirely into memory
-## pulling out just the extension we want for the 1D spectra of our object
-response = requests.get(file_url)
-
-with fits.open(BytesIO(response.content), memmap=True) as hdul:
+with fits.open(file_uri) as hdul:
     hdu = hdul[df2['hdu'].iloc[0]]
     dat = Table.read(hdu, format='fits', hdu=1)
     df_obj_irsa = dat.to_pandas()

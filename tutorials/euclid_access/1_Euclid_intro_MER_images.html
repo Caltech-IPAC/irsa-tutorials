@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to Euclid Q1 MER mosaics &#8212; IRSA Demo Notebooks</title>
+    <title>Euclid Q1: MER mosaics &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,7 +47,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/1_Euclid_intro_MER_images';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction to Euclid Q1 MER catalog" href="2_Euclid_intro_MER_catalog.html" />
+    <link rel="next" title="Euclid Q1: MER catalogs" href="2_Euclid_intro_MER_catalog.html" />
     <link rel="prev" title="Exploring Star Clusters in the Euclid ERO Data" href="Euclid_ERO.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,12 +205,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 MER mosaics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Introduction to Euclid Q1 PHZ catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -471,7 +471,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction to Euclid Q1 MER mosaics</h1>
+    <h1>Euclid Q1: MER mosaics</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -514,8 +514,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-mer-mosaics">
-<h1>Introduction to Euclid Q1 MER mosaics<a class="headerlink" href="#introduction-to-euclid-q1-mer-mosaics" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="euclid-q1-mer-mosaics">
+<h1>Euclid Q1: MER mosaics<a class="headerlink" href="#euclid-q1-mer-mosaics" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
 <p>By the end of this tutorial, you will:</p>
@@ -529,9 +529,17 @@ document.write(`
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA. The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe. The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals. These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.</p>
-<p>Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.</p>
-<p>Among the data products included in the Q1 release are the Level 2 MER mosaics. These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based telescopes. All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale. This notebook provides a quick introduction to accessing MER mosaics from IRSA. If you have questions about it, please contact the [IRSA helpdesk].</p>
+<p>Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.</p>
+<p>Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.</p>
+<p>Among the data products included in the Q1 release are the Level 2 MER mosaics.
+These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based telescopes.
+All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale.
+This notebook provides a quick introduction to accessing MER mosaics from IRSA.
+If you have questions about it, please contact the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a>.</p>
 </section>
 <section id="data-volume">
 <h2>Data volume<a class="headerlink" href="#data-volume" title="Link to this heading">#</a></h2>
@@ -541,18 +549,17 @@ document.write(`
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
-<span class="c1"># !pip install numpy astropy&gt;=5.3 matplotlib pyvo sep&gt;=1.4 fsspec pandas</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install numpy &#39;astropy&gt;=5.3&#39; matplotlib &#39;astroquery&gt;=0.4.10&#39; &#39;sep&gt;=1.4&#39; fsspec</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ellipse</span>
@@ -565,11 +572,8 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sep</span>
-
-<span class="c1"># Copy-on-write is more performant and avoids unexpected modifications of the original DataFrame.</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">copy_on_write</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
@@ -580,67 +584,52 @@ document.write(`
 <p>Below we set a search radius of 10 arcsec and convert the name “HD 168151” into coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search_radius</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_radius</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
 <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;HD 168151&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Use IRSA’s Simple Image Access (SIA) API to search for all Euclid MER mosaics that overlap with the search region you have specified. We specify the euclid_DpdMerBksMosaic “collection” because it lists all of the multiwavelength MER mosaics, along with their associated catalogs.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_service</span><span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">sia2</span><span class="o">.</span><span class="n">SIA2Service</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/SIA&#39;</span><span class="p">)</span>
-
-<span class="n">image_table</span> <span class="o">=</span> <span class="n">irsa_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The IRSA SIA collections can be listed using using the <code class="docutils literal notranslate"><span class="pre">list_collections</span></code> method, we can filter on the ones containing “euclid” in the collection name:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Irsa.list_collections(filter=&#39;euclid&#39;)
 </pre></div>
-</div>
-</div>
-</div>
-<p>Convert the table to pandas dataframe</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span><span class="o">=</span><span class="n">image_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Change the settings so we can see all the columns in the dataframe and the full column width (to see the full long URL)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_colwidth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-
-<span class="c1">## Can use the following lines to reset the max columns and column width of pandas</span>
-<span class="c1"># pd.reset_option(&#39;display.max_columns&#39;)</span>
-<span class="c1"># pd.reset_option(&#39;display.max_colwidth&#39;)</span>
-</pre></div>
-</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_irsa</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_table</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>This dataframe contains lots of datasets that have been “Euclidized”, which means that they have been put on a common pixel scale chosen for the Euclid mission. Choose “science” as the data product subtype to see all science images of this tile.</p>
+<p>This table lists all MER mosaic images available in this search position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the <a class="reference external" href="https://euclid.caltech.edu/page/euclid-faq-tech/">Euclid documentation at IPAC</a>.</p>
+<p>Note that there are various image types are returned as well, we filter out the <code class="docutils literal notranslate"><span class="pre">science</span></code> images from these:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">=</span><span class="n">df_im_irsa</span><span class="p">[</span> <span class="p">(</span><span class="n">df_im_irsa</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;science&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
-<span class="n">df_im_euclid</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">science_images</span> <span class="o">=</span> <span class="n">image_table</span><span class="p">[</span><span class="n">image_table</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;science&#39;</span><span class="p">]</span>
+<span class="n">science_images</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df_im_euclid</span><span class="p">),</span><span class="s1">&#39;MER images of this object/MER tile.&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=9</i>
+<table id="table140376255682512" class="table-striped table-bordered table-condensed">
+<thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
+<thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>R</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>5.61762e-07</td><td>7.22025e-07</td><td>4.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/R</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>102158277_VIS</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_VIS/VIS</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>U</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>3.14751e-07</td><td>4.01839e-07</td><td>4.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/U</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>G</td><td>Optical</td><td>102158277_WISHES</td><td>1.58</td><td>3.95422e-07</td><td>5.54729e-07</td><td>3.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/G</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>Y</td><td>Infrared</td><td>102158277_NISP</td><td>0.0878</td><td>9.2e-07</td><td>1.146e-06</td><td>4.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/Y</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>Z</td><td>Optical</td><td>102158277_WISHES</td><td>1.15</td><td>8.36385e-07</td><td>9.49057e-07</td><td>7.9</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/Z</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>H</td><td>Infrared</td><td>102158277_NISP</td><td>0.1026</td><td>1.372e-06</td><td>2e-06</td><td>2.7</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/H</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Pan-STARRS</td><td>Pan-STARRS</td><td>science</td><td>3</td><td>image</td><td>I</td><td>Optical</td><td>102158277_PANSTARRS</td><td>1.11</td><td>6.78317e-07</td><td>8.30624e-07</td><td>5.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_PANSTARRS/I</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>J</td><td>Infrared</td><td>102158277_NISP</td><td>0.094</td><td>1.146e-06</td><td>1.372e-06</td><td>5.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/J</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+</table></div></div></div>
 </div>
 </section>
 <section id="retrieve-a-euclid-q1-mer-mosaic-image-in-the-vis-bandpass">
@@ -650,24 +639,57 @@ document.write(`
 <p>Note that ‘access_estsize’ is in units of kb</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">filesize</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_estsize&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">1000000</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">filesize</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_estsize&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000000</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Please note this image is </span><span class="si">{</span><span class="n">filesize</span><span class="si">}</span><span class="s1"> GB. With 230 Mbps internet download speed, it takes about 1 minute to download.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits
+Please note this image is 1.474566 GB. With 230 Mbps internet download speed, it takes about 1 minute to download.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">science_images</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><i>Table length=9</i>
+<table id="table140376255682512" class="table-striped table-bordered table-condensed">
+<thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
+<thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+<thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>R</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>5.61762e-07</td><td>7.22025e-07</td><td>4.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/R</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>102158277_VIS</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_VIS/VIS</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>U</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>3.14751e-07</td><td>4.01839e-07</td><td>4.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/U</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>G</td><td>Optical</td><td>102158277_WISHES</td><td>1.58</td><td>3.95422e-07</td><td>5.54729e-07</td><td>3.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/G</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>Y</td><td>Infrared</td><td>102158277_NISP</td><td>0.0878</td><td>9.2e-07</td><td>1.146e-06</td><td>4.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/Y</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>Z</td><td>Optical</td><td>102158277_WISHES</td><td>1.15</td><td>8.36385e-07</td><td>9.49057e-07</td><td>7.9</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/Z</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>H</td><td>Infrared</td><td>102158277_NISP</td><td>0.1026</td><td>1.372e-06</td><td>2e-06</td><td>2.7</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/H</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Pan-STARRS</td><td>Pan-STARRS</td><td>science</td><td>3</td><td>image</td><td>I</td><td>Optical</td><td>102158277_PANSTARRS</td><td>1.11</td><td>6.78317e-07</td><td>8.30624e-07</td><td>5.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_PANSTARRS/I</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>J</td><td>Infrared</td><td>102158277_NISP</td><td>0.094</td><td>1.146e-06</td><td>1.372e-06</td><td>5.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/J</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+</table></div></div></div>
 </div>
 </section>
 <section id="extract-the-tileid-of-this-image-from-the-filename">
 <h3>Extract the tileID of this image from the filename<a class="headerlink" href="#extract-the-tileid-of-this-image-from-the-filename" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tileID</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;TILE\s*(\d</span><span class="si">{9}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tileID</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;obs_id&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">9</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The MER tile ID for this object is :&#39;</span><span class="p">,</span><span class="n">tileID</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The MER tile ID for this object is : </span><span class="si">{</span><span class="n">tileID</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The MER tile ID for this object is : 102158277
 </pre></div>
 </div>
 </div>
@@ -675,11 +697,19 @@ document.write(`
 <p>Retrieve the MER image – note this file is about 1.46 GB</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">hdu_mer_irsa</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">hdu_mer_irsa</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
 
-<span class="n">head_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+<span class="n">header_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/57396083c69b787af6e808156a46c70e/contents
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      48   (19200, 19200)   float32
+None
 </pre></div>
 </div>
 </div>
@@ -688,7 +718,7 @@ document.write(`
 Please also define a suitable download directory; by default it will be <code class="docutils literal notranslate"><span class="pre">data</span></code> at the same location as your notebook.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># download_path = &#39;data&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># download_path = &#39;data&#39;</span>
 <span class="c1"># hdu_mer_irsa.writeto(os.path.join(download_path, &#39;MER_image_VIS.fits&#39;), overwrite=True)</span>
 </pre></div>
 </div>
@@ -697,7 +727,61 @@ Please also define a suitable download directory; by default it will be <code cl
 <p>Have a look at the header information for this image.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">head_mer_irsa</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header_mer_irsa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                  -32 / array data type                                
+NAXIS   =                    2 / number of array dimensions                     
+NAXIS1  =                19200                                                  
+NAXIS2  =                19200                                                  
+EQUINOX =        2000.00000000 / Mean equinox                                   
+RADESYS = &#39;ICRS    &#39;           / Astrometric system                             
+CTYPE1  = &#39;RA---TAN&#39;           / WCS projection type for this axis              
+CUNIT1  = &#39;deg     &#39;           / Axis unit                                      
+CRVAL1  =   2.737406439000E+02 / World coordinate on this axis                  
+CRPIX1  =                 9600 / Reference pixel on this axis                   
+CD1_1   =  -2.777777777778E-05 / Linear projection matrix                       
+CD1_2   =   0.000000000000E+00 / Linear projection matrix                       
+CTYPE2  = &#39;DEC--TAN&#39;           / WCS projection type for this axis              
+CUNIT2  = &#39;deg     &#39;           / Axis unit                                      
+CRVAL2  =   6.450000000000E+01 / World coordinate on this axis                  
+CRPIX2  =                 9600 / Reference pixel on this axis                   
+CD2_1   =   0.000000000000E+00 / Linear projection matrix                       
+CD2_2   =   2.777777777778E-05 / Linear projection matrix                       
+COMMENT                                                                         
+SOFTNAME= &#39;CT_SWarp&#39;           / The software that processed those data         
+SOFTVERS= &#39;10.2    &#39;           / Version of the software                        
+SOFTDATE= &#39;2024-03-18&#39;         / Release date of the software                   
+SOFTAUTH= &#39;2020-2024 Euclid Consortium&#39; / Maintainer of the software            
+SOFTINST= &#39;Euclid Consortium https://www.euclid-ec.org/&#39; / Institute            
+COMMENT                                                                         
+AUTHOR  = &#39;ial     &#39;           / Who ran the software                           
+ORIGIN  = &#39;pr-02.sdcit-prod-ops.altecspace.it&#39; / Where it was done              
+DATE    = &#39;2024-10-25T12:31:02&#39; / When it was started (GMT)                     
+COMBINET= &#39;MEDIAN  &#39;           / COMBINE_TYPE config parameter for CT_SWarp     
+COMMENT                                                                         
+COMMENT  Propagated FITS keywords                                               
+COMMENT                                                                         
+COMMENT  Axis-dependent config parameters                                       
+RESAMPT1= &#39;BILINEAR&#39;           / RESAMPLING_TYPE config parameter               
+CENTERT1= &#39;ALL     &#39;           / CENTER_TYPE config parameter                   
+PSCALET1= &#39;MEDIAN  &#39;           / PIXELSCALE_TYPE config parameter               
+RESAMPT2= &#39;BILINEAR&#39;           / RESAMPLING_TYPE config parameter               
+CENTERT2= &#39;ALL     &#39;           / CENTER_TYPE config parameter                   
+PSCALET2= &#39;MEDIAN  &#39;           / PIXELSCALE_TYPE config parameter               
+MAGZERO =                 24.6 / AB zeropoint                                   
+FILTER  = &#39;VIS     &#39;           / the filter name                                
+PPOID   = &#39;MER_ProcessTile_EUCLID_2.0.2-QUICK_RELEASE-glibet-PLAN-000003-0VAPS&amp;&#39;
+CONTINUE  &#39;1GC-20241024-174435-29-RETRY-241025112601&amp;&#39;                          
+CONTINUE  &#39;&#39; / pipeline PPOID                                                   
+DATASETR= &#39;Q1_R1   &#39;           / pipeline DATASETRELEASE                        
+PIPDEFID= &#39;MER_ProcessTile_EUCLID_2.0.2&#39; / the pipeline definition ID           
+PPLANID = &#39;MER_ProcessTile_EUCLID_2.0.2-QUICK_RELEASE-glibet-PLAN-000003&#39; / the 
+PSWNAME = &#39;MER_ProcessTile&#39;    / the pipeline software name                     
+PSWREL  = &#39;11.0.1  &#39;           / the pipeline software release                  
 </pre></div>
 </div>
 </div>
@@ -705,9 +789,14 @@ Please also define a suitable download directory; by default it will be <code cl
 <p>Lets extract just the primary image.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">im_mer_irsa</span><span class="o">=</span><span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_mer_irsa</span> <span class="o">=</span> <span class="n">hdu_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(19200, 19200)
 </pre></div>
 </div>
 </div>
@@ -715,16 +804,20 @@ Please also define a suitable download directory; by default it will be <code cl
 <p>Due to the large field of view of the MER mosaic, let’s cut out a smaller section (2”x2”)of the MER mosaic to inspect the image</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+           <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">im_mer_irsa</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1200</span><span class="p">],</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">()))</span>
 <span class="n">colorbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/aa930a82eb04dd7c7b724f44cdcefd9b9048308d1bbb52827e81278ceafc0b47.png" src="../../_images/aa930a82eb04dd7c7b724f44cdcefd9b9048308d1bbb52827e81278ceafc0b47.png" />
 </div>
 </div>
 <p>Uncomment the code below to plot an image of the entire field of view of the MER mosaic.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Full MER mosaic, may take a minute for python to create this image</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Full MER mosaic, may take a minute for python to create this image</span>
 <span class="c1"># plt.imshow(im_mer_irsa, cmap=&#39;gray&#39;, origin=&#39;lower&#39;, norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))</span>
 <span class="c1"># colorbar = plt.colorbar()</span>
 </pre></div>
@@ -741,35 +834,60 @@ Please also define a suitable download directory; by default it will be <code cl
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">]</span>
 
 <span class="n">urls</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">&lt;MaskedColumn name=&apos;access_url&apos; dtype=&apos;object&apos; description=&apos;URI for the physical artifact&apos; length=9&gt;
+<table>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits</td></tr>
+<tr><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits</td></tr>
+</table></div></div>
 </div>
 <p>Create an array with the instrument and filter name so we can add this to the plots.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_im_euclid</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;instrument_name&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;energy_bandpassname&quot;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;instrument_name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span>
 
-<span class="c1">## Note that VIS_VIS appears in the filters, so update that filter to just say VIS</span>
-<span class="n">df_im_euclid</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_im_euclid</span><span class="p">[</span><span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;VIS_VIS&quot;</span><span class="p">,</span> <span class="s2">&quot;filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;VIS&quot;</span>
+<span class="c1"># VIS_VIS appears in the filters, so update that filter to just say VIS</span>
+<span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">][</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span><span class="o">==</span> <span class="s1">&#39;VIS_VIS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;VIS&quot;</span>
 
-<span class="n">filters</span> <span class="o">=</span> <span class="n">df_im_euclid</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-<span class="n">filters</span>
+<span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">&lt;MaskedColumn name=&apos;filters&apos; dtype=&apos;object&apos; length=9&gt;
+<table>
+<tr><td>MegaCam_R</td></tr>
+<tr><td>VIS</td></tr>
+<tr><td>MegaCam_U</td></tr>
+<tr><td>Hyper Suprime-Cam_G</td></tr>
+<tr><td>NISP_Y</td></tr>
+<tr><td>Hyper Suprime-Cam_Z</td></tr>
+<tr><td>NISP_H</td></tr>
+<tr><td>Pan-STARRS_I</td></tr>
+<tr><td>NISP_J</td></tr>
+</table></div></div>
 </div>
 </section>
 <section id="the-image-above-is-very-large-so-let-s-cut-out-a-smaller-image-to-inspect-these-data">
 <h2>The image above is very large, so let’s cut out a smaller image to inspect these data.<a class="headerlink" href="#the-image-above-is-very-large-so-let-s-cut-out-a-smaller-image-to-inspect-these-data" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
 <span class="c1">## How large do you want the image cutout to be?</span>
-<span class="n">im_cutout</span><span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span>
+<span class="n">im_cutout</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcmin</span>
 
 <span class="c1">## What is the center of the cutout?</span>
 <span class="c1">## For now choosing a random location on the image</span>
@@ -781,7 +899,7 @@ Please also define a suitable download directory; by default it will be <code cl
 <span class="c1"># ra = 273.474451</span>
 <span class="c1"># dec = 64.397273</span>
 
-<span class="n">coords_cutout</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
+<span class="n">coords_cutout</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
 
 <span class="c1">##########################################################################</span>
 
@@ -816,6 +934,30 @@ Please also define a suitable download directory; by default it will be <code cl
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits
+Opened https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits
+Filename: (No file associated with this HDUList)
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU      57   (600, 600)   float32   
+  1  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  2  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  3  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  4  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  5  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  6  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  7  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32   
+  8  PRIMARY       1 PrimaryHDU      56   (600, 600)   float32
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="visualize-multiwavelength-euclid-q1-mer-cutouts">
@@ -823,14 +965,14 @@ Please also define a suitable download directory; by default it will be <code cl
 <p>We need to determine the number of images for the grid layout, and then plot each cutout.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_hdulist</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_hdulist</span><span class="p">)</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">rows</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">num_images</span> <span class="o">//</span> <span class="n">columns</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">columns</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">rows</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">WCS</span><span class="p">(</span><span class="n">final_hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)})</span>
 <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">filt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">filters</span><span class="p">)):</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">filt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">])):</span>
     <span class="n">image_data</span> <span class="o">=</span> <span class="n">final_hdulist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">ImageNormalize</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">())</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
@@ -847,6 +989,9 @@ Please also define a suitable download directory; by default it will be <code cl
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/84d7f260436448e7066f64c722370252c043e52a04b17550504a581bfe4ed58e.png" src="../../_images/84d7f260436448e7066f64c722370252c043e52a04b17550504a581bfe4ed58e.png" />
+</div>
 </div>
 </section>
 <section id="use-the-python-package-sep-to-identify-and-measure-sources-in-the-euclid-q1-mer-cutouts">
@@ -854,16 +999,9 @@ Please also define a suitable download directory; by default it will be <code cl
 <p>First we list all the filters so you can choose which cutout you want to extract sources on. We will choose VIS.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filt_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">filters</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filt_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;filters&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">img1</span><span class="o">=</span><span class="n">final_hdulist</span><span class="p">[</span><span class="n">filt_index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">img1</span> <span class="o">=</span> <span class="n">final_hdulist</span><span class="p">[</span><span class="n">filt_index</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
 </div>
@@ -875,7 +1013,7 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 <p>Need to do some initial steps (swap byte order) with the cutout to prevent sep from crashing. Then create a background model with sep.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">img2</span> <span class="o">=</span> <span class="n">img1</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img2</span> <span class="o">=</span> <span class="n">img1</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">())</span>
 <span class="n">c_contiguous_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
 <span class="n">bkg</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">Background</span><span class="p">(</span><span class="n">c_contiguous_data</span><span class="p">)</span>
@@ -887,18 +1025,27 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x7fab848db810&gt;
+</pre></div>
+</div>
+<img alt="../../_images/4c6fb2b455c32ea555e9ca2b193e6a97c9a642cbfd6f92fb4fae05555d41706f.png" src="../../_images/4c6fb2b455c32ea555e9ca2b193e6a97c9a642cbfd6f92fb4fae05555d41706f.png" />
+</div>
 </div>
 </section>
 <section id="inspect-the-background-rms-as-well">
 <h3>Inspect the background rms as well<a class="headerlink" href="#inspect-the-background-rms-as-well" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bkg_rms</span> <span class="o">=</span> <span class="n">bkg</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bkg_rms</span> <span class="o">=</span> <span class="n">bkg</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bkg_rms</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/838e00d0df4936c6b87e7cfe7b0acee3cbe8695c9f8cc107d999c5774a8200e9.png" src="../../_images/838e00d0df4936c6b87e7cfe7b0acee3cbe8695c9f8cc107d999c5774a8200e9.png" />
 </div>
 </div>
 </section>
@@ -906,7 +1053,7 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 <h3>Subtract the background<a class="headerlink" href="#subtract-the-background" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_sub</span> <span class="o">=</span> <span class="n">img2</span> <span class="o">-</span> <span class="n">bkg</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sub</span> <span class="o">=</span> <span class="n">img2</span> <span class="o">-</span> <span class="n">bkg</span>
 </pre></div>
 </div>
 </div>
@@ -916,7 +1063,7 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 <h3>Source extraction via sep<a class="headerlink" href="#source-extraction-via-sep" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
 
 <span class="c1">## Sigma threshold to consider this a detection above the global RMS</span>
 <span class="n">threshold</span><span class="o">=</span> <span class="mi">3</span>
@@ -937,6 +1084,11 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found 114 objects above flux threshold
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -945,7 +1097,7 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 <p>We plot the VIS cutout with the sources detected overplotted with a red ellipse</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_sub</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data_sub</span><span class="p">)</span>
 <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data_sub</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">ImageNormalize</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">ZScaleInterval</span><span class="p">(),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">SquaredStretch</span><span class="p">()))</span>
 
@@ -962,12 +1114,15 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cbc5d81c70a59bfad7726f4bb4f9ca9f2542b06be035c5554babf5d5af8d867d.png" src="../../_images/cbc5d81c70a59bfad7726f4bb4f9ca9f2542b06be035c5554babf5d5af8d867d.png" />
+</div>
 </div>
 </section>
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
-<p><strong>Author</strong>: Tiffany Meshkat (IPAC Scientist)</p>
-<p><strong>Updated</strong>: 2025-03-19</p>
+<p><strong>Author</strong>: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai</p>
+<p><strong>Updated</strong>: 2025-03-31</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>
@@ -997,7 +1152,7 @@ https://sep.readthedocs.io/en/stable/tutorial.html</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 MER catalog</p>
+        <p class="prev-next-title">Euclid Q1: MER catalogs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

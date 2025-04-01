@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to Euclid Q1 PHZ catalog &#8212; IRSA Demo Notebooks</title>
+    <title>Euclid Q1: PHZ catalogs &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/4_Euclid_intro_PHZ_catalog';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Euclid Quick Release 1: SPE catalog" href="5_Euclid_intro_SPE_catalog.html" />
-    <link rel="prev" title="Introduction to Euclid Q1 1D spectra" href="3_Euclid_intro_1D_spectra.html" />
+    <link rel="next" title="Euclid Q1: SPE catalogs" href="5_Euclid_intro_SPE_catalog.html" />
+    <link rel="prev" title="Euclid Q1: 1D spectra" href="3_Euclid_intro_1D_spectra.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,12 +205,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Introduction to Euclid Q1 MER catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 PHZ catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_Euclid_intro_MER_catalog.html">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -471,7 +471,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction to Euclid Q1 PHZ catalog</h1>
+    <h1>Euclid Q1: PHZ catalogs</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -489,7 +489,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-phz-catalog-from-irsa">2. Download PHZ catalog from IRSA</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-photo-z-catalog">Learn some information about the photo-z catalog:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec">Find some galaxies between 1.4 and 1.6 at a selected RA and Dec</a></li>
 </ul>
 </li>
@@ -516,8 +516,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-phz-catalog">
-<h1>Introduction to Euclid Q1 PHZ catalog<a class="headerlink" href="#introduction-to-euclid-q1-phz-catalog" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="euclid-q1-phz-catalogs">
+<h1>Euclid Q1: PHZ catalogs<a class="headerlink" href="#euclid-q1-phz-catalogs" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
 <p>By the end of this tutorial, you will:</p>
@@ -532,27 +532,32 @@ document.write(`
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe. The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO). On March 19, 2025 the data will be available on the ESA archive (https://easidr.esac.esa.int/sas/) and on the IRSA archive (https://irsa.ipac.caltech.edu).</p>
-<p>These notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive. At the end of the notebook, we also include some information for how to access the Q1 data from the ESA archive. If you have any issues accessing data from the archives, please contact the helpdesk directly: IRSA (irsasupport&#64;ipac.caltech.edu) and ESA (https://support.cosmos.esa.int/euclid).</p>
-<p>The photometry of every source is processed through a photometric redshift fitting pipeline, producing several different catalogs. This notebook provides an introduction to photo-z catalog released as part of Euclid Q1. Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+<p>Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.</p>
+<p>Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.</p>
+<p>Among the data products included in the Q1 release are multiple catalogs created by the PHZ Processing Function.
+This notebook provides an introduction to the main PHZ catalog, which contains 61 columns describing the photometric redshift probability distribution, fluxes, and classification for each source.
+If you have questions about this notebook, please contact the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a>.</p>
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
-<span class="c1"># !pip install requests matplotlib pandas astropy&gt;5.2 pyvo fsspec firefly_client</span>
+<span class="c1"># !pip install matplotlib pandas &#39;astropy&gt;=5.3&#39; &#39;astroquery&gt;=0.4.10&#39; fsspec firefly_client</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
@@ -565,7 +570,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.wcs</span><span class="w"> </span><span class="kn">import</span> <span class="n">WCS</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
 </pre></div>
 </div>
 </div>
@@ -590,9 +595,7 @@ document.write(`
 <p>This searches specifically in the euclid_DpdMerBksMosaic “collection” which is the MER images and catalogs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_service</span><span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">sia2</span><span class="o">.</span><span class="n">SIA2Service</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/SIA&#39;</span><span class="p">)</span>
-
-<span class="n">image_table</span> <span class="o">=</span> <span class="n">irsa_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_table</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -781,82 +784,54 @@ document.write(`
 </section>
 <section id="download-phz-catalog-from-irsa">
 <h2>2. Download PHZ catalog from IRSA<a class="headerlink" href="#download-phz-catalog-from-irsa" title="Link to this heading">#</a></h2>
+<p>Use IRSA’s TAP to search catalogs</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Use IRSA to search for catalogs</span>
-
-<span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
-
-
-<span class="c1">## Search for all tables in IRSA labled as euclid_q1</span>
-<span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
-<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span> <span class="ow">and</span> <span class="s2">&quot;euclid_q1&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
-            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>euclid.artifact_euclid_q1
-    Euclid Q1 CAOM Artifact Table
-
-euclid.observation_euclid_q1
-    Euclid Q1 CAOM Observation Table
-euclid.plane_euclid_q1
-    Euclid Q1 CAOM Plane Table
-euclid_q1_mer_catalogue
-    Euclid Q1 MER Catalog
-
-euclid_q1_mer_morphology
-    Euclid Q1 MER Morphology
-euclid_q1_phz_photo_z
-    Euclid Q1 PHZ Photo-z Catalog
-
-euclid_q1_spe_lines_atomic_indices
-    Euclid Q1 SPE Lines Catalog - Atomic Indices
-euclid_q1_spe_lines_continuum_features
-    Euclid Q1 SPE Lines Catalog - Continuum Features
-
-euclid_q1_spe_lines_line_features
-    Euclid Q1 SPE Lines Catalog - Spectral Lines
-euclid_q1_spe_lines_molecular_indices
-    Euclid Q1 SPE Lines Catalog - Molecular Indices
-
-euclid_q1_spectro_zcatalog_spe_classification
-    Euclid Q1 SPE Redshift Catalog - Classification
-euclid_q1_spectro_zcatalog_spe_galaxy_candidates
-    Euclid Q1 SPE Redshift Catalog - Galaxy Candidates
-
-euclid_q1_spectro_zcatalog_spe_qso_candidates
-    Euclid Q1 SPE Redshift Catalog - QSO Candidates
-euclid_q1_spectro_zcatalog_spe_quality
-    Euclid Q1 SPE Redshift Catalog - Quality
-
-euclid_q1_spectro_zcatalog_spe_star_candidates
-    Euclid Q1 SPE Redshift Catalog - Star Candidates
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
+ &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
+ &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_quality&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Quality&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_classification&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Classification&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Galaxy Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_star_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Star Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_qso_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - QSO Candidates&#39;,
+ &#39;euclid_q1_spe_lines_line_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Spectral Lines&#39;,
+ &#39;euclid_q1_spe_lines_continuum_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Continuum Features&#39;,
+ &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
+ &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
+ &#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
+ &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
+ &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
+ &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
+ &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
-<span class="n">table_phz</span><span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
-<span class="n">table_1dspectra</span><span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
+<span class="n">table_phz</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
+<span class="n">table_1dspectra</span> <span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section id="learn-some-information-about-the-table">
-<h3>Learn some information about the table:<a class="headerlink" href="#learn-some-information-about-the-table" title="Link to this heading">#</a></h3>
+<section id="learn-some-information-about-the-photo-z-catalog">
+<h3>Learn some information about the photo-z catalog:<a class="headerlink" href="#learn-some-information-about-the-photo-z-catalog" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>How many columns are there?</p></li>
 <li><p>List the column names</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">table_phz</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_info</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">list_columns</span><span class="p">(</span><span class="n">catalog</span><span class="o">=</span><span class="n">table_phz</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns_info</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -866,85 +841,8 @@ euclid_q1_spectro_zcatalog_spe_star_candidates
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">## Currently no descriptions</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>object_id                       None  Unique ID of the object in the survey, as set by MER
-phz_median                      None  The median of the PHZ PDF
-phz_mode_1                      None  The first mode of the PHZ PDF
-phz_mode_1_area                 None  The total area of the first mode
-phz_mode_2                      None  The second mode of the PHZ PDF
-phz_mode_2_area                 None  The total area of the second mode
-bias_id                         None  The identifier to be used for retrieving the bias correction shift from the bias correction map
-tom_bin_id                      None  The identifier of the tomographic bin the source belongs to (Equipopulated-bins)
-alt_tom_bin_id                  None  The identifier of the alternate tomographic bin the source belongs to (Equidistant-bins)
-pos_tom_bin_id                  None  The identifier of the photometric clustering tomographic bin the source belongs to (Equipopulated-bins)
-flag_som_tomobin                None  Flag telling if the source belong to a combination of SOM cell and Tom. bin which can be calibrated (=1) or not (=0).
-flag_som_alt_tomobin            None  Flag telling if the source belong to a combination of SOM cell and Alt Tom. bin which can be calibrated (=1) or not (=0).
-flag_som_pos_tomobin            None  Flag telling if the source belong to a combination of SOM cell and POS Tom. bin which can be calibrated (=1) or not (=0).
-flux_u_ext_decam_unif           uJy  Unified flux recomputed after correction from galactic extinction and filter shifts
-flux_g_ext_decam_unif           uJy  None
-flux_r_ext_decam_unif           uJy  None
-flux_i_ext_decam_unif           uJy  None
-flux_z_ext_decam_unif           uJy  None
-flux_u_ext_lsst_unif            uJy  None
-flux_g_ext_lsst_unif            uJy  None
-flux_r_ext_lsst_unif            uJy  None
-flux_i_ext_lsst_unif            uJy  None
-flux_z_ext_lsst_unif            uJy  None
-flux_u_ext_megacam_unif         uJy  None
-flux_g_ext_hsc_unif             uJy  None
-flux_r_ext_megacam_unif         uJy  None
-flux_i_ext_panstarrs_unif       uJy  None
-flux_z_ext_hsc_unif             uJy  None
-flux_vis_unif                   uJy  None
-flux_y_unif                     uJy  None
-flux_j_unif                     uJy  None
-flux_h_unif                     uJy  None
-fluxerr_u_ext_decam_unif        uJy  None
-fluxerr_g_ext_decam_unif        uJy  None
-fluxerr_r_ext_decam_unif        uJy  None
-fluxerr_i_ext_decam_unif        uJy  None
-fluxerr_z_ext_decam_unif        uJy  None
-fluxerr_u_ext_lsst_unif         uJy  None
-fluxerr_g_ext_lsst_unif         uJy  None
-fluxerr_r_ext_lsst_unif         uJy  None
-fluxerr_i_ext_lsst_unif         uJy  None
-fluxerr_z_ext_lsst_unif         uJy  None
-fluxerr_u_ext_megacam_unif      uJy  None
-fluxerr_g_ext_hsc_unif          uJy  None
-fluxerr_r_ext_megacam_unif      uJy  None
-fluxerr_i_ext_panstarrs_unif    uJy  None
-fluxerr_z_ext_hsc_unif          uJy  None
-fluxerr_vis_unif                uJy  None
-fluxerr_y_unif                  uJy  None
-fluxerr_j_unif                  uJy  None
-fluxerr_h_unif                  uJy  None
-photometric_system              None  Encode the Photometric band configuration (indicating also the number of missing columns)
-phz_classification              None  Classification flag: 1 if the source is accepted as star, 2 if it is accepted as a galaxy, 4 if it is accepted as a QSO, 8 if the source is acce...&quot;
-phz_flags                       None  An integer containing the flags of the PHZ processing. Meaning: 0 =&gt; OK, 1 =&gt; NNPZ flag: no close neighbor, 10 not VIS detected, 11 missing band, 12 t...
-phz_weight                      NA  Probability to be a usable source at VIS MAG=23.5
-best_chi2                       None  Chi2 of the best fit model or the closest neighbor
-phz_70_int1                     None  The smallest PHZ PDF interval containing 70% of the probability - lower value
-phz_70_int2                     None  The smallest PHZ PDF interval containing 70% of the probability - upper value
-phz_90_int1                     None  The smallest PHZ PDF interval containing 90% of the probability - lower value
-phz_90_int2                     None  The smallest PHZ PDF interval containing 90% of the probability - upper value
-phz_95_int1                     None  The smallest PHZ PDF interval containing 95% of the probability - upper value
-phz_95_int2                     None  None
-ie_cuts_weights1                None  Vector of probability to be a usable source for VIS MAG cut 20.25
-ie_cuts_weights2                None  Vector of probability to be a usable source for VIS MAG cut 21.25
-ie_cuts_weights3                None  Vector of probability to be a usable source for VIS MAG cut 22.25
-ie_cuts_weights4                None  Vector of probability to be a usable source for VIS MAG cut 24.5
-cntr                            None  entry counter (key) number (unique within table)
-</pre></div>
-</div>
-</div>
-</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <p>The PHZ catalog contains 67 columns, below are a few highlights:</p>
 <ul class="simple">
 <li><p>object_id</p></li>
@@ -953,6 +851,86 @@ cntr                            None  entry counter (key) number (unique within 
 <li><p>phz_classification</p></li>
 <li><p>phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)</p></li>
 </ul>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full list of columns and their description</span>
+<span class="n">columns_info</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;object_id&#39;: &#39;Unique ID of the object in the survey, as set by MER&#39;,
+ &#39;phz_median&#39;: &#39;The median of the PHZ PDF&#39;,
+ &#39;phz_mode_1&#39;: &#39;The first mode of the PHZ PDF&#39;,
+ &#39;phz_mode_1_area&#39;: &#39;The total area of the first mode&#39;,
+ &#39;phz_mode_2&#39;: &#39;The second mode of the PHZ PDF&#39;,
+ &#39;phz_mode_2_area&#39;: &#39;The total area of the second mode&#39;,
+ &#39;bias_id&#39;: &#39;The identifier to be used for retrieving the bias correction shift from the bias correction map&#39;,
+ &#39;tom_bin_id&#39;: &#39;The identifier of the tomographic bin the source belongs to (Equipopulated-bins)&#39;,
+ &#39;alt_tom_bin_id&#39;: &#39;The identifier of the alternate tomographic bin the source belongs to (Equidistant-bins)&#39;,
+ &#39;pos_tom_bin_id&#39;: &#39;The identifier of the photometric clustering tomographic bin the source belongs to (Equipopulated-bins)&#39;,
+ &#39;flag_som_tomobin&#39;: &#39;Flag telling if the source belong to a combination of SOM cell and Tom. bin which can be calibrated (=1) or not (=0).&#39;,
+ &#39;flag_som_alt_tomobin&#39;: &#39;Flag telling if the source belong to a combination of SOM cell and Alt Tom. bin which can be calibrated (=1) or not (=0).&#39;,
+ &#39;flag_som_pos_tomobin&#39;: &#39;Flag telling if the source belong to a combination of SOM cell and POS Tom. bin which can be calibrated (=1) or not (=0).&#39;,
+ &#39;flux_u_ext_decam_unif&#39;: &#39;Unified flux recomputed after correction from galactic extinction and filter shifts&#39;,
+ &#39;flux_g_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;flux_r_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;flux_i_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;flux_z_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;flux_u_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;flux_g_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;flux_r_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;flux_i_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;flux_z_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;flux_u_ext_megacam_unif&#39;: &#39;&#39;,
+ &#39;flux_g_ext_hsc_unif&#39;: &#39;&#39;,
+ &#39;flux_r_ext_megacam_unif&#39;: &#39;&#39;,
+ &#39;flux_i_ext_panstarrs_unif&#39;: &#39;&#39;,
+ &#39;flux_z_ext_hsc_unif&#39;: &#39;&#39;,
+ &#39;flux_vis_unif&#39;: &#39;&#39;,
+ &#39;flux_y_unif&#39;: &#39;&#39;,
+ &#39;flux_j_unif&#39;: &#39;&#39;,
+ &#39;flux_h_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_u_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_g_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_r_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_i_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_z_ext_decam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_u_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_g_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_r_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_i_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_z_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_u_ext_megacam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_g_ext_hsc_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_r_ext_megacam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_i_ext_panstarrs_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_z_ext_hsc_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_vis_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_y_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_j_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_h_unif&#39;: &#39;&#39;,
+ &#39;photometric_system&#39;: &#39;Encode the Photometric band configuration (indicating also the number of missing columns)&#39;,
+ &#39;phz_classification&#39;: &#39;Classification flag: 1 if the source is accepted as star, 2 if it is accepted as a galaxy, 4 if it is accepted as a QSO, 8 if the source is acce...&quot;&#39;,
+ &#39;phz_flags&#39;: &#39;An integer containing the flags of the PHZ processing. Meaning: 0 =&gt; OK, 1 =&gt; NNPZ flag: no close neighbor, 10 not VIS detected, 11 missing band, 12 t...&#39;,
+ &#39;phz_weight&#39;: &#39;Probability to be a usable source at VIS MAG=23.5&#39;,
+ &#39;best_chi2&#39;: &#39;Chi2 of the best fit model or the closest neighbor&#39;,
+ &#39;phz_70_int1&#39;: &#39;The smallest PHZ PDF interval containing 70% of the probability - lower value&#39;,
+ &#39;phz_70_int2&#39;: &#39;The smallest PHZ PDF interval containing 70% of the probability - upper value&#39;,
+ &#39;phz_90_int1&#39;: &#39;The smallest PHZ PDF interval containing 90% of the probability - lower value&#39;,
+ &#39;phz_90_int2&#39;: &#39;The smallest PHZ PDF interval containing 90% of the probability - upper value&#39;,
+ &#39;phz_95_int1&#39;: &#39;The smallest PHZ PDF interval containing 95% of the probability - upper value&#39;,
+ &#39;phz_95_int2&#39;: &#39;&#39;,
+ &#39;ie_cuts_weights1&#39;: &#39;Vector of probability to be a usable source for VIS MAG cut 20.25&#39;,
+ &#39;ie_cuts_weights2&#39;: &#39;Vector of probability to be a usable source for VIS MAG cut 21.25&#39;,
+ &#39;ie_cuts_weights3&#39;: &#39;Vector of probability to be a usable source for VIS MAG cut 22.25&#39;,
+ &#39;ie_cuts_weights4&#39;: &#39;Vector of probability to be a usable source for VIS MAG cut 24.5&#39;,
+ &#39;cntr&#39;: &#39;entry counter (key) number (unique within table)&#39;}
+</pre></div>
+</div>
+</div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The phz_catalog on IRSA has more columns than it does on the ESA archive.
@@ -982,7 +960,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <span class="c1">## What is the center of the cutout?</span>
 <span class="n">ra_cutout</span> <span class="o">=</span> <span class="mf">267.8</span>
 <span class="n">dec_cutout</span> <span class="o">=</span>  <span class="mi">66</span>
- 
+
 <span class="n">coords_cutout</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra_cutout</span><span class="p">,</span> <span class="n">dec_cutout</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
 <span class="c1">##########################################################################</span>
 <span class="n">im_cutout_deg</span><span class="o">=</span><span class="n">im_cutout</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
@@ -1016,8 +994,8 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <span class="n">adql</span>
 
 
-<span class="c1">## Use TAP with this ADQL string using pyvo</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
+<span class="c1">## Use TAP with this ADQL string</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_tap</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
 
 
 <span class="c1">## Convert table to pandas dataframe</span>
@@ -1196,7 +1174,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f8010fdfb50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f6c2f30e750&gt;
 </pre></div>
 </div>
 <img alt="../../_images/aa579ff18a91cad2c142fb8a9ef999074c09b0daa316d44fa3f6002f9e977c9d.png" src="../../_images/aa579ff18a91cad2c142fb8a9ef999074c09b0daa316d44fa3f6002f9e977c9d.png" />
@@ -1359,7 +1337,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <span class="s2">WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="c1">## Pull the data on this particular galaxy</span>
-<span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_tap</span><span class="p">(</span><span class="n">adql_object</span><span class="p">)</span>
 <span class="n">df2</span><span class="o">=</span><span class="n">result2</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
 <span class="n">df2</span>
 </pre></div>
@@ -1404,13 +1382,11 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </table>
 </div></div></div>
 </div>
+<p>Pull out the file name from the <code class="docutils literal notranslate"><span class="pre">result</span></code> table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Create the full filename/url</span>
-<span class="n">irsa_url</span><span class="o">=</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/&#39;</span>
-
-<span class="n">file_url</span><span class="o">=</span><span class="n">irsa_url</span><span class="o">+</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">file_url</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">file_uri</span>
 </pre></div>
 </div>
 </div>
@@ -1422,11 +1398,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Open the large FITS file without loading it entirely into memory</span>
-<span class="c1">## pulling out just the extension we want for the 1D spectra of our object</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
-
-<span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">memmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
     <span class="n">hdu</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
     <span class="n">dat</span> <span class="o">=</span> <span class="n">Table</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdu</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">hdu</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">df_obj_irsa</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
@@ -1557,7 +1529,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNC0wMQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1586,7 +1558,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_4931246916344372166_mer_df.csv
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_17642113854249614714_mer_df.csv
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
@@ -1621,7 +1593,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 1D spectra</p>
+        <p class="prev-next-title">Euclid Q1: 1D spectra</p>
       </div>
     </a>
     <a class="right-next"
@@ -1629,7 +1601,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Euclid Quick Release 1: SPE catalog</p>
+        <p class="prev-next-title">Euclid Q1: SPE catalogs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1657,7 +1629,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-phz-catalog-from-irsa">2. Download PHZ catalog from IRSA</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-photo-z-catalog">Learn some information about the photo-z catalog:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-some-galaxies-between-1-4-and-1-6-at-a-selected-ra-and-dec">Find some galaxies between 1.4 and 1.6 at a selected RA and Dec</a></li>
 </ul>
 </li>

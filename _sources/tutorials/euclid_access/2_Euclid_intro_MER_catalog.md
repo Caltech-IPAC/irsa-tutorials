@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Introduction to Euclid Q1 MER catalog
+# Euclid Q1: MER catalogs
 
 +++
 
@@ -31,17 +31,18 @@ By the end of this tutorial, you will:
 
 +++
 
-Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
-The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
-On March 19, 2025 the data will be available on the [ESA archive](https://easidr.esac.esa.int/sas/) and on the [IRSA archive](https://irsa.ipac.caltech.edu).
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) and [ESA Euclid Helpdesk](https://support.cosmos.esa.int/euclid).
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
 
-Each entry in the MER catalog is a single source containing all its photometry from the MER Mosaics (VIS, Y, J, H and any accompanying external ground observations) along with other basic measurements, like size and shape.
-
-This notebook provides an introduction to the MER catalog released as part of Euclid Q1.
-Other Euclid notebooks show how to use other data products released as part of Euclid Q1.
+Among the data products included in the Q1 release are the three MER catalogs: the final catalog, the morphology catalog, and the cutouts catalog.
+This notebook provides an introduction to the MER final catalog.
+Each entry is a single source with associated photometry from the multiwavelength MER Mosaics (VIS, Y, J, H, and any accompanying external ground-based measurements), along with other basic measurements, like size and shape.
+If you have questions about this notebook, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
@@ -49,27 +50,24 @@ Other Euclid notebooks show how to use other data products released as part of E
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install numpy matplotlib pyvo
+# !pip install numpy matplotlib 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 
-import pyvo as vo
+from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Download MER catalog from IRSA directly to this notebook
 
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-```
++++
+
+First, have a look at what Euclid catalogs are available. With the ``list_catalogs`` functionality, we'll receive a list of the name of the catalogs as well as their brief desciption.
 
 ```{code-cell} ipython3
-tables = service.tables
-for tablename in tables.keys():
-    if "tap_schema" not in tablename and "euclid_q1" in tablename:
-            tables[tablename].describe()
+Irsa.list_catalogs(filter='euclid')
 ```
 
 ### Choose the Euclid MER table
@@ -78,18 +76,17 @@ for tablename in tables.keys():
 table_mer = 'euclid_q1_mer_catalogue'
 ```
 
-### Learn some information about the table:
+### Learn some information about the MER catalog:
 - How many columns are there?
 - List the column names
 
 ```{code-cell} ipython3
-columns = tables[table_mer].columns
-print(len(columns))
+columns_info = Irsa.list_columns(catalog=table_mer)
+print(len(columns_info))
 ```
 
 ```{code-cell} ipython3
-for col in columns:
-    print(f'{f"{col.name}":30s}  {col.unit}  {col.description}')
+columns_info
 ```
 
 ```{tip}
@@ -120,7 +117,7 @@ adql_stars = ("SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf
 
 # Run the query
 
-result_stars = service.search(adql_stars)
+result_stars = Irsa.query_tap(adql_stars)
 ```
 
 ```{code-cell} ipython3

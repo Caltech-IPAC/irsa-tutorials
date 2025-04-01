@@ -4,14 +4,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.3
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-# Euclid Quick Release 1: Cloud Access
+# Euclid Q1: cloud access
 
 +++
 
@@ -24,11 +24,18 @@ By the end of this tutorial, you will:
 +++
 
 ## 1. Introduction
-Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA. The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe. The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals. These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Q1 data were released on-premises at IPAC and in the cloud via Amazon Web Services' Open Data Repository. This notebook introduces users to accessing Euclid Q1 data from the cloud. Additional Euclid-specific notebooks can be found at ["Accessing Euclid data" section](https://caltech-ipac.github.io/irsa-tutorials/#accessing-euclid-data) and additional notebooks about how to access IRSA-curated data from the AWS ODR can be found at ["Accessing IRSA's cloud holdings" section](https://caltech-ipac.github.io/irsa-tutorials/#accessing-irsa-s-cloud-holdings).
+Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+
+IRSA maintains copies of the Euclid Q1 data products both on premises at IPAC and on the cloud via Amazon Web Services (AWS).
+This notebook provides an introduction to accessing Euclid Q1 data from the cloud.
+If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
@@ -41,7 +48,7 @@ Euclid Q1 data were released on-premises at IPAC and in the cloud via Amazon Web
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs astropy astroquery>=0.4.10 matploltib
+# !pip install s3fs astropy 'astroquery>=0.4.10' matplotlib
 ```
 
 ```{code-cell} ipython3

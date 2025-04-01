@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to Euclid Q1 MER catalog &#8212; IRSA Demo Notebooks</title>
+    <title>Euclid Q1: MER catalogs &#8212; IRSA Demo Notebooks</title>
   
   
   
@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/2_Euclid_intro_MER_catalog';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction to Euclid Q1 1D spectra" href="3_Euclid_intro_1D_spectra.html" />
-    <link rel="prev" title="Introduction to Euclid Q1 MER mosaics" href="1_Euclid_intro_MER_images.html" />
+    <link rel="next" title="Euclid Q1: 1D spectra" href="3_Euclid_intro_1D_spectra.html" />
+    <link rel="prev" title="Euclid Q1: MER mosaics" href="1_Euclid_intro_MER_images.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -197,7 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
 <ul class="nav bd-sidenav">
@@ -205,12 +205,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Introduction to Euclid Q1 MER mosaics</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Euclid Q1 MER catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Introduction to Euclid Q1 1D spectra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Introduction to Euclid Q1 PHZ catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Quick Release 1: SPE catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Quick Release 1: Cloud Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_Euclid_intro_MER_images.html">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_Euclid_intro_1D_spectra.html">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Euclid_intro_PHZ_catalog.html">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
@@ -471,7 +471,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction to Euclid Q1 MER catalog</h1>
+    <h1>Euclid Q1: MER catalogs</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -486,7 +486,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-mer-catalog-from-irsa-directly-to-this-notebook">1. Download MER catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-euclid-mer-table">Choose the Euclid MER table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-mer-catalog">Learn some information about the MER catalog:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-following-adql-query-to-find-the-first-10k-stars-in-the-mer-catalog">Define the following ADQL query to find the first 10k stars in the MER catalog</a></li>
 </ul>
 </li>
@@ -503,8 +503,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-euclid-q1-mer-catalog">
-<h1>Introduction to Euclid Q1 MER catalog<a class="headerlink" href="#introduction-to-euclid-q1-mer-catalog" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="euclid-q1-mer-catalogs">
+<h1>Euclid Q1: MER catalogs<a class="headerlink" href="#euclid-q1-mer-catalogs" title="Link to this heading">#</a></h1>
 <section id="learning-goals">
 <h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
 <p>By the end of this tutorial, you will:</p>
@@ -517,21 +517,23 @@ document.write(`
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>Euclid is a European Space Agency (ESA) space mission with NASA participation, to study the geometry and nature of the dark Universe.
-The Quick Data Release 1 (Q1) are the first data release from the Euclid mission after the Early Release Observations (ERO).
-On March 19, 2025 the data will be available on the <a class="reference external" href="https://easidr.esac.esa.int/sas/">ESA archive</a> and on the <a class="reference external" href="https://irsa.ipac.caltech.edu">IRSA archive</a>.</p>
-<p>These Q1 notebooks focus on how to access, download, and process Euclid Q1 data from the IRSA archive.
-If you have any issues accessing data from the archives, please contact the helpdesk directly: <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a> and <a class="reference external" href="https://support.cosmos.esa.int/euclid">ESA Euclid Helpdesk</a>.</p>
-<p>Each entry in the MER catalog is a single source containing all its photometry from the MER Mosaics (VIS, Y, J, H and any accompanying external ground observations) along with other basic measurements, like size and shape.</p>
-<p>This notebook provides an introduction to the MER catalog released as part of Euclid Q1.
-Other Euclid notebooks show how to use other data products released as part of Euclid Q1.</p>
+<p>Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.</p>
+<p>Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
+Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.</p>
+<p>Among the data products included in the Q1 release are the three MER catalogs: the final catalog, the morphology catalog, and the cutouts catalog.
+This notebook provides an introduction to the MER final catalog.
+Each entry is a single source with associated photometry from the multiwavelength MER Mosaics (VIS, Y, J, H, and any accompanying external ground-based measurements), along with other basic measurements, like size and shape.
+If you have questions about this notebook, please contact the <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA helpdesk</a>.</p>
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed</span>
-<span class="c1"># !pip install numpy matplotlib pyvo</span>
+<span class="c1"># !pip install numpy matplotlib &#39;astroquery&gt;=0.4.10&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -541,7 +543,7 @@ Other Euclid notebooks show how to use other data products released as part of E
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
 </pre></div>
 </div>
 </div>
@@ -549,60 +551,31 @@ Other Euclid notebooks show how to use other data products released as part of E
 </section>
 <section id="download-mer-catalog-from-irsa-directly-to-this-notebook">
 <h2>1. Download MER catalog from IRSA directly to this notebook<a class="headerlink" href="#download-mer-catalog-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
+<p>First, have a look at what Euclid catalogs are available. With the <code class="docutils literal notranslate"><span class="pre">list_catalogs</span></code> functionality, we’ll receive a list of the name of the catalogs as well as their brief desciption.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
-<span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="k">if</span> <span class="s2">&quot;tap_schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tablename</span> <span class="ow">and</span> <span class="s2">&quot;euclid_q1&quot;</span> <span class="ow">in</span> <span class="n">tablename</span><span class="p">:</span>
-            <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>euclid.artifact_euclid_q1
-    Euclid Q1 CAOM Artifact Table
-
-euclid.observation_euclid_q1
-    Euclid Q1 CAOM Observation Table
-euclid.plane_euclid_q1
-    Euclid Q1 CAOM Plane Table
-euclid_q1_mer_catalogue
-    Euclid Q1 MER Catalog
-
-euclid_q1_mer_morphology
-    Euclid Q1 MER Morphology
-euclid_q1_phz_photo_z
-    Euclid Q1 PHZ Photo-z Catalog
-
-euclid_q1_spe_lines_atomic_indices
-    Euclid Q1 SPE Lines Catalog - Atomic Indices
-euclid_q1_spe_lines_continuum_features
-    Euclid Q1 SPE Lines Catalog - Continuum Features
-
-euclid_q1_spe_lines_line_features
-    Euclid Q1 SPE Lines Catalog - Spectral Lines
-euclid_q1_spe_lines_molecular_indices
-    Euclid Q1 SPE Lines Catalog - Molecular Indices
-
-euclid_q1_spectro_zcatalog_spe_classification
-    Euclid Q1 SPE Redshift Catalog - Classification
-euclid_q1_spectro_zcatalog_spe_galaxy_candidates
-    Euclid Q1 SPE Redshift Catalog - Galaxy Candidates
-
-euclid_q1_spectro_zcatalog_spe_qso_candidates
-    Euclid Q1 SPE Redshift Catalog - QSO Candidates
-euclid_q1_spectro_zcatalog_spe_quality
-    Euclid Q1 SPE Redshift Catalog - Quality
-
-euclid_q1_spectro_zcatalog_spe_star_candidates
-    Euclid Q1 SPE Redshift Catalog - Star Candidates
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
+ &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
+ &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_quality&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Quality&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_classification&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Classification&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Galaxy Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_star_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Star Candidates&#39;,
+ &#39;euclid_q1_spectro_zcatalog_spe_qso_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - QSO Candidates&#39;,
+ &#39;euclid_q1_spe_lines_line_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Spectral Lines&#39;,
+ &#39;euclid_q1_spe_lines_continuum_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Continuum Features&#39;,
+ &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
+ &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
+ &#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
+ &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
+ &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
+ &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
+ &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;}
 </pre></div>
 </div>
 </div>
@@ -617,16 +590,16 @@ euclid_q1_spectro_zcatalog_spe_star_candidates
 </div>
 </div>
 </section>
-<section id="learn-some-information-about-the-table">
-<h3>Learn some information about the table:<a class="headerlink" href="#learn-some-information-about-the-table" title="Link to this heading">#</a></h3>
+<section id="learn-some-information-about-the-mer-catalog">
+<h3>Learn some information about the MER catalog:<a class="headerlink" href="#learn-some-information-about-the-mer-catalog" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>How many columns are there?</p></li>
 <li><p>List the column names</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">table_mer</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_info</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">list_columns</span><span class="p">(</span><span class="n">catalog</span><span class="o">=</span><span class="n">table_mer</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns_info</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -638,488 +611,487 @@ euclid_q1_spectro_zcatalog_spe_star_candidates
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_info</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>object_id                       NA  Euclid unique source identifier
-ra                              deg  Source barycenter RA coordinate (SExtractor ALPHA_J2000) decimal degrees
-dec                             deg  Source barycenter DEC coordinate (SExtractor DELTA_J2000) decimal degrees
-right_ascension_psf_fitting     deg  Source RA coordinate derived by the PSF-fitting photometry method
-declination_psf_fitting         deg  Source DEC coordinate derived by the PSF-fitting photometry method
-segmentation_map_id             NA  Source ID in the associated segmentation map
-vis_det                         NA  Flag to indicate if the source is detected in the VIS mosaic (1) or is only detected in the NIR mosaic (0)
-flux_vis_1fwhm_aper             uJy  VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_vis_2fwhm_aper             uJy  VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_vis_3fwhm_aper             uJy  VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_vis_4fwhm_aper             uJy  VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_y_1fwhm_aper               uJy  NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_y_2fwhm_aper               uJy  NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_y_3fwhm_aper               uJy  NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_y_4fwhm_aper               uJy  NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_j_1fwhm_aper               uJy  NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_j_2fwhm_aper               uJy  NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_j_3fwhm_aper               uJy  NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_j_4fwhm_aper               uJy  NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_h_1fwhm_aper               uJy  NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_h_2fwhm_aper               uJy  NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_h_3fwhm_aper               uJy  NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_h_4fwhm_aper               uJy  NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_nir_stack_1fwhm_aper       uJy  NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_nir_stack_2fwhm_aper       uJy  NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_nir_stack_3fwhm_aper       uJy  NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_nir_stack_4fwhm_aper       uJy  NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_u_ext_decam_1fwhm_aper     uJy  Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_u_ext_decam_2fwhm_aper     uJy  Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_u_ext_decam_3fwhm_aper     uJy  Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_u_ext_decam_4fwhm_aper     uJy  Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_g_ext_decam_1fwhm_aper     uJy  Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_g_ext_decam_2fwhm_aper     uJy  Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_g_ext_decam_3fwhm_aper     uJy  Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_g_ext_decam_4fwhm_aper     uJy  Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_r_ext_decam_1fwhm_aper     uJy  Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_r_ext_decam_2fwhm_aper     uJy  Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_r_ext_decam_3fwhm_aper     uJy  Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_r_ext_decam_4fwhm_aper     uJy  Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_i_ext_decam_1fwhm_aper     uJy  Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_i_ext_decam_2fwhm_aper     uJy  Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_i_ext_decam_3fwhm_aper     uJy  Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_i_ext_decam_4fwhm_aper     uJy  Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_z_ext_decam_1fwhm_aper     uJy  Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_z_ext_decam_2fwhm_aper     uJy  Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_z_ext_decam_3fwhm_aper     uJy  Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_z_ext_decam_4fwhm_aper     uJy  Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_u_ext_lsst_1fwhm_aper      uJy  Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_u_ext_lsst_2fwhm_aper      uJy  Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_u_ext_lsst_3fwhm_aper      uJy  Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_u_ext_lsst_4fwhm_aper      uJy  Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_g_ext_lsst_1fwhm_aper      uJy  Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_g_ext_lsst_2fwhm_aper      uJy  Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_g_ext_lsst_3fwhm_aper      uJy  Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_g_ext_lsst_4fwhm_aper      uJy  Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_r_ext_lsst_1fwhm_aper      uJy  Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_r_ext_lsst_2fwhm_aper      uJy  Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_r_ext_lsst_3fwhm_aper      uJy  Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_r_ext_lsst_4fwhm_aper      uJy  Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_i_ext_lsst_1fwhm_aper      uJy  Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_i_ext_lsst_2fwhm_aper      uJy  Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_i_ext_lsst_3fwhm_aper      uJy  Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_i_ext_lsst_4fwhm_aper      uJy  Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_z_ext_lsst_1fwhm_aper      uJy  Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_z_ext_lsst_2fwhm_aper      uJy  Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_z_ext_lsst_3fwhm_aper      uJy  Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_z_ext_lsst_4fwhm_aper      uJy  Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_u_ext_megacam_1fwhm_aper   uJy  Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_u_ext_megacam_2fwhm_aper   uJy  Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_u_ext_megacam_3fwhm_aper   uJy  Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_u_ext_megacam_4fwhm_aper   uJy  Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_r_ext_megacam_1fwhm_aper   uJy  Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_r_ext_megacam_2fwhm_aper   uJy  Rext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_r_ext_megacam_3fwhm_aper   uJy  Rext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_r_ext_megacam_4fwhm_aper   uJy  Rext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_g_ext_jpcam_1fwhm_aper     uJy  Gext JPCAM band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_g_ext_jpcam_2fwhm_aper     uJy  Gext JPCAM band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_g_ext_jpcam_3fwhm_aper     uJy  Gext JPCAM band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_g_ext_jpcam_4fwhm_aper     uJy  Gext JPCAM band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_i_ext_panstarrs_1fwhm_aper  uJy  Iext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_i_ext_panstarrs_2fwhm_aper  uJy  Iext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_i_ext_panstarrs_3fwhm_aper  uJy  Iext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_i_ext_panstarrs_4fwhm_aper  uJy  Iext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_z_ext_panstarrs_1fwhm_aper  uJy  Zext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_z_ext_panstarrs_2fwhm_aper  uJy  Zext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_z_ext_panstarrs_3fwhm_aper  uJy  Zext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_z_ext_panstarrs_4fwhm_aper  uJy  Zext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_g_ext_hsc_1fwhm_aper       uJy  Gext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_g_ext_hsc_2fwhm_aper       uJy  Gext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_g_ext_hsc_3fwhm_aper       uJy  Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_g_ext_hsc_4fwhm_aper       uJy  Gext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-flux_z_ext_hsc_1fwhm_aper       uJy  Zext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images
-flux_z_ext_hsc_2fwhm_aper       uJy  Zext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images
-flux_z_ext_hsc_3fwhm_aper       uJy  Zext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images
-flux_z_ext_hsc_4fwhm_aper       uJy  Zext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images
-fluxerr_vis_1fwhm_aper          uJy  VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_vis_2fwhm_aper          uJy  VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_vis_3fwhm_aper          uJy  VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_vis_4fwhm_aper          uJy  VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_y_1fwhm_aper            uJy  NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_y_2fwhm_aper            uJy  NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_y_3fwhm_aper            uJy  NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_y_4fwhm_aper            uJy  NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_j_1fwhm_aper            uJy  NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_j_2fwhm_aper            uJy  NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_j_3fwhm_aper            uJy  NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_j_4fwhm_aper            uJy  NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_h_1fwhm_aper            uJy  NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_h_2fwhm_aper            uJy  NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_h_3fwhm_aper            uJy  NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_h_4fwhm_aper            uJy  NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_nir_stack_1fwhm_aper    uJy  NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_nir_stack_2fwhm_aper    uJy  NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_nir_stack_3fwhm_aper    uJy  NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_nir_stack_4fwhm_aper    uJy  NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_decam_1fwhm_aper  uJy  Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_decam_2fwhm_aper  uJy  Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_decam_3fwhm_aper  uJy  Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_decam_4fwhm_aper  uJy  Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_decam_1fwhm_aper  uJy  Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_decam_2fwhm_aper  uJy  Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_decam_3fwhm_aper  uJy  Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_decam_4fwhm_aper  uJy  Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_decam_1fwhm_aper  uJy  Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_decam_2fwhm_aper  uJy  Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_decam_3fwhm_aper  uJy  Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_decam_4fwhm_aper  uJy  Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_decam_1fwhm_aper  uJy  Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_decam_2fwhm_aper  uJy  Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_decam_3fwhm_aper  uJy  Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_decam_4fwhm_aper  uJy  Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_decam_1fwhm_aper  uJy  Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_decam_2fwhm_aper  uJy  Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_decam_3fwhm_aper  uJy  Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_decam_4fwhm_aper  uJy  Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_lsst_1fwhm_aper   uJy  Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_lsst_2fwhm_aper   uJy  Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_lsst_3fwhm_aper   uJy  Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_lsst_4fwhm_aper   uJy  Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_lsst_1fwhm_aper   uJy  Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_lsst_2fwhm_aper   uJy  Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_lsst_3fwhm_aper   uJy  Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_lsst_4fwhm_aper   uJy  Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_lsst_1fwhm_aper   uJy  Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_lsst_2fwhm_aper   uJy  Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_lsst_3fwhm_aper   uJy  Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_lsst_4fwhm_aper   uJy  Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_lsst_1fwhm_aper   uJy  Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_lsst_2fwhm_aper   uJy  Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_lsst_3fwhm_aper   uJy  Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_lsst_4fwhm_aper   uJy  Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_lsst_1fwhm_aper   uJy  Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_lsst_2fwhm_aper   uJy  Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_lsst_3fwhm_aper   uJy  Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_lsst_4fwhm_aper   uJy  Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_megacam_1fwhm_aper  uJy  Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_megacam_2fwhm_aper  uJy  Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_megacam_3fwhm_aper  uJy  Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_u_ext_megacam_4fwhm_aper  uJy  Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_megacam_1fwhm_aper  uJy  Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_megacam_2fwhm_aper  uJy  Rext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_megacam_3fwhm_aper  uJy  Rext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_r_ext_megacam_4fwhm_aper  uJy  Rext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_jpcam_1fwhm_aper  uJy  Gext JPCAM band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_jpcam_2fwhm_aper  uJy  Gext JPCAM band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_jpcam_3fwhm_aper  uJy  Gext JPCAM band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_jpcam_4fwhm_aper  uJy  Gext JPCAM band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_panstarrs_1fwhm_aper  uJy  Iext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_panstarrs_2fwhm_aper  uJy  Iext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_panstarrs_3fwhm_aper  uJy  Iext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_i_ext_panstarrs_4fwhm_aper  uJy  Iext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_panstarrs_1fwhm_aper  uJy  Zext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_panstarrs_2fwhm_aper  uJy  Zext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_panstarrs_3fwhm_aper  uJy  Zext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_panstarrs_4fwhm_aper  uJy  Zext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_hsc_1fwhm_aper    uJy  Gext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_hsc_2fwhm_aper    uJy  Gext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_hsc_3fwhm_aper    uJy  Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_g_ext_hsc_4fwhm_aper    uJy  Gext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_hsc_1fwhm_aper    uJy  Zext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_hsc_2fwhm_aper    uJy  Zext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_hsc_3fwhm_aper    uJy  Zext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error
-fluxerr_z_ext_hsc_4fwhm_aper    uJy  Zext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error
-flux_y_templfit                 uJy  NIR Y band source template fitting flux (TPHOT measurement)
-flux_j_templfit                 uJy  NIR J band source template fitting flux (TPHOT measurement)
-flux_h_templfit                 uJy  NIR H band source template fitting flux (TPHOT measurement)
-flux_u_ext_decam_templfit       uJy  Uext DECam band source template fitting flux (TPHOT measurement)
-flux_g_ext_decam_templfit       uJy  Gext DECam band source template fitting flux (TPHOT measurement)
-flux_r_ext_decam_templfit       uJy  Rext DECam band source template fitting flux (TPHOT measurement)
-flux_i_ext_decam_templfit       uJy  Iext DECam band source template fitting flux (TPHOT measurement)
-flux_z_ext_decam_templfit       uJy  Zext DECam band source template fitting flux (TPHOT measurement)
-flux_u_ext_lsst_templfit        uJy  Uext LSST band source template fitting flux (TPHOT measurement)
-flux_g_ext_lsst_templfit        uJy  Gext LSST band source template fitting flux (TPHOT measurement)
-flux_r_ext_lsst_templfit        uJy  Rext LSST band source template fitting flux (TPHOT measurement)
-flux_i_ext_lsst_templfit        uJy  Iext LSST band source template fitting flux (TPHOT measurement)
-flux_z_ext_lsst_templfit        uJy  Zext LSST band source template fitting flux (TPHOT measurement)
-flux_u_ext_megacam_templfit     uJy  Uext Megacam band source template fitting flux (TPHOT measurement)
-flux_r_ext_megacam_templfit     uJy  Rext Megacam band source template fitting flux (TPHOT measurement)
-flux_g_ext_jpcam_templfit       uJy  Gext JPCAM band source template fitting flux (TPHOT measurement)
-flux_i_ext_panstarrs_templfit   uJy  Iext PS band source template fitting flux (TPHOT measurement)
-flux_z_ext_panstarrs_templfit   uJy  Zext PS band source template fitting flux (TPHOT measurement)
-flux_g_ext_hsc_templfit         uJy  Gext HSC band source template fitting flux (TPHOT measurement)
-flux_z_ext_hsc_templfit         uJy  Zext HSC band source template fitting flux (TPHOT measurement)
-fluxerr_y_templfit              uJy  NIR Y band source template fitting flux error (TPHOT measurement)
-fluxerr_j_templfit              uJy  NIR J band source template fitting flux error (TPHOT measurement)
-fluxerr_h_templfit              uJy  NIR H band source template fitting flux error (TPHOT measurement)
-fluxerr_u_ext_decam_templfit    uJy  Uext DECam band source template fitting flux error (TPHOT measurement)
-fluxerr_g_ext_decam_templfit    uJy  Gext DECam band source template fitting flux error (TPHOT measurement)
-fluxerr_r_ext_decam_templfit    uJy  Rext DECam band source template fitting flux error (TPHOT measurement)
-fluxerr_i_ext_decam_templfit    uJy  Iext DECam band source template fitting flux error (TPHOT measurement)
-fluxerr_z_ext_decam_templfit    uJy  Zext DECam band source template fitting flux error (TPHOT measurement)
-fluxerr_u_ext_lsst_templfit     uJy  Uext LSST band source template fitting flux error (TPHOT measurement)
-fluxerr_g_ext_lsst_templfit     uJy  Gext LSST band source template fitting flux error (TPHOT measurement)
-fluxerr_r_ext_lsst_templfit     uJy  Rext LSST band source template fitting flux error (TPHOT measurement)
-fluxerr_i_ext_lsst_templfit     uJy  Iext LSST band source template fitting flux error (TPHOT measurement)
-fluxerr_z_ext_lsst_templfit     uJy  Zext LSST band source template fitting flux error (TPHOT measurement)
-fluxerr_u_ext_megacam_templfit  uJy  Uext Megacam band source template fitting flux error (TPHOT measurement)
-fluxerr_r_ext_megacam_templfit  uJy  Rext Megacam band source template fitting flux error (TPHOT measurement)
-fluxerr_g_ext_jpcam_templfit    uJy  Gext JPCAM band source template fitting flux error (TPHOT measurement)
-fluxerr_i_ext_panstarrs_templfit  uJy  Iext PS band source template fitting flux error (TPHOT measurement)
-fluxerr_z_ext_panstarrs_templfit  uJy  Zext PS band source template fitting flux error (TPHOT measurement)
-fluxerr_g_ext_hsc_templfit      uJy  Gext HSC band source template fitting flux error (TPHOT measurement)
-fluxerr_z_ext_hsc_templfit      uJy  Zext HSC band source template fitting flux error (TPHOT measurement)
-flux_vis_to_y_templfit          uJy  VIS band source flux on a VIS image PSF-matched to NIR Y band (TPHOT measurement)
-flux_vis_to_j_templfit          uJy  VIS band source flux on a VIS image PSF-matched to NIR J band (TPHOT measurement)
-flux_vis_to_h_templfit          uJy  VIS band source flux on a VIS image PSF-matched to NIR H band (TPHOT measurement)
-flux_vis_to_u_ext_decam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Uext DECam band (TPHOT measurement)
-flux_vis_to_g_ext_decam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Gext DECam band (TPHOT measurement)
-flux_vis_to_r_ext_decam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Rext DECam band (TPHOT measurement)
-flux_vis_to_i_ext_decam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Iext DECam band (TPHOT measurement)
-flux_vis_to_z_ext_decam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Zext DECam band (TPHOT measurement)
-flux_vis_to_u_ext_lsst_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Uext LSST band (TPHOT measurement)
-flux_vis_to_g_ext_lsst_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Gext LSST band (TPHOT measurement)
-flux_vis_to_r_ext_lsst_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Rext LSST band (TPHOT measurement)
-flux_vis_to_i_ext_lsst_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Iext LSST band (TPHOT measurement)
-flux_vis_to_z_ext_lsst_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)
-flux_vis_to_u_ext_megacam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)
-flux_vis_to_r_ext_megacam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)
-flux_vis_to_g_ext_jpcam_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)
-flux_vis_to_i_ext_panstarrs_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Iext PS band (TPHOT measurement)
-flux_vis_to_z_ext_panstarrs_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Zext PS band (TPHOT measurement)
-flux_vis_to_g_ext_hsc_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)
-flux_vis_to_z_ext_hsc_templfit  uJy  VIS band source flux on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)
-fluxerr_vis_to_y_templfit       uJy  VIS band source flux error on a VIS image PSF-matched to NIR Y band (TPHOT measurement)
-fluxerr_vis_to_j_templfit       uJy  VIS band source flux error on a VIS image PSF-matched to NIR J bandr (TPHOT measurement)
-fluxerr_vis_to_h_templfit       uJy  VIS band source flux error on a VIS image PSF-matched to NIR H band (TPHOT measurement)
-fluxerr_vis_to_u_ext_decam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Uext DECam band (TPHOT measurement)
-fluxerr_vis_to_g_ext_decam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Gext DECam band (TPHOT measurement)
-fluxerr_vis_to_r_ext_decam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Rext DECam band (TPHOT measurement)
-fluxerr_vis_to_i_ext_decam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Iext DECam band (TPHOT measurement)
-fluxerr_vis_to_z_ext_decam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Zext DECam band (TPHOT measurement)
-fluxerr_vis_to_u_ext_lsst_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Uext LSST band (TPHOT measurement)
-fluxerr_vis_to_g_ext_lsst_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Gext LSST band (TPHOT measurement)
-fluxerr_vis_to_r_ext_lsst_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Rext LSST band (TPHOT measurement)
-fluxerr_vis_to_i_ext_lsst_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Iext LSST band (TPHOT measurement)
-fluxerr_vis_to_z_ext_lsst_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)
-fluxerr_vis_to_u_ext_megacam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)
-fluxerr_vis_to_r_ext_megacam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)
-fluxerr_vis_to_g_ext_jpcam_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)
-fluxerr_vis_to_i_ext_panstarrs_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Iext PS band (TPHOT measurement)
-fluxerr_vis_to_z_ext_panstarrs_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Zext PS band (TPHOT measurement)
-fluxerr_vis_to_g_ext_hsc_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)
-fluxerr_vis_to_z_ext_hsc_templfit  uJy  VIS band source flux error on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)
-flux_vis_psf                    uJy  VIS band source PSF-fitting photometry flux (TPHOT measurement)
-fluxerr_vis_psf                 uJy  VIS band source PSF-fitting photometry flux error (TPHOT measurement)
-flux_segmentation               uJy  VIS or NIR stack band source segmented area flux
-fluxerr_segmentation            uJy  VIS or NIR stack band source total flux (Kron aperture)
-flux_detection_total            uJy  VIS or NIR stack band source total flux error (Kron aperture)
-fluxerr_detection_total         uJy  VIS or NIR stack band source segmented area flux
-flux_vis_sersic                 uJy  VIS band source flux from the Sersic fit
-flux_y_sersic                   uJy  NIR Y band source flux from the Sersic fit
-flux_j_sersic                   uJy  NIR J band source flux from the Sersic fit
-flux_h_sersic                   uJy  NIR H band source flux from the Sersic fit
-flux_u_ext_decam_sersic         uJy  Uext DECam band source flux from the Sersic fit
-flux_g_ext_decam_sersic         uJy  Gext DECam band source flux from the Sersic fit
-flux_r_ext_decam_sersic         uJy  Rext DECam band source flux from the Sersic fit
-flux_i_ext_decam_sersic         uJy  Iext DECam band source flux from the Sersic fit
-flux_z_ext_decam_sersic         uJy  Zext DECam band source flux from the Sersic fit
-flux_u_ext_lsst_sersic          uJy  Uext LSST band source flux from the Sersic fit
-flux_g_ext_lsst_sersic          uJy  Gext LSST band source flux from the Sersic fit
-flux_r_ext_lsst_sersic          uJy  Rext LSST band source flux from the Sersic fit
-flux_i_ext_lsst_sersic          uJy  Iext LSST band source flux from the Sersic fit
-flux_z_ext_lsst_sersic          uJy  Zext LSST band source flux from the Sersic fit
-flux_u_ext_megacam_sersic       uJy  Uext Megacam band source flux from the Sersic fit
-flux_r_ext_megacam_sersic       uJy  Rext Megacam band source flux from the Sersic fit
-flux_g_ext_jpcam_sersic         uJy  Gext JPCAM band source flux from the Sersic fit
-flux_i_ext_panstarrs_sersic     uJy  Iext PS band source flux from the Sersic fit
-flux_z_ext_panstarrs_sersic     uJy  Zext PS band source flux from the Sersic fit
-flux_g_ext_hsc_sersic           uJy  Gext HSC band source flux from the Sersic fit
-flux_z_ext_hsc_sersic           uJy  Zext HSC band source flux from the Sersic fit
-fluxerr_vis_sersic              uJy  VIS band source flux error from the Sersic fit
-fluxerr_y_sersic                uJy  NIR Y band source flux error from the Sersic fit
-fluxerr_j_sersic                uJy  NIR J band source flux error from the Sersic fit
-fluxerr_h_sersic                uJy  NIR H band source flux error from the Sersic fit
-fluxerr_u_ext_decam_sersic      uJy  Uext DECam band source flux error from the Sersic fit
-fluxerr_g_ext_decam_sersic      uJy  Gext DECam band source flux error from the Sersic fit
-fluxerr_r_ext_decam_sersic      uJy  Rext DECam band source flux error from the Sersic fit
-fluxerr_i_ext_decam_sersic      uJy  Iext DECam band source flux error from the Sersic fit
-fluxerr_z_ext_decam_sersic      uJy  Zext DECam band source flux error from the Sersic fit
-fluxerr_u_ext_lsst_sersic       uJy  Uext LSST band source flux error from the Sersic fit
-fluxerr_g_ext_lsst_sersic       uJy  Gext LSST band source flux error from the Sersic fit
-fluxerr_r_ext_lsst_sersic       uJy  Rext LSST band source flux error from the Sersic fit
-fluxerr_i_ext_lsst_sersic       uJy  Iext LSST band source flux error from the Sersic fit
-fluxerr_z_ext_lsst_sersic       uJy  Zext LSST band source flux error from the Sersic fit
-fluxerr_u_ext_megacam_sersic    uJy  Uext Megacam band source flux error from the Sersic fit
-fluxerr_r_ext_megacam_sersic    uJy  Rext Megacam band source flux error from the Sersic fit
-fluxerr_g_ext_jpcam_sersic      uJy  Gext JPCAM band source flux error from the Sersic fit
-fluxerr_i_ext_panstarrs_sersic  uJy  Iext PS band source flux error from the Sersic fit
-fluxerr_z_ext_panstarrs_sersic  uJy  Zext PS band source flux error from the Sersic fit
-fluxerr_g_ext_hsc_sersic        uJy  Gext HSC band source flux error from the Sersic fit
-fluxerr_z_ext_hsc_sersic        uJy  Zext HSC band source flux error from the Sersic fit
-flux_vis_disk_sersic            uJy  VIS band source flux from the Disk+Sersic fit
-flux_y_disk_sersic              uJy  NIR Y band source flux from the Disk+Sersic fit
-flux_j_disk_sersic              uJy  NIR J band source flux from the Disk+Sersic fit
-flux_h_disk_sersic              uJy  NIR H band source flux from the Disk+Sersic fit
-flux_u_ext_decam_disk_sersic    uJy  Uext DECam band source flux from the Disk+Sersic fit
-flux_g_ext_decam_disk_sersic    uJy  Gext DECam band source flux from the Disk+Sersic fit
-flux_r_ext_decam_disk_sersic    uJy  Rext DECam band source flux from the Disk+Sersic fit
-flux_i_ext_decam_disk_sersic    uJy  Iext DECam band source flux from the Disk+Sersic fit
-flux_z_ext_decam_disk_sersic    uJy  Zext DECam band source flux from the Disk+Sersic fit
-flux_u_ext_lsst_disk_sersic     uJy  Uext LSST band source flux from the Disk+Sersic fit
-flux_g_ext_lsst_disk_sersic     uJy  Gext LSST band source flux from the Disk+Sersic fit
-flux_r_ext_lsst_disk_sersic     uJy  Rext LSST band source flux from the Disk+Sersic fit
-flux_i_ext_lsst_disk_sersic     uJy  Iext LSST band source flux from the Disk+Sersic fit
-flux_z_ext_lsst_disk_sersic     uJy  Zext LSST band source flux from the Disk+Sersic fit
-flux_u_ext_megacam_disk_sersic  uJy  Uext Megacam band source flux from the Disk+Sersic fit
-flux_r_ext_megacam_disk_sersic  uJy  Rext Megacam band source flux from the Disk+Sersic fit
-flux_g_ext_jpcam_disk_sersic    uJy  Gext JPCAM band source flux from the Disk+Sersic fit
-flux_i_ext_panstarrs_disk_sersic  uJy  Iext PS band source flux from the Disk+Sersic fit
-flux_z_ext_panstarrs_disk_sersic  uJy  Zext PS band source flux from the Disk+Sersic fit
-flux_g_ext_hsc_disk_sersic      uJy  Gext HSC band source flux from the Disk+Sersic fit
-flux_z_ext_hsc_disk_sersic      uJy  Zext HSC band source flux from the Disk+Sersic fit
-fluxerr_vis_disk_sersic         uJy  VIS band source flux error from the Disk+Sersic fit
-fluxerr_y_disk_sersic           uJy  NIR Y band source flux error from the Disk+Sersic fit
-fluxerr_j_disk_sersic           uJy  NIR J band source flux error from the Disk+Sersic fit
-fluxerr_h_disk_sersic           uJy  NIR H band source flux error from the Disk+Sersic fit
-fluxerr_u_ext_decam_disk_sersic  uJy  Uext DECam band source flux error from the Disk+Sersic fit
-fluxerr_g_ext_decam_disk_sersic  uJy  Gext DECam band source flux error from the Disk+Sersic fit
-fluxerr_r_ext_decam_disk_sersic  uJy  Rext DECam band source flux error from the Disk+Sersic fit
-fluxerr_i_ext_decam_disk_sersic  uJy  Iext DECam band source flux error from the Disk+Sersic fit
-fluxerr_z_ext_decam_disk_sersic  uJy  Zext DECam band source flux error from the Disk+Sersic fit
-fluxerr_u_ext_lsst_disk_sersic  uJy  Uext LSST band source flux error from the Disk+Sersic fit
-fluxerr_g_ext_lsst_disk_sersic  uJy  Gext LSST band source flux error from the Disk+Sersic fit
-fluxerr_r_ext_lsst_disk_sersic  uJy  Rext LSST band source flux error from the Disk+Sersic fit
-fluxerr_i_ext_lsst_disk_sersic  uJy  Iext LSST band source flux error from the Disk+Sersic fit
-fluxerr_z_ext_lsst_disk_sersic  uJy  Zext LSST band source flux error from the Disk+Sersic fit
-fluxerr_u_ext_megacam_disk_sersic  uJy  Uext Megacam band source flux error from the Disk+Sersic fit
-fluxerr_r_ext_megacam_disk_sersic  uJy  Rext Megacam band source flux error from the Disk+Sersic fit
-fluxerr_g_ext_jpcam_disk_sersic  uJy  Gext JPCAM band source flux error from the Disk+Sersic fit
-fluxerr_i_ext_panstarrs_disk_sersic  uJy  Iext PS band source flux error from the Disk+Sersic fit
-fluxerr_z_ext_panstarrs_disk_sersic  uJy  Zext PS band source flux error from the Disk+Sersic fit
-fluxerr_g_ext_hsc_disk_sersic   uJy  Gext HSC band source flux error from the Disk+Sersic fit
-fluxerr_z_ext_hsc_disk_sersic   uJy  Zext HSC band source flux error from the Disk+Sersic fit
-sersic_fract_vis_disk_sersic    NA  VIS band Sersic fraction
-sersic_fract_y_disk_sersic      NA  NIR Y band Sersic fraction
-sersic_fract_j_disk_sersic      NA  NIR J band Sersic fraction
-sersic_fract_h_disk_sersic      NA  NIR H band Sersic fraction
-sersic_fract_u_ext_decam_disk_sersic  NA  Uext DECam band Sersic fraction
-sersic_fract_g_ext_decam_disk_sersic  NA  Gext DECam band Sersic fraction
-sersic_fract_r_ext_decam_disk_sersic  NA  Rext DECam band Sersic fraction
-sersic_fract_i_ext_decam_disk_sersic  NA  Iext DECam band Sersic fraction
-sersic_fract_z_ext_decam_disk_sersic  NA  Zext DECam band Sersic fraction
-sersic_fract_u_ext_lsst_disk_sersic  NA  Uext LSST band Sersic fraction
-sersic_fract_g_ext_lsst_disk_sersic  NA  Gext LSST band Sersic fraction
-sersic_fract_r_ext_lsst_disk_sersic  NA  Rext LSST band Sersic fraction
-sersic_fract_i_ext_lsst_disk_sersic  NA  Iext LSST band Sersic fraction
-sersic_fract_z_ext_lsst_disk_sersic  NA  Zext LSST band Sersic fraction
-sersic_fract_u_ext_megacam_disk_sersic  NA  Uext Megacam band Sersic fraction
-sersic_fract_r_ext_megacam_disk_sersic  NA  Rext Megacam band Sersic fraction
-sersic_fract_g_ext_jpcam_disk_sersic  NA  Gext JPCAM band Sersic fraction
-sersic_fract_i_ext_panstarrs_disk_sersic  NA  Iext PS band Sersic fraction
-sersic_fract_z_ext_panstarrs_disk_sersic  NA  Zext PS band Sersic fraction
-sersic_fract_g_ext_hsc_disk_sersic  NA  Gext HSC band Sersic fraction
-sersic_fract_z_ext_hsc_disk_sersic  NA  Zext HSC band Sersic fraction
-sersic_fract_vis_disk_sersic_err  NA  VIS band Sersic fraction error
-sersic_fract_y_disk_sersic_err  NA  NIR Y band Sersic fraction error
-sersic_fract_j_disk_sersic_err  NA  NIR J band Sersic fraction error
-sersic_fract_h_disk_sersic_err  NA  NIR H band Sersic fraction error
-sersic_fract_u_ext_decam_disk_sersic_err  NA  Uext DECam band Sersic fraction error
-sersic_fract_g_ext_decam_disk_sersic_err  NA  Gext DECam band Sersic fraction error
-sersic_fract_r_ext_decam_disk_sersic_err  NA  Rext DECam band Sersic fraction error
-sersic_fract_i_ext_decam_disk_sersic_err  NA  Iext DECam band Sersic fraction error
-sersic_fract_z_ext_decam_disk_sersic_err  NA  Zext DECam band Sersic fraction error
-sersic_fract_u_ext_lsst_disk_sersic_err  NA  Uext LSST band Sersic fraction error
-sersic_fract_g_ext_lsst_disk_sersic_err  NA  Gext LSST band Sersic fraction error
-sersic_fract_r_ext_lsst_disk_sersic_err  NA  Rext LSST band Sersic fraction error
-sersic_fract_i_ext_lsst_disk_sersic_err  NA  Iext LSST band Sersic fraction error
-sersic_fract_z_ext_lsst_disk_sersic_err  NA  Zext LSST band Sersic fraction error
-sersic_fract_u_ext_megacam_disk_sersic_err  NA  Uext Megacam band Sersic fraction error
-sersic_fract_r_ext_megacam_disk_sersic_err  NA  Rext Megacam band Sersic fraction error
-sersic_fract_g_ext_jpcam_disk_sersic_err  NA  Gext JPCAM band Sersic fraction error
-sersic_fract_i_ext_panstarrs_disk_sersic_err  NA  Iext PS band Sersic fraction error
-sersic_fract_z_ext_panstarrs_disk_sersic_err  NA  Zext PS band Sersic fraction error
-sersic_fract_g_ext_hsc_disk_sersic_err  NA  Gext HSC band Sersic fraction error
-sersic_fract_z_ext_hsc_disk_sersic_err  NA  Zext HSC band Sersic fraction error
-flag_vis                        NA  Objects flag keeping track of the flagged pixels in the VIS flag image
-flag_y                          NA  Objects flag keeping track of the flagged pixels in the NIR Y flag image
-flag_j                          NA  Objects flag keeping track of the flagged pixels in the NIR J flag image
-flag_h                          NA  Objects flag keeping track of the flagged pixels in the NIR H flag image
-flag_nir_stack                  NA  Objects flag keeping track of the flagged pixels in the NIR stack flag image
-flag_u_ext_decam                NA  Objects flag keeping track of the flagged pixels in the UextDECam flag image
-flag_g_ext_decam                NA  Objects flag keeping track of the flagged pixels in the GextDECam flag image
-flag_r_ext_decam                NA  Objects flag keeping track of the flagged pixels in the RextDECam flag image
-flag_i_ext_decam                NA  Objects flag keeping track of the flagged pixels in the IextDECam flag image
-flag_z_ext_decam                NA  Objects flag keeping track of the flagged pixels in the ZextDECam flag image
-flag_u_ext_lsst                 NA  Objects flag keeping track of the flagged pixels in the Uext LSST flag image
-flag_g_ext_lsst                 NA  Objects flag keeping track of the flagged pixels in the Gext LSST flag image
-flag_r_ext_lsst                 NA  Objects flag keeping track of the flagged pixels in the Rext LSST flag image
-flag_i_ext_lsst                 NA  Objects flag keeping track of the flagged pixels in the Iext LSST flag image
-flag_z_ext_lsst                 NA  Objects flag keeping track of the flagged pixels in the Zext LSST flag image
-flag_u_ext_megacam              NA  Objects flag keeping track of the flagged pixels in the Uext Megacam flag image
-flag_r_ext_megacam              NA  Objects flag keeping track of the flagged pixels in the Rext Megacam flag image
-flag_g_ext_jpcam                NA  Objects flag keeping track of the flagged pixels in the Gext JPCAM flag image
-flag_i_ext_panstarrs            NA  Objects flag keeping track of the flagged pixels in the Iext PS flag image
-flag_z_ext_panstarrs            NA  Objects flag keeping track of the flagged pixels in the Zext PS flag image
-flag_g_ext_hsc                  NA  Objects flag keeping track of the flagged pixels in the Gext HSC flag image
-flag_z_ext_hsc                  NA  Objects flag keeping track of the flagged pixels in the Zext HSC flag image
-avg_trans_wave_vis              Angstrom  Average filter transmission curve wavelength for the VIS band
-avg_trans_wave_y                Angstrom  Average filter transmission curve wavelength for the NIR Y band
-avg_trans_wave_j                Angstrom  Average filter transmission curve wavelength for the NIR J band
-avg_trans_wave_h                Angstrom  Average filter transmission curve wavelength for the NIR H band
-avg_trans_wave_u_ext_decam      Angstrom  Average filter transmission curve wavelength for the DECam U band
-avg_trans_wave_g_ext_decam      Angstrom  Average filter transmission curve wavelength for the DECam G band
-avg_trans_wave_r_ext_decam      Angstrom  Average filter transmission curve wavelength for the DECam R band
-avg_trans_wave_i_ext_decam      Angstrom  Average filter transmission curve wavelength for the DECam I band
-avg_trans_wave_z_ext_decam      Angstrom  Average filter transmission curve wavelength for the DECam Z band
-avg_trans_wave_u_ext_lsst       Angstrom  Average filter transmission curve wavelength for the LSST U band
-avg_trans_wave_g_ext_lsst       Angstrom  Average filter transmission curve wavelength for the LSST G band
-avg_trans_wave_r_ext_lsst       Angstrom  Average filter transmission curve wavelength for the LSST R band
-avg_trans_wave_i_ext_lsst       Angstrom  Average filter transmission curve wavelength for the LSST I band
-avg_trans_wave_z_ext_lsst       Angstrom  Average filter transmission curve wavelength for the LSST Z band
-avg_trans_wave_u_ext_megacam    Angstrom  Average filter transmission curve wavelength for the Megacam U band
-avg_trans_wave_r_ext_megacam    Angstrom  Average filter transmission curve wavelength for the Megacam R band
-avg_trans_wave_g_ext_jpcam      Angstrom  Average filter transmission curve wavelength for the JPCAM G band
-avg_trans_wave_i_ext_panstarrs  Angstrom  Average filter transmission curve wavelength for the PS I band
-avg_trans_wave_z_ext_panstarrs  Angstrom  Average filter transmission curve wavelength for the PS Z band
-avg_trans_wave_g_ext_hsc        Angstrom  Average filter transmission curve wavelength for the HSC G band
-avg_trans_wave_z_ext_hsc        Angstrom  Average filter transmission curve wavelength for the HSC Z band
-deblended_flag                  NA  Flag marking if the object was originally blended with another one
-parent_id                       NA  ID of the parent sources of a deblended object
-parent_visnir                   NA  ID of the parent sources of a deblended object
-blended_prob                    NA  Probability that the source is blended with another source
-she_flag                        NA  Flags for objects SHE might want to remove (eg. bright stars)
-variable_flag                   NA  Object variability flag
-binary_flag                     NA  Flag for potentially binary stars
-point_like_flag                 NA  &quot;Point-like flag : flag set to 1 for VIS detections with (DET_QUALITY_FLAG==0) AND (POINT_LIKE_PROBA&gt;threshold), otherwise set to NaN&quot;
-point_like_prob                 NA  Probability between 0 and 1 that the source is point-like (the estimation uses a &#39;star probability cub&#39; defined in the MDB). Value is set to NaN for ...
-extended_flag                   NA  Extended source flag
-extended_prob                   NA  Probability between 0 and 1 that the source is extended
-spurious_flag                   NA  Spurious source flag
-spurious_prob                   NA  Probability between 0 and 1 that the source is spurious
-mag_stargal_sep                 mag  Magnitude used to compute POINT_LIKE_PROB
-det_quality_flag                NA  Detection step flags that could indicate the possible corruption of the MAG_STARGAL_SEP values
-mu_max                          mag/arcsec2  Peak surface brightness above the background in the detection band (directly from SExtractor)
-mumax_minus_mag                 mag/arcsec2  &quot;The difference between MU_MAX and MAG_STARGAL_SEP, valid even for NIR-only sources&quot;
-segmentation_area               pix  Isophotal area of the source above the analysis threshold (SExtractor ISOAREA_IMAGE)
-semimajor_axis                  pix  Semi-major axis of the source (from Asterism)
-semimajor_axis_err              pix  Semi-major axis error
-position_angle                  deg  Position angle (CCW/x) of the source (SExtractor THETA_IMAGE) range: -90 up to +90 decimal degrees
-position_angle_err              deg  Position angle error
-ellipticity                     NA  &quot;A parametrization of how stretched an object is in the detection band, computed from the minor and major axes of the object itself (directly from SExt...&quot;
-ellipticity_err                 NA  Ellipticity error
-kron_radius                     pix  Major semi-axis (in pixels) of the elliptical aperture used for total (Kron) aperture photometry on the detection image
-kron_radius_err                 pix  Error on the major semi-axis (in pixels) of the elliptical aperture used for total (Kron) aperture photometry on the detection image
-fwhm                            arcsec  &quot;FWHM (in arcsec) used in a-phot to compute colors. A-phot fluxes are computed within apertures that are multiples (1, 2, 3, 4 times) of this FWHM&quot;
-gal_ebv                         mag  Estimated galactic E(B-V) at the source centroid according to the reference Planck map
-gal_ebv_err                     mag  Error on galactic E(B-V) according to the reference Planck map
-gaia_id                         NA  The associated GAIA source id
-gaia_match_quality              NA  The quality of the GAIA match
-tileid                          NA  Euclid Tile ID
-x                               None  None
-y                               None  None
-z                               None  None
-spt_ind                         None  None
-htm20                           None  None
-cntr                            None  None
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;object_id&#39;: &#39;Euclid unique source identifier&#39;,
+ &#39;ra&#39;: &#39;Source barycenter RA coordinate (SExtractor ALPHA_J2000) decimal degrees&#39;,
+ &#39;dec&#39;: &#39;Source barycenter DEC coordinate (SExtractor DELTA_J2000) decimal degrees&#39;,
+ &#39;right_ascension_psf_fitting&#39;: &#39;Source RA coordinate derived by the PSF-fitting photometry method&#39;,
+ &#39;declination_psf_fitting&#39;: &#39;Source DEC coordinate derived by the PSF-fitting photometry method&#39;,
+ &#39;segmentation_map_id&#39;: &#39;Source ID in the associated segmentation map&#39;,
+ &#39;vis_det&#39;: &#39;Flag to indicate if the source is detected in the VIS mosaic (1) or is only detected in the NIR mosaic (0)&#39;,
+ &#39;flux_vis_1fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_2fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_4fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_jpcam_1fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_jpcam_2fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_jpcam_3fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_jpcam_4fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_panstarrs_1fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_panstarrs_2fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_panstarrs_3fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_panstarrs_4fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_panstarrs_1fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_panstarrs_2fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_panstarrs_3fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_panstarrs_4fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_hsc_1fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_hsc_2fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_hsc_3fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_hsc_4fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_hsc_1fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_hsc_2fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_hsc_3fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_hsc_4fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;fluxerr_vis_1fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_vis_2fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_vis_4fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_y_1fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_y_2fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_y_3fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_y_4fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_j_1fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_j_2fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_j_3fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_j_4fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_h_1fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_h_2fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_h_3fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_h_4fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_nir_stack_1fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_nir_stack_2fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_nir_stack_3fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_nir_stack_4fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_decam_1fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_decam_2fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_decam_3fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_decam_4fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_decam_1fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_decam_3fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_decam_4fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_decam_1fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_decam_2fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_decam_3fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_decam_4fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_decam_1fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_decam_2fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_decam_3fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;flux_u_ext_lsst_templfit&#39;: &#39;Uext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_g_ext_lsst_templfit&#39;: &#39;Gext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_r_ext_lsst_templfit&#39;: &#39;Rext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_i_ext_lsst_templfit&#39;: &#39;Iext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_z_ext_lsst_templfit&#39;: &#39;Zext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_u_ext_megacam_templfit&#39;: &#39;Uext Megacam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_r_ext_megacam_templfit&#39;: &#39;Rext Megacam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_g_ext_jpcam_templfit&#39;: &#39;Gext JPCAM band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_i_ext_panstarrs_templfit&#39;: &#39;Iext PS band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_z_ext_panstarrs_templfit&#39;: &#39;Zext PS band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_g_ext_hsc_templfit&#39;: &#39;Gext HSC band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_z_ext_hsc_templfit&#39;: &#39;Zext HSC band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;fluxerr_y_templfit&#39;: &#39;NIR Y band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_j_templfit&#39;: &#39;NIR J band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_h_templfit&#39;: &#39;NIR H band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_u_ext_decam_templfit&#39;: &#39;Uext DECam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_g_ext_decam_templfit&#39;: &#39;Gext DECam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_r_ext_decam_templfit&#39;: &#39;Rext DECam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_i_ext_decam_templfit&#39;: &#39;Iext DECam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_z_ext_decam_templfit&#39;: &#39;Zext DECam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_u_ext_lsst_templfit&#39;: &#39;Uext LSST band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_g_ext_lsst_templfit&#39;: &#39;Gext LSST band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_r_ext_lsst_templfit&#39;: &#39;Rext LSST band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_i_ext_lsst_templfit&#39;: &#39;Iext LSST band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_z_ext_lsst_templfit&#39;: &#39;Zext LSST band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_u_ext_megacam_templfit&#39;: &#39;Uext Megacam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_r_ext_megacam_templfit&#39;: &#39;Rext Megacam band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_g_ext_jpcam_templfit&#39;: &#39;Gext JPCAM band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_i_ext_panstarrs_templfit&#39;: &#39;Iext PS band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_z_ext_panstarrs_templfit&#39;: &#39;Zext PS band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_g_ext_hsc_templfit&#39;: &#39;Gext HSC band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;fluxerr_z_ext_hsc_templfit&#39;: &#39;Zext HSC band source template fitting flux error (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_y_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to NIR Y band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_j_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to NIR J band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_h_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to NIR H band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_u_ext_decam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Uext DECam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_g_ext_decam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext DECam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_r_ext_decam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Rext DECam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_i_ext_decam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext DECam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_z_ext_decam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext DECam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_u_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Uext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_g_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_r_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Rext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_i_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_z_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_u_ext_megacam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_r_ext_megacam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_g_ext_lsst_sersic&#39;: &#39;Gext LSST band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_r_ext_lsst_sersic&#39;: &#39;Rext LSST band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_i_ext_lsst_sersic&#39;: &#39;Iext LSST band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_z_ext_lsst_sersic&#39;: &#39;Zext LSST band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_u_ext_megacam_sersic&#39;: &#39;Uext Megacam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_r_ext_megacam_sersic&#39;: &#39;Rext Megacam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_g_ext_jpcam_sersic&#39;: &#39;Gext JPCAM band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_i_ext_panstarrs_sersic&#39;: &#39;Iext PS band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_z_ext_panstarrs_sersic&#39;: &#39;Zext PS band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_g_ext_hsc_sersic&#39;: &#39;Gext HSC band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_z_ext_hsc_sersic&#39;: &#39;Zext HSC band source flux error from the Sersic fit&#39;,
+ &#39;flux_vis_disk_sersic&#39;: &#39;VIS band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_y_disk_sersic&#39;: &#39;NIR Y band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_j_disk_sersic&#39;: &#39;NIR J band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_h_disk_sersic&#39;: &#39;NIR H band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_u_ext_decam_disk_sersic&#39;: &#39;Uext DECam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_g_ext_decam_disk_sersic&#39;: &#39;Gext DECam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_r_ext_decam_disk_sersic&#39;: &#39;Rext DECam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_i_ext_decam_disk_sersic&#39;: &#39;Iext DECam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_z_ext_decam_disk_sersic&#39;: &#39;Zext DECam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_u_ext_lsst_disk_sersic&#39;: &#39;Uext LSST band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_g_ext_lsst_disk_sersic&#39;: &#39;Gext LSST band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_r_ext_lsst_disk_sersic&#39;: &#39;Rext LSST band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_i_ext_lsst_disk_sersic&#39;: &#39;Iext LSST band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_z_ext_lsst_disk_sersic&#39;: &#39;Zext LSST band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_u_ext_megacam_disk_sersic&#39;: &#39;Uext Megacam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_r_ext_megacam_disk_sersic&#39;: &#39;Rext Megacam band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_g_ext_jpcam_disk_sersic&#39;: &#39;Gext JPCAM band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_i_ext_panstarrs_disk_sersic&#39;: &#39;Iext PS band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_z_ext_panstarrs_disk_sersic&#39;: &#39;Zext PS band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_g_ext_hsc_disk_sersic&#39;: &#39;Gext HSC band source flux from the Disk+Sersic fit&#39;,
+ &#39;flux_z_ext_hsc_disk_sersic&#39;: &#39;Zext HSC band source flux from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_vis_disk_sersic&#39;: &#39;VIS band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_y_disk_sersic&#39;: &#39;NIR Y band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_j_disk_sersic&#39;: &#39;NIR J band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_h_disk_sersic&#39;: &#39;NIR H band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_u_ext_decam_disk_sersic&#39;: &#39;Uext DECam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_g_ext_decam_disk_sersic&#39;: &#39;Gext DECam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;flux_y_1fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_2fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_3fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_4fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_1fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_2fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_3fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_4fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_1fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_2fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_3fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_4fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_1fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_2fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_3fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_4fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_1fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_2fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_3fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_4fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_1fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_3fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_4fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_1fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_2fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_3fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_4fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_1fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_2fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_3fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_4fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_1fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_2fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_3fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_4fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_1fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_3fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_4fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_1fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_2fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_3fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_4fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_1fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_2fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_3fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_4fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_1fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_2fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_3fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_4fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_1fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_2fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_3fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_4fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_1fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_2fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_3fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_4fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_megacam_1fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_megacam_2fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_megacam_3fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_megacam_4fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;fluxerr_i_ext_decam_4fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_decam_1fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_decam_2fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_decam_3fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_decam_4fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_lsst_1fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_lsst_3fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_lsst_4fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_lsst_1fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_lsst_2fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_lsst_3fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_lsst_4fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_lsst_1fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_lsst_2fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_lsst_3fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_lsst_4fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_lsst_1fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_lsst_2fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_lsst_3fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_lsst_4fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_lsst_1fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_lsst_2fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_lsst_3fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_lsst_4fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_megacam_1fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_megacam_2fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_megacam_3fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_megacam_4fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_megacam_1fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_megacam_2fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_megacam_3fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_r_ext_megacam_4fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_jpcam_1fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_jpcam_2fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_jpcam_3fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_jpcam_4fwhm_aper&#39;: &#39;Gext JPCAM band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_panstarrs_1fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_panstarrs_2fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_panstarrs_3fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_i_ext_panstarrs_4fwhm_aper&#39;: &#39;Iext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_panstarrs_1fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_panstarrs_2fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_panstarrs_3fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_panstarrs_4fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_hsc_1fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_hsc_2fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_hsc_3fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_hsc_4fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_hsc_1fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_hsc_2fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_hsc_3fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_z_ext_hsc_4fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;flux_y_templfit&#39;: &#39;NIR Y band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_j_templfit&#39;: &#39;NIR J band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_h_templfit&#39;: &#39;NIR H band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_u_ext_decam_templfit&#39;: &#39;Uext DECam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_g_ext_decam_templfit&#39;: &#39;Gext DECam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_r_ext_decam_templfit&#39;: &#39;Rext DECam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_i_ext_decam_templfit&#39;: &#39;Iext DECam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_z_ext_decam_templfit&#39;: &#39;Zext DECam band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_g_ext_jpcam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_i_ext_panstarrs_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext PS band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_z_ext_panstarrs_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext PS band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_g_ext_hsc_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_z_ext_hsc_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_y_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to NIR Y band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_j_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to NIR J bandr (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_h_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to NIR H band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_u_ext_decam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Uext DECam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_g_ext_decam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext DECam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_r_ext_decam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Rext DECam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_i_ext_decam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Iext DECam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_z_ext_decam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext DECam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_u_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Uext LSST band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_g_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext LSST band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_r_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Rext LSST band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_i_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Iext LSST band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_z_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_u_ext_megacam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_r_ext_megacam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_g_ext_jpcam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_i_ext_panstarrs_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Iext PS band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_z_ext_panstarrs_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext PS band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_g_ext_hsc_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_z_ext_hsc_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)&#39;,
+ &#39;flux_vis_psf&#39;: &#39;VIS band source PSF-fitting photometry flux (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_psf&#39;: &#39;VIS band source PSF-fitting photometry flux error (TPHOT measurement)&#39;,
+ &#39;flux_segmentation&#39;: &#39;VIS or NIR stack band source segmented area flux&#39;,
+ &#39;fluxerr_segmentation&#39;: &#39;VIS or NIR stack band source total flux (Kron aperture)&#39;,
+ &#39;flux_detection_total&#39;: &#39;VIS or NIR stack band source total flux error (Kron aperture)&#39;,
+ &#39;fluxerr_detection_total&#39;: &#39;VIS or NIR stack band source segmented area flux&#39;,
+ &#39;flux_vis_sersic&#39;: &#39;VIS band source flux from the Sersic fit&#39;,
+ &#39;flux_y_sersic&#39;: &#39;NIR Y band source flux from the Sersic fit&#39;,
+ &#39;flux_j_sersic&#39;: &#39;NIR J band source flux from the Sersic fit&#39;,
+ &#39;flux_h_sersic&#39;: &#39;NIR H band source flux from the Sersic fit&#39;,
+ &#39;flux_u_ext_decam_sersic&#39;: &#39;Uext DECam band source flux from the Sersic fit&#39;,
+ &#39;flux_g_ext_decam_sersic&#39;: &#39;Gext DECam band source flux from the Sersic fit&#39;,
+ &#39;flux_r_ext_decam_sersic&#39;: &#39;Rext DECam band source flux from the Sersic fit&#39;,
+ &#39;flux_i_ext_decam_sersic&#39;: &#39;Iext DECam band source flux from the Sersic fit&#39;,
+ &#39;flux_z_ext_decam_sersic&#39;: &#39;Zext DECam band source flux from the Sersic fit&#39;,
+ &#39;flux_u_ext_lsst_sersic&#39;: &#39;Uext LSST band source flux from the Sersic fit&#39;,
+ &#39;flux_g_ext_lsst_sersic&#39;: &#39;Gext LSST band source flux from the Sersic fit&#39;,
+ &#39;flux_r_ext_lsst_sersic&#39;: &#39;Rext LSST band source flux from the Sersic fit&#39;,
+ &#39;flux_i_ext_lsst_sersic&#39;: &#39;Iext LSST band source flux from the Sersic fit&#39;,
+ &#39;flux_z_ext_lsst_sersic&#39;: &#39;Zext LSST band source flux from the Sersic fit&#39;,
+ &#39;flux_u_ext_megacam_sersic&#39;: &#39;Uext Megacam band source flux from the Sersic fit&#39;,
+ &#39;flux_r_ext_megacam_sersic&#39;: &#39;Rext Megacam band source flux from the Sersic fit&#39;,
+ &#39;flux_g_ext_jpcam_sersic&#39;: &#39;Gext JPCAM band source flux from the Sersic fit&#39;,
+ &#39;flux_i_ext_panstarrs_sersic&#39;: &#39;Iext PS band source flux from the Sersic fit&#39;,
+ &#39;flux_z_ext_panstarrs_sersic&#39;: &#39;Zext PS band source flux from the Sersic fit&#39;,
+ &#39;flux_g_ext_hsc_sersic&#39;: &#39;Gext HSC band source flux from the Sersic fit&#39;,
+ &#39;flux_z_ext_hsc_sersic&#39;: &#39;Zext HSC band source flux from the Sersic fit&#39;,
+ &#39;fluxerr_vis_sersic&#39;: &#39;VIS band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_y_sersic&#39;: &#39;NIR Y band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_j_sersic&#39;: &#39;NIR J band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_h_sersic&#39;: &#39;NIR H band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_u_ext_decam_sersic&#39;: &#39;Uext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_g_ext_decam_sersic&#39;: &#39;Gext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_r_ext_decam_sersic&#39;: &#39;Rext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_i_ext_decam_sersic&#39;: &#39;Iext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_z_ext_decam_sersic&#39;: &#39;Zext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_u_ext_lsst_sersic&#39;: &#39;Uext LSST band source flux error from the Sersic fit&#39;,
+ &#39;flag_u_ext_decam&#39;: &#39;Objects flag keeping track of the flagged pixels in the UextDECam flag image&#39;,
+ &#39;flag_g_ext_decam&#39;: &#39;Objects flag keeping track of the flagged pixels in the GextDECam flag image&#39;,
+ &#39;flag_r_ext_decam&#39;: &#39;Objects flag keeping track of the flagged pixels in the RextDECam flag image&#39;,
+ &#39;flag_i_ext_decam&#39;: &#39;Objects flag keeping track of the flagged pixels in the IextDECam flag image&#39;,
+ &#39;flag_z_ext_decam&#39;: &#39;Objects flag keeping track of the flagged pixels in the ZextDECam flag image&#39;,
+ &#39;flag_u_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Uext LSST flag image&#39;,
+ &#39;flag_g_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext LSST flag image&#39;,
+ &#39;flag_r_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Rext LSST flag image&#39;,
+ &#39;flag_i_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Iext LSST flag image&#39;,
+ &#39;fluxerr_r_ext_decam_disk_sersic&#39;: &#39;Rext DECam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_i_ext_decam_disk_sersic&#39;: &#39;Iext DECam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_z_ext_decam_disk_sersic&#39;: &#39;Zext DECam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_u_ext_lsst_disk_sersic&#39;: &#39;Uext LSST band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_g_ext_lsst_disk_sersic&#39;: &#39;Gext LSST band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_r_ext_lsst_disk_sersic&#39;: &#39;Rext LSST band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_i_ext_lsst_disk_sersic&#39;: &#39;Iext LSST band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_z_ext_lsst_disk_sersic&#39;: &#39;Zext LSST band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_u_ext_megacam_disk_sersic&#39;: &#39;Uext Megacam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_r_ext_megacam_disk_sersic&#39;: &#39;Rext Megacam band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_g_ext_jpcam_disk_sersic&#39;: &#39;Gext JPCAM band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_i_ext_panstarrs_disk_sersic&#39;: &#39;Iext PS band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_z_ext_panstarrs_disk_sersic&#39;: &#39;Zext PS band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_g_ext_hsc_disk_sersic&#39;: &#39;Gext HSC band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_z_ext_hsc_disk_sersic&#39;: &#39;Zext HSC band source flux error from the Disk+Sersic fit&#39;,
+ &#39;sersic_fract_vis_disk_sersic&#39;: &#39;VIS band Sersic fraction&#39;,
+ &#39;sersic_fract_y_disk_sersic&#39;: &#39;NIR Y band Sersic fraction&#39;,
+ &#39;sersic_fract_j_disk_sersic&#39;: &#39;NIR J band Sersic fraction&#39;,
+ &#39;sersic_fract_h_disk_sersic&#39;: &#39;NIR H band Sersic fraction&#39;,
+ &#39;sersic_fract_u_ext_decam_disk_sersic&#39;: &#39;Uext DECam band Sersic fraction&#39;,
+ &#39;sersic_fract_g_ext_decam_disk_sersic&#39;: &#39;Gext DECam band Sersic fraction&#39;,
+ &#39;sersic_fract_r_ext_decam_disk_sersic&#39;: &#39;Rext DECam band Sersic fraction&#39;,
+ &#39;sersic_fract_i_ext_decam_disk_sersic&#39;: &#39;Iext DECam band Sersic fraction&#39;,
+ &#39;sersic_fract_z_ext_decam_disk_sersic&#39;: &#39;Zext DECam band Sersic fraction&#39;,
+ &#39;sersic_fract_u_ext_lsst_disk_sersic&#39;: &#39;Uext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_g_ext_lsst_disk_sersic&#39;: &#39;Gext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_r_ext_lsst_disk_sersic&#39;: &#39;Rext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_i_ext_lsst_disk_sersic&#39;: &#39;Iext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_z_ext_lsst_disk_sersic&#39;: &#39;Zext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_u_ext_megacam_disk_sersic&#39;: &#39;Uext Megacam band Sersic fraction&#39;,
+ &#39;sersic_fract_r_ext_megacam_disk_sersic&#39;: &#39;Rext Megacam band Sersic fraction&#39;,
+ &#39;sersic_fract_g_ext_jpcam_disk_sersic&#39;: &#39;Gext JPCAM band Sersic fraction&#39;,
+ &#39;sersic_fract_i_ext_panstarrs_disk_sersic&#39;: &#39;Iext PS band Sersic fraction&#39;,
+ &#39;sersic_fract_z_ext_panstarrs_disk_sersic&#39;: &#39;Zext PS band Sersic fraction&#39;,
+ &#39;sersic_fract_g_ext_hsc_disk_sersic&#39;: &#39;Gext HSC band Sersic fraction&#39;,
+ &#39;sersic_fract_z_ext_hsc_disk_sersic&#39;: &#39;Zext HSC band Sersic fraction&#39;,
+ &#39;sersic_fract_vis_disk_sersic_err&#39;: &#39;VIS band Sersic fraction error&#39;,
+ &#39;sersic_fract_y_disk_sersic_err&#39;: &#39;NIR Y band Sersic fraction error&#39;,
+ &#39;sersic_fract_j_disk_sersic_err&#39;: &#39;NIR J band Sersic fraction error&#39;,
+ &#39;sersic_fract_h_disk_sersic_err&#39;: &#39;NIR H band Sersic fraction error&#39;,
+ &#39;sersic_fract_u_ext_decam_disk_sersic_err&#39;: &#39;Uext DECam band Sersic fraction error&#39;,
+ &#39;sersic_fract_g_ext_decam_disk_sersic_err&#39;: &#39;Gext DECam band Sersic fraction error&#39;,
+ &#39;sersic_fract_r_ext_decam_disk_sersic_err&#39;: &#39;Rext DECam band Sersic fraction error&#39;,
+ &#39;sersic_fract_i_ext_decam_disk_sersic_err&#39;: &#39;Iext DECam band Sersic fraction error&#39;,
+ &#39;sersic_fract_z_ext_decam_disk_sersic_err&#39;: &#39;Zext DECam band Sersic fraction error&#39;,
+ &#39;sersic_fract_u_ext_lsst_disk_sersic_err&#39;: &#39;Uext LSST band Sersic fraction error&#39;,
+ &#39;sersic_fract_g_ext_lsst_disk_sersic_err&#39;: &#39;Gext LSST band Sersic fraction error&#39;,
+ &#39;sersic_fract_r_ext_lsst_disk_sersic_err&#39;: &#39;Rext LSST band Sersic fraction error&#39;,
+ &#39;sersic_fract_i_ext_lsst_disk_sersic_err&#39;: &#39;Iext LSST band Sersic fraction error&#39;,
+ &#39;sersic_fract_z_ext_lsst_disk_sersic_err&#39;: &#39;Zext LSST band Sersic fraction error&#39;,
+ &#39;sersic_fract_u_ext_megacam_disk_sersic_err&#39;: &#39;Uext Megacam band Sersic fraction error&#39;,
+ &#39;sersic_fract_r_ext_megacam_disk_sersic_err&#39;: &#39;Rext Megacam band Sersic fraction error&#39;,
+ &#39;sersic_fract_g_ext_jpcam_disk_sersic_err&#39;: &#39;Gext JPCAM band Sersic fraction error&#39;,
+ &#39;sersic_fract_i_ext_panstarrs_disk_sersic_err&#39;: &#39;Iext PS band Sersic fraction error&#39;,
+ &#39;sersic_fract_z_ext_panstarrs_disk_sersic_err&#39;: &#39;Zext PS band Sersic fraction error&#39;,
+ &#39;sersic_fract_g_ext_hsc_disk_sersic_err&#39;: &#39;Gext HSC band Sersic fraction error&#39;,
+ &#39;sersic_fract_z_ext_hsc_disk_sersic_err&#39;: &#39;Zext HSC band Sersic fraction error&#39;,
+ &#39;flag_vis&#39;: &#39;Objects flag keeping track of the flagged pixels in the VIS flag image&#39;,
+ &#39;flag_y&#39;: &#39;Objects flag keeping track of the flagged pixels in the NIR Y flag image&#39;,
+ &#39;flag_j&#39;: &#39;Objects flag keeping track of the flagged pixels in the NIR J flag image&#39;,
+ &#39;flag_h&#39;: &#39;Objects flag keeping track of the flagged pixels in the NIR H flag image&#39;,
+ &#39;flag_nir_stack&#39;: &#39;Objects flag keeping track of the flagged pixels in the NIR stack flag image&#39;,
+ &#39;flag_z_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Zext LSST flag image&#39;,
+ &#39;flag_u_ext_megacam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Uext Megacam flag image&#39;,
+ &#39;flag_r_ext_megacam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Rext Megacam flag image&#39;,
+ &#39;flag_g_ext_jpcam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext JPCAM flag image&#39;,
+ &#39;flag_i_ext_panstarrs&#39;: &#39;Objects flag keeping track of the flagged pixels in the Iext PS flag image&#39;,
+ &#39;flag_z_ext_panstarrs&#39;: &#39;Objects flag keeping track of the flagged pixels in the Zext PS flag image&#39;,
+ &#39;flag_g_ext_hsc&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext HSC flag image&#39;,
+ &#39;flag_z_ext_hsc&#39;: &#39;Objects flag keeping track of the flagged pixels in the Zext HSC flag image&#39;,
+ &#39;avg_trans_wave_vis&#39;: &#39;Average filter transmission curve wavelength for the VIS band&#39;,
+ &#39;avg_trans_wave_y&#39;: &#39;Average filter transmission curve wavelength for the NIR Y band&#39;,
+ &#39;avg_trans_wave_j&#39;: &#39;Average filter transmission curve wavelength for the NIR J band&#39;,
+ &#39;avg_trans_wave_h&#39;: &#39;Average filter transmission curve wavelength for the NIR H band&#39;,
+ &#39;avg_trans_wave_u_ext_decam&#39;: &#39;Average filter transmission curve wavelength for the DECam U band&#39;,
+ &#39;avg_trans_wave_g_ext_decam&#39;: &#39;Average filter transmission curve wavelength for the DECam G band&#39;,
+ &#39;avg_trans_wave_r_ext_decam&#39;: &#39;Average filter transmission curve wavelength for the DECam R band&#39;,
+ &#39;avg_trans_wave_i_ext_decam&#39;: &#39;Average filter transmission curve wavelength for the DECam I band&#39;,
+ &#39;avg_trans_wave_z_ext_decam&#39;: &#39;Average filter transmission curve wavelength for the DECam Z band&#39;,
+ &#39;avg_trans_wave_u_ext_lsst&#39;: &#39;Average filter transmission curve wavelength for the LSST U band&#39;,
+ &#39;avg_trans_wave_g_ext_lsst&#39;: &#39;Average filter transmission curve wavelength for the LSST G band&#39;,
+ &#39;avg_trans_wave_r_ext_lsst&#39;: &#39;Average filter transmission curve wavelength for the LSST R band&#39;,
+ &#39;avg_trans_wave_i_ext_lsst&#39;: &#39;Average filter transmission curve wavelength for the LSST I band&#39;,
+ &#39;avg_trans_wave_z_ext_lsst&#39;: &#39;Average filter transmission curve wavelength for the LSST Z band&#39;,
+ &#39;avg_trans_wave_u_ext_megacam&#39;: &#39;Average filter transmission curve wavelength for the Megacam U band&#39;,
+ &#39;avg_trans_wave_r_ext_megacam&#39;: &#39;Average filter transmission curve wavelength for the Megacam R band&#39;,
+ &#39;avg_trans_wave_g_ext_jpcam&#39;: &#39;Average filter transmission curve wavelength for the JPCAM G band&#39;,
+ &#39;avg_trans_wave_i_ext_panstarrs&#39;: &#39;Average filter transmission curve wavelength for the PS I band&#39;,
+ &#39;avg_trans_wave_z_ext_panstarrs&#39;: &#39;Average filter transmission curve wavelength for the PS Z band&#39;,
+ &#39;avg_trans_wave_g_ext_hsc&#39;: &#39;Average filter transmission curve wavelength for the HSC G band&#39;,
+ &#39;avg_trans_wave_z_ext_hsc&#39;: &#39;Average filter transmission curve wavelength for the HSC Z band&#39;,
+ &#39;deblended_flag&#39;: &#39;Flag marking if the object was originally blended with another one&#39;,
+ &#39;parent_id&#39;: &#39;ID of the parent sources of a deblended object&#39;,
+ &#39;parent_visnir&#39;: &#39;ID of the parent sources of a deblended object&#39;,
+ &#39;blended_prob&#39;: &#39;Probability that the source is blended with another source&#39;,
+ &#39;she_flag&#39;: &#39;Flags for objects SHE might want to remove (eg. bright stars)&#39;,
+ &#39;variable_flag&#39;: &#39;Object variability flag&#39;,
+ &#39;binary_flag&#39;: &#39;Flag for potentially binary stars&#39;,
+ &#39;point_like_flag&#39;: &#39;&quot;Point-like flag : flag set to 1 for VIS detections with (DET_QUALITY_FLAG==0) AND (POINT_LIKE_PROBA&gt;threshold), otherwise set to NaN&quot;&#39;,
+ &#39;point_like_prob&#39;: &quot;Probability between 0 and 1 that the source is point-like (the estimation uses a &#39;star probability cub&#39; defined in the MDB). Value is set to NaN for ...&quot;,
+ &#39;extended_flag&#39;: &#39;Extended source flag&#39;,
+ &#39;extended_prob&#39;: &#39;Probability between 0 and 1 that the source is extended&#39;,
+ &#39;spurious_flag&#39;: &#39;Spurious source flag&#39;,
+ &#39;spurious_prob&#39;: &#39;Probability between 0 and 1 that the source is spurious&#39;,
+ &#39;mag_stargal_sep&#39;: &#39;Magnitude used to compute POINT_LIKE_PROB&#39;,
+ &#39;det_quality_flag&#39;: &#39;Detection step flags that could indicate the possible corruption of the MAG_STARGAL_SEP values&#39;,
+ &#39;mu_max&#39;: &#39;Peak surface brightness above the background in the detection band (directly from SExtractor)&#39;,
+ &#39;mumax_minus_mag&#39;: &#39;&quot;The difference between MU_MAX and MAG_STARGAL_SEP, valid even for NIR-only sources&quot;&#39;,
+ &#39;segmentation_area&#39;: &#39;Isophotal area of the source above the analysis threshold (SExtractor ISOAREA_IMAGE)&#39;,
+ &#39;semimajor_axis&#39;: &#39;Semi-major axis of the source (from Asterism)&#39;,
+ &#39;semimajor_axis_err&#39;: &#39;Semi-major axis error&#39;,
+ &#39;position_angle&#39;: &#39;Position angle (CCW/x) of the source (SExtractor THETA_IMAGE) range: -90 up to +90 decimal degrees&#39;,
+ &#39;position_angle_err&#39;: &#39;Position angle error&#39;,
+ &#39;ellipticity&#39;: &#39;&quot;A parametrization of how stretched an object is in the detection band, computed from the minor and major axes of the object itself (directly from SExt...&quot;&#39;,
+ &#39;ellipticity_err&#39;: &#39;Ellipticity error&#39;,
+ &#39;kron_radius&#39;: &#39;Major semi-axis (in pixels) of the elliptical aperture used for total (Kron) aperture photometry on the detection image&#39;,
+ &#39;kron_radius_err&#39;: &#39;Error on the major semi-axis (in pixels) of the elliptical aperture used for total (Kron) aperture photometry on the detection image&#39;,
+ &#39;fwhm&#39;: &#39;&quot;FWHM (in arcsec) used in a-phot to compute colors. A-phot fluxes are computed within apertures that are multiples (1, 2, 3, 4 times) of this FWHM&quot;&#39;,
+ &#39;gal_ebv&#39;: &#39;Estimated galactic E(B-V) at the source centroid according to the reference Planck map&#39;,
+ &#39;gal_ebv_err&#39;: &#39;Error on galactic E(B-V) according to the reference Planck map&#39;,
+ &#39;gaia_id&#39;: &#39;The associated GAIA source id&#39;,
+ &#39;gaia_match_quality&#39;: &#39;The quality of the GAIA match&#39;,
+ &#39;tileid&#39;: &#39;Euclid Tile ID&#39;,
+ &#39;x&#39;: &#39;&#39;,
+ &#39;y&#39;: &#39;&#39;,
+ &#39;z&#39;: &#39;&#39;,
+ &#39;spt_ind&#39;: &#39;&#39;,
+ &#39;htm20&#39;: &#39;&#39;,
+ &#39;cntr&#39;: &#39;&#39;}
 </pre></div>
 </div>
 </div>
@@ -1151,7 +1123,7 @@ cntr                            None  None
 
 <span class="c1"># Run the query</span>
 
-<span class="n">result_stars</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">adql_stars</span><span class="p">)</span>
+<span class="n">result_stars</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_tap</span><span class="p">(</span><span class="n">adql_stars</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1202,82 +1174,82 @@ cntr                            None  None
   <tbody>
     <tr>
       <th>0</th>
-      <td>-590786812514737214</td>
-      <td>59.078681</td>
-      <td>-51.473721</td>
-      <td>22.240271</td>
-      <td>0.110778</td>
-      <td>88.048264</td>
-      <td>0.968541</td>
-      <td>100.079498</td>
-      <td>0.976982</td>
-      <td>102.687408</td>
-      <td>0.882893</td>
-      <td>0.962297</td>
+      <td>2718284139656546334</td>
+      <td>271.828414</td>
+      <td>65.654633</td>
+      <td>12.014980</td>
+      <td>0.047418</td>
+      <td>51.196121</td>
+      <td>0.458875</td>
+      <td>56.896557</td>
+      <td>0.434955</td>
+      <td>56.171738</td>
+      <td>0.424125</td>
+      <td>0.973021</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>-589579380514737675</td>
-      <td>58.957938</td>
-      <td>-51.473768</td>
-      <td>22.773048</td>
-      <td>0.108161</td>
-      <td>35.686611</td>
-      <td>0.569915</td>
-      <td>45.867817</td>
-      <td>0.624888</td>
-      <td>45.841610</td>
-      <td>0.634713</td>
-      <td>0.978700</td>
+      <td>2719785536656648264</td>
+      <td>271.978554</td>
+      <td>65.664826</td>
+      <td>31.630325</td>
+      <td>0.085498</td>
+      <td>96.247803</td>
+      <td>0.778106</td>
+      <td>115.866821</td>
+      <td>0.792803</td>
+      <td>114.639679</td>
+      <td>0.865892</td>
+      <td>0.996125</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>-589734969514776458</td>
-      <td>58.973497</td>
-      <td>-51.477646</td>
-      <td>8.983518</td>
-      <td>0.072970</td>
-      <td>24.201298</td>
-      <td>0.487317</td>
-      <td>28.257515</td>
-      <td>0.484978</td>
-      <td>30.431122</td>
-      <td>0.524141</td>
-      <td>0.981156</td>
+      <td>2718247369656535106</td>
+      <td>271.824737</td>
+      <td>65.653511</td>
+      <td>12.834764</td>
+      <td>0.057403</td>
+      <td>52.807571</td>
+      <td>0.569017</td>
+      <td>60.460308</td>
+      <td>0.441072</td>
+      <td>61.144466</td>
+      <td>0.465149</td>
+      <td>0.976486</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>-590771690514661391</td>
-      <td>59.077169</td>
-      <td>-51.466139</td>
-      <td>131.335403</td>
-      <td>0.271436</td>
-      <td>165.179672</td>
-      <td>1.304662</td>
-      <td>190.656906</td>
-      <td>1.278318</td>
-      <td>163.389511</td>
-      <td>1.261251</td>
-      <td>0.999248</td>
+      <td>2717152438656571540</td>
+      <td>271.715244</td>
+      <td>65.657154</td>
+      <td>6.691594</td>
+      <td>0.043669</td>
+      <td>27.393515</td>
+      <td>0.327249</td>
+      <td>33.160183</td>
+      <td>0.362400</td>
+      <td>33.586243</td>
+      <td>0.367196</td>
+      <td>0.969801</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>-585180135514680938</td>
-      <td>58.518014</td>
-      <td>-51.468094</td>
-      <td>38.494297</td>
-      <td>0.137431</td>
-      <td>0.138735</td>
-      <td>0.102561</td>
-      <td>0.041126</td>
-      <td>0.100962</td>
-      <td>0.118098</td>
-      <td>0.286662</td>
-      <td>0.988542</td>
+      <td>2721315831656654537</td>
+      <td>272.131583</td>
+      <td>65.665454</td>
+      <td>7.238944</td>
+      <td>0.044370</td>
+      <td>24.854345</td>
+      <td>0.264470</td>
+      <td>27.878834</td>
+      <td>0.243196</td>
+      <td>27.746361</td>
+      <td>0.252069</td>
+      <td>0.971133</td>
       <td>NaN</td>
     </tr>
   </tbody>
@@ -1319,7 +1291,7 @@ cntr                            None  None
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;10k Stars in MER catalog -- IRSA&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/844b73f44a02aa98d7ff6c41046f92fef06da4b939ea75bb25a9be874c6fd2bf.png" src="../../_images/844b73f44a02aa98d7ff6c41046f92fef06da4b939ea75bb25a9be874c6fd2bf.png" />
+<img alt="../../_images/458e3693b5da0cfc801aeed619ff9e4d12b1d83d2b081f18156444b6761a326e.png" src="../../_images/458e3693b5da0cfc801aeed619ff9e4d12b1d83d2b081f18156444b6761a326e.png" />
 </div>
 </div>
 </section>
@@ -1348,7 +1320,7 @@ cntr                            None  None
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 MER mosaics</p>
+        <p class="prev-next-title">Euclid Q1: MER mosaics</p>
       </div>
     </a>
     <a class="right-next"
@@ -1356,7 +1328,7 @@ cntr                            None  None
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to Euclid Q1 1D spectra</p>
+        <p class="prev-next-title">Euclid Q1: 1D spectra</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1381,7 +1353,7 @@ cntr                            None  None
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-mer-catalog-from-irsa-directly-to-this-notebook">1. Download MER catalog from IRSA directly to this notebook</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-euclid-mer-table">Choose the Euclid MER table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-table">Learn some information about the table:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-some-information-about-the-mer-catalog">Learn some information about the MER catalog:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-following-adql-query-to-find-the-first-10k-stars-in-the-mer-catalog">Define the following ADQL query to find the first 10k stars in the MER catalog</a></li>
 </ul>
 </li>
