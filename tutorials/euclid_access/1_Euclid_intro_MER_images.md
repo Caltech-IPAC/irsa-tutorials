@@ -65,7 +65,6 @@ Each MER image is approximately 1.47 GB. Downloading can take some time.
 import re
 
 import numpy as np
-import pandas as pd
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
@@ -80,9 +79,6 @@ from astropy import units as u
 
 from astroquery.ipac.irsa import Irsa
 import sep
-
-# Copy-on-write is more performant and avoids unexpected modifications of the original DataFrame.
-pd.options.mode.copy_on_write = True
 ```
 
 ## 1. Search for multiwavelength Euclid Q1 MER mosaics that cover the star HD 168151
@@ -123,20 +119,23 @@ science_images
 Note that 'access_estsize' is in units of kb
 
 ```{code-cell} ipython3
-filename = science_images[science_images['energy_bandpassname']=='VIS']['access_url'][0]
-filesize = science_images[science_images['energy_bandpassname']=='VIS']['access_estsize'][0]/1000000
-
+filename = science_images[science_images['energy_bandpassname'] == 'VIS']['access_url'][0]
+filesize = science_images[science_images['energy_bandpassname'] == 'VIS']['access_estsize'][0] / 1000000
 print(filename)
 
 print(f'Please note this image is {filesize} GB. With 230 Mbps internet download speed, it takes about 1 minute to download.')
 ```
 
+```{code-cell} ipython3
+science_images
+```
+
 ### Extract the tileID of this image from the filename
 
 ```{code-cell} ipython3
-tileID=re.search(r'TILE\s*(\d{9})', filename).group(1)
+tileID = science_images[science_images['energy_bandpassname'] == 'VIS']['obs_id'][0][:9]
 
-print('The MER tile ID for this object is :',tileID)
+print(f'The MER tile ID for this object is : {tileID}')
 ```
 
 Retrieve the MER image -- note this file is about 1.46 GB
@@ -146,7 +145,7 @@ fname = download_file(filename, cache=True)
 hdu_mer_irsa = fits.open(fname)
 print(hdu_mer_irsa.info())
 
-head_mer_irsa = hdu_mer_irsa[0].header
+header_mer_irsa = hdu_mer_irsa[0].header
 ```
 
 If you would like to save the MER mosaic to disk, uncomment the following cell.
@@ -160,13 +159,13 @@ Please also define a suitable download directory; by default it will be `data` a
 Have a look at the header information for this image.
 
 ```{code-cell} ipython3
-head_mer_irsa
+header_mer_irsa
 ```
 
 Lets extract just the primary image.
 
 ```{code-cell} ipython3
-im_mer_irsa=hdu_mer_irsa[0].data
+im_mer_irsa = hdu_mer_irsa[0].data
 
 print(im_mer_irsa.shape)
 ```
@@ -174,7 +173,8 @@ print(im_mer_irsa.shape)
 Due to the large field of view of the MER mosaic, let's cut out a smaller section (2"x2")of the MER mosaic to inspect the image
 
 ```{code-cell} ipython3
-plt.imshow(im_mer_irsa[0:1200,0:1200], cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa[0:1200,0:1200], interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+plt.imshow(im_mer_irsa[0:1200,0:1200], cmap='gray', origin='lower',
+           norm=ImageNormalize(im_mer_irsa[0:1200,0:1200], interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 colorbar = plt.colorbar()
 ```
 
@@ -203,13 +203,12 @@ urls
 Create an array with the instrument and filter name so we can add this to the plots.
 
 ```{code-cell} ipython3
-df_im_euclid.loc[:, "filters"] = df_im_euclid["instrument_name"] + "_" + df_im_euclid["energy_bandpassname"]
+science_images['filters'] = science_images['instrument_name'] + "_" + science_images['energy_bandpassname']
 
-## Note that VIS_VIS appears in the filters, so update that filter to just say VIS
-df_im_euclid.loc[df_im_euclid["filters"] == "VIS_VIS", "filters"] = "VIS"
+# VIS_VIS appears in the filters, so update that filter to just say VIS
+science_images['filters'][science_images['filters']== 'VIS_VIS'] = "VIS"
 
-filters = df_im_euclid['filters'].to_numpy()
-filters
+science_images['filters']
 ```
 
 ## The image above is very large, so let's cut out a smaller image to inspect these data.
@@ -217,7 +216,7 @@ filters
 ```{code-cell} ipython3
 ######################## User defined section ############################
 ## How large do you want the image cutout to be?
-im_cutout= 1.0 * u.arcmin
+im_cutout = 1.0 * u.arcmin
 
 ## What is the center of the cutout?
 ## For now choosing a random location on the image
@@ -229,7 +228,7 @@ dec =  64.525
 # ra = 273.474451
 # dec = 64.397273
 
-coords_cutout = SkyCoord(ra, dec, unit=(u.deg, u.deg), frame='icrs')
+coords_cutout = SkyCoord(ra, dec, unit='deg', frame='icrs')
 
 ##########################################################################
 
@@ -296,13 +295,9 @@ plt.show()
 First we list all the filters so you can choose which cutout you want to extract sources on. We will choose VIS.
 
 ```{code-cell} ipython3
-filters
-```
+filt_index = np.where(science_images['filters'] == 'VIS')[0][0]
 
-```{code-cell} ipython3
-filt_index = np.where(filters == 'VIS')[0][0]
-
-img1=final_hdulist[filt_index].data
+img1 = final_hdulist[filt_index].data
 ```
 
 ### Extract some sources from the cutout using sep (python package based on source extractor)
