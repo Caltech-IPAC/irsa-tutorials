@@ -161,8 +161,8 @@ We use the MASK column to create a boolean mask for values to ignore. We use the
 ```{code-cell} ipython3
 bad_mask = (spectra['MASK'].value % 2 == 1) | (spectra['MASK'].value >= 64)
 
-plt.plot(spectra['WAVELENGTH'][~bad_mask].to(u.micron), signal_scaled[~bad_mask], color='black', label='Spectrum')
-plt.plot(spectra['WAVELENGTH'][bad_mask], signal_scaled[bad_mask], color='red', label='Do not use')
+plt.plot(spectra['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, signal_scaled), color='black', label='Spectrum')
+plt.plot(spectra['WAVELENGTH'], np.ma.masked_where(~bad_mask, signal_scaled), color='red', label='Do not use')
 plt.plot(spectra['WAVELENGTH'], np.sqrt(spectra['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
 
 plt.legend(loc='upper right')
@@ -177,7 +177,3 @@ plt.title(f'Object ID {obj_id}')
 **Updated**: 2025-03-31
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
-
-```{code-cell} ipython3
-
-```
