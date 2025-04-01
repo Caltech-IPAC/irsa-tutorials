@@ -180,11 +180,8 @@ adql_query = ("SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.fl
     "ORDER BY lines.spe_line_snr_gf DESC ")
 
 # Use TAP with this ADQL string
-result_table = Irsa.query_tap(adql_query).to_qtable()
+result_table = Irsa.query_tap(adql_query).to_table()
 
-result_table['spe_line_flux_gf'].info.format = ".8e"  # Scientific notation with 8 decimal places
-result_table['spe_line_flux_err_gf'].info.format = ".8e"
-result_table['object_id'] = result_table['object_id'].astype('int64')
 ```
 
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
