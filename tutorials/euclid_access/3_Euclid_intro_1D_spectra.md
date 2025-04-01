@@ -113,13 +113,13 @@ Open the large FITS file without loading it entirely into memory, pulling out ju
 
 ```{code-cell} ipython3
 with fits.open(file_uri) as hdul:
-    spectra = QTable.read(hdul[result['hdu'][0]], format='fits')
+    spectrum = QTable.read(hdul[result['hdu'][0]], format='fits')
 
     spec_header = hdul[result['hdu'][0]].header
 ```
 
 ```{code-cell} ipython3
-spectra
+spectrum
 ```
 
 ```{code-cell} ipython3
@@ -145,13 +145,13 @@ The 1D combined spectra table contains 6 columns, below are a few highlights:
 ```
 
 ```{code-cell} ipython3
-signal_scaled = spectra['SIGNAL'] * spec_header['FSCALE']
+signal_scaled = spectrum['SIGNAL'] * spec_header['FSCALE']
 ```
 
 We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
 
 ```{code-cell} ipython3
-plt.plot(spectra['WAVELENGTH'].to(u.micron), spectra['MASK'])
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
 plt.ylabel('Mask value')
 plt.title('Values of MASK by flux bin')
 ```
@@ -159,11 +159,11 @@ plt.title('Values of MASK by flux bin')
 We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
 
 ```{code-cell} ipython3
-bad_mask = (spectra['MASK'].value % 2 == 1) | (spectra['MASK'].value >= 64)
+bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
 
-plt.plot(spectra['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, signal_scaled), color='black', label='Spectrum')
-plt.plot(spectra['WAVELENGTH'], np.ma.masked_where(~bad_mask, signal_scaled), color='red', label='Do not use')
-plt.plot(spectra['WAVELENGTH'], np.sqrt(spectra['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, signal_scaled), color='black', label='Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, signal_scaled), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
 
 plt.legend(loc='upper right')
 plt.ylim(-0.15E-16, 0.25E-16)
