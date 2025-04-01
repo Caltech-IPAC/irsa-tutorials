@@ -42,7 +42,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.md']
 
 # MyST-NB configuration
-nb_execution_timeout = 900
+nb_execution_timeout = 1200
 nb_merge_streams = True
 
 nb_execution_excludepatterns = []
