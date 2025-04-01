@@ -556,7 +556,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
-2025-04-01 05:34:36,853	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+2025-04-01 20:52:32,347	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -613,7 +613,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 149.3 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(scaled) conventional duration for 400 iterations = 148.3 seconds
 </pre></div>
 </div>
 </div>
@@ -630,7 +630,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-01 05:35:16,389	INFO worker.py:1852 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-01 20:53:11,635	INFO worker.py:1852 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -690,7 +690,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.3, speedup = 1.73
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.2, speedup = 1.72
 </pre></div>
 </div>
 </div>
@@ -743,7 +743,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 161.0, speedup = 0.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.5, speedup = 0.92
 </pre></div>
 </div>
 </div>
@@ -767,7 +767,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:34047&#39; processes=4 threads=4, memory=15.62 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:39203&#39; processes=4 threads=4, memory=15.62 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -788,7 +788,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 102.4, speedup = 1.46
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 103.7, speedup = 1.43
 </pre></div>
 </div>
 </div>
@@ -796,6 +796,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-01 20:59:06,019 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-e67dc1769f2ba58dbbe59c29fb864f2c&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+2025-04-01 20:59:06,483 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-4f6efb0557a46719f8feffaa0713f23a&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>
