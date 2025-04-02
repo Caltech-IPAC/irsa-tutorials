@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: science_demo
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -52,11 +52,11 @@ from scipy.ndimage import rotate
 
 # Needed to access data in the cloud
 import s3fs
-s3 = s3fs.S3FileSystem(anon=True) # create an S3 client
+s3 = s3fs.S3FileSystem(anon=True)  # create an S3 client
 
 # Filter out the FITSFixedWarning, which is consequenceless and gets thrown every time you deal with a WCS
 # in a Roman openuniverse simulated image using astropy.
-warnings.simplefilter('ignore',category=FITSFixedWarning)
+warnings.simplefilter('ignore', category=FITSFixedWarning)
 ```
 
 ## Define a module to get the date (mjd) of a particular pointing.
@@ -86,7 +86,7 @@ def get_mjd(pointing,
 ## Define a module to create an animated gif from a collection of cutouts.
 
 ```{code-cell} ipython3
-def animate_stamps(stamps,savepath,no_whitespace=True,
+def animate_stamps(stamps, savepath, no_whitespace=True,
                    labels=[],labelxy=(0.05,0.95),
                    **kwargs):
     """
@@ -290,12 +290,8 @@ for i, row in enumerate(instances.itertuples()):
 ```{code-cell} ipython3
 savepath = f'SN{oid}.gif'
 savepath
-animate_stamps(stamps,savepath,labels=mjd)
+animate_stamps(stamps, savepath, labels=mjd)
 ```
-
-![animated gif](SN20000808.gif)
-
-+++
 
 ***
 
