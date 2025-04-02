@@ -546,11 +546,11 @@ document.write(`
 
 <span class="c1"># Needed to access data in the cloud</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">s3fs</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># create an S3 client</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># create an S3 client</span>
 
 <span class="c1"># Filter out the FITSFixedWarning, which is consequenceless and gets thrown every time you deal with a WCS</span>
 <span class="c1"># in a Roman openuniverse simulated image using astropy.</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span><span class="n">category</span><span class="o">=</span><span class="n">FITSFixedWarning</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">FITSFixedWarning</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -588,7 +588,7 @@ document.write(`
 <h2>Define a module to create an animated gif from a collection of cutouts.<a class="headerlink" href="#define-a-module-to-create-an-animated-gif-from-a-collection-of-cutouts" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">animate_stamps</span><span class="p">(</span><span class="n">stamps</span><span class="p">,</span><span class="n">savepath</span><span class="p">,</span><span class="n">no_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">animate_stamps</span><span class="p">(</span><span class="n">stamps</span><span class="p">,</span> <span class="n">savepath</span><span class="p">,</span> <span class="n">no_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                    <span class="n">labels</span><span class="o">=</span><span class="p">[],</span><span class="n">labelxy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.95</span><span class="p">),</span>
                    <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1192,7 +1192,7 @@ s3://nasa-irsa-simulations/openuniverse2024/roman/preview/RomanTDS/images/simple
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">savepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SN</span><span class="si">{</span><span class="n">oid</span><span class="si">}</span><span class="s1">.gif&#39;</span>
 <span class="n">savepath</span>
-<span class="n">animate_stamps</span><span class="p">(</span><span class="n">stamps</span><span class="p">,</span><span class="n">savepath</span><span class="p">,</span><span class="n">labels</span><span class="o">=</span><span class="n">mjd</span><span class="p">)</span>
+<span class="n">animate_stamps</span><span class="p">(</span><span class="n">stamps</span><span class="p">,</span> <span class="n">savepath</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">mjd</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1200,7 +1200,6 @@ s3://nasa-irsa-simulations/openuniverse2024/roman/preview/RomanTDS/images/simple
 <img alt="../../_images/481e3c9c442a55d912c8997797f9b95966713456b023a1eb2221056ef619780a.png" src="../../_images/481e3c9c442a55d912c8997797f9b95966713456b023a1eb2221056ef619780a.png" />
 </div>
 </div>
-<p><img alt="animated gif" src="../../_images/SN20000808.gif" /></p>
 </section>
 <hr class="docutils" />
 <section id="about-this-notebook">
@@ -1292,7 +1291,7 @@ By IRSA developers
 
   <p class="copyright">
     
-      © Copyright 2022-2024, IRSA developers.
+      © Copyright 2022-2025, IRSA developers.
       <br/>
     
   </p>
