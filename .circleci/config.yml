@@ -18,7 +18,7 @@ jobs:
 
       - restore_cache:
           keys:
-              - jupyter
+              - jupyter_ch
 
       - run:
           name: Build HTML rendering of notebooks
@@ -27,9 +27,9 @@ jobs:
             python -m tox -e py312-buildhtml
 
       - save_cache:
-          key: jupyter
+          key: jupyter_ch
           paths:
-            - ~/_build/.jupyter_cache
+            - _build/.jupyter_cache
 
       - store_artifacts:
           path: _build/html
