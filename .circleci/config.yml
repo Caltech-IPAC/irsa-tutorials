@@ -7,11 +7,18 @@ jobs:
       - image: cimg/python:3.12
 
     steps:
+      - attach_workspace:
+          at: ~/
+
       - checkout
 
       - run:
           name: Install CI dependencies
           command: python -m pip install --upgrade tox
+
+      - restore_cache:
+          keys:
+              - jupyter_ch
 
       - run:
           name: Build HTML rendering of notebooks
@@ -19,8 +26,18 @@ jobs:
           command: |
             python -m tox -e py312-buildhtml
 
+      - save_cache:
+          key: jupyter_ch
+          paths:
+            - _build/.jupyter_cache
+
       - store_artifacts:
           path: _build/html
+
+      - persist_to_workspace:
+          root: _build
+          paths:
+            - html
 
 workflows:
   version: 2

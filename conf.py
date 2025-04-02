@@ -15,7 +15,7 @@ import platform
 # -- Project information -----------------------------------------------------
 
 project = 'Caltech/IPAC--IRSA Demo Notebooks'
-copyright = '2022-2024, IRSA developers'
+copyright = '2022-2025, IRSA developers'
 author = 'IRSA developers'
 
 
@@ -44,6 +44,7 @@ exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.
 # MyST-NB configuration
 nb_execution_timeout = 1200
 nb_merge_streams = True
+nb_execution_mode = "cache"
 
 nb_execution_excludepatterns = []
 
