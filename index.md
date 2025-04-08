@@ -91,6 +91,15 @@ tutorials/firefly/OpenUniverse2024Preview_Firefly
 
 ```
 
+```{toctree}
+---
+maxdepth: 1
+caption: Roman Simulations
+---
+
+tutorials/roman_simulations/roman_hlss_number_density.md
+
+```
 
 ## Generally useful techniques
 
