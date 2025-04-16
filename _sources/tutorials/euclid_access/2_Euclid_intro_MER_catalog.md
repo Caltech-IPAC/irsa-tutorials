@@ -101,30 +101,28 @@ The MER catalog contains 476 columns, below are a few highlights:
 
 ### Define the following ADQL query to find the first 10k stars in the MER catalog
 
-Since we are just using the MER catalog alone, it does not have a column for classification. We can use the point_like_flag = 1 or point_like_prob>0.99 for stars.
+Since we are just using the MER catalog alone, it does not have a column for classification. 
+We can use the `point_like_flag = 1` or `point_like_prob > 0.99` for stars.
 
-Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images
+Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images.
 
 ```{code-cell} ipython3
-adql_stars = ("SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, mer.flux_y_templfit,mer.fluxerr_y_templfit, "
-    "mer.flux_j_templfit, mer.fluxerr_j_templfit, mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob "
-    f"FROM {table_mer} AS mer "
-    "WHERE  mer.flux_vis_psf > 0 "
-    "AND mer.flux_y_templfit > 0 "
-    "AND mer.flux_j_templfit > 0 "
-    "AND mer.flux_h_templfit > 0 "
-    "AND mer.point_like_flag = 1 ")
-
-# Run the query
-
-result_stars = Irsa.query_tap(adql_stars)
+adql_stars = ("SELECT TOP 10000 mer.object_id, mer.ra, mer.dec, mer.flux_vis_psf, mer.fluxerr_vis_psf, "
+              "mer.flux_y_templfit,mer.fluxerr_y_templfit, mer.flux_j_templfit, mer.fluxerr_j_templfit, "
+              "mer.flux_h_templfit, mer.fluxerr_h_templfit, mer.point_like_prob, mer.extended_prob "
+              f"FROM {table_mer} AS mer "
+              "WHERE  mer.flux_vis_psf > 0 "
+              "AND mer.flux_y_templfit > 0 "
+              "AND mer.flux_j_templfit > 0 "
+              "AND mer.flux_h_templfit > 0 "
+              "AND mer.point_like_flag = 1 ")
 ```
 
-```{code-cell} ipython3
-df_s_irsa = result_stars.to_table().to_pandas()   # Convert to Pandas DataFrame
+We can run the query with the TAP service, and then look at some of the results.
 
-# Display first few rows
-df_s_irsa.head()
+```{code-cell} ipython3
+result_stars = Irsa.query_tap(adql_stars).to_table()
+result_stars[:5]
 ```
 
 ## 2. Make a color-magnitude diagram using the catalogs pulled from IRSA
@@ -134,22 +132,23 @@ df_s_irsa.head()
 - Plot the color-magnitude diagram
 
 ```{code-cell} ipython3
-mag_y_s_irsa=-2.5*np.log10(df_s_irsa["flux_y_templfit"]) + 23.9 # Y
-mag_h_s_irsa=-2.5*np.log10(df_s_irsa["flux_h_templfit"]) + 23.9 # H
+mag_y = -2.5 * np.log10(result_stars["flux_y_templfit"]) + 23.9 
+mag_h = -2.5 * np.log10(result_stars["flux_h_templfit"]) + 23.9
 
-x_s_irsa = mag_y_s_irsa - mag_h_s_irsa # Y - H
-y_s_irsa = mag_y_s_irsa
+x = mag_y - mag_h  # Y - H
+y = mag_y
 
-xerr_s_irsa= 2.5 / np.log(10) * np.sqrt((df_s_irsa["fluxerr_y_templfit"] / df_s_irsa["flux_y_templfit"])**2
-                                 + (df_s_irsa["fluxerr_h_templfit"] / df_s_irsa["flux_h_templfit"])**2)
-yerr_s_irsa= 2.5 / np.log(10) * (df_s_irsa["fluxerr_y_templfit"] / df_s_irsa["flux_y_templfit"])
+xerr = (2.5 / np.log(10) * np.sqrt((result_stars["fluxerr_y_templfit"] / result_stars["flux_y_templfit"])**2
+                                   + (result_stars["fluxerr_h_templfit"] / result_stars["flux_h_templfit"])**2))
+yerr = (2.5 / np.log(10) * (result_stars["fluxerr_y_templfit"] / result_stars["flux_y_templfit"]))
 
-plt.errorbar(x_s_irsa, y_s_irsa, xerr=xerr_s_irsa, yerr=yerr_s_irsa, fmt='o', markersize=1.5, ecolor='lightgrey', elinewidth=0.5, capsize=2)
+plt.errorbar(x, y, xerr=xerr, yerr=yerr,
+             fmt='o', markersize=1.5, ecolor='lightgrey', elinewidth=0.5, capsize=2)
 
 plt.xlabel('Y-H')
 plt.ylabel('Y')
-plt.xlim(-10,10)
-plt.ylim(10,35)
+plt.xlim(-10, 10)
+plt.ylim(10, 35)
 plt.title('10k Stars in MER catalog -- IRSA')
 ```
 
@@ -157,6 +156,6 @@ plt.title('10k Stars in MER catalog -- IRSA')
 
 **Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
 
-**Updated**: 2025-03-31
+**Updated**: 2025-04-09
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
