@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.16.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -231,6 +231,77 @@ Once the catalogs are available as Parquet files in the cloud, we can efficientl
 ```
 
 +++
+
+## Parquet Catalog (testing)
+
+```{code-cell} ipython3
+s3_cat_bucket = "irsa-fornax-testdata"
+s3_cat_key = "EUCLID/q1/mer_catalogue/hats"
+euclid_s3_cat_path = f"s3://{s3_cat_bucket}/{s3_cat_key}"
+euclid_s3_cat_path
+```
+
+```{code-cell} ipython3
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}')
+```
+
+```{code-cell} ipython3
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset')
+```
+
+```{code-cell} ipython3
+print(s3.cat(f'{s3_cat_bucket}/{s3_cat_key}/README.txt').decode('utf-8'))
+```
+
+```{code-cell} ipython3
+import pandas as pd
+
+partition_info_path = f's3://{s3_cat_bucket}/{s3_cat_key}/partition_info.csv'
+partition_info_df = pd.read_csv(partition_info_path, storage_options={'anon': True})
+
+partition_info_df
+```
+
+```{code-cell} ipython3
+partition_info_df['Norder'].unique()
+```
+
+```{code-cell} ipython3
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3')
+```
+
+```{code-cell} ipython3
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3/Dir=0')
+```
+
+```{code-cell} ipython3
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3/Dir=0/Npix=334')
+```
+
+```{code-cell} ipython3
+import math
+
+log_value = math.log2(2048)
+log_value
+```
+
+```{code-cell} ipython3
+coord.ra.deg
+```
+
+```{code-cell} ipython3
+import hpgeom
+
+pixels = []
+for norder in partition_info_df['Norder'].unique():
+    nside = 2**norder
+    pix = hpgeom.query_circle(nside, a=coord.ra.deg, b=coord.dec.deg, radius=search_radius.to(u.deg).value)
+    pixels.append(pix)
+
+pixels
+```
+
++++ {"jp-MarkdownHeadingCollapsed": true}
 
 ## 7. Find the MER Object ID for our target
 First, list the Euclid catalogs provided by IRSA:
