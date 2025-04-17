@@ -91,10 +91,12 @@ tutorials/firefly/OpenUniverse2024Preview_Firefly
 
 ```
 
+## Simulated Data
+
 ```{toctree}
 ---
 maxdepth: 1
-caption: Roman Simulations
+caption: Simulated Data
 ---
 
 tutorials/roman_simulations/roman_hlss_number_density.md
