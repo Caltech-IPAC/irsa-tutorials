@@ -1025,7 +1025,7 @@ Figure Caption: Number Density plots color coded by Halpha flux.  Slight variati
 +++
 
 ### 4.1 Explore jackknife uncertainties
-The uncertainties are plotted as error bars on the data points above, but are not visible because they are so small.  Here we plot them in a way that makes them visible.
+The uncertainties are plotted as error bars on the data points above.  There are no jackknife uncertainties if you are only using one file, so they will in that case not be visible on the plot.  This section is for the case where you are using more than one downloaded input file.  Here we explore and plot the jackknife uncertainties in a way that makes them visible.
 
 ```{code-cell} ipython3
 def plot_jackknife_fractional_uncertainty(z_bin_centers, counts, std_dev_counts):
@@ -1062,7 +1062,7 @@ std_dev_counts = counts_summary["std_dev_counts"].flatten()
 plot_jackknife_fractional_uncertainty(z_bin_centers, counts_per_deg2, std_dev_counts)
 ```
 
-Figure Caption:  The fractional uncertainty is the standard deviation from jackknife sampling divided by the number of galaxies per square degree, here plotted as a function of redshift.  Note the expected rise in uncertainty with increasing redshift.
+Figure Caption:  The fractional uncertainty is the standard deviation from jackknife sampling divided by the number of galaxies per square degree, here plotted as a function of redshift.  Note that if you are using only 1 downloaded file this will be a flat plot with no uncertainties.  However, if you are using all 10 input files, you will see the expected rise in uncertainty with increasing redshift.
 
 +++
 
