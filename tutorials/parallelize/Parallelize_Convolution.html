@@ -47,7 +47,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/parallelize/Parallelize_Convolution';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images" href="../firefly/OpenUniverse2024Preview_Firefly.html" />
+    <link rel="prev" title="Number Density as a Function of Redshift" href="../roman_simulations/roman_hlss_number_density.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -216,6 +216,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulated Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../roman_simulations/roman_hlss_number_density.html">Number Density as a Function of Redshift</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="current nav bd-sidenav">
@@ -556,7 +560,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
-2025-04-16 02:46:31,157	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
+2025-04-17 22:17:09,800	INFO util.py:154 -- Missing packages: [&#39;ipywidgets&#39;]. Run `pip install -U ipywidgets`, then restart the notebook server for rich notebook output.
 </pre></div>
 </div>
 </div>
@@ -630,7 +634,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-16 02:47:09,344	INFO worker.py:1852 -- Started a local Ray instance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-17 22:17:49,024	INFO worker.py:1852 -- Started a local Ray instance.
 </pre></div>
 </div>
 <div class="output text_html"><div class="lm-Widget p-Widget lm-Panel p-Panel jp-Cell-outputWrapper">
@@ -690,7 +694,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.0, speedup = 1.73
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ray duration = 86.1, speedup = 1.72
 </pre></div>
 </div>
 </div>
@@ -743,7 +747,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.8, speedup = 0.92
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiprocessing duration = 160.9, speedup = 0.92
 </pre></div>
 </div>
 </div>
@@ -767,7 +771,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:41085&#39; processes=4 threads=4, memory=15.62 GiB&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Client: &#39;tcp://127.0.0.1:36181&#39; processes=4 threads=4, memory=15.62 GiB&gt;
 </pre></div>
 </div>
 </div>
@@ -788,7 +792,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 102.1, speedup = 1.45
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask duration = 104.5, speedup = 1.42
 </pre></div>
 </div>
 </div>
@@ -800,7 +804,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-16 02:53:02,727 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-e09f6327ff0e42210efa91a742b68fc7&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-04-17 22:23:44,661 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-fdf35cd507b94c25f06d852d19793bbd&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
+2025-04-17 22:23:45,025 - distributed.worker.state_machine - WARNING - Async instruction for &lt;Task cancelled name=&quot;execute(&#39;fmp-c282ee9e62bc322eb4a3b6bced285993&#39;)&quot; coro=&lt;Worker.execute() done, defined at /home/runner/work/irsa-tutorials/irsa-tutorials/.tox/py311-buildhtml/lib/python3.11/site-packages/distributed/worker_state_machine.py:3607&gt;&gt; ended with CancelledError
 </pre></div>
 </div>
 </div>
@@ -843,12 +848,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../firefly/OpenUniverse2024Preview_Firefly.html"
+       href="../roman_simulations/roman_hlss_number_density.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</p>
+        <p class="prev-next-title">Number Density as a Function of Redshift</p>
       </div>
     </a>
 </div>

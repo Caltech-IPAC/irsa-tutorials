@@ -218,6 +218,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulated Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../roman_simulations/roman_hlss_number_density.html">Number Density as a Function of Redshift</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
@@ -1141,15 +1145,15 @@ We can use the <code class="docutils literal notranslate"><span class="pre">poin
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table140192980602448" class="table-striped table-bordered table-condensed">
+<table id="table140670455191440" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_psf</th><th>fluxerr_vis_psf</th><th>flux_y_templfit</th><th>fluxerr_y_templfit</th><th>flux_j_templfit</th><th>fluxerr_j_templfit</th><th>flux_h_templfit</th><th>fluxerr_h_templfit</th><th>point_like_prob</th><th>extended_prob</th></tr></thead>
 <thead><tr><th>NA</th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>NA</th><th>NA</th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>2754156111648629113</td><td>275.4156111</td><td>64.8629113</td><td>6.045609474</td><td>0.0584327355</td><td>10.82106876</td><td>0.355963707</td><td>11.40954781</td><td>0.3065377176</td><td>10.45671749</td><td>0.3218665123</td><td>0.9666885138</td><td>--</td></tr>
-<tr><td>2752319814648725202</td><td>275.2319814</td><td>64.87252025</td><td>4.037385941</td><td>0.03461505845</td><td>14.260746</td><td>0.2050237358</td><td>16.41969299</td><td>0.194527775</td><td>16.42702866</td><td>0.216757074</td><td>0.9616584778</td><td>--</td></tr>
-<tr><td>2749122564648722695</td><td>274.9122565</td><td>64.87226951</td><td>32.98460007</td><td>0.07834949344</td><td>48.63473892</td><td>0.4688049555</td><td>49.79816437</td><td>0.3945559561</td><td>45.22050858</td><td>0.3645604849</td><td>0.9932994246</td><td>--</td></tr>
-<tr><td>2752619765648413762</td><td>275.2619765</td><td>64.84137629</td><td>30.98142242</td><td>0.1122400686</td><td>33.82349777</td><td>0.5415033102</td><td>32.2788353</td><td>0.515330255</td><td>20.76235771</td><td>0.4572863281</td><td>0.9839022756</td><td>--</td></tr>
-<tr><td>2748193442648578114</td><td>274.8193443</td><td>64.85781143</td><td>8.380738258</td><td>0.0488332212</td><td>19.3033886</td><td>0.27492553</td><td>21.50809288</td><td>0.3009873629</td><td>20.89598083</td><td>0.2719838917</td><td>0.9781181216</td><td>--</td></tr>
+<tr><td>2739339324686636525</td><td>273.9339324</td><td>68.66365256</td><td>6.794212341</td><td>0.04148425907</td><td>27.28985786</td><td>0.3659462631</td><td>30.36875153</td><td>0.3722479939</td><td>32.00043869</td><td>0.3406025767</td><td>0.9708138704</td><td>--</td></tr>
+<tr><td>2729886421686574607</td><td>272.9886421</td><td>68.65746075</td><td>16.88259315</td><td>0.06647554785</td><td>74.98227692</td><td>0.5508280396</td><td>93.67647552</td><td>0.788707912</td><td>91.01799774</td><td>0.5282377601</td><td>0.9763251543</td><td>--</td></tr>
+<tr><td>2741558892686578363</td><td>274.1558892</td><td>68.65783631</td><td>12.58780289</td><td>0.08263044804</td><td>69.53385162</td><td>0.7418814898</td><td>88.70378113</td><td>0.9025485516</td><td>94.8733139</td><td>0.7979454398</td><td>0.9796041846</td><td>--</td></tr>
+<tr><td>2732694474686618597</td><td>273.2694474</td><td>68.66185979</td><td>6.830948353</td><td>0.03759930655</td><td>23.15037918</td><td>0.3278889358</td><td>27.70770073</td><td>0.307952106</td><td>27.08376694</td><td>0.3023459017</td><td>0.9631901383</td><td>--</td></tr>
+<tr><td>2740298842686853734</td><td>274.0298843</td><td>68.68537343</td><td>7.160727501</td><td>0.04892234877</td><td>22.75761986</td><td>0.5120965838</td><td>24.17343712</td><td>0.4481267333</td><td>24.56711388</td><td>0.4637717009</td><td>0.9677225351</td><td>--</td></tr>
 </table></div></div></div>
 </div>
 </section>
@@ -1188,7 +1192,7 @@ We can use the <code class="docutils literal notranslate"><span class="pre">poin
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;10k Stars in MER catalog -- IRSA&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/493b008c7b750f01d25a2ce6241bed6355c5e111d1d60553cf91adbfe6063d28.png" src="../../_images/493b008c7b750f01d25a2ce6241bed6355c5e111d1d60553cf91adbfe6063d28.png" />
+<img alt="../../_images/7b5760545a77caf4beb1d9c9b532e2d48c62e86c3862cfa46e4d511863b1737c.png" src="../../_images/7b5760545a77caf4beb1d9c9b532e2d48c62e86c3862cfa46e4d511863b1737c.png" />
 </div>
 </div>
 </section>

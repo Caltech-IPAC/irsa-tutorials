@@ -1,0 +1,2183 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Number Density as a Function of Redshift &#8212; IRSA Demo Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/roman_simulations/roman_hlss_number_density';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Parallelizing image convolution" href="../parallelize/Parallelize_Convolution.html" />
+    <link rel="prev" title="Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images" href="../firefly/OpenUniverse2024Preview_Firefly.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://irsa.ipac.caltech.edu/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/irsa_logo.png" class="logo__image only-light" alt="NASA/IPAC Infrared Science Archive - Home"/>
+    <script>document.write(`<img src="../../_static/irsa_logo.png" class="logo__image only-dark" alt="NASA/IPAC Infrared Science Archive - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Caltech-IPAC/irsa-tutorials" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Caltech/IPAC–IRSA Python Notebook Tutorials
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">VO on-prem data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_2mass_allsky.html">Searching for 2MASS All-Sky Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_allwise_atlas.html">Searching for AllWISE Atlas Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/sia_cosmos.html">Searching for contributed COSMOS images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../irsa-sia-examples/siav2_seip.html">Searching for Spitzer Enhanced Imaging Products</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cosmodc2/cosmoDC2_TAP_access.html">Querying CosmoDC2 Mock v1 catalogs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cloud data access</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/cloud-access-intro.html">IRSA cloud access introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/wise-allwise-catalog-demo.html">Analyzing cloud-hosted AllWISE Source Catalog in Parquet format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-strategies.html">Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parquet-catalog-demos/neowise-source-table-lightcurves.html">Make Light Curves from NEOWISE Single-exposure Source Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.html">Analyzing cloud-hosted simulated Roman Time Domain Survey images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.html">Analyzing cloud-hosted simulated Roman coadded images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Early Release Observations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/Euclid_ERO.html">Exploring Star Clusters in the Euclid ERO Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Euclid Quick Release 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/1_Euclid_intro_MER_images.html">Euclid Q1: MER mosaics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/2_Euclid_intro_MER_catalog.html">Euclid Q1: MER catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/3_Euclid_intro_1D_spectra.html">Euclid Q1: 1D spectra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/4_Euclid_intro_PHZ_catalog.html">Euclid Q1: PHZ catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../euclid_access/5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/NEOWISE_light_curve_demo.html">Using Firefly visualization tools to understand the light curves of Solar System objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firefly/OpenUniverse2024Preview_Firefly.html">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulated Data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Number Density as a Function of Redshift</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Generic techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../parallelize/Parallelize_Convolution.html">Parallelizing image convolution</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Caltech-IPAC/irsa-tutorials/main?urlpath=tree/tutorials/roman_simulations/roman_hlss_number_density.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/edit/main/tutorials/roman_simulations/roman_hlss_number_density.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Caltech-IPAC/irsa-tutorials/issues/new?title=Issue%20on%20page%20%2Ftutorials/roman_simulations/roman_hlss_number_density.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/tutorials/roman_simulations/roman_hlss_number_density.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/tutorials/roman_simulations/roman_hlss_number_density.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Number Density as a Function of Redshift</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mock-catalogs-from-irsa">1. Read in the mock catalogs from IRSA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-files-from-irsa">1.1 Download the files from IRSA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-files-into-a-pandas-dataframe-so-we-can-work-with-them">1.2 read files into a pandas dataframe so we can work with them</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-process-dataset">1.3 Pre-process dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">1.3 Data Exploration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-some-helpful-histograms">2.0 Make some helpful histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-number-density-plot">3.0 Make Number density plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expand-to-out-of-memory-sized-catalogs">4.0 Expand to out-of-memory sized catalogs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-jackknife-uncertainties">4.1 Explore jackknife uncertainties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="number-density-as-a-function-of-redshift">
+<h1>Number Density as a Function of Redshift<a class="headerlink" href="#number-density-as-a-function-of-redshift" title="Link to this heading">#</a></h1>
+<section id="learning-goals">
+<h2>Learning Goals<a class="headerlink" href="#learning-goals" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>learn how to use the mock simulations for Roman Space Telescope <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2021MNRAS.501.3490Z/abstract">Zhai et al. 2021</a></p></li>
+<li><p>modify code to reduce memory usage when using large catalogs</p></li>
+<li><p>make a plot of number density of galaxies as a function of redshift (recreate figure 3 from <a class="reference external" href="https://arxiv.org/pdf/2110.01829">Wang et al., 2021</a>).</p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The Nancy Grace Roman Space Telescope will be a transformative tool for cosmology due to its unprecedented combination of wide field-of-view and high-resolution imaging. We choose to demonstrate the usefulness of the mock Roman suimulations in generating number density plots because they provide crucial insights into the large-scale structure of the universe and the distribution of matter over cosmic time. These plots illustrate how the number density of galaxies, quasars, or dark matter halos changes with redshift, revealing information about the processes of galaxy formation, evolution, and clustering. By analyzing number density plots, cosmologists can test theoretical models of structure formation, constrain cosmological parameters, and understand the influence of dark matter and dark energy on the evolution of the universe.</p>
+<section id="instructions">
+<h3>Instructions<a class="headerlink" href="#instructions" title="Link to this heading">#</a></h3>
+<p>Most of the notebook can be run with a single mock galaxy catalog file which easily fits in memory (3G). The final section uses all the data to make a final number density plot.  The dataset in its entirety does not fit into memory all at once(out of memory) so we have carefully designed this function to use the least possible amount of memory.  The dataset in its entirety also takes ~30 minutes to download and requires ~30G of space to store.  We suggest only running download_simulations with download_all= True if you are ready to wait for the download and have enough storage space.  Default is to work with only one catalog which is 10% of the dataset.</p>
+<p>Techniques employed for working with out of memory datasets:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- read in only some columns from the original dataset
+- convert data from float64 to float32 where high precision is not necessary
+- careful management of the code structure to not need to read in all datasets to one dataframe
+</pre></div>
+</div>
+</section>
+<section id="input">
+<h3>Input<a class="headerlink" href="#input" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>None, the location of the simulated dataset is hardcoded for convenience</p></li>
+</ul>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>plots of number of galaxies per square degree as a function of redshift</p></li>
+<li><p>optional numpy file with the counts saved for ease of working with the information later</p></li>
+</ul>
+</section>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
+<span class="c1"># !pip install h5py pandas matplotlib numpy requests</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-in-the-mock-catalogs-from-irsa">
+<h2>1. Read in the mock catalogs from IRSA<a class="headerlink" href="#read-in-the-mock-catalogs-from-irsa" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>figure out how to get the files from IRSA</p></li>
+<li><p>pull down one of them for testing</p></li>
+<li><p>convert to a pandas df for ease of use</p></li>
+<li><p>do some data exploration</p></li>
+</ul>
+<section id="download-the-files-from-irsa">
+<h3>1.1 Download the files from IRSA<a class="headerlink" href="#download-the-files-from-irsa" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>This is about 30G of data in total</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span><span class="n">file_url</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloads a file from a given URL and saves it to a specified local path.</span>
+<span class="sd">    The file is downloaded in chunks to reduce memory usage.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - file_url (str): The URL of the file to download.</span>
+<span class="sd">    - save_path (str): The local path where the file will be saved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - str: The save_path if the download succeeds.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - requests.HTTPError: If the HTTP request returned an unsuccessful status code.</span>
+<span class="sd">    - OSError: If there is an issue creating directories or writing the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise an HTTPError for bad responses (4xx, 5xx)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">save_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">):</span>  <span class="c1"># 8KB chunks</span>
+            <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>  <span class="c1"># Filter out keep-alive chunks</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded: </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">save_path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">download_files_in_parallel</span><span class="p">(</span><span class="n">file_url_list</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloads multiple files in parallel using a ThreadPoolExecutor.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - file_url_list (list of str): List of file URLs to download.</span>
+<span class="sd">    - save_dir (str): Directory where files will be saved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - list of str: List of paths where the files were successfully downloaded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">downloaded_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#set to a reasonable number for efficiency and scalability</span>
+    <span class="n">max_workers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">file_url_list</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>  
+    <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">future_to_url</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">download_file</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">))):</span> <span class="n">url</span> 
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">file_url_list</span>
+        <span class="p">}</span>
+        
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">future_to_url</span><span class="p">):</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
+                <span class="n">downloaded_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">downloaded_files</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">download_simulations</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">download_all</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download .hdf5 simulation files from the Roman Zhai2021 URL using the provided checksums.md5 file.</span>
+
+<span class="sd">    This function reads the list of available .hdf5 files from the checksums.md5 file, filters them,</span>
+<span class="sd">    and downloads the requested files to a specified directory. If a file already exists locally,</span>
+<span class="sd">    it will be skipped.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    download_dir : str</span>
+<span class="sd">        Directory where the downloaded .hdf5 files will be stored. </span>
+<span class="sd">        The directory will be created if it does not already exist.</span>
+
+<span class="sd">    download_all : bool, optional</span>
+<span class="sd">        If True, download all .hdf5 files listed in the checksum file.</span>
+<span class="sd">        If False, download only the first file. Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        This function does not return any value but prints the download status.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Downloads are performed in parallel using a maximum of 4 workers.</span>
+<span class="sd">    - Files that already exist locally are skipped.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://irsa.ipac.caltech.edu/data/theory/Roman/Zhai2021&#39;</span>
+    <span class="n">checksum_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s1">/checksums.md5&#39;</span>
+
+    <span class="c1"># Read the checksums file to get the filenames</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">checksum_url</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;checksum&quot;</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">])</span>
+    <span class="n">hdf5_files</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdf5&quot;</span><span class="p">)][</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">download_all</span><span class="p">:</span>
+        <span class="n">hdf5_files</span> <span class="o">=</span> <span class="n">hdf5_files</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">file_urls</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">hdf5_files</span><span class="p">]</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Filter out files that already exist</span>
+    <span class="n">files_to_download</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">file_url</span> <span class="ow">in</span> <span class="n">file_urls</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> already exists. Skipping download.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files_to_download</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">files_to_download</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting parallel download of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files_to_download</span><span class="p">)</span><span class="si">}</span><span class="s2"> files.&quot;</span><span class="p">)</span>
+        <span class="n">downloaded_files</span> <span class="o">=</span> <span class="n">download_files_in_parallel</span><span class="p">(</span><span class="n">files_to_download</span><span class="p">,</span> <span class="n">download_dir</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully downloaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">downloaded_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All requested files are already downloaded.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set download_all to True to download all files, or False to download only the first file</span>
+<span class="c1"># only a single downloaded file is required to run the notebook in its entirety, </span>
+<span class="c1"># however section 4 will be more accuate with all 10 files</span>
+
+<span class="c1"># Downloading 10 files, each 3GB in size, may take between 1 and 30 minutes,</span>
+<span class="c1"># or even longer, depending on your proximity to the data.</span>
+
+<span class="n">download_dir</span> <span class="o">=</span> <span class="s1">&#39;downloaded_hdf5_files&#39;</span>
+<span class="n">download_simulations</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">download_all</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting parallel download of 1 files.
+Downloaded: downloaded_hdf5_files/Roman_small_V2_0.hdf5
+Successfully downloaded 1 files.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-files-into-a-pandas-dataframe-so-we-can-work-with-them">
+<h3>1.2 read files into a pandas dataframe so we can work with them<a class="headerlink" href="#read-files-into-a-pandas-dataframe-so-we-can-work-with-them" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fetch_column_names</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches column names from the Readme_small.txt file at the specified URL.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - List of column names (str): A list of extracted column names, or an empty list if no column names are found.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - HTTPError: If the HTTP request returns an unsuccessful status code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://irsa.ipac.caltech.edu/data/theory/Roman/Zhai2021/Readme_small.txt&#39;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise an HTTPError for bad responses</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;column&#39;</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;:\s*([^\s]+)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">column_names</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No column names found in Readme_small.txt.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">read_hdf5_to_pandas</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">columns_to_keep</span><span class="p">,</span> <span class="n">columns_to_convert</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read selected columns from an HDF5 file into a pandas DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_path : str</span>
+<span class="sd">        Path to the HDF5 file.</span>
+<span class="sd">    columns_to_keep : list of str</span>
+<span class="sd">        List of column names to extract from the dataset.</span>
+<span class="sd">    columns_to_convert : list of str</span>
+<span class="sd">        List of column names to convert to float32 for memory efficiency.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        A DataFrame containing the selected columns from the HDF5 file, </span>
+<span class="sd">        with specified columns cast to float32.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Map of column names to their corresponding index in the HDF5 dataset</span>
+    <span class="n">col_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;RA&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;DEC&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;redshift_cosmological&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;redshift_observed&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;velocity&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">&quot;stellar&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;SFR&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s2">&quot;halo&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="s2">&quot;flux_Halpha6563&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s2">&quot;flux_OIII5007&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="s2">&quot;M_F158_Av1.6523&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;nodeIsIsolated&quot;</span><span class="p">:</span> <span class="mi">11</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Open the HDF5 file and extract only the requested columns</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns_to_keep</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">col_map</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+
+    <span class="c1"># Create a DataFrame from the selected columns</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Convert specified columns to float32 to reduce memory usage</span>
+    <span class="n">conversion_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns_to_convert</span><span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">conversion_map</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">assign_redshift_bins</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assign redshift bins to a DataFrame based on &#39;redshift_observed&#39;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        The input DataFrame containing a &#39;redshift_observed&#39; column.</span>
+<span class="sd">    z_min : float</span>
+<span class="sd">        The minimum redshift for binning.</span>
+<span class="sd">    z_max : float</span>
+<span class="sd">        The maximum redshift for binning.</span>
+<span class="sd">    dz : float, optional</span>
+<span class="sd">        The redshift bin width (default is 0.1).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        The input DataFrame with a new &#39;z_bin&#39; categorical column.</span>
+<span class="sd">    z_bins : numpy.ndarray</span>
+<span class="sd">        The redshift bin edges used to define bins.</span>
+<span class="sd">    z_bin_centers : list of float</span>
+<span class="sd">        The central redshift value for each bin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span> <span class="o">+</span> <span class="n">dz</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z_bin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;redshift_observed&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">z_bins</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">z_bin_centers</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">right</span><span class="p">])</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z_bin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">]</span>
+    <span class="n">z_bin_centers</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">z_bins</span><span class="p">,</span> <span class="n">z_bin_centers</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#don&#39;t change this, the above code downloads the files to this directory</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;downloaded_hdf5_files/Roman_small_V2_0.hdf5&#39;</span>
+
+<span class="c1">#out of consideration for the size of these files and the amount of memory required to work with them</span>
+<span class="c1"># we only keep the columns that we are going to use and convert some to 32bit instead of 64 where </span>
+<span class="c1"># the higher precision is not necessary to the science</span>
+<span class="n">columns_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;DEC&#39;</span><span class="p">,</span> <span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+<span class="n">columns_to_convert</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">read_hdf5_to_pandas</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">columns_to_keep</span><span class="p">,</span> <span class="n">columns_to_convert</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pre-process-dataset">
+<h3>1.3 Pre-process dataset<a class="headerlink" href="#pre-process-dataset" title="Link to this heading">#</a></h3>
+<p>Add some value-added columns to the dataframe, and calculate some variables which are used by mulitple functions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#add a binned redshift column and calculate the edges of the bins</span>
+<span class="n">z_min</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">z_max</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">df</span><span class="p">,</span> <span class="n">z_bins</span><span class="p">,</span> <span class="n">z_bin_centers</span> <span class="o">=</span> <span class="n">assign_redshift_bins</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">dz</span><span class="p">)</span>
+
+<span class="c1">#Shift RA values to continuous range for the entire DataFrame </span>
+<span class="c1">#This is necessary because the current range goes over 360 which appears to the code </span>
+<span class="c1">#as a non-contiguous section of the sky.  By shifting the RA values, we don&#39;t have the </span>
+<span class="c1">#jump from RA = 360 to RA = 0.  </span>
+    
+<span class="n">ra_min1</span><span class="o">=</span><span class="mi">330</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ra_min1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>  <span class="c1"># Shift RA to continuous range</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#quick check to see what we&#39;ve got:</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RA</th>
+      <th>DEC</th>
+      <th>redshift_observed</th>
+      <th>flux_Halpha6563</th>
+      <th>z_bin</th>
+      <th>RA_shifted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>341.509710</td>
+      <td>7.693022</td>
+      <td>4.090425</td>
+      <td>2.438628e-16</td>
+      <td>NaN</td>
+      <td>11.509710</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>357.329659</td>
+      <td>-4.205828</td>
+      <td>4.200562</td>
+      <td>2.290115e-16</td>
+      <td>NaN</td>
+      <td>27.329659</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>348.470261</td>
+      <td>19.136800</td>
+      <td>3.704146</td>
+      <td>3.427580e-16</td>
+      <td>NaN</td>
+      <td>18.470261</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.120387</td>
+      <td>6.377602</td>
+      <td>3.750228</td>
+      <td>3.328315e-16</td>
+      <td>NaN</td>
+      <td>35.120387</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>21.632080</td>
+      <td>2.866344</td>
+      <td>3.677756</td>
+      <td>3.486357e-16</td>
+      <td>NaN</td>
+      <td>51.632080</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>29382938</th>
+      <td>338.240811</td>
+      <td>16.178767</td>
+      <td>0.067884</td>
+      <td>1.876826e-15</td>
+      <td>NaN</td>
+      <td>8.240811</td>
+    </tr>
+    <tr>
+      <th>29382939</th>
+      <td>346.041731</td>
+      <td>4.151812</td>
+      <td>0.059724</td>
+      <td>2.956311e-15</td>
+      <td>NaN</td>
+      <td>16.041731</td>
+    </tr>
+    <tr>
+      <th>29382940</th>
+      <td>13.633021</td>
+      <td>-18.561325</td>
+      <td>0.080929</td>
+      <td>4.737627e-14</td>
+      <td>NaN</td>
+      <td>43.633021</td>
+    </tr>
+    <tr>
+      <th>29382941</th>
+      <td>4.662985</td>
+      <td>4.162972</td>
+      <td>0.050005</td>
+      <td>4.001319e-15</td>
+      <td>NaN</td>
+      <td>34.662985</td>
+    </tr>
+    <tr>
+      <th>29382942</th>
+      <td>20.088851</td>
+      <td>18.854207</td>
+      <td>0.030603</td>
+      <td>2.113698e-14</td>
+      <td>NaN</td>
+      <td>50.088851</td>
+    </tr>
+  </tbody>
+</table>
+<p>29382943 rows × 6 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="data-exploration">
+<h3>1.3 Data Exploration<a class="headerlink" href="#data-exploration" title="Link to this heading">#</a></h3>
+<p>Let’s explore the dataset a bit to see what we are working with.</p>
+<p>This function prints the following information:</p>
+<ul class="simple">
+<li><p>First 5 rows of the DataFrame.</p></li>
+<li><p>DataFrame info (data types, non-null counts).</p></li>
+<li><p>Summary statistics for numeric columns.</p></li>
+<li><p>Memory usage of the DataFrame and each column.</p></li>
+<li><p>Column names.</p></li>
+<li><p>Check for missing (NaN) values, including columns with NaNs and their counts.</p></li>
+</ul>
+<p>Note that quite a few of the z_bin values are NaN because they are outside the redshift range of interest for this plot (1 &lt; z &lt; 3)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the first 5 rows of the dataframe</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RA</th>
+      <th>DEC</th>
+      <th>redshift_observed</th>
+      <th>flux_Halpha6563</th>
+      <th>z_bin</th>
+      <th>RA_shifted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>341.509710</td>
+      <td>7.693022</td>
+      <td>4.090425</td>
+      <td>2.438628e-16</td>
+      <td>NaN</td>
+      <td>11.509710</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>357.329659</td>
+      <td>-4.205828</td>
+      <td>4.200562</td>
+      <td>2.290115e-16</td>
+      <td>NaN</td>
+      <td>27.329659</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>348.470261</td>
+      <td>19.136800</td>
+      <td>3.704146</td>
+      <td>3.427580e-16</td>
+      <td>NaN</td>
+      <td>18.470261</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.120387</td>
+      <td>6.377602</td>
+      <td>3.750228</td>
+      <td>3.328315e-16</td>
+      <td>NaN</td>
+      <td>35.120387</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>21.632080</td>
+      <td>2.866344</td>
+      <td>3.677756</td>
+      <td>3.486357e-16</td>
+      <td>NaN</td>
+      <td>51.632080</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get general information about the dataframe (e.g., data types, non-null counts)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame info (Data Types, Non-null counts):&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame info (Data Types, Non-null counts):
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 29382943 entries, 0 to 29382942
+Data columns (total 6 columns):
+ #   Column             Dtype   
+---  ------             -----   
+ 0   RA                 float64 
+ 1   DEC                float64 
+ 2   redshift_observed  float32 
+ 3   flux_Halpha6563    float32 
+ 4   z_bin              category
+ 5   RA_shifted         float64 
+dtypes: category(1), float32(2), float64(3)
+memory usage: 924.7 MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display summary statistics for numeric columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Summary statistics for numeric columns:&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary statistics for numeric columns:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RA</th>
+      <th>DEC</th>
+      <th>redshift_observed</th>
+      <th>flux_Halpha6563</th>
+      <th>RA_shifted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2.938294e+07</td>
+      <td>2.938294e+07</td>
+      <td>2.938294e+07</td>
+      <td>2.938294e+07</td>
+      <td>2.938294e+07</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.802166e+02</td>
+      <td>-2.749608e-03</td>
+      <td>1.096545e+00</td>
+      <td>2.976945e-16</td>
+      <td>2.996636e+01</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.689970e+02</td>
+      <td>1.257703e+01</td>
+      <td>5.805780e-01</td>
+      <td>4.253355e-15</td>
+      <td>1.287226e+01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.164220e-06</td>
+      <td>-2.249985e+01</td>
+      <td>3.921282e-03</td>
+      <td>1.660502e-18</td>
+      <td>7.500002e+00</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.105467e+01</td>
+      <td>-1.078845e+01</td>
+      <td>6.446358e-01</td>
+      <td>5.264885e-17</td>
+      <td>1.889303e+01</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>3.375331e+02</td>
+      <td>2.420867e-02</td>
+      <td>9.980963e-01</td>
+      <td>1.034983e-16</td>
+      <td>2.997017e+01</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>3.489236e+02</td>
+      <td>1.077922e+01</td>
+      <td>1.473502e+00</td>
+      <td>2.202762e-16</td>
+      <td>4.102419e+01</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>3.600000e+02</td>
+      <td>2.249999e+01</td>
+      <td>5.055577e+00</td>
+      <td>8.686074e-12</td>
+      <td>5.250000e+01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print memory usage of the DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Memory usage of the DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>  <span class="c1"># Shows memory usage of each column</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total memory usage: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>  <span class="c1"># Total memory usage in MB</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Memory usage of the DataFrame:
+Index                      132
+RA                   235063544
+DEC                  235063544
+redshift_observed    117531772
+flux_Halpha6563      117531772
+z_bin                 29383819
+RA_shifted           235063544
+dtype: int64
+Total memory usage: 924.72 MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if there are any NaN (missing) values in the DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Checking for NaN (missing) values in the DataFrame:&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are NaN values in the DataFrame.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Columns with NaN values and the number of missing values in each:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are no NaN values in the DataFrame.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking for NaN (missing) values in the DataFrame:
+There are NaN values in the DataFrame.
+
+Columns with NaN values and the number of missing values in each:
+RA                          0
+DEC                         0
+redshift_observed           0
+flux_Halpha6563             0
+z_bin                14781902
+RA_shifted                  0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="make-some-helpful-histograms">
+<h2>2.0 Make some helpful histograms<a class="headerlink" href="#make-some-helpful-histograms" title="Link to this heading">#</a></h2>
+<p>Do the numbers we are getting and their distributions make sense?</p>
+<ul class="simple">
+<li><p>plot of the number of galaxies as a function of dec bin</p></li>
+<li><p>plot the number of galaxies per square degree as a function of dec bin</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_bin_area</span><span class="p">(</span><span class="n">dec_edges</span><span class="p">,</span> <span class="n">ra_width</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the area of each Dec bin in square degrees, given the RA width.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - dec_edges: The edges of the Dec bins (1D array).</span>
+<span class="sd">    - ra_width: The width of the RA bins in degrees.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - areas: List of areas of the Dec bins in square degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dec_heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dec_edges</span><span class="p">)</span>  <span class="c1"># Heights of the Dec bins</span>
+    <span class="n">areas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dec_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">dec_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">dec_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">dec_edges</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># Center of the Dec bin</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">ra_width</span> <span class="o">*</span> <span class="n">dec_heights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dec_center</span><span class="p">))</span>
+        <span class="n">areas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">areas</span><span class="p">)</span>
+    
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_counts_per_deg2</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes galaxy number counts per square degree by binning data in declination.</span>
+
+<span class="sd">    This function shifts Right Ascension (RA) values into a continuous range, </span>
+<span class="sd">    bins galaxies based on Declination (DEC), and calculates the number of galaxies </span>
+<span class="sd">    per square degree for each declination bin. It assumes a fixed declination range </span>
+<span class="sd">    and divides it into 10 equal bins. The function also computes bin areas to normalize </span>
+<span class="sd">    the galaxy counts.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): A Pandas DataFrame containing at least the &#39;RA&#39; and &#39;DEC&#39; columns.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - galaxy_counts (np.ndarray): An array containing the number of galaxies in each declination bin.</span>
+<span class="sd">    - counts_per_deg2 (np.ndarray): An array of galaxy counts per square degree for each declination bin.</span>
+<span class="sd">    - dec_bins (np.ndarray): The edges of the declination bins.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Compute RA edges based on the data</span>
+    <span class="n">ra_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">ra_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ra_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">,</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Set up Declination bins for constant declination binning</span>
+    <span class="c1">#manually fixing these here for this particular survey</span>
+    <span class="n">dec_min</span> <span class="o">=</span>  <span class="o">-</span><span class="mi">20</span><span class="c1"># df[&#39;DEC&#39;].min()</span>
+    <span class="n">dec_max</span> <span class="o">=</span>  <span class="mi">20</span><span class="c1"># df[&#39;DEC&#39;].max()</span>
+    <span class="n">dec_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">,</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Create declination bins</span>
+    
+    <span class="c1"># Calculate bin areas for constant declination bins</span>
+    <span class="n">ra_width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ra_edges</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Width of RA bins (all bins assumed equal width)</span>
+    <span class="n">bin_areas</span> <span class="o">=</span> <span class="n">get_bin_area</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">ra_width</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;dec_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Count galaxies in each Declination bin</span>
+    <span class="n">galaxy_counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;dec_bin&#39;</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># Calculate galaxy counts per square degree</span>
+    <span class="n">counts_per_deg2</span> <span class="o">=</span> <span class="n">galaxy_counts</span> <span class="o">/</span> <span class="n">bin_areas</span>
+
+    <span class="k">return</span> <span class="n">galaxy_counts</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">dec_bins</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_dec_bins</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">galaxy_counts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots a histogram of galaxy counts across declination bins.</span>
+
+<span class="sd">    This function visualizes the number of galaxies in different declination (DEC) bins </span>
+<span class="sd">    using a bar plot. The y-axis is set to a logarithmic scale to enhance visibility of </span>
+<span class="sd">    variations in galaxy counts. The function assumes uniform bin sizes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - dec_bins (np.ndarray): An array containing the edges of the declination bins.</span>
+<span class="sd">    - galaxy_counts (np.ndarray): An array containing the number of galaxies in each declination bin.</span>
+
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the width of each bin (assumes uniform bin sizes)</span>
+    <span class="n">bin_width</span> <span class="o">=</span> <span class="n">dec_bins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dec_bins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+    
+    
+    <span class="c1"># Plot the histogram for the DEC column with 10 bins</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">galaxy_counts</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">bin_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Declination (DEC)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Galaxies&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Galaxy counts as a function of declination&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>  <span class="c1"># Set y-axis to logarithmic scale</span>
+
+    <span class="c1">#plt.ylim(1e5, 1.6e5)  # Set y-axis range</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Explicitly close the plot</span>
+
+    
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_dec_bins_per_deg2</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots a histogram of galaxy number density across declination bins.</span>
+
+<span class="sd">    This function visualizes the number of galaxies per square degree as a function </span>
+<span class="sd">    of declination using a bar plot. The y-axis is set to a logarithmic scale to </span>
+<span class="sd">    improve visibility of variations in galaxy density. The function assumes uniform </span>
+<span class="sd">    bin sizes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - dec_bins (np.ndarray): An array containing the edges of the declination bins.</span>
+<span class="sd">    - counts_per_deg2 (np.ndarray): An array containing the number of galaxies per square degree </span>
+<span class="sd">      for each declination bin.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>    <span class="c1"># Calculate the width of each bin (assumes uniform bin sizes)</span>
+    <span class="n">bin_width</span> <span class="o">=</span> <span class="n">dec_bins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dec_bins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+    
+    
+    <span class="c1"># Plot the histogram for the DEC column with 10 bins</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">bin_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Declination (DEC)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of galaxies per square degree&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Number density as a function of declination&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>  <span class="c1"># Set y-axis to logarithmic scale</span>
+    <span class="c1">#plt.ylim(1e5, 1.6e5)  # Set y-axis range</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">galaxy_counts</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">dec_bins</span> <span class="o">=</span> <span class="n">calculate_counts_per_deg2</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">plot_dec_bins</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">galaxy_counts</span><span class="p">)</span>
+<span class="n">plot_dec_bins_per_deg2</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e959c9c5e823623667f36e2e80a208d6b0f339be45052ea5d4b3814436603583.png" src="../../_images/e959c9c5e823623667f36e2e80a208d6b0f339be45052ea5d4b3814436603583.png" />
+<img alt="../../_images/1849e12ed70bd39d0dee58c442bb44bb4bb59f05ecebc8688f06cd87dfccc9ef.png" src="../../_images/1849e12ed70bd39d0dee58c442bb44bb4bb59f05ecebc8688f06cd87dfccc9ef.png" />
+</div>
+</div>
+<p>Figure Caption: Both plots have Declination on their X-axis.  The top panel shows the total number of galaxies.  The bottom panel shows the number of galaxies per square degree.  Note that they y-axis is displayed in a log scale, and shows a quite small range.  The goal of this plot is to explore the data a bit and see what variation we have as a function of declination bins.</p>
+</section>
+<section id="make-number-density-plot">
+<h2>3.0 Make Number density plot<a class="headerlink" href="#make-number-density-plot" title="Link to this heading">#</a></h2>
+<p>This is a first pass at making a number density plot with just a single data file.  We divide the sample into 10 declination bins in order to do a jackknife sampling and obtain error bars for the plot. We choose to use constant dec bins instead of constant RA bins since area is function of cosine dec so we don’t want to average over too much dec.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jackknife_galaxy_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">grid_cells</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate mean galaxy counts per square degree for each redshift bin, using jackknife resampling to estimate uncertainties.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        The DataFrame containing galaxy data, including &#39;RA&#39;, &#39;DEC&#39;, and &#39;redshift_observed&#39; columns.</span>
+<span class="sd">    grid_cells : int, optional</span>
+<span class="sd">        Number of bins to divide the declination range into for jackknife resampling (default: 10).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - mean_counts: List of mean galaxy counts per square degree for each redshift bin.</span>
+<span class="sd">    - std_dev_counts: List of jackknife uncertainties (standard deviations) for each redshift bin.</span>
+<span class="sd">    - z_bin_centers: central values of the redshift bins</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">original_galaxy_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original galaxy count: </span><span class="si">{</span><span class="n">original_galaxy_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+
+ 
+    <span class="c1"># compute RA edges based on the data</span>
+    <span class="c1">#keeping this in here in case we make bins over RA in the future</span>
+    <span class="n">ra_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">ra_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ra_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">,</span> <span class="n">grid_cells</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Set up Declination bins for constant declination binning</span>
+    <span class="c1">#manually fixing these here for this particular survey</span>
+    <span class="n">dec_min</span> <span class="o">=</span>  <span class="o">-</span><span class="mi">20</span><span class="c1"># df[&#39;DEC&#39;].min()</span>
+    <span class="n">dec_max</span> <span class="o">=</span>  <span class="mi">20</span><span class="c1"># df[&#39;DEC&#39;].max()</span>
+    <span class="n">dec_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">,</span> <span class="n">grid_cells</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Create declination bins</span>
+    
+    <span class="c1"># Calculate bin areas for constant declination bins</span>
+    <span class="n">ra_width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ra_edges</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Width of RA bins (all bins assumed equal width)</span>
+    <span class="n">bin_areas</span> <span class="o">=</span> <span class="n">get_bin_area</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">ra_width</span><span class="p">)</span>
+
+    <span class="c1"># Initialize lists </span>
+    <span class="n">mean_counts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">std_dev_counts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sum_counts</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Loop over the redshift bins</span>
+    <span class="k">for</span> <span class="n">z_bin</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;z_bin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span><span class="p">:</span>
+        <span class="c1"># Step 8: Select galaxies within the current redshift bin</span>
+        <span class="n">df_z_bin</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;z_bin&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">z_bin</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Step 9: Bin galaxies into Declination bins using precomputed dec_bins</span>
+        <span class="c1"># Explicitly cast the &#39;ra_bin&#39; column to &#39;category&#39; before assignment</span>
+        <span class="n">df_z_bin</span><span class="p">[</span><span class="s1">&#39;dec_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df_z_bin</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+
+        <span class="c1">#df_z_bin.loc[:, &#39;dec_bin&#39;] = pd.cut(df_z_bin[&#39;DEC&#39;], bins=dec_bins, include_lowest=True, right=False)</span>
+        <span class="c1">#df_z_bin.loc[:, &#39;dec_bin&#39;] = df_z_bin[&#39;dec_bin&#39;].astype(&#39;category&#39;)  # Use .loc to avoid SettingWithCopyWarning</span>
+
+        <span class="c1"># Step 10: Count galaxies in each Declination bin</span>
+        <span class="n">galaxy_counts</span> <span class="o">=</span> <span class="n">df_z_bin</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;dec_bin&#39;</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># Step 11: Calculate mean galaxy counts per square degree</span>
+        <span class="n">counts_per_deg2</span> <span class="o">=</span> <span class="n">galaxy_counts</span> <span class="o">/</span> <span class="n">bin_areas</span>
+
+        <span class="c1"># Step 12: Compute jackknife resampling to estimate uncertainties</span>
+        <span class="n">jackknife_means</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counts_per_deg2</span><span class="p">)):</span>
+            <span class="n">jackknife_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">jackknife_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jackknife_sample</span><span class="p">))</span>
+
+        <span class="c1"># Step 13: Calculate mean and standard deviation of galaxy counts per square degree</span>
+        <span class="n">mean_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">counts_per_deg2</span><span class="p">))</span>
+        <span class="n">std_dev_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">jackknife_means</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">mean_counts</span><span class="p">,</span> <span class="n">std_dev_counts</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_galaxy_counts_vs_redshift_with_jackknife</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">,</span> <span class="n">z_bin_centers</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the galaxy counts per square degree as a function of redshift with jackknife error bars.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - counts (numpy.ndarray): Array of galaxy counts per square degree for each redshift bin.</span>
+<span class="sd">      Shape: (number of redshift bins,) or (1, number of redshift bins).</span>
+<span class="sd">    - std_dev_counts (numpy.ndarray): Array of jackknife standard deviations for each redshift bin, </span>
+<span class="sd">      representing uncertainties. Shape: (number of redshift bins,).</span>
+<span class="sd">    - z_bin_centers (numpy.ndarray): Array of central values of the redshift bins. </span>
+<span class="sd">      Shape: (number of redshift bins,).</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">    - The input arrays (`counts`, `std_dev_counts`, and `z_bin_centers`) must have the same length, </span>
+<span class="sd">      corresponding to the number of redshift bins.</span>
+<span class="sd">    - The plot is designed specifically for redshifts in the range of 1.0 to 3.0 and may need adjustments </span>
+<span class="sd">      for datasets with different redshift ranges.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure counts is a NumPy array</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+    
+    <span class="c1"># Flatten counts if it has a shape of [1, N]</span>
+    <span class="k">if</span> <span class="n">counts</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">counts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># setup figure</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+    <span class="c1"># Plot with error bars (with jackknife standard deviation as error bars)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">std_dev_counts</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> 
+                 <span class="n">ecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">elinewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Galaxy Counts per Square Degree (Jackknife)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set x-range to redshifts between 1 and 3</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">1E1</span><span class="p">,</span> <span class="mf">3E5</span><span class="p">)</span>
+
+    <span class="c1"># Add labels and title</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Redshift&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Galaxy Count per Square Degree&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Galaxy Counts per Square Degree vs Redshift with Jackknife Error Bars&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+    <span class="c1"># Show the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="c1">#setup redshift binning here for consistency in the rest of the code</span>
+<span class="c1">#these match our dataset, so only change if you want to reduce the range </span>
+<span class="c1"># or if you change the dataset</span>
+
+<span class="n">z_min</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">z_max</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c1">#do the counting</span>
+<span class="n">mean_counts</span><span class="p">,</span> <span class="n">std_dev_counts</span> <span class="o">=</span> <span class="n">jackknife_galaxy_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">grid_cells</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1">#make the plot</span>
+<span class="n">plot_galaxy_counts_vs_redshift_with_jackknife</span><span class="p">(</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">,</span> <span class="n">z_bin_centers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original galaxy count: 29382943
+CPU times: user 1.37 s, sys: 43.6 ms, total: 1.42 s
+Wall time: 1.42 s
+</pre></div>
+</div>
+<img alt="../../_images/fa772425f932e396124dc8c47a68ab26a43b9cae2cdea37fea7894ee5de0f6e6.png" src="../../_images/fa772425f932e396124dc8c47a68ab26a43b9cae2cdea37fea7894ee5de0f6e6.png" />
+</div>
+</div>
+<p>Figure Caption: Number density plot.  Note that the jackknife error bars are displayed on the plot but they are smaller than the point size.  We see the expected shape of this plot, with a fall off toward higher redshift.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#cleanup memory when done with this file:</span>
+<span class="k">del</span> <span class="n">df</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="expand-to-out-of-memory-sized-catalogs">
+<h2>4.0 Expand to out-of-memory sized catalogs<a class="headerlink" href="#expand-to-out-of-memory-sized-catalogs" title="Link to this heading">#</a></h2>
+<p>Originally this section attempted to use dask instead of pandas to hold the data and be able to do this work.  Dask is supposed to be able to do this sort of magic in the background with out of memory catalogs, but in reality, this does not seem to be possible, or at least not possible with a week or so of working on it.  Instead, we will read in the catalogs one at a time, store counts of mean and standard deviation per square degree and then move on to the next catalog.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the total survey area in square degrees based on DEC range and RA width.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df: The DataFrame containing galaxy data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - area: Total survey area in square degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ra_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">ra_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">dec_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">dec_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;DEC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+     
+    <span class="c1"># Step 4: Calculate area</span>
+    <span class="n">ra_width</span> <span class="o">=</span> <span class="n">ra_max</span> <span class="o">-</span> <span class="n">ra_min</span> 
+    <span class="n">dec_height</span> <span class="o">=</span> <span class="n">dec_max</span> <span class="o">-</span> <span class="n">dec_min</span>
+ 
+    <span class="c1"># Approximate area calculation</span>
+    <span class="n">dec_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">dec_min</span> <span class="o">+</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">ra_width</span> <span class="o">*</span> <span class="n">dec_height</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dec_center</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">area</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">galaxy_counts_per_hdf5_binned</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">z_bins</span><span class="p">,</span>
+    <span class="n">z_bin_centers</span><span class="p">,</span>
+    <span class="n">find_halpha_bins</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">halpha_flux_thresholds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the galaxy counts per square degree for each redshift bin.</span>
+<span class="sd">    Optionally calculate counts for Halpha flux bins.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pandas.DataFrame): The input DataFrame containing galaxy data.</span>
+<span class="sd">    - zbins (): edges of the redshift bins</span>
+<span class="sd">    - z_bin_centers (numpy.ndarray): Array of central values of the redshift bins.</span>
+<span class="sd">    - find_halpha_bins (bool, optional): Whether to calculate counts for Halpha bins (default: False).</span>
+<span class="sd">    - halpha_flux_thresholds (list, optional): Custom thresholds for Halpha flux binning. If None, default thresholds are used.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - counts_per_deg2 (numpy.ndarray): Array of galaxy counts per square degree for each redshift bin.</span>
+<span class="sd">    - halpha_counts (numpy.ndarray): Counts for each Halpha bin (if `find_halpha_bins` is True).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Default Halpha flux thresholds if not provided</span>
+    <span class="k">if</span> <span class="n">find_halpha_bins</span> <span class="ow">and</span> <span class="n">halpha_flux_thresholds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">halpha_flux_thresholds</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5e-16</span><span class="p">,</span> <span class="mf">0.7e-16</span><span class="p">,</span> <span class="mf">0.9e-16</span><span class="p">,</span> <span class="mf">1.1e-16</span><span class="p">,</span> <span class="mf">1.3e-16</span><span class="p">,</span> <span class="mf">1.5e-16</span><span class="p">,</span> <span class="mf">1.7e-16</span><span class="p">,</span> <span class="mf">1.9e-16</span><span class="p">]</span>
+        
+    <span class="c1"># Calculate survey area</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1"># Initialize counts</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_bins</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">halpha_counts</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Prepare for Halpha binning if requested</span>
+    <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+        <span class="n">halpha_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">halpha_flux_thresholds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_bins</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Group data by redshift bin</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;z_bin&quot;</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">z_bin</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grouped</span><span class="p">):</span>
+        <span class="c1"># Count galaxies in the redshift bin</span>
+        <span class="n">galaxy_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">galaxy_count</span>
+
+        <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+            <span class="c1"># Count galaxies for each Halpha bin within the current redshift bin</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">halpha_flux_thresholds</span><span class="p">):</span>
+                <span class="n">halpha_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;flux_Halpha6563&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">])</span>
+                <span class="n">halpha_counts</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">halpha_count</span>
+                <span class="c1">#print(f&quot;redshift: {z_bin}, threshold: {threshold}, halpha_count: {halpha_count}, count: {galaxy_count}&quot;)</span>
+
+
+    <span class="c1"># Sort results based on z_bin_centers</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">)</span>
+    <span class="n">counts_per_deg2</span> <span class="o">=</span> <span class="p">(</span><span class="n">counts</span> <span class="o">/</span> <span class="n">area</span><span class="p">)[:,</span> <span class="n">sorted_indices</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+        <span class="c1"># Normalize Halpha counts to counts per square degree</span>
+        <span class="n">halpha_counts_per_deg2</span> <span class="o">=</span> <span class="p">(</span><span class="n">halpha_counts</span> <span class="o">/</span> <span class="n">area</span><span class="p">)[:,</span> <span class="n">sorted_indices</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">halpha_counts_per_deg2</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">halpha_counts_per_deg2</span>
+  
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_binned_galaxy_counts_vs_redshift_with_jackknife</span><span class="p">(</span>
+    <span class="n">counts_summary</span><span class="p">,</span> <span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">halpha_flux_thresholds</span><span class="p">,</span> <span class="n">halpha_summary</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots galaxy counts per square degree as a function of redshift with jackknife error bars.</span>
+
+<span class="sd">    This function visualizes the galaxy number density using binned redshift data. It includes </span>
+<span class="sd">    jackknife-based uncertainty estimates and optionally plots counts for Hα flux-selected bins.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - counts_summary (dict): A dictionary containing:</span>
+<span class="sd">        - &#39;sum_counts&#39; (numpy.ndarray): Array of total galaxy counts per square degree for each redshift bin.</span>
+<span class="sd">        - &#39;std_dev_counts&#39; (numpy.ndarray): Array of jackknife standard deviations for each redshift bin.</span>
+<span class="sd">    - z_bin_centers (numpy.ndarray): Array of central values of the redshift bins.</span>
+<span class="sd">    - halpha_flux_thresholds (list, optional): List of Hα flux threshold values (used for labeling the lines).</span>
+<span class="sd">    - halpha_summary (dict, optional): A dictionary containing:</span>
+<span class="sd">        - &#39;halpha_sum_counts&#39; (numpy.ndarray): Counts for each Hα flux-selected bin.</span>
+<span class="sd">        - &#39;halpha_std_dev_counts&#39; (numpy.ndarray): Jackknife standard deviations for each Hα flux-selected bin.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">    - The input arrays in `counts_summary` and `halpha_summary` must have the same length as `z_bin_centers`.</span>
+<span class="sd">    - The function automatically sets the y-axis to a logarithmic scale (`plt.yscale(&quot;log&quot;)`).</span>
+<span class="sd">    - The x-axis is limited to the redshift range [1, 3].</span>
+<span class="sd">    - The function ensures proper memory management by explicitly closing the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack counts_summary</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">counts_summary</span><span class="p">[</span><span class="s2">&quot;sum_counts&quot;</span><span class="p">]</span>
+    <span class="n">std_dev_counts</span> <span class="o">=</span> <span class="n">counts_summary</span><span class="p">[</span><span class="s2">&quot;std_dev_counts&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Unpack halpha_summary if provided, otherwise set to None</span>
+    <span class="k">if</span> <span class="n">halpha_summary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">halpha_counts</span> <span class="o">=</span> <span class="n">halpha_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;halpha_sum_counts&quot;</span><span class="p">)</span>
+        <span class="n">halpha_std_dev_counts</span> <span class="o">=</span> <span class="n">halpha_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;halpha_std_dev_counts&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">halpha_counts</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">halpha_std_dev_counts</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Ensure counts is a NumPy array</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+
+    <span class="c1"># Flatten counts if it has a shape of [1, N]</span>
+    <span class="k">if</span> <span class="n">counts</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">counts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># Setup figure</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+    <span class="c1"># Plot the main counts with error bars</span>
+    <span class="n">jackknife_line</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+        <span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">std_dev_counts</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;o-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">ecolor</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">elinewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Galaxy Counts per Square Degree (Jackknife)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Plot Hα bins if the data is present</span>
+    <span class="n">halpha_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">halpha_flux_thresholds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">halpha_counts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">halpha_flux_thresholds</span><span class="p">)):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Flux Hα &gt; </span><span class="si">{</span><span class="n">halpha_flux_thresholds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2"> erg/s/cm²&quot;</span>
+            <span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">halpha_counts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">halpha_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># Adjust legend order if Hα lines were added</span>
+    <span class="k">if</span> <span class="n">halpha_lines</span><span class="p">:</span>
+        <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+        <span class="n">new_order</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_line</span><span class="p">]</span> <span class="o">+</span> <span class="n">halpha_lines</span>  
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">new_order</span><span class="p">,</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">handles</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">new_order</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Set log scale for y-axis and limit the x-axis</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+    
+    <span class="c1"># Add labels and title</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Redshift&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Galaxy Count per Square Degree&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number Density with Jackknife Error Bars&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    
+    <span class="c1"># Display the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">jackknife_wrapper</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span>  <span class="n">halpha_flux_thresholds</span><span class="p">,</span> <span class="n">find_halpha_bins</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs jackknife resampling over multiple HDF5 files to estimate uncertainties </span>
+<span class="sd">    in galaxy counts per square degree for each redshift bin. Optionally calculates </span>
+<span class="sd">    counts for Hα flux-selected bins.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - file_list (list of str): List of file paths to HDF5 datasets to process.</span>
+<span class="sd">    - halpha_flux_thresholds (list): List of Hα flux thresholds used for binning (if `find_halpha_bins` is True).</span>
+<span class="sd">    - find_halpha_bins (bool, optional): Whether to calculate counts for Hα bins (default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - counts_summary (dict): A dictionary containing:</span>
+<span class="sd">        - &#39;sum_counts&#39; (numpy.ndarray): Summed galaxy counts across all HDF5 files for each redshift bin.</span>
+<span class="sd">          Shape: (number of redshift bins,).</span>
+<span class="sd">        - &#39;std_dev_counts&#39; (numpy.ndarray): Jackknife standard deviations for galaxy counts per square degree.</span>
+<span class="sd">          Shape: (number of redshift bins,).</span>
+<span class="sd">       Shape: (number of redshift bins,).</span>
+<span class="sd">    - halpha_summary (dict or None): A dictionary containing Hα bin statistics if `find_halpha_bins` is True, otherwise `None`. </span>
+<span class="sd">      When present, the dictionary includes:</span>
+<span class="sd">        - &#39;halpha_sum_counts&#39; (numpy.ndarray): Summed counts for each Hα bin.</span>
+<span class="sd">          Shape: (number of Hα bins, number of redshift bins).</span>
+<span class="sd">        - &#39;halpha_std_dev_counts&#39; (numpy.ndarray): Jackknife standard deviations for Hα bins.</span>
+<span class="sd">          Shape: (number of Hα bins, number of redshift bins).</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">    - The function loads multiple HDF5 files and extracts galaxy counts using `galaxy_counts_per_hdf5_binned()`.</span>
+<span class="sd">    - Jackknife resampling is applied across files to compute standard deviations.</span>
+<span class="sd">    - The function saves `all_counts` to a NumPy file for debugging purposes.</span>
+<span class="sd">    - If `find_halpha_bins` is False, `halpha_summary` is returned as `None` to indicate that Hα binning was not performed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#fix these in case the above cells are not run</span>
+    <span class="n">ra_min1</span><span class="o">=</span><span class="mi">330</span>
+    <span class="n">z_min</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">z_max</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">columns_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;DEC&#39;</span><span class="p">,</span> <span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+    <span class="n">columns_to_convert</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+
+    <span class="c1">#setup to track counts</span>
+    <span class="n">all_counts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_halpha_counts</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">find_halpha_bins</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+        <span class="c1"># Load data from the file</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">read_hdf5_to_pandas</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">columns_to_keep</span><span class="p">,</span> <span class="n">columns_to_convert</span><span class="p">)</span>
+
+        <span class="c1">#pre-process dataset</span>
+        <span class="n">df</span><span class="p">,</span> <span class="n">z_bins</span><span class="p">,</span> <span class="n">z_bin_centers</span> <span class="o">=</span> <span class="n">assign_redshift_bins</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">z_max</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA_shifted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ra_min1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>  <span class="c1"># Shift RA to continuous range</span>
+
+        <span class="c1"># Get counts (with or without Halpha binning)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">galaxy_counts_per_hdf5_binned</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">,</span> <span class="n">z_bins</span><span class="p">,</span> <span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">find_halpha_bins</span><span class="o">=</span><span class="n">find_halpha_bins</span><span class="p">,</span>
+            <span class="n">halpha_flux_thresholds</span><span class="o">=</span><span class="n">halpha_flux_thresholds</span>
+        <span class="p">)</span>
+        
+        <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">halpha_counts_per_deg2</span> <span class="o">=</span> <span class="n">result</span> 
+        <span class="n">all_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">counts_per_deg2</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>  <span class="c1">#make sure shape is correct</span>
+        
+        <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+            <span class="n">all_halpha_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halpha_counts_per_deg2</span><span class="p">)</span>
+
+        <span class="c1"># Explicitly delete DataFrame for improved memory management</span>
+        <span class="k">del</span> <span class="n">df</span>
+
+    <span class="c1"># Save all_counts to a file for debugging or post-processing</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output/all_counts.npy&quot;</span><span class="p">,</span> <span class="n">all_counts</span><span class="p">)</span>
+
+    <span class="c1"># Convert to NumPy array for easier manipulation</span>
+    <span class="n">all_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_counts</span><span class="p">)</span>
+
+    <span class="c1">#debugging</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all_counts shape:&quot;</span><span class="p">,</span> <span class="n">all_counts</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all_counts sample:&quot;</span><span class="p">,</span> <span class="n">all_counts</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># preview first 3 entries</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all_counts variance:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">all_counts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all_counts dtype:&quot;</span><span class="p">,</span> <span class="n">all_counts</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+        <span class="n">all_halpha_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_halpha_counts</span><span class="p">)</span>
+
+    <span class="c1"># Compute sum counts</span>
+    <span class="n">sum_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">all_counts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Compute jackknife standard deviations for galaxy counts</span>
+    <span class="n">std_dev_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_counts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">all_counts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create counts summary dictionary</span>
+    <span class="n">counts_summary</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sum_counts&quot;</span><span class="p">:</span> <span class="n">sum_counts</span><span class="p">,</span>
+        <span class="s2">&quot;std_dev_counts&quot;</span><span class="p">:</span> <span class="n">std_dev_counts</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Compute jackknife standard deviations for Halpha counts (if applicable)</span>
+    <span class="k">if</span> <span class="n">find_halpha_bins</span><span class="p">:</span>
+        <span class="n">halpha_sum_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">all_halpha_counts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">halpha_std_dev_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_halpha_counts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">all_halpha_counts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># Create halpha counts summary dictionary</span>
+        <span class="n">halpha_summary</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;halpha_sum_counts&quot;</span><span class="p">:</span> <span class="n">halpha_sum_counts</span><span class="p">,</span>
+            <span class="s2">&quot;halpha_std_dev_counts&quot;</span><span class="p">:</span> <span class="n">halpha_std_dev_counts</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">halpha_summary</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># No Halpha binning</span>
+
+    <span class="k">return</span> <span class="n">counts_summary</span><span class="p">,</span> <span class="n">halpha_summary</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># This uses data downloaded in section 1 above.  </span>
+<span class="c1"># If you want to run this with more data, return to section 1 to get that downloaded.</span>
+<span class="n">download_dir</span> <span class="o">=</span> <span class="s1">&#39;downloaded_hdf5_files&#39;</span>
+<span class="c1"># Get all HDF5 files from the directory</span>
+<span class="n">file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">download_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.hdf5&#39;</span><span class="p">)]</span>
+
+<span class="c1">#out of consideration for the size of these files and the amount of memory required to work with them</span>
+<span class="c1"># we only keep the columns that we are going to use and convert some to 32bit instead of 64 where </span>
+<span class="c1"># the higher precision is not necessary to the science</span>
+<span class="n">columns_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RA&#39;</span><span class="p">,</span> <span class="s1">&#39;DEC&#39;</span><span class="p">,</span> <span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+<span class="n">columns_to_convert</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;redshift_observed&#39;</span><span class="p">,</span> <span class="s1">&#39;flux_Halpha6563&#39;</span><span class="p">]</span>
+
+<span class="c1"># Run jackknife with Halpha binning enabled</span>
+<span class="n">halpha_flux_thresholds</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5e-16</span><span class="p">,</span> <span class="mf">0.7e-16</span><span class="p">,</span> <span class="mf">0.9e-16</span><span class="p">,</span> <span class="mf">1.1e-16</span><span class="p">,</span> <span class="mf">1.3e-16</span><span class="p">,</span> <span class="mf">1.5e-16</span><span class="p">,</span> <span class="mf">1.7e-16</span><span class="p">,</span> <span class="mf">1.9e-16</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">jackknife_wrapper</span><span class="p">(</span>
+    <span class="n">file_paths</span><span class="p">,</span> <span class="n">halpha_flux_thresholds</span><span class="p">,</span> <span class="n">find_halpha_bins</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Unpack results</span>
+<span class="n">counts_summary</span><span class="p">,</span> <span class="n">halpha_summary</span> <span class="o">=</span> <span class="n">results</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">plot_binned_galaxy_counts_vs_redshift_with_jackknife</span><span class="p">(</span>
+    <span class="n">counts_summary</span><span class="p">,</span> <span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">halpha_flux_thresholds</span><span class="p">,</span> <span class="n">halpha_summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>all_counts shape: (1, 20)
+all_counts sample: [[908.19889809 747.2333674  794.9342837  676.17631576 655.19747312
+  588.94982189 513.17670351 456.29600034 383.57721419 330.13751134
+  267.43061388 217.22499701 175.30681804 144.16250588 112.40633963
+   85.80426641  63.65060463  43.55867883  29.37146612  17.62327474]]
+all_counts variance: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+all_counts dtype: float64
+CPU times: user 3.92 s, sys: 1.43 s, total: 5.36 s
+Wall time: 5.36 s
+</pre></div>
+</div>
+<img alt="../../_images/bc4fa14bdf2eacb963d89dc04b116c8bab4179643f860d1fc136b9f43cc2ca77.png" src="../../_images/bc4fa14bdf2eacb963d89dc04b116c8bab4179643f860d1fc136b9f43cc2ca77.png" />
+</div>
+</div>
+<p>Figure Caption: Number Density plots color coded by Halpha flux.  Slight variations are noted in the shape of the curves as a function of Halpha flux, especially at higher redshifts.  This plot may be a factor of 10 below the section 3 number density plot if you have not let it download all 10 input files.  The 10 input files cover the same area on the sky, so the density will look smaller if fewer files are used.</p>
+<section id="explore-jackknife-uncertainties">
+<h3>4.1 Explore jackknife uncertainties<a class="headerlink" href="#explore-jackknife-uncertainties" title="Link to this heading">#</a></h3>
+<p>The uncertainties are plotted as error bars on the data points above, but are not visible because they are so small.  Here we plot them in a way that makes them visible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_jackknife_fractional_uncertainty</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the fractional jackknife uncertainty (σ / N) as a function of redshift.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z_bin_centers : array-like</span>
+<span class="sd">        The center of each redshift bin.</span>
+<span class="sd">    counts : array-like</span>
+<span class="sd">        The total galaxy counts per redshift bin.</span>
+<span class="sd">    std_dev_counts : array-like</span>
+<span class="sd">        The jackknife standard deviation per redshift bin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fractional_uncertainty</span> <span class="o">=</span> <span class="n">std_dev_counts</span> <span class="o">/</span> <span class="n">counts</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">fractional_uncertainty</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+    <span class="c1">#plt.ylim(0, 0.01)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Redshift&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fractional Uncertainty&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Jackknife Fractional Uncertainty vs. Redshift&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#make fractional uncertainty plot</span>
+<span class="n">counts_per_deg2</span> <span class="o">=</span> <span class="n">counts_summary</span><span class="p">[</span><span class="s2">&quot;sum_counts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">std_dev_counts</span> <span class="o">=</span> <span class="n">counts_summary</span><span class="p">[</span><span class="s2">&quot;std_dev_counts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">plot_jackknife_fractional_uncertainty</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/01909562f43f3df9b47308f0bea53ad801ec547c69ead3f0b5f3831a32633550.png" src="../../_images/01909562f43f3df9b47308f0bea53ad801ec547c69ead3f0b5f3831a32633550.png" />
+</div>
+</div>
+<p>Figure Caption:  The fractional uncertainty is the standard deviation from jackknife sampling divided by the number of galaxies per square degree, here plotted as a function of redshift.  Note the expected rise in uncertainty with increasing redshift.</p>
+</section>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://irsa.ipac.caltech.edu/">IPAC-IRSA</a></p></li>
+</ul>
+</section>
+<section id="about-this-notebook">
+<h2>About this notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
+<p><strong>Authors</strong>: Jessica Krick in conjunction with the IPAC Science Platform Team</p>
+<p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">IRSA Helpdesk</a> with questions
+or problems.</p>
+<p><strong>Updated:</strong> 2025-04-01</p>
+<p><strong>Runtime:</strong> As of the date above, running on the <a class="reference external" href="https://pcos.gsfc.nasa.gov/Fornax/">Fornax Science Platform</a>, this notebook takes about 9 minutes to run to completion on
+a machine with 8GB RAM and 4 CPU.
+This runtime inlcudes the notebook as is, using only one datafile out of 10.  Runtime will be greater than 30 min. longer if the code is allowed to download and work with all 10 datafiles.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../firefly/OpenUniverse2024Preview_Firefly.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../parallelize/Parallelize_Convolution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Parallelizing image convolution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning Goals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-mock-catalogs-from-irsa">1. Read in the mock catalogs from IRSA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-files-from-irsa">1.1 Download the files from IRSA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-files-into-a-pandas-dataframe-so-we-can-work-with-them">1.2 read files into a pandas dataframe so we can work with them</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-process-dataset">1.3 Pre-process dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">1.3 Data Exploration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-some-helpful-histograms">2.0 Make some helpful histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-number-density-plot">3.0 Make Number density plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expand-to-out-of-memory-sized-catalogs">4.0 Expand to out-of-memory sized catalogs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-jackknife-uncertainties">4.1 Explore jackknife uncertainties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-notebook">About this notebook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By IRSA developers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022-2025, IRSA developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
