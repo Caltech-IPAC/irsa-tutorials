@@ -1,4 +1,6 @@
-# For the content of the tutorials
+# For the content of the tutorials, these packages are used directly or are
+# undeclared optional dependencies of functionalities we rely on
+#
 tqdm
 numpy>=1.24
 matplotlib>=3.7
@@ -19,6 +21,8 @@ reproject
 photutils>=2.0
 fsspec
 sep>=1.4
+h5py
+requests
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
