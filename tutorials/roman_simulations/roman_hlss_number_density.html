@@ -1627,8 +1627,8 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original galaxy count: 29382943
-CPU times: user 1.37 s, sys: 43.6 ms, total: 1.42 s
-Wall time: 1.42 s
+CPU times: user 1.38 s, sys: 55.8 ms, total: 1.43 s
+Wall time: 1.43 s
 </pre></div>
 </div>
 <img alt="../../_images/fa772425f932e396124dc8c47a68ab26a43b9cae2cdea37fea7894ee5de0f6e6.png" src="../../_images/fa772425f932e396124dc8c47a68ab26a43b9cae2cdea37fea7894ee5de0f6e6.png" />
@@ -1982,8 +1982,8 @@ all_counts sample: [[908.19889809 747.2333674  794.9342837  676.17631576 655.197
    85.80426641  63.65060463  43.55867883  29.37146612  17.62327474]]
 all_counts variance: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
 all_counts dtype: float64
-CPU times: user 3.92 s, sys: 1.43 s, total: 5.36 s
-Wall time: 5.36 s
+CPU times: user 3.9 s, sys: 1.41 s, total: 5.31 s
+Wall time: 5.31 s
 </pre></div>
 </div>
 <img alt="../../_images/bc4fa14bdf2eacb963d89dc04b116c8bab4179643f860d1fc136b9f43cc2ca77.png" src="../../_images/bc4fa14bdf2eacb963d89dc04b116c8bab4179643f860d1fc136b9f43cc2ca77.png" />
@@ -1992,7 +1992,7 @@ Wall time: 5.36 s
 <p>Figure Caption: Number Density plots color coded by Halpha flux.  Slight variations are noted in the shape of the curves as a function of Halpha flux, especially at higher redshifts.  This plot may be a factor of 10 below the section 3 number density plot if you have not let it download all 10 input files.  The 10 input files cover the same area on the sky, so the density will look smaller if fewer files are used.</p>
 <section id="explore-jackknife-uncertainties">
 <h3>4.1 Explore jackknife uncertainties<a class="headerlink" href="#explore-jackknife-uncertainties" title="Link to this heading">#</a></h3>
-<p>The uncertainties are plotted as error bars on the data points above, but are not visible because they are so small.  Here we plot them in a way that makes them visible.</p>
+<p>The uncertainties are plotted as error bars on the data points above.  There are no jackknife uncertainties if you are only using one file, so they will in that case not be visible on the plot.  This section is for the case where you are using more than one downloaded input file.  Here we explore and plot the jackknife uncertainties in a way that makes them visible.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_jackknife_fractional_uncertainty</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">):</span>
@@ -2037,7 +2037,7 @@ Wall time: 5.36 s
 <img alt="../../_images/01909562f43f3df9b47308f0bea53ad801ec547c69ead3f0b5f3831a32633550.png" src="../../_images/01909562f43f3df9b47308f0bea53ad801ec547c69ead3f0b5f3831a32633550.png" />
 </div>
 </div>
-<p>Figure Caption:  The fractional uncertainty is the standard deviation from jackknife sampling divided by the number of galaxies per square degree, here plotted as a function of redshift.  Note the expected rise in uncertainty with increasing redshift.</p>
+<p>Figure Caption:  The fractional uncertainty is the standard deviation from jackknife sampling divided by the number of galaxies per square degree, here plotted as a function of redshift.  Note that if you are using only 1 downloaded file this will be a flat plot with no uncertainties.  However, if you are using all 10 input files, you will see the expected rise in uncertainty with increasing redshift.</p>
 </section>
 </section>
 <section id="acknowledgements">
