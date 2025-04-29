@@ -49,6 +49,10 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ## Imports
 
+```{important}
+We rely on astroquery features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+```
+
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install matplotlib 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
@@ -94,7 +98,7 @@ This searches specifically in the euclid_DpdMerBksMosaic "collection" which is t
 +++
 
 ```{note}
-This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the [Euclid documentation at IPAC](https://euclid.caltech.edu/page/euclid-faq-tech/). We use the ``facility`` argument below to query for Euclid images only. 
+This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the [Euclid documentation at IPAC](https://euclid.caltech.edu/page/euclid-faq-tech/). We use the ``facility`` argument below to query for Euclid images only.
 ```
 
 ```{code-cell} ipython3
@@ -217,7 +221,7 @@ result_galaxies[:5]
 ```
 
 ```{warning}
-Note that we use `to_table` above rather than `to_qtable`. While astropy's `QTable` is more powerful than its `Table`, as it e.g. handles the column units properly, we cannot use it here due to a known bug; it mishandles the large integer numbers in the `object_id` column and recast them as float during which process some precision is being lost. 
+Note that we use `to_table` above rather than `to_qtable`. While astropy's `QTable` is more powerful than its `Table`, as it e.g. handles the column units properly, we cannot use it here due to a known bug; it mishandles the large integer numbers in the `object_id` column and recast them as float during which process some precision is being lost.
 
 Once the bug is fixed, we plan to update the code in this notebook and simplify some of the approaches below.
 ```
@@ -263,9 +267,9 @@ For more info, please visit the [WCSAxes documentation](https://docs.astropy.org
 ```{code-cell} ipython3
 ax = plt.subplot(projection=cutout_image.wcs)
 
-ax.imshow(cutout_image.data, cmap='gray', origin='lower', 
+ax.imshow(cutout_image.data, cmap='gray', origin='lower',
           norm=ImageNormalize(cutout_image.data, interval=PercentileInterval(99.9), stretch=LogStretch()))
-plt.scatter(result_galaxies['ra'], result_galaxies['dec'], s=36, facecolors='none', edgecolors='red', 
+plt.scatter(result_galaxies['ra'], result_galaxies['dec'], s=36, facecolors='none', edgecolors='red',
             transform=ax.get_transform('world'))
 
 _ = plt.title('Galaxies between z = 1.4 and 1.6')
@@ -281,7 +285,7 @@ result_galaxies.sort(keys='flux_h_unif', reverse=True)
 result_galaxies[:3]
 ```
 
-Let's pick one of these galaxies. Note that the table has been sorted above, we can use the same index here and below to access the data for this particular galaxy. 
+Let's pick one of these galaxies. Note that the table has been sorted above, we can use the same index here and below to access the data for this particular galaxy.
 
 ```{code-cell} ipython3
 index = 2
@@ -363,7 +367,7 @@ Plot to show the cutout on the galaxy
 ```{code-cell} ipython3
 ax = plt.subplot(projection=cutout_galaxy.wcs)
 
-ax.imshow(cutout_galaxy.data, cmap='gray', origin='lower', 
+ax.imshow(cutout_galaxy.data, cmap='gray', origin='lower',
           norm=ImageNormalize(cutout_galaxy.data, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 ```
 
