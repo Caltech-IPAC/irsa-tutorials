@@ -50,7 +50,7 @@ The total data volume required for running this notebook is less than 20 MB.
 ## Imports
 
 ```{important}
-We rely on astroquery, firefly_client, photutils, and sep features that have been recently added, so please make sure you have the respective versions v0.4.10, v3.2, v2.0, and v1.4 or newer installed.
+We rely on ``astroquery``, ``firefly_client``, ``photutils``, and ``sep`` features that have been recently added, so please make sure you have the respective versions v0.4.10, v3.2, v2.0, and v1.4 or newer installed.
 ```
 
 ```{code-cell} ipython3

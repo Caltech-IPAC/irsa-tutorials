@@ -50,7 +50,7 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 ## Imports
 
 ```{important}
-We rely on astroquery features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
 ```
 
 ```{code-cell} ipython3
