@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.3
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -246,12 +246,15 @@ s3.ls(f'{s3_cat_bucket}/{s3_cat_key}')
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset')
+print(s3.cat(f'{s3_cat_bucket}/{s3_cat_key}/README.txt').decode('utf-8'))
 ```
 
 ```{code-cell} ipython3
-print(s3.cat(f'{s3_cat_bucket}/{s3_cat_key}/README.txt').decode('utf-8'))
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset')
 ```
+
+### Inspect the partition info table 
+Q1 MER catalog is partioned into which HEALPix orders and pixel indices?
 
 ```{code-cell} ipython3
 import pandas as pd
@@ -263,42 +266,167 @@ partition_info_df
 ```
 
 ```{code-cell} ipython3
-partition_info_df['Norder'].unique()
+norder_counts = partition_info_df.groupby('Norder').size()
+norder_counts
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3')
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=6')
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3/Dir=0')
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=6/Dir=10000') # all Npix in 10000s?
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=3/Dir=0/Npix=334')
+s3.ls(f'{s3_cat_bucket}/{s3_cat_key}/dataset/Norder=6/Dir=10000/Npix=10207') # the parquet file containing the data 
+```
+
+### Inspect the dataset schema
+
+```{code-cell} ipython3
+import pyarrow.dataset as ds
+dataset = ds.dataset(f's3://{s3_cat_bucket}/{s3_cat_key}/dataset', format='parquet', partitioning='hive')
+dataset
 ```
 
 ```{code-cell} ipython3
-import math
-
-log_value = math.log2(2048)
-log_value
+dataset.schema
 ```
 
 ```{code-cell} ipython3
-coord.ra.deg
+dataset.partitioning.schema
+```
+
+```{code-cell} ipython3
+norder_colname, _ , npix_colname = dataset.partitioning.schema.names
+norder_colname, npix_colname
+```
+
+```{code-cell} ipython3
+npix29_colname = dataset.schema.names[0]
+npix29_colname
+```
+
+### Find which HEALPixels in the catalog have our target 
+We can use hpgeom (HEALPix Geometry) to find HEALPixels that overlap with a narrow cone around our target. And then use those HEALPix pixel indices to filter the datset.
+
+Now, to decide which HEALPix order to use, we will use the information we observed above:
+1. Order = 29 for precision: Dataset has a column (`_healpix_29`) for HEALPix pixel index at 29th order that maps to ra, dec
+2. Order = 3 to 6 for efficiency: Dataset is partioned into HEALPix pixels at this order range. Including them in filters will make table reading skip all other partions entirely.
+
+```{code-cell} ipython3
+norders = partition_info_df['Norder'].unique().tolist() + [29]
+norders
 ```
 
 ```{code-cell} ipython3
 import hpgeom
 
-pixels = []
-for norder in partition_info_df['Norder'].unique():
-    nside = 2**norder
-    pix = hpgeom.query_circle(nside, a=coord.ra.deg, b=coord.dec.deg, radius=search_radius.to(u.deg).value)
-    pixels.append(pix)
+hpix_resolution_29 = (hpgeom.nside_to_resolution(2**29) * u.deg).to(u.arcsec)
+hpix_resolution_29
+```
 
-pixels
+```{code-cell} ipython3
+target_radius = (hpix_resolution_29).to(u.deg) # 5 arcsec, comes back with 508102027 HEALpix pixels at order 29
+target_radius
+```
+
+```{code-cell} ipython3
+target_npix = []
+for norder in norders:
+    npix = hpgeom.query_circle(
+        nside=hpgeom.order_to_nside(norder),
+        a=coord.ra.deg, b=coord.dec.deg, radius=target_radius.value * 5,
+        fact=2**6, 
+        inclusive=True if not norder==29 else False, # inclusive checks for overlap, otherwise pixel center must be within the circle
+    )
+    target_npix.append(npix)
+
+target_npix
+```
+
+```{code-cell} ipython3
+target_npix[-1].size
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+lon, lat = hpgeom.pixel_to_angle(hpgeom.order_to_nside(norders[-1]), target_npix[-1])
+plt.plot(lon, lat, 'r.')
+plt.plot(coord.ra.deg, coord.dec.deg, 'bo')
+circle = plt.Circle((coord.ra.deg, coord.dec.deg), target_radius.value, color='b', fill=False)
+circle2 = plt.Circle((coord.ra.deg, coord.dec.deg), target_radius.value * 5, color='b', fill=False)
+plt.gca().add_artist([circle, circle2])
+```
+
+### Filter the dataset by HEALPix pixel indices identified for our target
+
+```{code-cell} ipython3
+# If using pandas, use DNF notation
+target_filters_DNF = [
+    [(norder_colname, '=', norder), (npix_colname, 'in', npix)] # inner list gets ANDed
+    for (norder, npix) in zip(norders, target_npix)
+] # outer list gets ORed
+target_filters_DNF
+```
+
+```{code-cell} ipython3
+from functools import reduce
+import operator
+
+target_filter_exps = [(ds.field(norder_colname) == norder) & (ds.field(npix_colname).isin(npix))
+                      for norder, npix in zip(norders[:-1], target_npix[:-1])]
+
+target_filter_exp = reduce(operator.or_, #since we cannot pass | operator
+                           target_filter_exps)
+target_filter_exp
+```
+
+Now we can load a slice of parquet dataset (filtered by rows and columns as per our target) as pyarrow table into memory:
+
+```{code-cell} ipython3
+target_tbl = dataset.to_table(
+    columns=['_healpix_29', 'OBJECT_ID', 'RIGHT_ASCENSION', 'DECLINATION', 'Norder', 'Dir', 'Npix'], # identified from schema
+    filter=target_filter_exp,
+)
+target_tbl
+```
+
+```{code-cell} ipython3
+target_df = target_tbl.to_pandas()
+target_df
+```
+
+```{code-cell} ipython3
+target_df.describe()
+```
+
+HEALPix pixel index 16045 at order 6 partition has data for our target. 
+
+```{code-cell} ipython3
+len(target_df), target_df['_healpix_29'].unique().size, target_df['_healpix_29'].unique().size
+```
+
+```{code-cell} ipython3
+target_healpix_29 = hpgeom.angle_to_pixel(
+    hpgeom.order_to_nside(29),
+    coord.ra.deg,
+    coord.dec.deg,
+)
+target_healpix_29
+```
+
+```{code-cell} ipython3
+target_df[target_df['_healpix_29'] == target_healpix_29]
+```
+
+```{code-cell} ipython3
+object_id_from_vo = 2731173428682078045
+target_df[target_df['OBJECT_ID'] == object_id_from_vo]
 ```
 
 +++ {"jp-MarkdownHeadingCollapsed": true}
