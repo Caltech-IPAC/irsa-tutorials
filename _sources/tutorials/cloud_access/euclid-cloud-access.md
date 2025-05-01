@@ -42,9 +42,13 @@ If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.calt
 ## 2. Imports
 - `s3fs` for browsing S3 buckets
 - `astropy` for handling coordinates, units, FITS I/O, tables, images, etc.
-- `astroquery` for querying Euclid data products from IRSA
+- `astroquery>=0.4.10` for querying Euclid data products from IRSA
 - `matplotlib` for visualization
 - `json` for decoding JSON strings
+
+```{important}
+We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+```
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.

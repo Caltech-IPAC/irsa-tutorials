@@ -45,6 +45,10 @@ If you have questions about it, please contact the [IRSA helpdesk](https://irsa.
 
 ## Imports
 
+```{important}
+We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+```
+
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
 # !pip install matplotlib astropy 'astroquery>=0.4.10'
