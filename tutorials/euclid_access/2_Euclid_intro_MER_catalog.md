@@ -48,6 +48,10 @@ If you have questions about this notebook, please contact the [IRSA helpdesk](ht
 
 ## Imports
 
+```{important}
+We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+```
+
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
 # !pip install numpy matplotlib 'astroquery>=0.4.10'
@@ -101,7 +105,7 @@ The MER catalog contains 476 columns, below are a few highlights:
 
 ### Define the following ADQL query to find the first 10k stars in the MER catalog
 
-Since we are just using the MER catalog alone, it does not have a column for classification. 
+Since we are just using the MER catalog alone, it does not have a column for classification.
 We can use the `point_like_flag = 1` or `point_like_prob > 0.99` for stars.
 
 Set all the fluxes to be greater than 0 so the object is detected in all four Euclid MER mosaic images.
@@ -132,7 +136,7 @@ result_stars[:5]
 - Plot the color-magnitude diagram
 
 ```{code-cell} ipython3
-mag_y = -2.5 * np.log10(result_stars["flux_y_templfit"]) + 23.9 
+mag_y = -2.5 * np.log10(result_stars["flux_y_templfit"]) + 23.9
 mag_h = -2.5 * np.log10(result_stars["flux_h_templfit"]) + 23.9
 
 x = mag_y - mag_h  # Y - H

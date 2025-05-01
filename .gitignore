@@ -5,6 +5,8 @@ data/
 output/
 # "cache" dir is created by nway in the forced photometry notebook. ignore it and any other "cache" directory
 cache/
+# Other random download/output dirs, etc, these should ideally be generalized to be one of the aboves
+downloaded_hdf5_files/
 
 # Data and Output files
 # data and output files should not be committed to the code repository
@@ -21,6 +23,7 @@ cache/
 *.parquet
 *.pdf
 *.png
+*.gif
 
 # Tests and reports
 htmlcov/
@@ -32,6 +35,7 @@ htmlcov/
 .ipynb_checkpoints
 *.ipynb
 _build/
+
 
 # PyCharm
 .idea

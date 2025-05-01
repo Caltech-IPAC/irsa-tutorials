@@ -56,6 +56,10 @@ Each MER image is approximately 1.47 GB. Downloading can take some time.
 
 ## Imports
 
+```{important}
+We rely on ``astroquery`` and ``sep`` features that have been recently added, so please make sure you have the respective version v0.4.10 and v1.4 or newer installed.
+```
+
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install numpy 'astropy>=5.3' matplotlib 'astroquery>=0.4.10' 'sep>=1.4' fsspec
