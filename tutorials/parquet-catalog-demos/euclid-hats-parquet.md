@@ -46,8 +46,9 @@ Parquet is a file format that enables flexible and efficient data access by, amo
 supporting the application of both column and row filters when reading the data (very similar to a SQL query)
 so that only the desired data is loaded into memory.
 
-HATS is a spatial partitioning scheme based on HEALPix that aims to
-produce partitions (files) of roughly equal size.
+[HATS](https://hats.readthedocs.io/) is a spatial partitioning scheme based on
+[HEALPix](https://healpix.jpl.nasa.gov/)
+that aims to produce partitions (files) of roughly equal size.
 This makes the files more efficient to work with,
 especially for large-scale analyses and/or parallel processing.
 It does this by adapting the HEALPix order at which data is partitioned in a given catalog based
@@ -143,9 +144,10 @@ In this section, we query the Euclid Q1 MER catalogs for likely stars and create
 Here, we use `lsdb` to query the parquet files that are sitting in an S3 bucket (the intro notebook uses `pyvo` to query the TAP service).
 `lsdb` enables efficient, large-scale queries on HATS catalogs, so let's look at *all* likely stars in Euclid Q1 instead of limiting to 10,000.
 
-`lsdb` uses Dask for parallelization. So first, set up the workers.
+`lsdb` uses Dask for parallelization. Set up the client and workers.
 
 ```{code-cell}
+# This client will be used *implicitly* by all subsequent calls that require it.
 client = dask.distributed.Client(
     n_workers=os.cpu_count(), threads_per_worker=2, memory_limit="auto"
 )
@@ -172,7 +174,7 @@ euclid_stars
 ```
 
 ```{code-cell}
-# Peek at the data.
+# Peek at the data. This must execute the query to load at least some data, so may take some time.
 euclid_stars.head(10)
 ```
 
@@ -267,6 +269,6 @@ print(schema.field("RIGHT_ASCENSION-CUTOUTS").metadata)
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-03-29
+**Updated:** 2025-05-05
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
