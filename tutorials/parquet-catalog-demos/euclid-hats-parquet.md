@@ -53,7 +53,7 @@ especially for large-scale analyses and/or parallel processing.
 It does this by adapting the HEALPix order at which data is partitioned in a given catalog based
 on the on-sky density of the rows it contains.
 In other words, data from dense regions of sky will be partitioned at a higher order
-(i.e., higher resolution; smaller pixel size) than data in sparse regions.
+(i.e., higher resolution; more pixels/tiles with smaller area) than data in sparse regions.
 HATS-aware python packages are being developed to take full advantage of the partitioning.
 In this notebook, we will use the [hats](https://hats.readthedocs.io/) library to visualize the
 catalog and access the schema, and [lsdb](https://docs.lsdb.io/) to do a query for all likely stars.
@@ -61,6 +61,10 @@ catalog and access the schema, and [lsdb](https://docs.lsdb.io/) to do a query f
 +++
 
 ## Installs and imports
+
+```{important}
+We rely on ``hast``, ``lsdb``, ``numpy``, and ``pyerfa`` features that have been recently added, so please make sure you have the respective versions v0.5, v0.5, v2.0, and v2.0.1.3 or newer installed. 
+```
 
 ```{code-cell}
 # # Uncomment the next line to install dependencies if needed.
@@ -130,7 +134,7 @@ We can see how the on-sky density maps to the HATS partitions by calling `plot_p
 hats.inspection.plot_pixels(euclid_hats)
 ```
 
-## 3. CMD of stars in Euclid Q1
+## 3. CMD of ALL stars in Euclid Q1
 
 +++
 
@@ -164,6 +168,7 @@ euclid_lsdb = lsdb.read_hats(euclid_s3_path, columns=columns)
 # Set up the query for likely stars.
 star_cuts = "FLUX_VIS_PSF > 0 & FLUX_Y_TEMPLFIT > 0 & FLUX_J_TEMPLFIT > 0 & FLUX_H_TEMPLFIT > 0 & POINT_LIKE_FLAG == 1"
 euclid_stars = euclid_lsdb.query(star_cuts)
+euclid_stars
 ```
 
 ```{code-cell}
@@ -202,7 +207,7 @@ plt.show()
 client.close()
 ```
 
-## 4. Schema
+## 4. Inspecting MER Catalog's Parquet Schema
 
 +++
 
