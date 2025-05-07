@@ -13,7 +13,7 @@ hpgeom
 pandas>=1.5.2
 dask[distributed]
 psutil
-ray ; python_version < "3.13"
+ray
 s3fs
 firefly-client>=3.2.0
 jupyter-firefly-extensions
