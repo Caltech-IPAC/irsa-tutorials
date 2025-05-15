@@ -151,8 +151,9 @@ plt.errorbar(x, y, xerr=xerr, yerr=yerr,
 
 plt.xlabel('Y-H')
 plt.ylabel('Y')
-plt.xlim(-10, 10)
-plt.ylim(10, 35)
+# Note that these limits exclude a handful of points with large error bars.
+plt.xlim(-2, 2)
+plt.ylim(24, 16)
 plt.title('10k Stars in MER catalog -- IRSA')
 ```
 
