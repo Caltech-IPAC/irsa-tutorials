@@ -573,7 +573,14 @@ If you have questions about it, please contact the <a class="reference external"
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
  &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
+ &#39;euclid_q1_mer_cutouts&#39;: &#39;Euclid Q1 MER Cutouts&#39;,
  &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
+ &#39;euclid_q1_phz_star_sed&#39;: &#39;Euclid Q1 PHZ Star SED Catalog&#39;,
+ &#39;euclid_q1_phz_galaxy_sed&#39;: &#39;Euclid Q1 PHZ Galaxy SED Catalog&#39;,
+ &#39;euclid_q1_phz_classification&#39;: &#39;Euclid Q1 PHZ Classification Catalog&#39;,
+ &#39;euclid_q1_phz_qso_physical_parameters&#39;: &#39;Euclid Q1 PHZ QSO Physical Parameters Catalog&#39;,
+ &#39;euclid_q1_phz_nir_physical_parameters&#39;: &#39;Euclid Q1 PHZ NIR Physical Parameters Catalog&#39;,
+ &#39;euclid_q1_phz_star_template&#39;: &#39;Euclid Q1 PHZ Star Template Catalog&#39;,
  &#39;euclid_q1_spectro_zcatalog_spe_quality&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Quality&#39;,
  &#39;euclid_q1_spectro_zcatalog_spe_classification&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Classification&#39;,
  &#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Galaxy Candidates&#39;,
@@ -583,6 +590,8 @@ If you have questions about it, please contact the <a class="reference external"
  &#39;euclid_q1_spe_lines_continuum_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Continuum Features&#39;,
  &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
  &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
+ &#39;euclid_q1_spectro_model_catalog_spe_lines_catalog&#39;: &#39;Euclid Q1 SPE Models Catalog - Lines&#39;,
+ &#39;euclid_q1_spectro_model_catalog_spe_star_models&#39;: &#39;Euclid Q1 SPE Star Models Catalog&#39;,
  &#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
  &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
  &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
@@ -657,10 +666,8 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: &#39;erg/s/cm2/Angstrom&#39; contains multiple slashes, which is discouraged by the FITS standard [astropy.units.format.generic]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
 WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
-WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
-WARNING: UnitsWarning: &#39;erg2/s2/cm4/Angstrom2&#39; contains multiple slashes, which is discouraged by the FITS standard [astropy.units.format.generic]
 WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
 </pre></div>
 </div>
@@ -674,7 +681,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=531</i>
-<table id="table140605652519248" class="table-striped table-bordered table-condensed">
+<table id="table140325163387920" class="table-striped table-bordered table-condensed">
 <thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th></tr></thead>
 <thead><tr><th>Angstrom</th><th>erg / (Angstrom s cm2)</th><th>Number</th><th>Number</th><th>erg2 / (Angstrom2 s2 cm4)</th><th>Number</th></tr></thead>
 <thead><tr><th>float32</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float64</th></tr></thead>
@@ -758,7 +765,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7fe1357a3810&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f9fff7f3090&gt;
 </pre></div>
 </div>
 </div>
