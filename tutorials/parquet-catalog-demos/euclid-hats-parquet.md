@@ -11,264 +11,1116 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: MER Catalogs in HATS Parquet
-
-+++
+# Euclid Q1 Catalogs in HATS Parquet
 
 ## Learning Goals
+
 By the end of this tutorial, you will:
 
-- Access basic metadata to understand the format and schema of this unified HATS Parquet dataset.
-- Visualize the HATS partitioning of this dataset.
-- Query this dataset for likely stars and create a color-magnitude diagram. (Recreate the figure from
-  [Introduction to Euclid Q1 MER catalog](https://caltech-ipac.github.io/irsa-tutorials/tutorials/euclid_access/2_Euclid_intro_MER_catalog.html),
-  this time with *all* likely stars.)
+- Query the dataset to find and create figures for galaxies, QSOs, and stars with quality fluxes, redshifts, and morphology.
+- Understand the format and schema of this dataset.
+- Learn how to work with this HATS Parquet product using the LSDB and PyArrow python libraries.
 
 +++
 
 ## Introduction
 
-+++
+This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with python.
+The Collection includes a HATS Catalog (main data product), Margin Cache (10 arcsec), and Index Table (OBJECT_ID).
+The Catalog includes the twelve Euclid Q1 tables listed below, joined on the column 'OBJECT_ID' into a single Parquet dataset with 1,329 columns (one row per Euclid MER Object).
+Among them, Euclid has provided several different redshift measurements, several flux measurements for each Euclid band, and flux measurements for bands from several ground-based observatories -- in addition to morphological and other measurements.
+These were produced for different science goals using different algorithms and/or configurations.
 
-This notebook demonstrates accesses to a version of the
-[Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) MER Catalogs
-that is in Apache Parquet format, partitioned according to the
-Hierarchical Adaptive Tiling Scheme (HATS), and stored in an AWS S3 bucket.
+Having all columns in the same dataset makes access convenient because the user doesn't have to make separate calls for data from different tables and/or join the results.
+However, figuring out which, e.g., flux measurements to use amongst so many can be challenging.
+In the sections below, we look at some of their distributions and reproduce figures from several papers in order to highlight some of the options and point out their differences.
+The Appendix contains important information about the schema of this Parquet dataset, especially the syntax of the column names.
+For more information about the meaning and provenance of a column, refer to the links provided with the list of tables below.
 
-The catalog version accessed here is a single dataset which comprises all three MER Catalogs
--- MER, MER Morphology, and MER Cutouts -- which have been joined by Object ID.
-Their schemas (pre-join) can be seen at
-[Euclid Final Catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html).
-Minor modifications were made to the parquet schema to accommodate the join (de-duplicating column names)
-and for the HATS standard. These differences are shown below.
+### Euclid Q1 tables and docs
 
-Parquet is a file format that enables flexible and efficient data access by, among other things,
-supporting the application of both column and row filters when reading the data (very similar to a SQL query)
-so that only the desired data is loaded into memory.
+The Euclid Q1 HATS Catalog includes the following twelve Q1 tables[*], which are organized underneath the Euclid processing function (MER, PHZ, or SPE) that created it.
+Links to the Euclid papers describing the processing functions are provided, as well as pointers for each table.
+Table names are linked to their original schemas.
 
-[HATS](https://hats.readthedocs.io/) is a spatial partitioning scheme based on
-[HEALPix](https://healpix.jpl.nasa.gov/)
-that aims to produce partitions (files) of roughly equal size.
-This makes the files more efficient to work with,
-especially for large-scale analyses and/or parallel processing.
-It does this by adapting the HEALPix order at which data is partitioned in a given catalog based
-on the on-sky density of the rows it contains.
-In other words, data from dense regions of sky will be partitioned at a higher order
-(i.e., higher resolution; more pixels/tiles with smaller area) than data in sparse regions.
-HATS-aware python packages are being developed to take full advantage of the partitioning.
-In this notebook, we will use the [hats](https://hats.readthedocs.io/) library to visualize the
-catalog and access the schema, and [lsdb](https://docs.lsdb.io/) to do a query for all likely stars.
+- MER - [Euclid Collaboration: Romelli et al., 2025](https://arxiv.org/pdf/2503.15305) (hereafter, Romelli)
+  - [MER](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html#main-catalog-fits-file) - Sec. 6 & 8 (EUC_MER_FINAL-CAT)
+  - [MORPH](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html#morphology-catalog-fits-file) - Sec. 7 & 8 (EUC_MER_FINAL-MORPH-CAT)
+  - [CUTOUTS](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/dpcards/mer_finalcatalog.html#cutouts-catalog-fits-file) - Sec. 8 (EUC_MER_FINAL-CUTOUTS-CAT)
+- PHZ - [Euclid Collaboration: Tucci et al., 2025](https://arxiv.org/pdf/2503.15306) (hereafter, Tucci)
+  - [PHZ](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputcatalog.html#photo-z-catalog) - Sec. 5 (phz_photo_z)
+  - [CLASS](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#classification-catalog) - Sec. 4 (phz_classification)
+  - [PHYSPARAM](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#physical-parameters-catalog) - Sec. 6 (6.1; phz_physical_parameters) _Notice that this is **galaxies** and uses a different algorithm._
+  - [GALAXYSED](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputcatalog.html#galaxy-sed-catalog) - App. B (B.1 phz_galaxy_sed)
+  - [PHYSPARAMQSO](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#qso-physical-parameters-catalog) - Sec. 6 (6.2; phz_qso_physical_parameters)
+  - [STARCLASS](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#star-template) - Sec. 6 (6.3; phz_star_template)
+  - [STARSED](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputcatalog.html#star-sed-catalog) - App. B (B.1 phz_star_sed)
+  - [PHYSPARAMNIR](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#nir-physical-parameters-catalog) - Sec. 6 (6.4; phz_nir_physical_parameters)
+- SPE - [Euclid Collaboration: Le Brun et al., 2025](https://arxiv.org/pdf/2503.15308) (hereafter, Le Brun)
+  - [Z](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/spedpd/dpcards/spe_spepfoutputcatalog.html#redshift-catalog) - Sec. 2 (spectro_zcatalog_spe_quality, spectro_zcatalog_spe_classification, spectro_zcatalog_spe_galaxy_candidates, spectro_zcatalog_spe_star_candidates, and spectro_zcatalog_spe_qso_candidates)
+
+See also:
+
+- MER [Photometry](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/merphotometrycookbook.html) and [Morphology](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/mermorphologycookbook.html) Cookbooks
+- [Frequently Asked Questions About Euclid Q1 data](https://euclid.caltech.edu/page/euclid-q1-data-faq) (hereafter, FAQ)
+- [Q1 Explanatory Supplement](https://euclid.esac.esa.int/dr/q1/expsup/)
+
+[*] Euclid typically calls these "catalogs", but this notebook uses "tables" to avoid any confusion with the HATS Catalog product.
+
+### Parquet, HEALPix, and HATS
+
+Parquet, HEALPix, and HATS are described in more detail at [https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/](https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/).
+([FIXME] Currently requires IPAC VPN. Update url when the page is published to ops.)
+In brief:
+
+- [Apache Parquet](https://parquet.apache.org/docs/) is a file format that includes rich metadata and supports fast SQL-like queries on large datasets.
+  - [PyArrow](https://arrow.apache.org/docs/python/) (python library) is a particularly efficient and flexible Parquet reader and we demonstrate its use below.
+      Note that while PyArrow filters are more powerful than those offered by other libraries, they can be cumbersome to construct --
+      For more information, we recommend IRSA's [AllWISE Parquet tutorial](https://caltech-ipac.github.io/irsa-tutorials/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.html).
+- [HEALPix](https://healpix.jpl.nasa.gov/) (Hierarchical Equal Area isoLatitude Pixelization; Górski et al., 2005) is a tiling of the sky into equal-area pixels.
+    - The HEALPix "order" determines the pixel area: higher order => smaller pixels, better resolution, and more total pixels required to cover the sky.
+- [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme) is a HEALPix-based partitioning scheme (plus metadata) for Parquet datasets.
+  - The HEALPix order at which data is partitioned is adaptive -- it varies along with the on-sky density of rows in a given catalog, with the aim of creating partitions (files) that have roughly equal numbers of rows (important for efficient access).
+      The Euclid Q1 density and partitioning can be seen at [https://irsadev.ipac.caltech.edu/data/download/parquet/test/euclid/q1/catalogues/hats/skymap.png](https://irsadev.ipac.caltech.edu/data/download/parquet/test/euclid/q1/catalogues/hats/skymap.png).
+      ([FIXME] Currently requires IPAC VPN. Update url when the page is published to ops. Alternately, could consider pulling this file and displaying it here. I have code to do it three different ways but all are a bit clunky and there's so much else going on in this notebook that currently it seems better not to add this.)
+  - [LSDB](https://docs.lsdb.io/) is a python library specifically designed to support large-scale astronomy use cases with HATS datasets.
+      It provides simple interfaces that allow users to perform (e.g.,) full-catalog cross matches with just a few lines of code.
+      We demonstrate its use below.
+      LSDB uses [Dask](https://docs.dask.org/) to run many core tasks.
+      The Dask client configurations used in this notebook should work well for most use cases.
+      But, if you run into trouble (e.g., worker memory issues) or just want to tinker and don't know where to start,
+      we recommend LSDB's [Dask cluster configuration tips](https://docs.lsdb.io/en/stable/tutorials/dask-cluster-tips.html).
 
 +++
 
 ## Installs and imports
 
++++
+
 ```{important}
-We rely on ``hast``, ``lsdb``, ``numpy``, and ``pyerfa`` features that have been recently added, so please make sure you have the respective versions v0.5, v0.5, v2.0, and v2.0.1.3 or newer installed. 
+We rely on ``lsdb>=0.5.2``, ``hpgeom>=1.4``, ``numpy>=2.0``, and ``pyerfa>=2.0.1.3`` for features that have been recently added. Please make sure that you have sufficiently recent versions installed.
 ```
+
+[FIXME] Prune dependencies and imports once it's clear which libraries will be used.
 
 ```{code-cell}
 # # Uncomment the next line to install dependencies if needed.
-# !pip install 'hats>=0.5' 'lsdb>=0.5' matplotlib 'numpy>=2.0' 'pyerfa>=2.0.1.3' s3fs
+# %pip install 'lsdb>=0.5.2' 'hpgeom>=1.4' matplotlib 'numpy>=2.0' 'pyerfa>=2.0.1.3' s3fs
 ```
 
 ```{code-cell}
-import os
-
-import dask.distributed
-import hats
-import lsdb
-import matplotlib.colors
-import matplotlib.pyplot as plt
-import numpy as np
+import os  # Determine number of CPUs (for parallelization)
+import dask.distributed  # Parallelize catalog queries
+import hpgeom
+import lsdb  # Query the catalog
+import matplotlib.colors  # Make figures look nice
+import matplotlib.pyplot as plt  # Create figures
+import numpy as np  # Math
+import pandas as pd  # Manipulate query results
+import pyarrow.compute as pc  # Filter dataset
+import pyarrow.dataset  # Load the dataset
+import pyarrow.parquet  # Load the schema
+import pyarrow.fs  # Simple S3 filesystem pointer
 ```
 
 ```{tip}
-If you run into an error that starts with,
-"A module that was compiled using NumPy 1.x cannot be run in NumPy 2.1.3 as it may crash.",
-make sure you have restarted the kernel since doing `pip install`. Then re-run the cell.
+If you run into an error that looks like,
+
+> AttributeError: _ARRAY_API not found
+
+or:
+
+> A module that was compiled using NumPy 1.x cannot be run in NumPy 2.1.3 as it may crash.
+
+make sure you have restarted the kernel since doing `pip install`. Then re-run the cell **twice**.
 ```
 
 +++
 
 ## 1. Setup
 
++++
+
+## 1.1 AWS S3 paths
+
 ```{code-cell}
-# AWS S3 path where this dataset is stored.
 s3_bucket = "irsa-fornax-testdata"
-s3_key = "EUCLID/q1/mer_catalogue/hats"
-euclid_s3_path = f"s3://{s3_bucket}/{s3_key}"
+euclid_prefix = "EUCLID/q1/catalogues"
+
+euclid_hats_collection_uri = f"s3://{s3_bucket}/{euclid_prefix}"  # for lsdb
+euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_metadata"  # for pyarrow
+euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_common_metadata"  # for pyarrow
 
 # Temporary try/except to handle credentials in different environments before public release.
 try:
-    # If running from within IPAC's network (maybe VPN'd in with "tunnel-all"),
-    # your IP address acts as your credentials and this should just work.
-    hats.read_hats(euclid_s3_path)
-except FileNotFoundError:
-    # If running from Fornax, credentials are provided automatically under the hood, but
-    # hats ignores them in the call above and raises a FileNotFoundError.
-    # Construct a UPath which will pick up the credentials.
+    # If running from within IPAC's network, your IP address acts as your credentials so this should work.
+    lsdb.read_hats(euclid_hats_collection_uri)
+except PermissionError:
+    # If running from Fornax, credentials are provided automatically under the hood but
+    # lsdb ignores them in the call above. Construct a UPath which will pick up the credentials.
     from upath import UPath
 
-    euclid_s3_path = UPath(f"s3://{s3_bucket}/{s3_key}")
+    euclid_hats_collection_uri = UPath(euclid_hats_collection_uri)
 ```
 
-## 2. Visualize the on-sky density of Q1 Objects and HATS partitions
+### 1.2 Helper functions
+
+```{code-cell}
+def magnitude_to_flux(magnitude: float) -> float:
+    """Convert magnitude to flux following the MER Photometry Cookbook."""
+    zeropoint = 23.9
+    flux = 10 ** ((magnitude - zeropoint) / -2.5)
+    return flux
+```
+
+In cases where we want magnitudes rather than fluxes, it will be convenient to have PyArrow do the conversion during the read so that we don't have to load and handle the flux columns ourselves.
+The function below defines our instructions.
+
+```{code-cell}
+def flux_to_magnitude(flux_col_name: str, color_col_names: tuple[str, str] | None = None) -> pc.Expression:
+    """Construct an expression for the magnitude of `flux_col_name` following the MER Photometry Cookbook.
+
+    MAG = -2.5 * log10(TOTAL FLUX) + 23.9.
+    If `color_col_names` is None, `flux_col_name` is taken as the total flux in the band.
+    If not None, it should list the columns needed for the color correction such that
+    TOTAL FLUX = flux_col_name * color_col_names[0] / color_col_names[1].
+
+    Returns a `pyarrow.compute.Expression` which can be used in the `filter` (to filter based on it) and/or
+    `columns` (to return it) keyword arguments when loading from the pyarrow dataset.
+    """
+    scale = pc.scalar(-2.5)
+    zeropoint = pc.scalar(23.9)
+
+    total_flux = pc.field(flux_col_name)
+    if color_col_names is not None:
+        color_scale = pc.divide(pc.field(color_col_names[0]), pc.field(color_col_names[1]))
+        total_flux = pc.multiply(total_flux, color_scale)
+
+    log10_flux = pc.log10(total_flux)
+    mag_expression = pc.add(pc.multiply(scale, log10_flux), zeropoint)
+    return mag_expression
+```
+
+### 1.3 PyArrow dataset
+
+```{code-cell}
+# Load the catalog as a PyArrow dataset. This is used in many examples below.
+dataset = pyarrow.dataset.parquet_dataset(euclid_parquet_metadata_path, partitioning="hive", filesystem=pyarrow.fs.S3FileSystem())
+```
+
+### 1.4 Frequently used columns
 
 +++
 
-Euclid Q1 covers four non-contiguous fields: Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
-We can visualize the Object density in the four fields using `hats`.
+Descriptors generally come from the respective paper (Romelli, Tucci, or Le Brun) unless noted.
 
 ```{code-cell}
-# Load the dataset.
-euclid_hats = hats.read_hats(euclid_s3_path)
+# MER Object ID
+OBJECT_ID = "OBJECT_ID"
 
-# Visualize the on-sky distribution of objects in the Q1 MER Catalog.
-hats.inspection.plot_density(euclid_hats)
+# Whether the source was detected in the VIS mosaic (1) or only in the NIR-stack mosaic (0).
+VIS_DET = "MER_VIS_DET"
+
+# Best estimate of the total flux in the detection band. From aperture photometry within a Kron radius.
+# Detection band is VIS if MER_VIS_DET=1.
+# Otherwise, this is a non-physical NIR-stack flux and there was no VIS detection (aka, NIR-only).
+FLUX_TOTAL = "MER_FLUX_DETECTION_TOTAL"
+FLUXERR_TOTAL = "MER_FLUXERR_DETECTION_TOTAL"
+
+# Whether the detection has a >50% probability of being spurious (1=Yes, 0=No).
+SPURIOUS_FLAG = "MER_SPURIOUS_FLAG"
+
+# Point-like morphology indicators.
+POINTLIKE_PROB = "MER_POINT_LIKE_PROB"  # Always NaN for NIR-only (use MER_MUMAX_MINUS_MAG instead)
+# Peak surface brightness minus magnitude in detection band.
+MUMAX_MINUS_MAG = "MER_MUMAX_MINUS_MAG"  # <-2.5 => point-like. <-2.6 => compact. (Tucci)
+
+# PHZ classifications were generated by a probabilistic random forest supervised ML algorithm.
+PHZ_CLASS = "PHZ_PHZ_CLASSIFICATION"
+PHZ_CLASS_MAP = {
+    1: "Star",
+    2: "Galaxy",
+    4: "QSO",  # In Q1, this includes luminous AGN.
+    # If multiple probability thresholds were exceeded, a combination of classes was reported.
+    3: "Star and Galaxy",
+    5: "Star and QSO",
+    6: "Galaxy and QSO",
+    7: "Star, Galaxy, and QSO",
+    # Two other integers (-1 and 0) and nulls are present, indicating that the class was not determined.
+    **{i: "Undefined" for i in [-1, 0, np.nan]},
+}
 ```
 
-We can see how the on-sky density maps to the HATS partitions by calling `plot_pixels`.
-
-```{code-cell}
-# Visualize the HEALPix orders of the dataset partitions.
-hats.inspection.plot_pixels(euclid_hats)
-```
-
-## 3. CMD of ALL stars in Euclid Q1
+### 1.5 Euclid Deep Fields
 
 +++
 
-In this section, we query the Euclid Q1 MER catalogs for likely stars and create a color-magnitude diagram (CMD), following
-[Introduction to Euclid Q1 MER catalog](https://caltech-ipac.github.io/irsa-tutorials/tutorials/euclid_access/2_Euclid_intro_MER_catalog.html).
-Here, we use `lsdb` to query the parquet files that are sitting in an S3 bucket (the intro notebook uses `pyvo` to query the TAP service).
-`lsdb` enables efficient, large-scale queries on HATS catalogs, so let's look at *all* likely stars in Euclid Q1 instead of limiting to 10,000.
+Euclid Q1 includes data from three Euclid Deep Fields: EDF-N (North), EDF-S (South), EDF-F (Fornax; also in the southern hemisphere).
+There is also a small amount of data from a fourth field: LDN1641 (Lynds' Dark Nebula 1641), which was observed for technical reasons during Euclid's verification phase and mostly ignored here.
+There are two notable differences between regions:
 
-`lsdb` uses Dask for parallelization. Set up the client and workers.
+- EDF-N is closest to the galactic plane and thus contains a larger fraction of stars.
+- Different external data was available in EDF-N (DES with g, r, i, and z bands) vs EDF-S+F (UNIONS with u, g, r, i, and z bands -- UNIONS is a collaboration between CFIS, Pan-STARRS, HSC, WHIGS, and WISHES).
+  The Euclid processing pipelines used the external data to supplement Euclid data to, for example, measure colors that were then used for PHZ classifications.
+  Differences between the available data is the cause of various differences in pipeline handling and results.
+
+The EDF regions are well separated, so we can distinguish them using a simple cone search without having to be too picky about the radius.
+Rather than using the RA and Dec values directly, we'll find a set of HEALPix order 9 pixels that cover each area.
+A column ('_healpix_9') of order 9 indexes was added to the catalog for this purpose.
+These will suffice for a simple and efficient cone search.
+
+[FIXME] The notebook does not currently use these but it might be good to do so.
+Maybe in the Magnitudes section to show the differences as a function of class.
+Anyway, either use it or remove it.
 
 ```{code-cell}
-# This client will be used *implicitly* by all subsequent calls that require it.
-client = dask.distributed.Client(
-    n_workers=os.cpu_count(), threads_per_worker=2, memory_limit="auto"
+# Column name of HEALPix order 9 pixel indexes.
+HEALPIX_9 = "_healpix_9"
+
+# LDN1641 (Lynds' Dark Nebula 1641)
+ra, dec, radius = 85.74, -8.39, 1.5  # need ~6 sq deg
+ldn_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius)
+
+# EDF-N (Euclid Deep Field - North)
+ra, dec, radius = 269.733, 66.018, 4  # need ~20 sq deg
+edfn_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius)
+
+# EDF-S (Euclid Deep Field - South)
+ra, dec, radius = 61.241, -48.423, 5  # need ~23 sq deg
+edfs_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius)
+
+# EDF-F (Euclid Deep Field - Fornax)
+ra, dec, radius = 52.932, -28.088, 3  # need ~10 sq deg
+edff_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius)
+```
+
+## 2. Redshifts for cosmology
+
++++
+
+Euclid is a cosmology mission focused on measuring the evolution of large-scale structures in order to study dark matter and dark energy.
+This means it must determine the redshifts for a large number of galaxies.
+In this section, we obtain and examine quality cosmological samples for three of the redshift point-estimates (PDFs deferred to sec. 6) provided in Q1:
+
+```{code-cell}
+PHZ_Z = "PHZ_PHZ_MEDIAN"
+PHYSPARAM_GAL_Z = "PHYSPARAM_PHZ_PP_MEDIAN_REDSHIFT"
+SPE_GAL_Z = "Z_GALAXY_CANDIDATES_SPE_Z_RANK0"
+```
+
+"PHZ_PHZ_MEDIAN" is the median of the photometric redshift PDF that was produced for Euclid's core-science goals.
+It was generated by Phosphoros, a fully Bayesian template-fitting code.
+It was computed for all MER objects, but the input models assumed galaxy.
+The model grid was built spanning the parameters: redshift (z in [0, 6]), galaxy SED, intrinsic reddening curve, intrinsic attenuation.
+Phosphoros should be better for cosmology than ML algorithms (which are more typical) due to the scarcity of spectroscopic "truth" training data above z ~ 1.
+
+"PHYSPARAM_PHZ_PP_MEDIAN_REDSHIFT" is the median of the photometric redshift PDF that was produced for galaxy-classed objects by the physical-properties branch of the PHZ pipeline (i.e., non-cosmology).
+We include it here as a useful comparison.
+It was generated by NNPZ, a k-nearest neighbors supervised learning algorithm.
+The reference sample came from >1 million stellar population synthesis models spanning parameters: redshift (z in [0, 7]), age, star formation timescale, stellar metallicity, intrinsic attenuation, magnitude, and two dust laws.
+
+"Z_GALAXY_CANDIDATES_SPE_Z_RANK0" is the top-ranked spectroscopic redshift estimate that was produced assuming the object is a galaxy (independent of the actual classification).
+This is the most prominent peak of a PDF generated by a least-squares fitting algorithm (19 galaxy models).
+
+Note that the redshift estimates are based in part on external data, which is different in EDF-N vs EDF-S and EDF-F.
+We mostly ignore that here for simplicity, but additional cuts could be added using the HEALPix order 9 indexes found above to separate the results.
+
++++
+
+Load a quality PHZ sample. Cuts are from Tucci sec. 5.3.
+
+```{code-cell}
+# Photo-z flag: 0=good for core science, 10=NIR-only, 11=missing bands, 12=too faint.
+PHZ_FLAG = "PHZ_PHZ_FLAGS"
+
+# Columns we actually want to load.
+phz_columns = [OBJECT_ID, PHZ_Z, HEALPIX_9]
+
+# Filter for quality PHZ redshifts.
+phz_filter = (
+    (pc.field(VIS_DET) == 1)  # No NIR-only objects.
+    & (pc.field(FLUX_TOTAL) > magnitude_to_flux(24.5))  # I < 24.5
+    & (pc.divide(pc.field(FLUX_TOTAL), pc.field(FLUXERR_TOTAL)) > 5)  # I S/N > 5  # [CHECKME] Is this correct def of S/N?
+    & ~pc.field(PHZ_CLASS).isin([1, 3, 5, 7])  # Exclude objects classified as star.
+    & (pc.field(SPURIOUS_FLAG) == 0)  # MER quality
+)
+
+# Execute the filter and load.
+phz_df = dataset.to_table(columns=phz_columns, filter=phz_filter).to_pandas()
+phz_df = phz_df.set_index(OBJECT_ID).sort_index()
+# 1m 6s
+```
+
+Load a quality PHYSPARAM sample. Cuts are from Tucci sec. 6.1.2.
+
+```{code-cell}
+# Properties to calculate specific star formation rate (sSFR).
+PHYSPARAM_GAL_SFR = "PHYSPARAM_PHZ_PP_MEDIAN_SFR"  # log10(SFR [Msun/yr])
+PHYSPARAM_GAL_MSTAR = "PHYSPARAM_PHZ_PP_MEDIAN_STELLARMASS"  # log10(Stellar Mass [Msun])
+
+# Columns we actually want to load.
+# We'll have pyarrow construct and return the sSFR, so we must pass a dict mapping column names to expressions.
+log10_ssfr = pc.subtract(pc.field(PHYSPARAM_GAL_SFR), pc.field(PHYSPARAM_GAL_MSTAR))
+pp_columns = {
+    PHYSPARAM_GAL_Z: pc.field(PHYSPARAM_GAL_Z),
+    "log10_ssfr": log10_ssfr,
+    OBJECT_ID: pc.field(OBJECT_ID),
+    HEALPIX_9: pc.field(HEALPIX_9),
+}
+
+# Partial filter for quality PHYSPARAM redshifts.
+pp_galaxy_filter = (
+    (pc.field(MUMAX_MINUS_MAG) > -2.6)  # Non-compact objects
+    & (pc.field(PHZ_FLAG) == 0)  # Good for core science
+    & (pc.field(SPURIOUS_FLAG) == 0)  # MER quality
+    & (pc.field("MER_DET_QUALITY_FLAG") < 4)  # MER quality
+    & ~pc.is_null(pc.field(PHYSPARAM_GAL_Z))  # Galaxy class and redshift solution found
+)
+
+# Execute the filter and load.
+pp_df = dataset.to_table(columns=pp_columns, filter=pp_galaxy_filter).to_pandas()
+pp_df = pp_df.set_index(OBJECT_ID).sort_index()
+# 1m 18s
+
+# Final filter, to be applied later.
+# sSFR < 10^-8.2 /yr. This excludes galaxies with unrealistically young ages and very high sSFR.
+pp_final_filter = pp_df["log10_ssfr"] < -8.2
+```
+
+Load a quality SPE sample. Cuts are from Le Brun sec. 3.3.
+
+The NISP instrument was built to target Halpha emitting galaxies, which effectively means 0.9 < z < 1.8.
+SPE redshifts are reliable in that regime, but this represents <2% of the total delivered by the SPE pipeline.
+So it's crucial to make cuts in order to get it.
+
+```{code-cell}
+# SPE probability of the rank 0 (best) redshift estimate, assuming galaxy.
+SPE_GAL_Z_PROB = "Z_GALAXY_CANDIDATES_SPE_Z_PROB_RANK0"
+
+# Columns we actually want to load.
+spe_columns = [SPE_GAL_Z, OBJECT_ID]
+
+# Partial filter for quality SPE galaxy redshifts.
+spe_filter = pc.field(SPE_GAL_Z_PROB) > 0.99
+# [FIXME] & (pc.field(linewidth) < 680). Add when Halpha line is added to the catalog.
+# Later, cut to z target range and
+# sec. 6.2: Halpha flux > 2e-16 erg /s/cm2 and SN>3.5
+
+# Execute the filter and load.
+spe_df = dataset.to_table(columns=spe_columns, filter=spe_filter).to_pandas()
+spe_df = spe_df.set_index(OBJECT_ID).sort_index()
+# 27s
+
+# Final filter, to be applied later. Objects within target redshift range.
+spe_final_filter = (spe_df[SPE_GAL_Z] > 0.9) & (spe_df[SPE_GAL_Z] < 1.8)
+# [FIXME] Add more when the columns are available.
+```
+
+Plot redshift distributions
+
+```{code-cell}
+tbl_colors = {"PHZ": "tab:orange", "PHYSPARAM": "tab:green", "SPE_GAL": "tab:purple"}
+
+fig, ax = plt.subplots(1, 1, figsize=(12, 9))
+hist_kwargs = dict(bins=np.linspace(0, 7.1, 100), histtype="step", linewidth=2, alpha=0.7)
+
+# PHZ
+phz_kwargs = dict(label=PHZ_Z + " (quality)", color=tbl_colors["PHZ"], linestyle="-", zorder=9)
+ax.hist(phz_df[PHZ_Z], **phz_kwargs, **hist_kwargs)
+
+# PHYSPARAM
+hist_kwargs.update(linewidth=1)
+pp_kwargs = dict(label=PHYSPARAM_GAL_Z + " (filtered)", color=tbl_colors["PHYSPARAM"], linestyle=":")
+ax.hist(pp_df[PHYSPARAM_GAL_Z], **pp_kwargs, **hist_kwargs)
+# Impose our final cuts.
+pp_kwargs.update(label=PHYSPARAM_GAL_Z + " (quality)", linestyle="-")
+ax.hist(pp_df.loc[pp_final_filter, PHYSPARAM_GAL_Z], **pp_kwargs, **hist_kwargs)
+
+# SPE
+spe_kwargs = dict(label=SPE_GAL_Z + " (filtered)", color=tbl_colors["SPE_GAL"], linestyle=":")
+ax.hist(spe_df[SPE_GAL_Z], **spe_kwargs, **hist_kwargs)
+# Impose our final cuts.
+spe_kwargs.update(label=SPE_GAL_Z + " (quality)", linestyle="-")
+ax.hist(spe_df.loc[spe_final_filter, SPE_GAL_Z], **spe_kwargs, **hist_kwargs)
+
+ax.set_xlabel("Redshift")
+ax.set_ylabel("Counts")
+plt.legend()
+```
+
+The orange distribution is a quality sample of the redshifts (best point estimates) generated for cosmology by a Bayesian template-fitting code.
+The maximum is z ~ 6, due to the model's input parameters.
+Green represents redshifts that were generated to study galaxies' physical properties by a supervised learning, k-nearest neighbors algorithm.
+The maximum is z ~ 7, again due to model input parameters.
+Several quality cuts were applied to produce the dotted-line sample, but this still includes a population of problematic galaxies for which the solutions pointed to unrealistically young ages and very high specific star formation rates.
+The green solid line filters those out and represents a quality sample for this redshift estimate.
+Purple represents the spectroscopic redshifts (best point estimates)
+The dotted line has been filtered for reliable (SPE) galaxy solutions and the maximum is z ~ 5.
+There is a clear bump between about 0.9 < z < 1.8 which results from a combination of the NISP instrument parameters (tuned to detect Halpha) and a model prior that strongly favored solutions in this regime.
+However much more drastic cuts are needed to obtain a trustworthy sample.
+The purple solid line filters down to the redshift target range, within which we have the most confidence, but still includes interlopers which were either noisy or had a different spectral line misidentified as Halpha.
+Further cuts will need to be made once the Halpha line information is added to the parquet files # [FIXME].
+
++++
+
+Next, compare the redshift estimates, treating PHZ (cosmology photo-z) as our ground truth.
+
+```{code-cell}
+def z_comparison_metrics(z_baseline: pd.Series, z_compare: pd.Series, ax: plt.Axes | None = None) -> dict[str, float]:
+    """Calculate quality metrics for `z_baseline` vs `z_compare`. If `ax` is not None, annotate the axes."""
+    residuals = (z_compare - z_baseline) / (1 + z_baseline)
+    median_res = residuals.median()
+    nmad = 1.4826 * (residuals - median_res).abs().median()
+    outlier_frac = len(residuals.loc[residuals.abs() >= 0.15]) / len(z_baseline)
+    metrics = {"Median residual": median_res, "NMAD": nmad, "Outlier fraction": outlier_frac}
+    if ax:
+        text = "\n".join(f"{k} = {v:.3f}" for k, v in metrics.items())
+        ax.annotate(text, xy=(0.99, 0.99), xycoords="axes fraction", ha="right", va="top", bbox=dict(facecolor="w", alpha=0.8))
+    return metrics
+```
+
+Compare PHZ to PHYSPARAM.
+Here, we reproduce Tucci Fig. 17 (left panel) except that we don't consider the problematic galaxies nor do we impose cuts on magnitude or region (EDF-F).
+
+```{code-cell}
+# Get the common objects and set axes data x (PHZ) and y (PHYSPARAM).
+phz_pp_df = phz_df.join(pp_df.loc[pp_final_filter], how="inner", lsuffix="phz", rsuffix="pp")
+# phz_pp_df = phz_df.join(pp_df.loc[pp_final_filter & pp_df[HEALPIX_9].isin(edfn_k9_pixels)], how="inner", lsuffix="phz", rsuffix="pp")
+x, y = phz_pp_df[PHZ_Z], phz_pp_df[PHYSPARAM_GAL_Z]
+one_to_one_linspace = np.linspace(-0.01, 6, 100)
+
+# Plot the redshift comparison and annotate with quality metrics.
+fig, ax = plt.subplots(1, 1, figsize=(9, 9))
+cb = ax.hexbin(x, y, bins="log")
+z_comparison_metrics(x, y, ax=ax)
+ax.plot(one_to_one_linspace, one_to_one_linspace, color="gray", linewidth=1)
+ax.set_xlabel(PHZ_Z)
+ax.set_ylabel(PHYSPARAM_GAL_Z)
+plt.colorbar(cb)
+```
+
+Above is the redshift point-estimate comparison of quality samples of PHZ (cosmology photo-z) vs PHYSPARAM (physical-parameters photo-z).
+The two agree quite well even though they were generated by very different different algorithms.
+The two outlier clouds are very roughly similar to those in Tucci Fig. 7 which were attributed to a confusion between the Balmer and Lyman breaks.
+
++++
+
+Compare PHZ to SPE
+
+```{code-cell}
+# Get the common objects and set axes data x (PHZ) and y (SPE).
+phz_spe_df = phz_df.join(spe_df.loc[spe_final_filter], how="inner", lsuffix="phz", rsuffix="spe")
+x, y = phz_spe_df[PHZ_Z], phz_spe_df[SPE_GAL_Z]
+one_to_one_linspace = np.linspace(0.89, 1.81, 100)
+
+fig, axes = plt.subplots(1, 2, figsize=(18, 9), sharey=True, width_ratios=(0.55, 0.45))
+# Plot the redshift comparison and annotate with quality metrics.
+ax = axes[0]
+cb = ax.hexbin(x, y, bins="log")
+z_comparison_metrics(x, y, ax=ax)
+ax.plot(one_to_one_linspace, one_to_one_linspace, color="gray", linewidth=1)
+ax.set_xlabel(PHZ_Z)
+ax.set_ylabel(SPE_GAL_Z)
+plt.colorbar(cb)
+# Plot again, but also restrict photo-z to the cosmology target range 0.9 < z < 1.8.
+ax = axes[1]
+photo_z_in_range = x.loc[(x > 0.9) & (x < 1.8)].index
+cb = ax.hexbin(x.loc[photo_z_in_range], y.loc[photo_z_in_range], bins="log", gridsize=25)
+ax.plot(one_to_one_linspace, one_to_one_linspace, color="gray", linewidth=1)
+ax.set_xlabel(PHZ_Z)
+plt.colorbar(cb)
+```
+
+[FIXME] This should look better once the rest of the cuts (esp. for Halpha line) can be added. Then need to comment.
+
++++
+
+## 3. Classification thresholds - purity vs completeness
+
++++
+
+The PHZ_CLASS used above was determined using probability thresholds (different in north vs south due to availability of external data) for galaxies which prioritized completeness over purity, while the others (esp. for stars) gave purity more priority.
+This was done in order meet certain requirements imposed by Euclid's main goals, such as the need for a very pure sample of high S/N stars in order to model the PSF.
+One way to see the effects of these differing thresholds are to look at the brightness and morphology as a function of class.
+
+```{code-cell}
+# Construct the filter.
+class_filter = (
+    (pc.field(PHZ_CLASS).isin([1, 2, 4]))  # Stars, galaxies, and QSOs (no mixed classes or Undefined).
+    & (pc.divide(pc.field(FLUX_TOTAL), pc.field(FLUXERR_TOTAL)) > 5)  # S/N > 5
+    & (pc.field(VIS_DET) == 1)  # No NIR-only objects, so FLUX_TOTAL == VIS flux. For simplicity; not required.
+)
+
+# Columns we actually want to load.
+# Because we want PyArrow to construct a new column (magnitude), we must pass a dict mapping column names to expressions.
+class_columns = {"I magnitude": flux_to_magnitude(FLUX_TOTAL), MUMAX_MINUS_MAG: pc.field(MUMAX_MINUS_MAG), PHZ_CLASS: pc.field(PHZ_CLASS)}
+```
+
+```{code-cell}
+# Load data.
+classes_df = dataset.to_table(columns=class_columns, filter=class_filter).to_pandas()
+# 30s
+
+# Plot point-like morphology vs brightness as a function of class.
+# Here, we reproduce the first three panels of Tucci Fig. 6, combining top and bottom.
+```
+
+```{code-cell}
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+for ax, (class_name, class_df) in zip(axes, classes_df.groupby(PHZ_CLASS)):
+    ax.set_title(PHZ_CLASS_MAP[class_name])
+    cb = ax.hexbin(class_df[MUMAX_MINUS_MAG], class_df["I magnitude"], bins="log")
+    ax.annotate(f"n={len(class_df):,}", xy=(0.99, 0.99), xycoords="axes fraction", ha="right", va="top")
+    plt.colorbar(cb)
+    ax.axvline(-2.5, color="k", linewidth=1)
+    ax.set_xlabel(MUMAX_MINUS_MAG)
+    ax.set_xlim(-5, 5)
+    ax.set_ylabel("I magnitude")
+    ax.set_ylim(15, 27)
+```
+
+Objects to the left of the vertical line are point-like.
+Stars are highly concentrated there, especially those that are not faint (I < 24.5), which we should expect given Euclid's requirement for a pure sample.
+Also as we should expect, most galaxies appear to the right of this line.
+However, notice the strip of bright (e.g., I < 23) "galaxies" that are point-like.
+Many of these are likely to be mis-classified stars or QSOs, and we could increase the purity of a galaxy sample by excluding them (at the expense of completeness, which was the original goal).
+In the QSO panel, however, we see only a small cluster in the bright and point-like region where we would expect them to be.
+These objects are likely to be correctly classified and are located almost exclusively in EDF-N -- likely due to the additional availability of *u* band data from UNIONS in the north.
+The remaining QSO classifications (the majority) should be considered doubtful.
+Many QSOs are likely to be missing from the expected region due to the overlap of QSOs with galaxies in relevant color spaces and the relatively high probability thresholds imposed for QSOs.
+
++++
+
+## 4. Magnitudes
+
++++
+
+Euclid Q1 contains two main types of flux measurements -- aperture and template-fit -- provided for both Euclid and external survey bands.
+In this section, we look at the Q1 magnitude distributions in the four Euclid bands as a function of PHZ class and we compare the two types of flux measurements.
+Additional flux measurements that will be of interest to some, but that we don't look at here, include: PSF-fit fluxes (VIS only); Sérsic-fit fluxes (computed for parametric morphology, discussed below); and fluxes that were corrected based on PHZ class.
+
+```{code-cell}
+# Construct a basic filter.
+mag_filter = (
+    (pc.field(VIS_DET) == 1)  # No NIR-only objects. For simpler total-flux calculations; not required.
+    & (pc.field(PHZ_CLASS).isin([1, 2, 3, 4, 5, 6, 7]))  # Stars, Galaxies, QSOs, and mixed classes.
+    & (pc.field(SPURIOUS_FLAG) == 0)  # Basic quality cut.
 )
 ```
 
-The data will be lazy-loaded. This means that commands like `query` are not executed until the data is actually required.
+Template fluxes are expected to be more accurate than aperture fluxes for extended sources because the templates do a better job of excluding contamination from nearby sources.
+Conversely, aperture fluxes were found to be more accurate for point-like objects (esp. bright stars) in the Q1 NIR photometry, likely due to better handling of PSF related issues.
+In either case, Euclid recommends scaling the measured fluxes in the NIR bands with a color term in order to obtain the best estimate of the total flux in that band, which we demonstrate here (see also: Romelli; MER Photometry Cookbook).
 
 ```{code-cell}
-# Load the dataset.
-columns = [
-    "TILEID",
-    "FLUX_VIS_PSF",
-    "FLUX_Y_TEMPLFIT",
-    "FLUX_J_TEMPLFIT",
-    "FLUX_H_TEMPLFIT",
-    "POINT_LIKE_FLAG",
-]
-euclid_lsdb = lsdb.read_hats(euclid_s3_path, columns=columns)
-
-# Set up the query for likely stars.
-star_cuts = "FLUX_VIS_PSF > 0 & FLUX_Y_TEMPLFIT > 0 & FLUX_J_TEMPLFIT > 0 & FLUX_H_TEMPLFIT > 0 & POINT_LIKE_FLAG == 1"
-euclid_stars = euclid_lsdb.query(star_cuts)
-euclid_stars
+# Columns we actually want to load. Dict instead of list because we're defining new columns (magnitudes).
+# We'll have PyArrow return only magnitudes so that we don't have to handle all the flux columns in memory ourselves.
+_mag_columns = {
+    # FLUX_TOTAL is the best estimate for the total flux in the detection band (here, VIS) and comes from
+    # aperture photometry. VIS provides the template for NIR bands. It has no unique templfit flux itself.
+    "I total": flux_to_magnitude(FLUX_TOTAL),
+    # Template-fit fluxes.
+    "Y templfit total": flux_to_magnitude("MER_FLUX_Y_TEMPLFIT", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_TO_Y_TEMPLFIT")),
+    "J templfit total": flux_to_magnitude("MER_FLUX_J_TEMPLFIT", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_TO_J_TEMPLFIT")),
+    "H templfit total": flux_to_magnitude("MER_FLUX_H_TEMPLFIT", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_TO_H_TEMPLFIT")),
+    # Aperture fluxes.
+    "Y aperture total": flux_to_magnitude("MER_FLUX_Y_2FWHM_APER", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_2FWHM_APER")),
+    "J aperture total": flux_to_magnitude("MER_FLUX_J_2FWHM_APER", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_2FWHM_APER")),
+    "H aperture total": flux_to_magnitude("MER_FLUX_H_2FWHM_APER", color_col_names=(FLUX_TOTAL, "MER_FLUX_VIS_2FWHM_APER")),
+}
+mag_columns = {**_mag_columns, PHZ_CLASS: pc.field(PHZ_CLASS), MUMAX_MINUS_MAG: pc.field(MUMAX_MINUS_MAG)}
 ```
+
+Load data.
 
 ```{code-cell}
-# Peek at the data. This must execute the query to load at least some data, so may take some time.
-euclid_stars.head(10)
+mags_df = dataset.to_table(columns=mag_columns, filter=mag_filter).to_pandas()
+# 30s
 ```
 
-We peeked at the data but we haven't loaded all of it yet.
-What we really need in order to create a CMD is the magnitudes, so let's calculate those now.
-Appending `.compute()` to the commands will trigger Dask to actually load this data into memory.
-It is not strictly necessary, but will allow us to look at the data repeatedly without having to re-load it each time.
+Given Euclid's core science goals, we'll take the template fluxes as our baseline in this section.
+
+Plot the magnitude distributions as a function of PHZ class.
+Include multiply-classed objects and separate point-likes, given what we learned above.
 
 ```{code-cell}
-# Calculate magnitudes. Appending `.compute()` triggers Dask to load this data now.
-mag_y = (-2.5 * np.log10(euclid_stars["FLUX_Y_TEMPLFIT"]) + 23.9).compute()
-mag_h = (-2.5 * np.log10(euclid_stars["FLUX_H_TEMPLFIT"]) + 23.9).compute()
+# Galaxy + any. Star + galaxy. QSO + galaxy.
+classes = {"Galaxy": (2, 3, 6, 7), "Star": (1, 3), "QSO": (4, 6)}
+class_colors = ["tab:green", "tab:blue", "tab:orange"]
 
-print(f"Loaded magnitudes of {len(mag_y):,} likely stars in Euclid Q1.")
+bands = ["I total", "Y templfit total", "J templfit total", "H templfit total"]
+mag_limits = (14, 28)  # Excluding all magnitudes outside this range.
+hist_kwargs = dict(bins=20, range=mag_limits, histtype="step")
+
+fig, axes = plt.subplots(3, 4, figsize=(18, 12), sharey="row", sharex=True)
+for (class_name, class_ids), class_color in zip(classes.items(), class_colors):
+    # Get the objects that are in this class only.
+    class_df = mags_df.loc[mags_df[PHZ_CLASS] == class_ids[0]]
+    # Plot histograms for each band. Galaxies on top row, then stars, then QSOs.
+    axs = axes[0] if class_name == "Galaxy" else (axes[1] if class_name == "Star" else axes[2])
+    for ax, band in zip(axs, bands):
+        ax.hist(class_df[band], label=class_name, color=class_color, **hist_kwargs)
+
+    # Get the objects that are in this class and possibly others.
+    class_df = mags_df.loc[mags_df[PHZ_CLASS].isin(class_ids)]
+    label = "+Galaxy" if class_name != "Galaxy" else "+any"
+    # Of those objects, restrict to the ones that are point-like.
+    classpt_df = class_df.loc[class_df[MUMAX_MINUS_MAG] < -2.5]
+    # Plot histograms for both sets of objects.
+    for ax, band in zip(axs, bands):
+        ax.hist(class_df[band], color=class_color, label=label, linestyle=":", **hist_kwargs)
+        ax.hist(classpt_df[band], color=class_color, linestyle="-.", label=label + " and point-like", **hist_kwargs)
+
+# Add axis labels, etc.
+for ax in axes[:, 0]:
+    ax.set_ylabel("Counts")
+    ax.legend(framealpha=0.2, loc=2)
+for axs, band in zip(axes.transpose(), bands):
+    axs[0].set_title(band.split()[0])
+    axs[-1].set_xlabel(f"{band} (mag)")
+plt.tight_layout()
 ```
 
-Create the CMD
-
-```{code-cell}
-hb = plt.hexbin(mag_y - mag_h, mag_y, norm=matplotlib.colors.LogNorm(vmin=1, vmax=50_000))
-plt.colorbar(hb)
-plt.xlabel("Y-H")
-plt.ylabel("Y")
-plt.xlim(-10, 10)
-plt.ylim(10, 35)
-plt.title("Stars in Euclid Q1 MER Catalog")
-plt.show()
-```
-
-```{code-cell}
-# Close the Dask client.
-client.close()
-```
-
-## 4. Inspecting MER Catalog's Parquet Schema
+Euclid is tuned to detect galaxies for cosmology studies, so it's no surprise that there are many more galaxies than other objects in here.
+In the green dash-dot line we see the population of point-like "galaxies", probably misclassified but mostly at faint magnitudes.
+The star distributions are broader and peak at a brighter magnitude than the galaxy distributions, as we expect.
+Adding to the star-only class the objects that were classified as both star and galaxy adds a significant number, especially to the peak of the distribution and towards the right where we might expect more confusion due to faint sources.
+Restricting these to point-like objects, we see that many of the bright objects that surpassed both the star and galaxy probability thresholds are likely to be, in fact, stars.
+(Evidence of this can also be seen in Tucci Fig. 4.)
+However, this don't hold at the faint end where even some star-only classified objects are removed by the point-like cut.
+The bottom panel shows very few point-like QSOs, reminding us that most QSO classifications are suspect.
 
 +++
 
-The three catalogs MER, MER Morphology, and MER Cutouts have been joined together in this parquet version.
-
-IRSA's
-[Cloud Access](https://caltech-ipac.github.io/irsa-tutorials/tutorials/cloud_access/cloud-access-intro.html#navigate-a-catalog-and-perform-a-basic-query)
-notebook shows how to work with parquet schemas.
-`hats` will return the same pyarrow schema object shown in that notebook, so let's use it.
+Now, compare with the aperture fluxes by plotting the difference between the reference (template) and aperture magnitudes.
+This figure is inspired by Romelli Fig. 6 (top panel).
 
 ```{code-cell}
-# Fetch the pyarrow schema from hats.
-euclid_hats = hats.read_hats(euclid_s3_path)
-schema = euclid_hats.schema
+# Only consider objects within these mag and mag difference limits.
+mag_limits, mag_diff_limits = (16, 24), (-1, 1)
+mag_limited_df = mags_df.loc[(mags_df["I total"] > mag_limits[0]) & (mags_df["I total"] < mag_limits[1])]
 
-print(f"{len(schema)} columns in the combined Euclid Q1 MER Catalogs")
+fig, axes = plt.subplots(2, 3, figsize=(18, 9), sharey=True, sharex=True)
+bands = [("Y templfit total", "Y aperture total"), ("J templfit total", "J aperture total"), ("H templfit total", "H aperture total")]
+hexbin_kwargs = dict(bins="log", extent=(*mag_limits, *mag_diff_limits), gridsize=25)
+annotate_kwargs = dict(xycoords="axes fraction", ha="left", fontweight="bold", bbox=dict(facecolor="white", alpha=0.8))
+
+# Plot
+for axs, (ref_band, sersic_band) in zip(axes.transpose(), bands):
+    # Extended objects, top row.
+    ax = axs[0]
+    extended_df = mags_df.loc[mags_df[MUMAX_MINUS_MAG] >= -2.5]
+    extended_mag_diff = extended_df[ref_band] - extended_df[sersic_band]
+    cb = ax.hexbin(extended_df["I total"], extended_mag_diff, **hexbin_kwargs)
+    plt.colorbar(cb)
+    ax.set_ylabel(f"{ref_band} - {sersic_band}")
+    # Annotate top (bottom) with the fraction of objects having a magnitude difference greater (less) than 0.
+    frac_tmpl_greater = len(extended_mag_diff.loc[extended_mag_diff > 0]) / len(extended_mag_diff)
+    ax.annotate(f"{frac_tmpl_greater:.3f}", xy=(0.01, 0.99), va="top", **annotate_kwargs)
+    frac_tmpl_less = len(extended_mag_diff.loc[extended_mag_diff < 0]) / len(extended_mag_diff)
+    ax.annotate(f"{frac_tmpl_less:.3f}", xy=(0.01, 0.01), va="bottom", **annotate_kwargs)
+
+    # Point-like objects, bottom row.
+    ax = axs[1]
+    pointlike_df = mags_df.loc[mags_df[MUMAX_MINUS_MAG] < -2.5]
+    pointlike_mag_diff = pointlike_df[ref_band] - pointlike_df[sersic_band]
+    cb = ax.hexbin(pointlike_df["I total"], pointlike_mag_diff, **hexbin_kwargs)
+    plt.colorbar(cb)
+    ax.set_ylabel(f"{ref_band} - {sersic_band}")
+    # Annotate top (bottom) with the fraction of objects having a magnitude difference greater (less) than 0.
+    frac_tmpl_greater = len(pointlike_mag_diff.loc[pointlike_mag_diff > 0]) / len(pointlike_mag_diff)
+    ax.annotate(f"{frac_tmpl_greater:.3f}", xy=(0.01, 0.99), va="top", **annotate_kwargs)
+    frac_tmpl_less = len(pointlike_mag_diff.loc[pointlike_mag_diff < 0]) / len(pointlike_mag_diff)
+    ax.annotate(f"{frac_tmpl_less:.3f}", xy=(0.01, 0.01), va="bottom", **annotate_kwargs)
+
+# Add axis labels, etc.
+for i, ax in enumerate(axes.flatten()):
+    ax.axhline(0, color="gray", linewidth=1)
+    if i == 1:
+        ax.set_title("Extended objects")
+    if i == 4:
+        ax.set_title("Point-like objects")
+    if i > 2:
+        ax.set_xlabel("I total")
+plt.tight_layout()
 ```
 
-Two columns have been added to the top of the schema.
-'_healpix_29' is the pixel index at HEALPix order 29.
-It is used by `hats` and is generally useful for spatial queries.
-'TILEID' is the Euclid MER tile index, added for convenience.
+The template - aperture magnitude difference is fairly tightly clustered around 0 for extended objects (top row) but the outliers are asymmetric (fractions above and below zero are noted).
+We see a positive offset which indicates a fainter template-fit magnitude, as we should expect given that the templates do a better job of excluding contaminating light from nearby sources.
+The offset is more pronounced for point-like objects, likely due to the PSF handling mentioned above, and we are reminded that aperture magnitudes are more reliable here.
+
++++
+
+## 5. Galaxy morphology
+
++++
+
+The MORPH table includes three kinds of galaxy morphology indicators:
+non-parametric parameters like Smoothness and Concentration,
+parametric parameters like Sérsic index and axis ratio,
+and Zoobot responses to questions like "does it have spiral arms?".
+Zoobot is a deep learning model that was trained on Galaxy Zoo classifications.
+
+Here, we compare one parameter of each type.
+This is based on [Euclid Collaboration: Quilley et al., 2025](https://arxiv.org/pdf/2503.15309) (hereafter, Quilley).
+
+```{code-cell}
+morph_filter = (
+    # Cuts described in Quilley sec. 2.
+    (pc.field(PHZ_CLASS) == 2)  # Galaxies
+    & (pc.field(VIS_DET) == 1)
+    & (pc.field(FLUX_TOTAL) > magnitude_to_flux(23))  # I<23 recommended for reliable Sérsic fits.
+    & (pc.field(SPURIOUS_FLAG) == 0)
+    & (pc.field("MER_POINT_LIKE_PROB") <= 0.1)
+    # Sec. 4. Remove an artificial peak at the limit of the param space. Recommended for any Sérsic-based analysis.
+    & (pc.field("MORPH_SERSIC_SERSIC_VIS_INDEX") <= 5.45)
+    # Secs. 4 & 5 make additional quality cuts that we skip for simplicity.
+)
+
+# Non-parametric column
+CONCENTRATION = "MORPH_CONCENTRATION"
+# Sérsic
+SERSIC_VIS_INDEX = "MORPH_SERSIC_SERSIC_VIS_INDEX"
+# Zoobot columns use the syntax {question}_{answer}.
+zoo_question, zoo_answers = "MORPH_SMOOTH_OR_FEATURED", ["SMOOTH", "FEATURED_OR_DISK", "ARTIFACT_STAR_ZOOM"]
+zoo_smooth_columns = [f"{zoo_question}_{answer}" for answer in zoo_answers]
+
+# Columns we'll load.
+morph_columns = [CONCENTRATION, SERSIC_VIS_INDEX, *zoo_smooth_columns, FLUX_TOTAL]
+```
+
+```{code-cell}
+# Load data.
+galaxies = dataset.to_table(columns=morph_columns, filter=morph_filter).to_pandas()
+```
+
+Transform the Zoobot columns to “the fraction of volunteers expected to select this morphology answer”, following the MER Morphology Cookbook.
+
+```{code-cell}
+galaxies["zoo_smooth_total"] = galaxies[zoo_smooth_columns].sum(axis=1)
+zoo_galaxies = galaxies.loc[galaxies.zoo_smooth_total > 0]
+zoo_galaxies["FEATURED_OR_DISK"] = zoo_galaxies[f"{zoo_question}_FEATURED_OR_DISK"] / zoo_galaxies.zoo_smooth_total
+zoo_galaxies["SMOOTH"] = zoo_galaxies[f"{zoo_question}_SMOOTH"] / zoo_galaxies.zoo_smooth_total
+```
+
+Plot the comparisons.
+This is a combination of Quilley fig. 4 and the top left panel of fig. 5.
+
+```{code-cell}
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+
+# ax1, Sérsic index vs Concentration
+bright_galaxies = galaxies.loc[galaxies[FLUX_TOTAL] > magnitude_to_flux(21)]
+bright_galaxies.plot.hexbin(SERSIC_VIS_INDEX, CONCENTRATION, ax=ax1, bins="log", extent=(0, 5, 1, 5))
+
+# ax2, Sérsic index vs Zoobot separated by probability for each answer.
+labels = ["FEATURED_OR_DISK > 0.5", "FEATURED_OR_DISK > 0.9", "SMOOTH > 0.5", "SMOOTH > 0.9"]
+colors = ["tab:cyan", "tab:blue", "tab:pink", "tab:red"]
+data = [
+    zoo_galaxies.loc[zoo_galaxies["FEATURED_OR_DISK"] > 0.5, SERSIC_VIS_INDEX],
+    zoo_galaxies.loc[zoo_galaxies["FEATURED_OR_DISK"] > 0.9, SERSIC_VIS_INDEX],
+    zoo_galaxies.loc[zoo_galaxies["SMOOTH"] > 0.5, SERSIC_VIS_INDEX],
+    zoo_galaxies.loc[zoo_galaxies["SMOOTH"] > 0.9, SERSIC_VIS_INDEX],
+]
+for sersic_indexes, label, color in zip(data, labels, colors):
+    # Histogram of the fraction of galaxies in this category.
+    weights = [1 / len(sersic_indexes)] * len(sersic_indexes)
+    ax2.hist(sersic_indexes, label=label, color=color, histtype="step", bins=20, weights=weights)
+ax2.legend()
+ax2.set_xlabel(SERSIC_VIS_INDEX)
+ax2.set_ylabel("Fraction of galaxies")
+
+plt.tight_layout()
+```
+
+The left panel shows the expected relationship, since the concentration is known to correlate strongly with Sérsic index (Romelli).
+The differences with Quilley fig. 4 are due to the cuts that we skipped for simplicity.
+The right panel also largely agrees with expectations.
+"FEATURED_OR_DISK" galaxies are likely to be spirals (late-type) and these typically have a Sérsic index around 1.
+"SMOOTH" galaxies are likely to be ellipticals (early-type) which typically have a Sérsic index of 4 or more, though here we need a higher threshold on the Zoobot reponse to see it.
+
++++
+
+## 6. NIR-only detections: high-redshift galaxy or nearby brown dwarf?
+
++++
+
+More than 20% of Q1 MER Objects were detected only in the NIR-stack mosaic, not in VIS.
+We mostly ignored them above, either for quality control or simplicity.
+These NIR-only detections received special handling in many areas of the Euclid processing pipelines.
+They may also require careful handling by the user, some of which we pointed to above.
+Here, we explore the population through data in the PHYSPARAMNIR table, produced by the PHZ branch tasked with determining physical properties of NIR-only objects, and then take the opportunity to look at redshift PDFs from PHZ, PHYSPARAMNIR, and SPE.
+
+```{code-cell}
+# Simple filter for non-spurious NIR-only objects.
+nironly_nonspurious_filter = (pc.field(VIS_DET) == 0) & (pc.field(SPURIOUS_FLAG) == 0)
+```
+
+NIR-only objects are a mix of nearby brown dwarfs and high-redshift galaxies & quasars.
+These two broad, but very different, types of objects overlap in relevant color spaces and can be difficult to separate.
+(Weaver et al., 2024).
+Spectra will often be required to confirm membership, but we can use photometric properties produced by PHZ to make some useful cuts first.
+We'll track the following three objects to illustrate:
+
+- OBJECT_ID: -523574860290315045. T4 dwarf, discovered spectroscopically ([Dominguez-Tagle et al., 2025](https://arxiv.org/abs/2503.22442)).
+- OBJECT_ID: -600367386508373277. L-type dwarf, spectroscopically confirmed ([Zhang, Lodieu, and Martín, 2024](https://arxiv.org/abs/2403.15288) Table C.2. '04:00:08.99 −50:50:14.4'. Found in Q1 via cone search; separation = 1.6 arcsec).
+- OBJECT_ID: -531067351279302418. Star-forming galaxy at z=5.78, spectroscopically confirmed ([Bunker et al., 2003](https://arxiv.org/abs/astro-ph/0302401). Found in Q1 via cone search; separation = 0.59 arcsec).
+
+```{code-cell}
+targets = {
+    -523574860290315045: ("T dwarf", "tab:orange"),
+    -600367386508373277: ("L dwarf", "tab:brown"),
+    -531067351279302418: ("Galaxy w/ spec-z=5.78", "tab:cyan"),
+}
+```
+
+The following three columns will be especially helpful:
+
+- "PHYSPARAMNIR_Z" is the best fitted redshift point estimate that was produced by Phosphoros (same as PHZ_PHZ_MEDIAN) using a configuration specific to NIR-only sources.
+  Of note: the redshift range was extended up to z=10 and the input models included stars, galaxies, and QSOs.
+- "PHYSPARAMNIR_HIGH_Z_PROB" gives the probability that the redshift is greater than 6.
+  It is the integral of the PDF at z>6.
+- "PHZ_BEST_CHI2" is the Chi^2 associated with the best fit model.
+
+```{code-cell}
+PPNIR_Z = "PHYSPARAMNIR_Z"
+PPNIR_Z_GT6_PROB = "PHYSPARAMNIR_HIGH_Z_PROB"
+PHZ_BEST_CHI2 = "PHZ_BEST_CHI2"
+```
+
+Load all non-spurious NIR-only objects.
+
+```{code-cell}
+nironly_columns = [OBJECT_ID, PPNIR_Z, PPNIR_Z_GT6_PROB, PHZ_BEST_CHI2]
+nironly_df = dataset.to_table(columns=nironly_columns, filter=nironly_nonspurious_filter).to_pandas()
+```
+
+Plot the best fitted redshift vs the probability of z>6 to get a sense of which regions indicate confidence vs confusion.
+This is based on Tucci sec. 6.4.
+
+```{code-cell}
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 6), sharex=True, sharey=True)
+x, y = PPNIR_Z, PPNIR_Z_GT6_PROB
+
+# Plot z vs prob(z>6), colored by density.
+nironly_df.plot.hexbin(x, y, bins="log", ax=ax1, cmap="Greys")
+ax1.set_title("Number of NIR-only objects")
+
+# Remove top 5% of objects with worst Chi^2. Plot the rest, colored by mean Chi^2.
+nironly_trim_chi2 = nironly_df.loc[nironly_df.PHZ_BEST_CHI2 < 200]
+nironly_trim_chi2.plot.hexbin(x, y, ax=ax2, cmap="viridis_r", C=PHZ_BEST_CHI2, reduce_C_function=np.mean)
+ax2.set_title("NIR-only objects (trimmed) colored by mean Chi^2")
+
+# Add some indicator lines and symbols.
+for ax in (ax1, ax2):
+    for target_id, (target_name, target_color) in targets.items():
+        target = nironly_df.loc[nironly_df.OBJECT_ID == target_id]
+        ax.scatter(target[x], target[y], marker="X", s=100, c=target_color, label=target_name)
+        if ax == ax1:
+            ax.legend(loc=10)
+    ax.axvline(6, color="k", linewidth=1)
+    ax.axhline(0.8, color="k", linewidth=1)
+    ax.scatter(6, 0.8, marker="*", s=350, edgecolors="k", facecolors="none")
+    ax.scatter(0, 0.78, marker="^", s=350, edgecolors="k", facecolors="none")
+```
+
+First, we notice that the redshifts for two of our target objects are close to what we'd expect (T dwarf at 0 and galaxy at 5.75), but the L dwarf's best fit redshift is much too high and, worse, the probability is relatively high as well.
+However, according to Tucci, the L dwarf's position in this plane (below and right of the black star) actually indicates that its PDF is likely either broad or multi-peaked, so we should be skeptical of the redshift point estimate.
+Good candidates for high-redshift objects sit in the upper right quadrant, z>6 and prob(z>6) > 0.8, and have Chi^2 values that are not much larger than 10.
+(Good Chi^2 is yellow in the right panel, but note that the color represents a mean for the bin and not the Chi^2 of individual objects.)
+A third region identified by Tucci is near or above the black triangle: z=0 and a high probability for z>6.
+This combination indicates model degeneracy between brown dwarfs and high-redshift galaxies.
+
+We want to look at the redshift PDFs for our objects, but first we should inspect the classifications a little more, so we'll load those too.
+
+```{code-cell}
+# Redshift PDFs that we'll look at.
+PHZ_ZPDF = "PHZ_PHZ_PDF"
+PPNIR_ZPDF = "PHYSPARAMNIR_Z_1D_PDF"
+SPE_QSO_ZPDF = "Z_QSO_CANDIDATES_SPE_PDF_RANK0"
+
+# Columns to load.
+targets_columns = [
+    OBJECT_ID,
+    # PHZ classifications
+    PHZ_CLASS,
+    "CLASS_PHZ_GAL_PROB",
+    "CLASS_PHZ_QSO_PROB",
+    "CLASS_PHZ_STAR_PROB",
+    # PHZ redshifts
+    PHZ_Z,
+    PHYSPARAM_GAL_Z,
+    PPNIR_Z,
+    PHZ_ZPDF,
+    PPNIR_ZPDF,
+    # SPE classifications
+    "Z_SPE_CLASS",
+    "Z_SPE_STAR_PROB",
+    "Z_SPE_GAL_PROB",
+    "Z_SPE_QSO_PROB",
+    # SPE redshifts
+    "Z_GALAXY_CANDIDATES_SPE_Z_RANK0",
+    "Z_GALAXY_CANDIDATES_SPE_Z_PROB_RANK0",
+    "Z_QSO_CANDIDATES_SPE_Z_RANK0",
+    "Z_QSO_CANDIDATES_SPE_Z_PROB_RANK0",
+    SPE_QSO_ZPDF,
+    # "Z_QSO_CANDIDATES_SPE_PDF_ZMIN_RANK0",
+    # "Z_QSO_CANDIDATES_SPE_PDF_ZMAX_RANK0",
+    # "Z_QSO_CANDIDATES_SPE_PDF_DELTAZ_RANK0",
+]
+
+# Load data.
+targets_filter = pc.field(OBJECT_ID).isin(targets.keys())
+targets_df = dataset.to_table(columns=targets_columns, filter=targets_filter).to_pandas()  # 1m 7s
+```
+
+```{code-cell}
+# Add our target names, then look at the data.
+targets_df.insert(1, "target_name", targets_df[OBJECT_ID].apply(lambda oid: targets[oid][0]))
+targets_df
+```
+
+PHZ classified our galaxy as a galaxy, L dwarf as a QSO, and was unable to classify the T dwarf but gave the highest probability for a star.
+For the galaxy, the main photo-z estimate (PHZ_PHZ_MEDIAN) is roughly close to the spectroscopic redshift but the one produced along with galaxy physical properties (PHYSPARAM_PHZ_PP_MEDIAN_REDSHIFT) is much closer, and the one produced by the NIR-only branch (PHYSPARAMNIR_Z) is closer still.
+SPE classified the T dwarf as a QSO with probability > 0.999, but we should still be skeptical (even if we didn't know the truth already) because both the object type and the redshift solution are outside of its target range.
+It was unable to produce classifications or even probabilities for our other two targets.
+SPE will have produced zPDFs assuming both galaxy and QSO for all objects, regardless of the actual classification, but we'll ignore all of them except the QSO solution for the T dwarf.
+
+Plot the redshift PDFs.
+
+```{code-cell}
+# PHZ z<6 step is 0.01 and z in [6, 10] step is 0.05.
+phz_zbins = np.concatenate([np.arange(0, 6, 0.01), np.arange(6, 10.01, 0.05)])
+step_kwargs = dict(where="mid", alpha=0.7)
+ppnir_color, phz_color, spe_color = "tab:orange", "tab:cyan", "tab:purple"
+
+fig, axes = plt.subplots(1, 3, figsize=(24, 6))
+for ax, (target_id, (target_name, target_color)) in zip(axes, targets.items()):
+    obj_df = targets_df.loc[targets_df[OBJECT_ID] == target_id]
+    # PHYSPARAMNIR range extends to z=10.
+    ax.step(phz_zbins, obj_df[PPNIR_ZPDF].squeeze(), label=PPNIR_ZPDF, zorder=9, color=ppnir_color, **step_kwargs)
+    ax.scatter(obj_df[PPNIR_Z], 0, label=PPNIR_Z, marker="*", color=ppnir_color)
+    # PHZ range stops at z=6.
+    ax.step(phz_zbins[:601], obj_df[PHZ_ZPDF].squeeze(), label=PHZ_ZPDF, color=phz_color, **step_kwargs)
+    ax.scatter(obj_df[PHZ_Z], 0, label=PHZ_Z, marker="*", color=phz_color)
+
+    ax.legend()
+    ax.set_xlabel("Redshift")
+    ax.set_title(target_name)
+
+    # [FIXME] SPE... how to plot? 'Z_QSO_CANDIDATES_SPE_PDF_RANK0' is a PDF array of length 80, but what is its redshift range?
+    # There are also columns for 'ZMIN', 'ZMAX', and 'DELTAZ' but naively applying them (commented out below)
+    # produces nonsense and I can't find documentation that gives instructions.
+    # if target_name == "T dwarf":
+    #     start, step = obj_df["Z_QSO_CANDIDATES_SPE_PDF_ZMIN_RANK0"].squeeze(), obj_df["Z_QSO_CANDIDATES_SPE_PDF_DELTAZ_RANK0"].squeeze()
+    #     spe_zbins = start + step * np.arange(80)
+    #     ax.step(spe_zbins, obj_df["Z_QSO_CANDIDATES_SPE_PDF_RANK0"].squeeze(), label="SPE QSO zPDF", **step_kwargs)
+```
+
+In the left panel (T dwarf), we see that the photo-z PDF produced by the NIR-only branch is very strongly peaked at z=0 with a small secondary bump near z=7, consistent with its placement in the previous figure.
+Recall that PHZ_PHZ_PDF was produced using galaxy models, regardless of the object's class.
+In the middle panel (L dwarf), we see the multi-peaked NIR PDF that was guessed at based on the previous figure.
+While the strongest peak is near z=8 (a QSO solution, perhaps?), there are also peaks at z=0 (consistent with a star) and near z=1.75 (consistent with the PHZ (galaxy) solution) which are prominent enough to reduce the probability of z>6 below the 0.8 threshold.
+In the right panel (Galaxy), we see good agreement between the PDFs except at z=0.
+
+[FIXME] Once there is spectra in this hats product we can look at those too.
+
++++
+
+## Appendix: Schema details
+
+This Euclid Q1 HATS Catalog contains the twelve Euclid tables listed in the introduction, joined on 'OBJECT_ID' into a single dataset.
+In addition, the Euclid 'TILEID' for each object has been added, as well as a few HATS- and HEALPix-related columns.
+All Euclid column names other than 'OBJECT_ID' and 'TILEID' have the table name prepended (e.g., 'DECLINATION' -> 'MER_DECLINATION').
+In addition, all non-alphanumeric characters have been replaced with an underscore for compatibility with various libraries and services (e.g., 'E(B-V)' -> 'PHYSPARAMQSO_E_B_V_').
+Finally, the (SPE) Z table required special handling, as follows:
+
+The original FITS files for the Z table contain the spectroscopic redshift estimates for GALAXY_CANDIDATES, STAR_CANDIDATES, and QSO_CANDIDATES (in HDUs 3, 4, and 5 respectively) which required special handling to be included in this Parquet product.
+There are up to 5 redshift estimates per 'OBJECT_ID', per HDU.
+For the Parquet, these were pivoted so that there is one row per 'OBJECT_ID' in order to facilitate the table joins.
+The resulting columns were named by combining the table name (Z), the HDU name, the original column name, and the rank of the given redshift estimate (i.e., the value in the original 'SPE_RANK' column).
+For example, the 'SPE_PDF' column for the highest ranked redshift estimate in the 'GALAXY_CANDIDATES' table is called 'Z_GALAXY_CANDIDATES_SPE_PDF_RANK0'.
+
+Here, we follow IRSA's
+[Cloud Access notebook](https://caltech-ipac.github.io/irsa-tutorials/tutorials/cloud_access/cloud-access-intro.html#navigate-a-catalog-and-perform-a-basic-query)
+to inspect the parquet schema.
+
+```{code-cell}
+s3_filesystem = pyarrow.fs.S3FileSystem()
+schema = pyarrow.parquet.read_schema(euclid_parquet_schema_path, filesystem=s3_filesystem)
+```
+
+There are more than 1300 columns in this dataset.
+
+```{code-cell}
+print(f"{len(schema)} columns total")
+```
+
+### A.1 Euclid Q1 columns
+
++++
+
+To find all columns from a given table, search for column names that start with the table name followed by an underscore.
+
+```{code-cell}
+# Find all column names from the PHZ table.
+phz_columns = [name for name in schema.names if name.startswith("PHZ_")]
+print(f"{len(phz_columns)} columns from the PHZ table. First four are:")
+phz_columns[:4]
+```
+
+Column metadata includes unit and description.
+
+```{code-cell}
+schema.field("MER_FLUX_Y_2FWHM_APER").metadata
+```
+
+Euclid Q1 offers many flux measurements, both from Euclid detections and from external ground-based surveys.
+They are given in microjanskys, so all flux columns can be found by searching the metadata for this unit.
+
+```{code-cell}
+# Find all flux columns.
+flux_columns = [field.name for field in schema if field.metadata[b"unit"] == b"uJy"]
+print(f"{len(flux_columns)} flux columns. First four are:")
+flux_columns[:4]
+```
+
+Columns associated with external surveys are identified by the inclusion of "EXT" in the name.
+
+```{code-cell}
+external_flux_columns = [name for name in flux_columns if "EXT" in name]
+print(f"{len(external_flux_columns)} flux columns from external surveys. First four are:")
+external_flux_columns[:4]
+```
+
+### A.2 Additional columns
+
++++
+
+In addition to the columns from Euclid Q1 tables, the following columns have been added to this dataset:
+
+- 'TILEID' : Euclid MER tile index.
+- '_healpix_9' : HEALPix order 9 pixel index. Useful for spatial queries.
+- '_healpix_19' : HEALPix order 19 pixel index. Useful for spatial queries.
+- '_healpix_29' : (hats column) HEALPix order 29 pixel index. Useful for spatial queries.
+- 'Norder' : (hats column) HEALPix order at which the data is partitioned.
+- 'Npix' : (hats column) HEALPix pixel index at order Norder.
+- 'Dir' : (hats column) Integer equal to 10_000 * floor[Npix / 10_000].
+
+These columns are at either the beginning or the end of the schema.
 
 ```{code-cell}
 schema.names[:5]
 ```
 
-Three columns have been added to the bottom: 'Norder', 'Dir', and 'Npix'. These are the HATS partitioning columns.
-
 ```{code-cell}
 schema.names[-5:]
-```
-
-In the original schemas, a handful of column names appear in both the main MER catalog and one of its secondaries (MER Cutouts).
-To ensure that column names are unique in the parquet, the name of the secondary catalog was appended
-to the affected column names, separated by "-".
-
-```{code-cell}
-# Find the column names that were affected in the secondary catalogs.
-mer_secondaries = ["MORPH", "CUTOUTS"]
-[name for name in euclid_hats.schema.names if name.split("-")[-1] in mer_secondaries]
-```
-
-For each of these, there is another column without the catalog name appended, which belongs to the main catalog.
-
-```{code-cell}
-print("-- MER column --")
-print(schema.field("RIGHT_ASCENSION"))
-print(schema.field("RIGHT_ASCENSION").metadata)
-
-print("-- MER Cutouts column --")
-print(schema.field("RIGHT_ASCENSION-CUTOUTS"))
-print(schema.field("RIGHT_ASCENSION-CUTOUTS").metadata)
 ```
 
 ## About this notebook
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-05-05
+**Updated:** 2025-06-11
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
