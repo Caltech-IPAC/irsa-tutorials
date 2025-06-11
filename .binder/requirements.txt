@@ -2,15 +2,20 @@
 # undeclared optional dependencies of functionalities we rely on
 #
 tqdm
+# Required by hats, was 1.24 before
 numpy>=2
-matplotlib>=3.7
-astropy>=5.3
+# Required by hats, was 3.7 before
+matplotlib>=3.10.3
+# Required by hats, was 5.3 before
+astropy>=6.1.5
 pyvo>=1.5
 astroquery>=0.4.10
-scipy>=1.10
+# Due to the numpy>=2 limit
+scipy>=1.13
 pyarrow>=10.0.1
 hpgeom
-pandas>=1.5.2
+# Required by hats via nested-pandas, was 1.5.2 before
+pandas>=2.2.3
 dask[distributed]
 psutil
 ray
