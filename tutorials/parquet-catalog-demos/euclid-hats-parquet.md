@@ -13,6 +13,10 @@ kernelspec:
 
 # Euclid Q1 Catalogs in HATS Parquet
 
+This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with python.
+
++++
+
 ## Learning Goals
 
 By the end of this tutorial, you will:
@@ -23,9 +27,8 @@ By the end of this tutorial, you will:
 
 +++
 
-## Introduction
+## 1. Introduction
 
-This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with python.
 The Collection includes a HATS Catalog (main data product), Margin Cache (10 arcsec), and Index Table (OBJECT_ID).
 The Catalog includes the twelve Euclid Q1 tables listed below, joined on the column 'OBJECT_ID' into a single Parquet dataset with 1,329 columns (one row per Euclid MER Object).
 Among them, Euclid has provided several different redshift measurements, several flux measurements for each Euclid band, and flux measurements for bands from several ground-based observatories -- in addition to morphological and other measurements.
@@ -34,12 +37,12 @@ These were produced for different science goals using different algorithms and/o
 Having all columns in the same dataset makes access convenient because the user doesn't have to make separate calls for data from different tables and/or join the results.
 However, figuring out which, e.g., flux measurements to use amongst so many can be challenging.
 In the sections below, we look at some of their distributions and reproduce figures from several papers in order to highlight some of the options and point out their differences.
-The Appendix contains important information about the schema of this Parquet dataset, especially the syntax of the column names.
+The Appendix explains how the columns in this Parquet dataset are named and organized.
 For more information about the meaning and provenance of a column, refer to the links provided with the list of tables below.
 
-### Euclid Q1 tables and docs
+### 1.1 Euclid Q1 tables and docs
 
-The Euclid Q1 HATS Catalog includes the following twelve Q1 tables[*], which are organized underneath the Euclid processing function (MER, PHZ, or SPE) that created it.
+The Euclid Q1 HATS Catalog includes the following twelve Q1 tables, which are organized underneath the Euclid processing function (MER, PHZ, or SPE) that created it.
 Links to the Euclid papers describing the processing functions are provided, as well as pointers for each table.
 Table names are linked to their original schemas.
 
@@ -65,9 +68,7 @@ See also:
 - [Frequently Asked Questions About Euclid Q1 data](https://euclid.caltech.edu/page/euclid-q1-data-faq) (hereafter, FAQ)
 - [Q1 Explanatory Supplement](https://euclid.esac.esa.int/dr/q1/expsup/)
 
-[*] Euclid typically calls these "catalogs", but this notebook uses "tables" to avoid any confusion with the HATS Catalog product.
-
-### Parquet, HEALPix, and HATS
+### 1.2 Parquet, HEALPix, and HATS
 
 Parquet, HEALPix, and HATS are described in more detail at [https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/](https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/).
 ([FIXME] Currently requires IPAC VPN. Update url when the page is published to ops.)
@@ -93,7 +94,7 @@ In brief:
 
 +++
 
-## Installs and imports
+## 2. Installs and imports
 
 +++
 
@@ -109,11 +110,11 @@ We rely on ``lsdb>=0.5.2``, ``hpgeom>=1.4``, ``numpy>=2.0``, and ``pyerfa>=2.0.1
 ```
 
 ```{code-cell}
-import os  # Determine number of CPUs (for parallelization)
-import dask.distributed  # Parallelize catalog queries
+# import os  # Determine number of CPUs (for parallelization)
+# import dask.distributed  # Parallelize catalog queries
+# import lsdb  # Query the catalog
+# import matplotlib.colors  # Make figures look nice
 import hpgeom
-import lsdb  # Query the catalog
-import matplotlib.colors  # Make figures look nice
 import matplotlib.pyplot as plt  # Create figures
 import numpy as np  # Math
 import pandas as pd  # Manipulate query results
@@ -121,6 +122,9 @@ import pyarrow.compute as pc  # Filter dataset
 import pyarrow.dataset  # Load the dataset
 import pyarrow.parquet  # Load the schema
 import pyarrow.fs  # Simple S3 filesystem pointer
+
+# Copy-on-write will become the default in pandas 3.0 and is generally more performant
+pd.options.mode.copy_on_write = True
 ```
 
 ```{tip}
@@ -137,11 +141,11 @@ make sure you have restarted the kernel since doing `pip install`. Then re-run t
 
 +++
 
-## 1. Setup
+## 3. Setup
 
 +++
 
-## 1.1 AWS S3 paths
+### 3.1 AWS S3 paths
 
 ```{code-cell}
 s3_bucket = "irsa-fornax-testdata"
@@ -151,19 +155,19 @@ euclid_hats_collection_uri = f"s3://{s3_bucket}/{euclid_prefix}"  # for lsdb
 euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_metadata"  # for pyarrow
 euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_common_metadata"  # for pyarrow
 
-# Temporary try/except to handle credentials in different environments before public release.
-try:
-    # If running from within IPAC's network, your IP address acts as your credentials so this should work.
-    lsdb.read_hats(euclid_hats_collection_uri)
-except PermissionError:
-    # If running from Fornax, credentials are provided automatically under the hood but
-    # lsdb ignores them in the call above. Construct a UPath which will pick up the credentials.
-    from upath import UPath
+# # Temporary try/except to handle credentials in different environments before public release.
+# try:
+#     # If running from within IPAC's network, your IP address acts as your credentials so this should work.
+#     lsdb.read_hats(euclid_hats_collection_uri)
+# except PermissionError:
+#     # If running from Fornax, credentials are provided automatically under the hood but
+#     # lsdb ignores them in the call above. Construct a UPath which will pick up the credentials.
+#     from upath import UPath
 
-    euclid_hats_collection_uri = UPath(euclid_hats_collection_uri)
+#     euclid_hats_collection_uri = UPath(euclid_hats_collection_uri)
 ```
 
-### 1.2 Helper functions
+### 3.2 Helper functions
 
 ```{code-cell}
 def magnitude_to_flux(magnitude: float) -> float:
@@ -201,23 +205,29 @@ def flux_to_magnitude(flux_col_name: str, color_col_names: tuple[str, str] | Non
     return mag_expression
 ```
 
-### 1.3 PyArrow dataset
+### 3.3 Load the catalog as a PyArrow dataset
 
 ```{code-cell}
 # Load the catalog as a PyArrow dataset. This is used in many examples below.
 dataset = pyarrow.dataset.parquet_dataset(euclid_parquet_metadata_path, partitioning="hive", filesystem=pyarrow.fs.S3FileSystem())
 ```
 
-### 1.4 Frequently used columns
+### 3.4 Frequently used columns
 
 +++
 
+The following columns will be used throughout this notebook.
+Many other columns are defined in the sections below where they are used.
 Descriptors generally come from the respective paper (Romelli, Tucci, or Le Brun) unless noted.
 
 ```{code-cell}
-# MER Object ID
+# Object ID set by the MER pipeline.
 OBJECT_ID = "OBJECT_ID"
+```
 
+Flux and source detection columns.
+
+```{code-cell}
 # Whether the source was detected in the VIS mosaic (1) or only in the NIR-stack mosaic (0).
 VIS_DET = "MER_VIS_DET"
 
@@ -226,16 +236,26 @@ VIS_DET = "MER_VIS_DET"
 # Otherwise, this is a non-physical NIR-stack flux and there was no VIS detection (aka, NIR-only).
 FLUX_TOTAL = "MER_FLUX_DETECTION_TOTAL"
 FLUXERR_TOTAL = "MER_FLUXERR_DETECTION_TOTAL"
+```
+
+Point-like and spurious indicators.
+
+```{code-cell}
+# Peak surface brightness minus the magnitude used for MER_POINT_LIKE_PROB.
+# Point-like: <-2.5. Compact: <-2.6. (Tucci)
+MUMAX_MINUS_MAG = "MER_MUMAX_MINUS_MAG"
+
+# Probability from the star-galaxy classifier. Heavily biased toward high purity.
+# This is always NaN for NIR-only objects (use MER_MUMAX_MINUS_MAG instead).
+POINTLIKE_PROB = "MER_POINT_LIKE_PROB"
 
 # Whether the detection has a >50% probability of being spurious (1=Yes, 0=No).
 SPURIOUS_FLAG = "MER_SPURIOUS_FLAG"
+```
 
-# Point-like morphology indicators.
-POINTLIKE_PROB = "MER_POINT_LIKE_PROB"  # Always NaN for NIR-only (use MER_MUMAX_MINUS_MAG instead)
-# Peak surface brightness minus magnitude in detection band.
-MUMAX_MINUS_MAG = "MER_MUMAX_MINUS_MAG"  # <-2.5 => point-like. <-2.6 => compact. (Tucci)
+PHZ classifications. These were generated by a probabilistic random forest supervised ML algorithm.
 
-# PHZ classifications were generated by a probabilistic random forest supervised ML algorithm.
+```{code-cell}
 PHZ_CLASS = "PHZ_PHZ_CLASSIFICATION"
 PHZ_CLASS_MAP = {
     1: "Star",
@@ -251,27 +271,18 @@ PHZ_CLASS_MAP = {
 }
 ```
 
-### 1.5 Euclid Deep Fields
+### 3.5 Euclid Deep Fields
 
 +++
 
+[FIXME] The notebook does not currently use these. Should either use them or remove them.
+
 Euclid Q1 includes data from three Euclid Deep Fields: EDF-N (North), EDF-S (South), EDF-F (Fornax; also in the southern hemisphere).
 There is also a small amount of data from a fourth field: LDN1641 (Lynds' Dark Nebula 1641), which was observed for technical reasons during Euclid's verification phase and mostly ignored here.
-There are two notable differences between regions:
-
-- EDF-N is closest to the galactic plane and thus contains a larger fraction of stars.
-- Different external data was available in EDF-N (DES with g, r, i, and z bands) vs EDF-S+F (UNIONS with u, g, r, i, and z bands -- UNIONS is a collaboration between CFIS, Pan-STARRS, HSC, WHIGS, and WISHES).
-  The Euclid processing pipelines used the external data to supplement Euclid data to, for example, measure colors that were then used for PHZ classifications.
-  Differences between the available data is the cause of various differences in pipeline handling and results.
-
-The EDF regions are well separated, so we can distinguish them using a simple cone search without having to be too picky about the radius.
+The regions are well separated, so we can distinguish them using a simple cone search without having to be too picky about the radius.
 Rather than using the RA and Dec values directly, we'll find a set of HEALPix order 9 pixels that cover each area.
 A column ('_healpix_9') of order 9 indexes was added to the catalog for this purpose.
 These will suffice for a simple and efficient cone search.
-
-[FIXME] The notebook does not currently use these but it might be good to do so.
-Maybe in the Magnitudes section to show the differences as a function of class.
-Anyway, either use it or remove it.
 
 ```{code-cell}
 # Column name of HEALPix order 9 pixel indexes.
@@ -294,7 +305,7 @@ ra, dec, radius = 52.932, -28.088, 3  # need ~10 sq deg
 edff_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius)
 ```
 
-## 2. Redshifts for cosmology
+## 4. Redshifts for cosmology
 
 +++
 
@@ -334,13 +345,13 @@ Load a quality PHZ sample. Cuts are from Tucci sec. 5.3.
 PHZ_FLAG = "PHZ_PHZ_FLAGS"
 
 # Columns we actually want to load.
-phz_columns = [OBJECT_ID, PHZ_Z, HEALPIX_9]
+phz_columns = [OBJECT_ID, PHZ_Z]
 
 # Filter for quality PHZ redshifts.
 phz_filter = (
     (pc.field(VIS_DET) == 1)  # No NIR-only objects.
     & (pc.field(FLUX_TOTAL) > magnitude_to_flux(24.5))  # I < 24.5
-    & (pc.divide(pc.field(FLUX_TOTAL), pc.field(FLUXERR_TOTAL)) > 5)  # I S/N > 5  # [CHECKME] Is this correct def of S/N?
+    & (pc.divide(pc.field(FLUX_TOTAL), pc.field(FLUXERR_TOTAL)) > 5)  # I band S/N > 5
     & ~pc.field(PHZ_CLASS).isin([1, 3, 5, 7])  # Exclude objects classified as star.
     & (pc.field(SPURIOUS_FLAG) == 0)  # MER quality
 )
@@ -361,12 +372,7 @@ PHYSPARAM_GAL_MSTAR = "PHYSPARAM_PHZ_PP_MEDIAN_STELLARMASS"  # log10(Stellar Mas
 # Columns we actually want to load.
 # We'll have pyarrow construct and return the sSFR, so we must pass a dict mapping column names to expressions.
 log10_ssfr = pc.subtract(pc.field(PHYSPARAM_GAL_SFR), pc.field(PHYSPARAM_GAL_MSTAR))
-pp_columns = {
-    PHYSPARAM_GAL_Z: pc.field(PHYSPARAM_GAL_Z),
-    "log10_ssfr": log10_ssfr,
-    OBJECT_ID: pc.field(OBJECT_ID),
-    HEALPIX_9: pc.field(HEALPIX_9),
-}
+pp_columns = {PHYSPARAM_GAL_Z: pc.field(PHYSPARAM_GAL_Z), "log10_ssfr": log10_ssfr, OBJECT_ID: pc.field(OBJECT_ID)}
 
 # Partial filter for quality PHYSPARAM redshifts.
 pp_galaxy_filter = (
@@ -485,7 +491,6 @@ Here, we reproduce Tucci Fig. 17 (left panel) except that we don't consider the 
 ```{code-cell}
 # Get the common objects and set axes data x (PHZ) and y (PHYSPARAM).
 phz_pp_df = phz_df.join(pp_df.loc[pp_final_filter], how="inner", lsuffix="phz", rsuffix="pp")
-# phz_pp_df = phz_df.join(pp_df.loc[pp_final_filter & pp_df[HEALPIX_9].isin(edfn_k9_pixels)], how="inner", lsuffix="phz", rsuffix="pp")
 x, y = phz_pp_df[PHZ_Z], phz_pp_df[PHYSPARAM_GAL_Z]
 one_to_one_linspace = np.linspace(-0.01, 6, 100)
 
@@ -535,7 +540,7 @@ plt.colorbar(cb)
 
 +++
 
-## 3. Classification thresholds - purity vs completeness
+## 5. Classification thresholds - purity vs completeness
 
 +++
 
@@ -559,11 +564,10 @@ class_columns = {"I magnitude": flux_to_magnitude(FLUX_TOTAL), MUMAX_MINUS_MAG: 
 ```{code-cell}
 # Load data.
 classes_df = dataset.to_table(columns=class_columns, filter=class_filter).to_pandas()
-# 30s
-
-# Plot point-like morphology vs brightness as a function of class.
-# Here, we reproduce the first three panels of Tucci Fig. 6, combining top and bottom.
 ```
+
+Plot point-like morphology vs brightness as a function of class.
+Here, we reproduce the first three panels of Tucci Fig. 6, combining top and bottom.
 
 ```{code-cell}
 fig, axes = plt.subplots(1, 3, figsize=(20, 6))
@@ -579,7 +583,8 @@ for ax, (class_name, class_df) in zip(axes, classes_df.groupby(PHZ_CLASS)):
     ax.set_ylim(15, 27)
 ```
 
-Objects to the left of the vertical line are point-like.
+MER_MUMAX_MINUS_MAG is the peak surface brightness above the background minus the magnitude that was used to compute MER_POINT_LIKE_PROB.
+Objects to the left of the vertical line (<-2.5) are point-like.
 Stars are highly concentrated there, especially those that are not faint (I < 24.5), which we should expect given Euclid's requirement for a pure sample.
 Also as we should expect, most galaxies appear to the right of this line.
 However, notice the strip of bright (e.g., I < 23) "galaxies" that are point-like.
@@ -591,7 +596,7 @@ Many QSOs are likely to be missing from the expected region due to the overlap o
 
 +++
 
-## 4. Magnitudes
+## 6. Magnitudes
 
 +++
 
@@ -635,7 +640,6 @@ Load data.
 
 ```{code-cell}
 mags_df = dataset.to_table(columns=mag_columns, filter=mag_filter).to_pandas()
-# 30s
 ```
 
 Given Euclid's core science goals, we'll take the template fluxes as our baseline in this section.
@@ -661,7 +665,7 @@ for (class_name, class_ids), class_color in zip(classes.items(), class_colors):
     for ax, band in zip(axs, bands):
         ax.hist(class_df[band], label=class_name, color=class_color, **hist_kwargs)
 
-    # Get the objects that are in this class and possibly others.
+    # Get the objects that were accepted as multiple classes.
     class_df = mags_df.loc[mags_df[PHZ_CLASS].isin(class_ids)]
     label = "+Galaxy" if class_name != "Galaxy" else "+any"
     # Of those objects, restrict to the ones that are point-like.
@@ -751,7 +755,7 @@ The offset is more pronounced for point-like objects, likely due to the PSF hand
 
 +++
 
-## 5. Galaxy morphology
+## 7. Galaxy morphology
 
 +++
 
@@ -771,7 +775,7 @@ morph_filter = (
     & (pc.field(VIS_DET) == 1)
     & (pc.field(FLUX_TOTAL) > magnitude_to_flux(23))  # I<23 recommended for reliable Sérsic fits.
     & (pc.field(SPURIOUS_FLAG) == 0)
-    & (pc.field("MER_POINT_LIKE_PROB") <= 0.1)
+    & (pc.field(POINTLIKE_PROB) <= 0.1)
     # Sec. 4. Remove an artificial peak at the limit of the param space. Recommended for any Sérsic-based analysis.
     & (pc.field("MORPH_SERSIC_SERSIC_VIS_INDEX") <= 5.45)
     # Secs. 4 & 5 make additional quality cuts that we skip for simplicity.
@@ -841,7 +845,7 @@ The right panel also largely agrees with expectations.
 
 +++
 
-## 6. NIR-only detections: high-redshift galaxy or nearby brown dwarf?
+## 8. NIR-only detections: high-redshift galaxy or nearby brown dwarf?
 
 +++
 
@@ -971,7 +975,7 @@ targets_columns = [
 
 # Load data.
 targets_filter = pc.field(OBJECT_ID).isin(targets.keys())
-targets_df = dataset.to_table(columns=targets_columns, filter=targets_filter).to_pandas()  # 1m 7s
+targets_df = dataset.to_table(columns=targets_columns, filter=targets_filter).to_pandas()
 ```
 
 ```{code-cell}
@@ -1121,6 +1125,6 @@ schema.names[-5:]
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-06-11
+**Updated:** 2025-06-16
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
