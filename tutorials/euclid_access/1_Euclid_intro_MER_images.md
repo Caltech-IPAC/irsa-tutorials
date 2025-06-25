@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -103,15 +103,14 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 
 There are currently four collections available:
 
-1. euclid_ero -- the Early Release Observations, for more information see [Euclid ERO documentation at IRSA](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_ero.html).
-2. euclid_DpdMerBksMosaic -- This is the collection of interest for us in this notebook, it contains all the Q1 MER mosaic data. For more information on MER mosaics, see the "Introduction" above.
-3. euclid_DpdVisCalibratedQuadFrame -- This collection contains the VIS instrument Calibrated images. Please note these data are not stacked, so there are four dither positions for every observation ID and two calibration frames.
-4. euclid_DpdNirCalibratedFrame -- This collection contains the NIR instrument Calibrated images. Please note these data are not stacked, so there are four dither positions for every observation ID.
+* `'euclid_ero'` -- the Early Release Observations, for more information see [Euclid ERO documentation at IRSA](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_ero.html).
+* `'euclid_DpdMerBksMosaic'` -- This is the collection of interest for us in this notebook, it contains all the Q1 MER mosaic data. For more information on MER mosaics, see the "Introduction" above.
+* `'euclid_DpdVisCalibratedQuadFrame'` -- This collection contains the VIS instrument Calibrated images. Please note these data are not stacked, so there are four dither positions for every observation ID and two calibration frames.
+* `'euclid_DpdNirCalibratedFrame'` -- This collection contains the NIR instrument Calibrated images. Please note these data are not stacked, so there are four dither positions for every observation ID.
 
 For more information on the VIS and NIR calibrated frames, please read the [IRSA User Guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf)
 
 In this notebook, we will focus on downloading and visualizing the MER mosaic data.
-
 
 ```{code-cell} ipython3
 image_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
