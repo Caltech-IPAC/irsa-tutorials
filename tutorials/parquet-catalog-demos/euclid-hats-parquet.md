@@ -393,33 +393,48 @@ pp_df = pp_df.set_index(OBJECT_ID).sort_index()
 pp_final_filter = pp_df["log10_ssfr"] < -8.2
 ```
 
-Load a quality SPE sample. Cuts are from Le Brun sec. 3.3.
+Load a quality SPE sample. Cuts are from Le Brun sec. 3.3 and 6.2.
 
 The NISP instrument was built to target Halpha emitting galaxies, which effectively means 0.9 < z < 1.8.
-SPE redshifts are reliable in that regime, but this represents <2% of the total delivered by the SPE pipeline.
-So it's crucial to make cuts in order to get it.
+SPE redshifts are reliable in that regime.
+However, this represents <2% of the total delivered by the SPE pipeline, so it's crucial to make cuts in order to get it.
 
 ```{code-cell}
 # SPE probability of the rank 0 (best) redshift estimate, assuming galaxy.
 SPE_GAL_Z_PROB = "Z_GALAXY_CANDIDATES_SPE_Z_PROB_RANK0"
+# [TODO] describe
+HALPHA_LINE_FLUX = "LINES_SPE_LINE_FLUX_GF_RANK0_Halpha"
+HALPHA_LINE_SNR = "LINES_SPE_LINE_SNR_GF_RANK0_Halpha"
+EMISSION_LINE_WIDTH = "MODELS_GALAXY_SPE_VEL_DISP_E_RANK0"
 
 # Columns we actually want to load.
 spe_columns = [SPE_GAL_Z, OBJECT_ID]
 
-# Partial filter for quality SPE galaxy redshifts.
-spe_filter = pc.field(SPE_GAL_Z_PROB) > 0.99
-# [FIXME] & (pc.field(linewidth) < 680). Add when Halpha line is added to the catalog.
-# Later, cut to z target range and
-# sec. 6.2: Halpha flux > 2e-16 erg /s/cm2 and SN>3.5
+# Filter for quality SPE galaxy redshifts.
+spe_filter = (
+    # Euclid's target redshift range.
+    (pc.field(SPE_GAL_Z) > 0.9)
+    & (pc.field(SPE_GAL_Z) < 1.8)
+    # MER quality
+    & (pc.field(SPURIOUS_FLAG) == 0)
+    & (pc.field("MER_DET_QUALITY_FLAG") < 4)
+    # High quality SPE galaxies.
+    & (pc.field(SPE_GAL_Z_PROB) > 0.99)  # [FIXME] Andreas says > 0.999. Also mentioned in sec. 6.2.
+    & (pc.field(EMISSION_LINE_WIDTH) < 680)
+    # Halpha emitters.
+    & (pc.field(HALPHA_LINE_FLUX) > 2e-16)
+    & (pc.field(HALPHA_LINE_SNR) > 3.5)  # [FIXME] Tiffany's notebook uses > 5.
+    # These make no difference
+    # & (pc.field("LINES_SPE_LINE_N_DITH_RANK0_Halpha") >= 3)  # all values in this column = 0
+    # & (pc.field("Z_SPE_N_DITH_MED") >= 3)
+    # & (pc.field("Z_SPE_ERROR_FLAG") == 0)
+    # & (pc.field("Z_SPE_GAL_ERROR_FLAG") == 0)
+)
 
 # Execute the filter and load.
 spe_df = dataset.to_table(columns=spe_columns, filter=spe_filter).to_pandas()
 spe_df = spe_df.set_index(OBJECT_ID).sort_index()
 # 27s
-
-# Final filter, to be applied later. Objects within target redshift range.
-spe_final_filter = (spe_df[SPE_GAL_Z] > 0.9) & (spe_df[SPE_GAL_Z] < 1.8)
-# [FIXME] Add more when the columns are available.
 ```
 
 Plot redshift distributions
@@ -445,22 +460,19 @@ ax.hist(pp_df.loc[pp_final_filter, PHYSPARAM_GAL_Z], **pp_kwargs, **hist_kwargs)
 # SPE
 spe_kwargs = dict(label=SPE_GAL_Z + " (filtered)", color=tbl_colors["SPE_GAL"], linestyle=":")
 ax.hist(spe_df[SPE_GAL_Z], **spe_kwargs, **hist_kwargs)
-# Impose our final cuts.
-spe_kwargs.update(label=SPE_GAL_Z + " (quality)", linestyle="-")
-ax.hist(spe_df.loc[spe_final_filter, SPE_GAL_Z], **spe_kwargs, **hist_kwargs)
 
 ax.set_xlabel("Redshift")
 ax.set_ylabel("Counts")
 plt.legend()
 ```
 
-The orange distribution is a quality sample of the redshifts (best point estimates) generated for cosmology by a Bayesian template-fitting code.
+The orange distribution is a quality sample of the redshifts (best point estimate) generated for cosmology by a Bayesian template-fitting code.
 The maximum is z ~ 6, due to the model's input parameters.
 Green represents redshifts that were generated to study galaxies' physical properties by a supervised learning, k-nearest neighbors algorithm.
-The maximum is z ~ 7, again due to model input parameters.
+The maximum is z ~ 7, again due to model inputs.
 Several quality cuts were applied to produce the dotted-line sample, but this still includes a population of problematic galaxies for which the solutions pointed to unrealistically young ages and very high specific star formation rates.
 The green solid line filters those out and represents a quality sample for this redshift estimate.
-Purple represents the spectroscopic redshifts (best point estimates)
+Purple represents the spectroscopic redshifts (best point estimate).
 The dotted line has been filtered for reliable (SPE) galaxy solutions and the maximum is z ~ 5.
 There is a clear bump between about 0.9 < z < 1.8 which results from a combination of the NISP instrument parameters (tuned to detect Halpha) and a model prior that strongly favored solutions in this regime.
 However much more drastic cuts are needed to obtain a trustworthy sample.
@@ -489,7 +501,7 @@ Compare PHZ to PHYSPARAM.
 Here, we reproduce Tucci Fig. 17 (left panel) except that we don't consider the problematic galaxies nor do we impose cuts on magnitude or region (EDF-F).
 
 ```{code-cell}
-# Get the common objects and set axes data x (PHZ) and y (PHYSPARAM).
+# Get the common objects and set axes data (PHZ on x, PHYSPARAM on y).
 phz_pp_df = phz_df.join(pp_df.loc[pp_final_filter], how="inner", lsuffix="phz", rsuffix="pp")
 x, y = phz_pp_df[PHZ_Z], phz_pp_df[PHYSPARAM_GAL_Z]
 one_to_one_linspace = np.linspace(-0.01, 6, 100)
@@ -513,8 +525,8 @@ The two outlier clouds are very roughly similar to those in Tucci Fig. 7 which w
 Compare PHZ to SPE
 
 ```{code-cell}
-# Get the common objects and set axes data x (PHZ) and y (SPE).
-phz_spe_df = phz_df.join(spe_df.loc[spe_final_filter], how="inner", lsuffix="phz", rsuffix="spe")
+# Get the common objects and set axes data (PHZ on x, SPE on y).
+phz_spe_df = phz_df.join(spe_df, how="inner", lsuffix="phz", rsuffix="spe")
 x, y = phz_spe_df[PHZ_Z], phz_spe_df[SPE_GAL_Z]
 one_to_one_linspace = np.linspace(0.89, 1.81, 100)
 
@@ -751,7 +763,7 @@ plt.tight_layout()
 
 The template - aperture magnitude difference is fairly tightly clustered around 0 for extended objects (top row) but the outliers are asymmetric (fractions above and below zero are noted).
 We see a positive offset which indicates a fainter template-fit magnitude, as we should expect given that the templates do a better job of excluding contaminating light from nearby sources.
-The offset is more pronounced for point-like objects, likely due to the PSF handling mentioned above, and we are reminded that aperture magnitudes are more reliable here.
+The offset is more pronounced for point-like objects (bottom row), likely due to the PSF handling mentioned above, and we are reminded that aperture magnitudes are more reliable here.
 
 +++
 
@@ -861,14 +873,14 @@ nironly_nonspurious_filter = (pc.field(VIS_DET) == 0) & (pc.field(SPURIOUS_FLAG)
 ```
 
 NIR-only objects are a mix of nearby brown dwarfs and high-redshift galaxies & quasars.
-These two broad, but very different, types of objects overlap in relevant color spaces and can be difficult to separate.
+These two broad but very different types of objects overlap in relevant color spaces and can be difficult to separate.
 (Weaver et al., 2024).
 Spectra will often be required to confirm membership, but we can use photometric properties produced by PHZ to make some useful cuts first.
 We'll track the following three objects to illustrate:
 
-- OBJECT_ID: -523574860290315045. T4 dwarf, discovered spectroscopically ([Dominguez-Tagle et al., 2025](https://arxiv.org/abs/2503.22442)).
-- OBJECT_ID: -600367386508373277. L-type dwarf, spectroscopically confirmed ([Zhang, Lodieu, and Martín, 2024](https://arxiv.org/abs/2403.15288) Table C.2. '04:00:08.99 −50:50:14.4'. Found in Q1 via cone search; separation = 1.6 arcsec).
-- OBJECT_ID: -531067351279302418. Star-forming galaxy at z=5.78, spectroscopically confirmed ([Bunker et al., 2003](https://arxiv.org/abs/astro-ph/0302401). Found in Q1 via cone search; separation = 0.59 arcsec).
+- OBJECT_ID: -523574860290315045. **T4 dwarf**, discovered spectroscopically ([Dominguez-Tagle et al., 2025](https://arxiv.org/abs/2503.22442)).
+- OBJECT_ID: -600367386508373277. **L-type dwarf**, spectroscopically confirmed ([Zhang, Lodieu, and Martín, 2024](https://arxiv.org/abs/2403.15288) Table C.2. '04:00:08.99 −50:50:14.4'. Found in Q1 via cone search; separation = 1.6 arcsec).
+- OBJECT_ID: -531067351279302418. **Star-forming galaxy at z=5.78**, spectroscopically confirmed ([Bunker et al., 2003](https://arxiv.org/abs/astro-ph/0302401). Found in Q1 via cone search; separation = 0.59 arcsec).
 
 ```{code-cell}
 targets = {
@@ -972,7 +984,9 @@ targets_columns = [
     # "Z_QSO_CANDIDATES_SPE_PDF_ZMAX_RANK0",
     # "Z_QSO_CANDIDATES_SPE_PDF_DELTAZ_RANK0",
 ]
+```
 
+```{code-cell}
 # Load data.
 targets_filter = pc.field(OBJECT_ID).isin(targets.keys())
 targets_df = dataset.to_table(columns=targets_columns, filter=targets_filter).to_pandas()
@@ -1023,7 +1037,7 @@ for ax, (target_id, (target_name, target_color)) in zip(axes, targets.items()):
 
 In the left panel (T dwarf), we see that the photo-z PDF produced by the NIR-only branch is very strongly peaked at z=0 with a small secondary bump near z=7, consistent with its placement in the previous figure.
 Recall that PHZ_PHZ_PDF was produced using galaxy models, regardless of the object's class.
-In the middle panel (L dwarf), we see the multi-peaked NIR PDF that was guessed at based on the previous figure.
+In the middle panel (L dwarf), we see the broad and multi-peaked NIR PDF that was guessed at based on the previous figure.
 While the strongest peak is near z=8 (a QSO solution, perhaps?), there are also peaks at z=0 (consistent with a star) and near z=1.75 (consistent with the PHZ (galaxy) solution) which are prominent enough to reduce the probability of z>6 below the 0.8 threshold.
 In the right panel (Galaxy), we see good agreement between the PDFs except at z=0.
 
@@ -1054,7 +1068,7 @@ s3_filesystem = pyarrow.fs.S3FileSystem()
 schema = pyarrow.parquet.read_schema(euclid_parquet_schema_path, filesystem=s3_filesystem)
 ```
 
-There are more than 1300 columns in this dataset.
+There are almost 1600 columns in this dataset.
 
 ```{code-cell}
 print(f"{len(schema)} columns total")
@@ -1069,6 +1083,7 @@ To find all columns from a given table, search for column names that start with 
 ```{code-cell}
 # Find all column names from the PHZ table.
 phz_columns = [name for name in schema.names if name.startswith("PHZ_")]
+
 print(f"{len(phz_columns)} columns from the PHZ table. First four are:")
 phz_columns[:4]
 ```
@@ -1085,6 +1100,7 @@ They are given in microjanskys, so all flux columns can be found by searching th
 ```{code-cell}
 # Find all flux columns.
 flux_columns = [field.name for field in schema if field.metadata[b"unit"] == b"uJy"]
+
 print(f"{len(flux_columns)} flux columns. First four are:")
 flux_columns[:4]
 ```
@@ -1125,6 +1141,6 @@ schema.names[-5:]
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-06-16
+**Updated:** 2025-06-29
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
