@@ -148,23 +148,14 @@ make sure you have restarted the kernel since doing `pip install`. Then re-run t
 ### 3.1 AWS S3 paths
 
 ```{code-cell}
-s3_bucket = "irsa-fornax-testdata"
-euclid_prefix = "EUCLID/q1/catalogues"
+s3_bucket = "nasa-irsa-euclid-q1"
+euclid_prefix = "contributed/q1/merged_objects/hats"
 
 euclid_hats_collection_uri = f"s3://{s3_bucket}/{euclid_prefix}"  # for lsdb
-euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_metadata"  # for pyarrow
-euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_common_metadata"  # for pyarrow
+euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_metadata"  # for pyarrow
+euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_common_metadata"  # for pyarrow
 
-# # Temporary try/except to handle credentials in different environments before public release.
-# try:
-#     # If running from within IPAC's network, your IP address acts as your credentials so this should work.
-#     lsdb.read_hats(euclid_hats_collection_uri)
-# except PermissionError:
-#     # If running from Fornax, credentials are provided automatically under the hood but
-#     # lsdb ignores them in the call above. Construct a UPath which will pick up the credentials.
-#     from upath import UPath
-
-#     euclid_hats_collection_uri = UPath(euclid_hats_collection_uri)
+s3_filesystem = pyarrow.fs.S3FileSystem(anonymous=True)
 ```
 
 ### 3.2 Helper functions
@@ -209,7 +200,7 @@ def flux_to_magnitude(flux_col_name: str, color_col_names: tuple[str, str] | Non
 
 ```{code-cell}
 # Load the catalog as a PyArrow dataset. This is used in many examples below.
-dataset = pyarrow.dataset.parquet_dataset(euclid_parquet_metadata_path, partitioning="hive", filesystem=pyarrow.fs.S3FileSystem())
+dataset = pyarrow.dataset.parquet_dataset(euclid_parquet_metadata_path, partitioning="hive", filesystem=s3_filesystem)
 ```
 
 ### 3.4 Frequently used columns
@@ -434,7 +425,7 @@ spe_filter = (
 # Execute the filter and load.
 spe_df = dataset.to_table(columns=spe_columns, filter=spe_filter).to_pandas()
 spe_df = spe_df.set_index(OBJECT_ID).sort_index()
-# 27s
+# 1m 2s
 ```
 
 Plot redshift distributions
@@ -1061,7 +1052,6 @@ Here, we follow IRSA's
 to inspect the parquet schema.
 
 ```{code-cell}
-s3_filesystem = pyarrow.fs.S3FileSystem()
 schema = pyarrow.parquet.read_schema(euclid_parquet_schema_path, filesystem=s3_filesystem)
 ```
 
