@@ -37,11 +37,18 @@ from upath import UPath
 ```
 
 ```{code-cell}
-s3_bucket = "irsa-fornax-testdata"
-euclid_prefix = "EUCLID/q1/catalogues"
+import top
 
-euclid_hats_collection_uri = UPath(f"s3://{s3_bucket}/{euclid_prefix}")  # for lsdb
-euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/hats/dataset/_metadata"  # for pyarrow
+RUN_ID = "euclid-hats-query-methods"
+top.tag(run_id=RUN_ID, time="start-run")
+```
+
+```{code-cell}
+s3_bucket = "nasa-irsa-euclid-q1"
+euclid_prefix = "contributed/q1/merged_objects/hats"
+
+euclid_hats_collection_uri = f"s3://{s3_bucket}/{euclid_prefix}"  # for lsdb
+euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_metadata"  # for pyarrow
 
 max_magnitude = 24.5
 min_flux = 10 ** ((max_magnitude - 23.9) / -2.5)
@@ -49,8 +56,8 @@ min_flux = 10 ** ((max_magnitude - 23.9) / -2.5)
 
 ```{code-cell}
 # Columns we actually want to load.
-OBJECT_ID = "OBJECT_ID"
-PHZ_Z = "PHZ_PHZ_MEDIAN"
+OBJECT_ID = "object_id"
+PHZ_Z = "phz_phz_median"
 columns = [OBJECT_ID, PHZ_Z]
 ```
 
@@ -58,13 +65,15 @@ columns = [OBJECT_ID, PHZ_Z]
 
 ```{code-cell}
 %%time
+top.tag(run_id=RUN_ID, time="pyarrow")
+
 # Construct filter for quality PHZ redshifts.
 phz_filter = (
-    (pc.field("MER_VIS_DET") == 1)  # No NIR-only objects.
-    & (pc.field("MER_FLUX_DETECTION_TOTAL") > min_flux)  # I < 24.5
-    & (pc.divide(pc.field("MER_FLUX_DETECTION_TOTAL"), pc.field("MER_FLUXERR_DETECTION_TOTAL")) > 5)  # I band S/N > 5
-    & ~pc.field("PHZ_PHZ_CLASSIFICATION").isin([1, 3, 5, 7])  # Exclude objects classified as star.
-    & (pc.field("MER_SPURIOUS_FLAG") == 0)  # MER quality
+    (pc.field("mer_vis_det") == 1)  # No NIR-only objects.
+    & (pc.field("mer_flux_detection_total") > min_flux)  # I < 24.5
+    & (pc.divide(pc.field("mer_flux_detection_total"), pc.field("mer_fluxerr_detection_total")) > 5)  # I band S/N > 5
+    & ~pc.field("phz_phz_classification").isin([1, 3, 5, 7])  # Exclude objects classified as star.
+    & (pc.field("mer_spurious_flag") == 0)  # MER quality
 )
 
 # Load.
@@ -89,6 +98,9 @@ This query has no spatial component and needs to look at all the files, so below
 
 ```{code-cell}
 %%time
+top.tag(run_id=RUN_ID, time="pyarrow + dask")
+
+
 @dask.delayed
 def load_fragment(frag):
     table = frag.to_table(filter=phz_filter, columns=columns)
@@ -119,17 +131,19 @@ pa_df.equals(padask_df)
 
 ```{code-cell}
 %%time
+top.tag(run_id=RUN_ID, time="lsdb")
+
 # Construct the query equivalent of phz_filter.
 query = (
-    "MER_VIS_DET == 1"
-    f" & MER_FLUX_DETECTION_TOTAL > {min_flux}"
-    " & MER_FLUX_DETECTION_TOTAL / MER_FLUXERR_DETECTION_TOTAL > 5"
-    " & PHZ_PHZ_CLASSIFICATION not in [1,3,5,7]"
-    " & MER_SPURIOUS_FLAG == 0"
+    "mer_vis_det == 1"
+    f" & mer_flux_detection_total > {min_flux}"
+    " & mer_flux_detection_total / mer_fluxerr_detection_total > 5"
+    " & phz_phz_classification not in [1,3,5,7]"
+    " & mer_spurious_flag == 0"
 )
 
 # We don't want to load these columns, but we have to in order to use them in the filter.
-extra_columns = ["MER_VIS_DET", "MER_FLUX_DETECTION_TOTAL", "PHZ_PHZ_CLASSIFICATION", "MER_SPURIOUS_FLAG", "MER_FLUXERR_DETECTION_TOTAL"]
+extra_columns = ["mer_vis_det", "mer_flux_detection_total", "phz_phz_classification", "mer_spurious_flag", "mer_fluxerr_detection_total"]
 
 # Load.
 client = dask.distributed.Client(n_workers=os.cpu_count(), threads_per_worker=2, memory_limit=None)
@@ -151,4 +165,11 @@ lsdb_df
 ```{code-cell}
 # Check for equality.
 lsdb_df[PHZ_Z].astype("float32").equals(pa_df[PHZ_Z])
+
+top.tag(run_id=RUN_ID, time="end-run")
+
+
+tl = top.load_top_output(run_id=RUN_ID, named_pids_only=False)
+fig = tl.plot_overview()
+fig.savefig(tl.base_dir / "top.png")
 ```
