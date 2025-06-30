@@ -30,19 +30,20 @@ By the end of this tutorial, you will:
 ## 1. Introduction
 
 The Collection includes a HATS Catalog (main data product), Margin Cache (10 arcsec), and Index Table (object_id).
-The Catalog includes the twelve Euclid Q1 tables listed below, joined on the column 'object_id' into a single Parquet dataset with 1,329 columns (one row per Euclid MER Object).
-Among them, Euclid has provided several different redshift measurements, several flux measurements for each Euclid band, and flux measurements for bands from several ground-based observatories -- in addition to morphological and other measurements.
-These were produced for different science goals using different algorithms and/or configurations.
+The Catalog includes the twelve Euclid Q1 tables listed below, joined on the column 'object_id' into a single Parquet dataset with 1,594 columns.
+There are 29,953,430 rows, one per Euclid MER Object, and the total data volume is 400 GB.
+The data includes several different redshift measurements, several flux measurements for each Euclid band, and flux measurements for bands from several ground-based observatories -- in addition to morphological and other measurements.
+Each was produced for different science goals using different algorithms and/or configurations.
 
 Having all columns in the same dataset makes access convenient because the user doesn't have to make separate calls for data from different tables and/or join the results.
-However, figuring out which, e.g., flux measurements to use amongst so many can be challenging.
+However, figuring out which columns to use amongst so many can be challenging.
 In the sections below, we look at some of their distributions and reproduce figures from several papers in order to highlight some of the options and point out their differences.
 The Appendix explains how the columns in this Parquet dataset are named and organized.
 For more information about the meaning and provenance of a column, refer to the links provided with the list of tables below.
 
 ### 1.1 Euclid Q1 tables and docs
 
-The Euclid Q1 HATS Catalog includes the following twelve Q1 tables, which are organized underneath the Euclid processing function (MER, PHZ, or SPE) that created it.
+The Euclid Q1 HATS Catalog includes the following 14 Q1 tables which are organized underneath the Euclid processing function (MER, PHZ, or SPE) that created it.
 Links to the Euclid papers describing the processing functions are provided, as well as pointers for each table.
 Table names are linked to their original schemas.
 
@@ -53,7 +54,7 @@ Table names are linked to their original schemas.
 - PHZ - [Euclid Collaboration: Tucci et al., 2025](https://arxiv.org/pdf/2503.15306) (hereafter, Tucci)
   - [phz](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputcatalog.html#photo-z-catalog) - Sec. 5 (phz_photo_z)
   - [class](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#classification-catalog) - Sec. 4 (phz_classification)
-  - [physparam](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#physical-parameters-catalog) - Sec. 6 (6.1; phz_physical_parameters) _Notice that this is **galaxies** and uses a different algorithm._
+  - [physparam](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#physical-parameters-catalog) - Sec. 6 (6.1; phz_physical_parameters) _Notice this is for **galaxies**._
   - [galaxysed](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputcatalog.html#galaxy-sed-catalog) - App. B (B.1 phz_galaxy_sed)
   - [physparamqso](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#qso-physical-parameters-catalog) - Sec. 6 (6.2; phz_qso_physical_parameters)
   - [starclass](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#star-template) - Sec. 6 (6.3; phz_star_template)
@@ -61,6 +62,8 @@ Table names are linked to their original schemas.
   - [physparamnir](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/phzdpd/dpcards/phz_phzpfoutputforl3.html#nir-physical-parameters-catalog) - Sec. 6 (6.4; phz_nir_physical_parameters)
 - SPE - [Euclid Collaboration: Le Brun et al., 2025](https://arxiv.org/pdf/2503.15308) (hereafter, Le Brun)
   - [z](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/spedpd/dpcards/spe_spepfoutputcatalog.html#redshift-catalog) - Sec. 2 (spectro_zcatalog_spe_quality, spectro_zcatalog_spe_classification, spectro_zcatalog_spe_galaxy_candidates, spectro_zcatalog_spe_star_candidates, and spectro_zcatalog_spe_qso_candidates)
+  - [lines](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/spedpd/dpcards/spe_spepfoutputcatalog.html#lines-catalog) line measurements (HDU1) rows with SPE_LINE_NAME == Halpha only - Sec. 5 (spectro_line_features_catalog_spe_line_features_cat) _Notice that lines were identified assuming **galaxy** regardless of the classification._
+  - [models](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/spedpd/dpcards/spe_spepfoutputcatalog.html#models-catalog) galaxy candidates (HDU2) only - Sec. 5 (spectro_model_catalog_spe_lines_catalog)
 
 See also:
 
@@ -1035,19 +1038,32 @@ In the right panel (Galaxy), we see good agreement between the PDFs except at z=
 
 ## Appendix: Schema details
 
-This Euclid Q1 HATS Catalog contains the twelve Euclid tables listed in the introduction, joined on 'object_id' into a single dataset.
-In addition, the Euclid 'TILEID' for each object has been added, as well as a few HATS- and HEALPix-related columns.
-All Euclid column names other than 'object_id' and 'tileid' have the table name prepended (e.g., 'DECLINATION' -> 'MER_DECLINATION').
-In addition, all non-alphanumeric characters have been replaced with an underscore for compatibility with various libraries and services (e.g., 'E(B-V)' -> 'PHYSPARAMQSO_E_B_V_').
-Finally, the (SPE) Z table required special handling, as follows:
+This Euclid Q1 HATS Catalog contains the 14 Euclid tables listed in the introduction, joined on 'object_id' into a single parquet dataset.
+In addition, the Euclid 'tileid' for each object has been added, as well as a few HATS- and HEALPix-related columns.
+All Euclid column names have been lower-cased and the table name has been prepended (e.g., 'FLUX_H_TEMPLFIT' -> 'mer_flux_h_templift'), except for the following:
 
-The original FITS files for the Z table contain the spectroscopic redshift estimates for GALAXY_CANDIDATES, STAR_CANDIDATES, and QSO_CANDIDATES (in HDUs 3, 4, and 5 respectively) which required special handling to be included in this Parquet product.
-There are up to 5 redshift estimates per 'object_id', per HDU.
-For the Parquet, these were pivoted so that there is one row per 'object_id' in order to facilitate the table joins.
-The resulting columns were named by combining the table name (Z), the HDU name, the original column name, and the rank of the given redshift estimate (i.e., the value in the original 'SPE_RANK' column).
-For example, the 'SPE_PDF' column for the highest ranked redshift estimate in the 'GALAXY_CANDIDATES' table is called 'Z_GALAXY_CANDIDATES_SPE_PDF_RANK0'.
+- object_id : Euclid MER Object ID. Unique identifier of a row in this dataset.
+- tileid : ID of the Euclid Tile the object was detected in.
+- ra : Right ascension. This is 'RIGHT_ASCENSION' from the 'mer' table. Named shortened to match other IRSA services.
+- dec : Declination. This is 'DECLINATION' from the 'mer' table. Named shortened to match other IRSA services.
 
-Here, we follow IRSA's
+In addition to the above changes, all non-alphanumeric characters in column names have been replaced with an underscore for compatibility with various libraries and services (e.g., 'E(B-V)' -> 'physparamqso_e_b_v_').
+Finally, the SPE tables 'z', 'lines', and 'models' required special handling as follows:
+
+- z : The original FITS files contain the spectroscopic redshift estimates for GALAXY_CANDIDATES, STAR_CANDIDATES, and QSO_CANDIDATES (HDUs 3, 4, and 5 respectively) with up to 5 estimates per 'object_id', per HDU.
+  For the parquet dataset, these were pivoted so that there is one row per 'object_id' in order to facilitate the table joins.
+  The resulting columns were named by combining the table name (z), the HDU name, the original column name, and the rank of the given redshift estimate (i.e., the value in the original 'SPE_RANK' column).
+  For example, the 'SPE_PDF' column for the highest ranked redshift estimate in the 'GALAXY_CANDIDATES' table is called 'z_galaxy_candidates_spe_pdf_rank0'.
+- lines : The parquet dataset only includes the rows from HDU1 with 'SPE_LINE_NAME' == 'Halpha'.
+  Similar to above, there are up to 5 sets of columns per 'object_id', one per redshift estimate.
+  Column names have been appended with both the rank and the line name.
+  For example, the column originally called 'SPE_LINE_FLUX_GF' is named 'lines_spe_line_flux_gf_rank0_halpha' for the Halpha line identified with the highest ranked redshift estimate.
+- models : The parquet dataset only includes HDU2 -- the model parameters for the galaxy solutions.
+  This table has the same structure as 'z'.
+  In addition to the table name, 'galaxy' has been appended to the column names.
+  For example, the column originally called 'SPE_VEL_DISP_E' is named 'models_galaxy_spe_vel_disp_e_rank0' for the velocity dispersion of emission lines needed to fit the highest ranked galaxy redshift estimate.
+
+Below, we follow IRSA's
 [Cloud Access notebook](https://caltech-ipac.github.io/irsa-tutorials/tutorials/cloud_access/cloud-access-intro.html#navigate-a-catalog-and-perform-a-basic-query)
 to inspect the parquet schema.
 
@@ -1066,6 +1082,7 @@ print(f"{len(schema)} columns total")
 +++
 
 To find all columns from a given table, search for column names that start with the table name followed by an underscore.
+Table names are given in section 1.1.
 
 ```{code-cell}
 # Find all column names from the phz table.
@@ -1128,6 +1145,6 @@ schema.names[-5:]
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-06-29
+**Updated:** 2025-06-30
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
