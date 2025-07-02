@@ -72,6 +72,18 @@ tutorials/cloud_access/euclid-cloud-access
 
 ```
 
+## Accessing SPHEREx data
+
+```{toctree}
+---
+maxdepth: 1
+caption: SPHEREx Data
+---
+
+tutorials/spherex/spherex_intro
+
+```
+
 ## Interactive visualization in Python with Firefly
 
 These notebooks demonstrate how to use the Firefly visualization tools from Python.
