@@ -157,10 +157,10 @@ Note that the Euclid ERO images are no in the cloud currently, but we access the
 The following only works for combined images (either extended or point source stacks). This would not work if there are multiple, let's say, H-band images of Euclid at a given position. Therefore, no time domain studies here (which is anyway not one of the main goals of Euclid).
 ```
 
-The IRSA SIA products can be listed via
-```
-Irsa.list_collections(servicetype='SIA')
-```
+% The IRSA SIA products can be listed via
+% ```
+% Irsa.list_collections(servicetype='SIA')
+% ```
 
 Here we use the collection *euclid_ero*, containing the Euclid ERO images. We first create a `SkyCoord` object and then query the SIA.
 
