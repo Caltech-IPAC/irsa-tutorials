@@ -79,7 +79,7 @@ Query IRSA for a list of Spectral Image MEFs that overlap this position.
 
 ```{code-cell} ipython3
 # Define the TAP service URL for IRSA
-tap_url = "https://irsatest.ipac.caltech.edu/TAP"
+tap_url = "https://irsa.ipac.caltech.edu/TAP"
 
 # Connect to the TAP service
 service = pyvo.dal.TAPService(tap_url)
