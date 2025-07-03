@@ -212,6 +212,10 @@
 <li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SPHEREx Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../spherex/spherex_intro.html">Introduction to SPHEREx Spectral Images</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
@@ -624,7 +628,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=4</i>
-<table id="table140077578505680" class="table-striped table-bordered table-condensed">
+<table id="table140342482550032" class="table-striped table-bordered table-condensed">
 <thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
@@ -873,15 +877,15 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table140077336467088" class="table-striped table-bordered table-condensed">
+<table id="table140342477649872" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>2678009942660367473</td><td>267.8009942</td><td>66.03674732</td><td>0.7179743124</td><td>2.652854347</td><td>3.846100812</td><td>5.242284889</td><td>2</td><td>1.519999981</td><td>1.350000024</td><td>1.75</td></tr>
-<tr><td>2678076394659719061</td><td>267.8076394</td><td>65.9719062</td><td>1.432410411</td><td>3.936189211</td><td>4.907444279</td><td>6.222690821</td><td>2</td><td>1.600000024</td><td>1.480000019</td><td>1.820000052</td></tr>
-<tr><td>2677585153659610182</td><td>267.7585153</td><td>65.96101826</td><td>0.9337781689</td><td>3.119727456</td><td>3.711064298</td><td>4.959729567</td><td>2</td><td>1.5</td><td>1.379999995</td><td>1.710000038</td></tr>
-<tr><td>2678000211660381851</td><td>267.8000212</td><td>66.03818515</td><td>1.05509166</td><td>2.605535558</td><td>3.240129863</td><td>3.793176892</td><td>2</td><td>1.600000024</td><td>1.470000029</td><td>1.889999986</td></tr>
-<tr><td>2678361447659819278</td><td>267.8361447</td><td>65.98192782</td><td>1.99473143</td><td>4.426665941</td><td>5.28416351</td><td>6.400697455</td><td>2</td><td>1.519999981</td><td>1.429999948</td><td>1.850000024</td></tr>
+<tr><td>2678009942660367473</td><td>267.80099422</td><td>66.03674732</td><td>0.7179743124</td><td>2.652854347</td><td>3.846100812</td><td>5.242284889</td><td>2</td><td>1.519999981</td><td>1.350000024</td><td>1.75</td></tr>
+<tr><td>2678076394659719061</td><td>267.80763944</td><td>65.97190620</td><td>1.432410411</td><td>3.936189211</td><td>4.907444279</td><td>6.222690821</td><td>2</td><td>1.600000024</td><td>1.480000019</td><td>1.820000052</td></tr>
+<tr><td>2677585153659610182</td><td>267.75851534</td><td>65.96101826</td><td>0.9337781689</td><td>3.119727456</td><td>3.711064298</td><td>4.959729567</td><td>2</td><td>1.5</td><td>1.379999995</td><td>1.710000038</td></tr>
+<tr><td>2678000211660381851</td><td>267.80002116</td><td>66.03818515</td><td>1.05509166</td><td>2.605535558</td><td>3.240129863</td><td>3.793176892</td><td>2</td><td>1.600000024</td><td>1.470000029</td><td>1.889999986</td></tr>
+<tr><td>2678361447659819278</td><td>267.83614472</td><td>65.98192782</td><td>1.99473143</td><td>4.426665941</td><td>5.28416351</td><td>6.400697455</td><td>2</td><td>1.519999981</td><td>1.429999948</td><td>1.850000024</td></tr>
 </table></div></div></div>
 </div>
 <div class="admonition warning">
@@ -974,13 +978,13 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=3</i>
-<table id="table140077333025744" class="table-striped table-bordered table-condensed">
+<table id="table140342473145616" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>2677562455660233171</td><td>267.7562455</td><td>66.02331715</td><td>0.9376629547</td><td>6.932368948</td><td>13.77487169</td><td>18.16076037</td><td>2</td><td>1.419999957</td><td>1.309999943</td><td>1.549999952</td></tr>
-<tr><td>2678376290659863203</td><td>267.8376291</td><td>65.98632035</td><td>1.795682573</td><td>6.656510568</td><td>8.965489634</td><td>12.90360126</td><td>2</td><td>1.539999962</td><td>1.49000001</td><td>1.610000014</td></tr>
-<tr><td>2678016284659732166</td><td>267.8016285</td><td>65.97321669</td><td>1.291915237</td><td>5.271049845</td><td>7.114689858</td><td>10.88637487</td><td>2</td><td>1.419999957</td><td>1.25999999</td><td>1.480000019</td></tr>
+<tr><td>2677562455660233171</td><td>267.75624552</td><td>66.02331715</td><td>0.9376629547</td><td>6.932368948</td><td>13.77487169</td><td>18.16076037</td><td>2</td><td>1.419999957</td><td>1.309999943</td><td>1.549999952</td></tr>
+<tr><td>2678376290659863203</td><td>267.83762908</td><td>65.98632035</td><td>1.795682573</td><td>6.656510568</td><td>8.965489634</td><td>12.90360126</td><td>2</td><td>1.539999962</td><td>1.49000001</td><td>1.610000014</td></tr>
+<tr><td>2678016284659732166</td><td>267.80162845</td><td>65.97321669</td><td>1.291915237</td><td>5.271049845</td><td>7.114689858</td><td>10.88637487</td><td>2</td><td>1.419999957</td><td>1.25999999</td><td>1.480000019</td></tr>
 </table></div></div></div>
 </div>
 <p>Let’s pick one of these galaxies. Note that the table has been sorted above, we can use the same index here and below to access the data for this particular galaxy.</p>
@@ -1007,7 +1011,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1</i>
-<table id="table140077332861584" class="table-striped table-bordered table-condensed">
+<table id="table140342475226128" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objectid</th><th>tileid</th><th>uri</th><th>hdu</th><th>cntr</th></tr></thead>
 <thead><tr><th>int64</th><th>int64</th><th>object</th><th>int64</th><th>int64</th></tr></thead>
 <tr><td>2678016284659732166</td><td>102159190</td><td>ibe/data/euclid/q1/SIR/102159190/EUC_SIR_W-COMBSPEC_102159190_2024-11-05T16:14:02.114614Z.fits</td><td>1525</td><td>59948</td></tr>
@@ -1056,7 +1060,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f664c307090&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7fa3f7c4ca50&gt;
 </pre></div>
 </div>
 </div>
@@ -1084,11 +1088,11 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><i>Row index=2</i>
-<table id="table140077336467792">
+<table id="table140343433865168">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>2678016284659732166</td><td>267.8016285</td><td>65.97321669</td><td>1.291915237</td><td>5.271049845</td><td>7.114689858</td><td>10.88637487</td><td>2</td><td>1.419999957</td><td>1.25999999</td><td>1.480000019</td></tr>
+<tr><td>2678016284659732166</td><td>267.80162845</td><td>65.97321669</td><td>1.291915237</td><td>5.271049845</td><td>7.114689858</td><td>10.88637487</td><td>2</td><td>1.419999957</td><td>1.25999999</td><td>1.480000019</td></tr>
 </table></div></div>
 </div>
 <div class="cell docutils container">
@@ -1139,7 +1143,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f664056ee90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7fa3f7ce1f90&gt;
 </pre></div>
 </div>
 <img alt="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" src="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" />
@@ -1182,7 +1186,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNi0wMQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0wMw"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1211,7 +1215,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_4973853656467736101_mer_df.csv
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_3377231445666893245_mer_df.csv
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}

@@ -115,12 +115,12 @@ coord = SkyCoord.from_name(target_name)
 search_radius = 10 * u.arcsec
 ```
 
-List all Simple Image Access (SIA) collections for IRSA with names containing "euclid":
-
-```{code-cell} ipython3
-collections = Irsa.list_collections(servicetype='SIA', filter='euclid')
-collections
-```
+% List all Simple Image Access (SIA) collections for IRSA with names containing "euclid":
+%
+% ```{code-cell} ipython3
+% collections = Irsa.list_collections(servicetype='SIA', filter='euclid')
+% collections
+% ```
 
 As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) and above table, we identify that MER Mosiacs are available as the following collection:
 

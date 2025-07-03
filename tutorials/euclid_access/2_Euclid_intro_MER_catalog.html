@@ -212,6 +212,10 @@
 <li class="toctree-l1"><a class="reference internal" href="5_Euclid_intro_SPE_catalog.html">Euclid Q1: SPE catalogs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_access/euclid-cloud-access.html">Euclid Q1: cloud access</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SPHEREx Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../spherex/spherex_intro.html">Introduction to SPHEREx Spectral Images</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Visualizations with Firefly</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../firefly/SEDs_in_Firefly.html">Using Firefly visualization tools in Python to vet SEDs</a></li>
@@ -633,78 +637,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;object_id&#39;: &#39;Euclid unique source identifier&#39;,
- &#39;ra&#39;: &#39;Source barycenter RA coordinate (SExtractor ALPHA_J2000) decimal degrees&#39;,
- &#39;dec&#39;: &#39;Source barycenter DEC coordinate (SExtractor DELTA_J2000) decimal degrees&#39;,
- &#39;right_ascension_psf_fitting&#39;: &#39;Source RA coordinate derived by the PSF-fitting photometry method&#39;,
- &#39;declination_psf_fitting&#39;: &#39;Source DEC coordinate derived by the PSF-fitting photometry method&#39;,
- &#39;segmentation_map_id&#39;: &#39;Source ID in the associated segmentation map&#39;,
- &#39;vis_det&#39;: &#39;Flag to indicate if the source is detected in the VIS mosaic (1) or is only detected in the NIR mosaic (0)&#39;,
- &#39;flux_vis_1fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_vis_2fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_vis_4fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_y_1fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_y_2fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_y_3fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_y_4fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_j_1fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_j_2fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_j_3fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_j_4fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_h_1fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_h_2fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_h_3fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_h_4fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_nir_stack_1fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_nir_stack_2fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_nir_stack_3fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_nir_stack_4fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_decam_1fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_decam_2fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_decam_3fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_decam_4fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_decam_1fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_decam_3fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_decam_4fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_decam_1fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_decam_2fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_decam_3fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_decam_4fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_decam_1fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_decam_2fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_decam_3fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_decam_4fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_decam_1fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_decam_2fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_decam_3fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_decam_4fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_lsst_1fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_lsst_3fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_lsst_4fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_lsst_1fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_lsst_2fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_lsst_3fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_lsst_4fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_lsst_1fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_lsst_2fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_lsst_3fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_lsst_4fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_lsst_1fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_lsst_2fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_lsst_3fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_i_ext_lsst_4fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_lsst_1fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_lsst_2fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_lsst_3fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_z_ext_lsst_4fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_megacam_1fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_megacam_2fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_megacam_3fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_u_ext_megacam_4fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_r_ext_megacam_1fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;flux_r_ext_megacam_1fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_r_ext_megacam_2fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_r_ext_megacam_3fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_r_ext_megacam_4fwhm_aper&#39;: &#39;Rext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
@@ -1108,7 +1041,78 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;z&#39;: &#39;Unit sphere (x,y,z) position z value&#39;,
  &#39;spt_ind&#39;: &#39;Spatial (x,y,z) index key&#39;,
  &#39;htm20&#39;: &#39;HTM spatial (x,y,z) index key&#39;,
- &#39;cntr&#39;: &#39;&#39;}
+ &#39;cntr&#39;: &#39;&#39;,
+ &#39;object_id&#39;: &#39;Euclid unique source identifier&#39;,
+ &#39;ra&#39;: &#39;Source barycenter RA coordinate (SExtractor ALPHA_J2000) decimal degrees&#39;,
+ &#39;dec&#39;: &#39;Source barycenter DEC coordinate (SExtractor DELTA_J2000) decimal degrees&#39;,
+ &#39;right_ascension_psf_fitting&#39;: &#39;Source RA coordinate derived by the PSF-fitting photometry method&#39;,
+ &#39;declination_psf_fitting&#39;: &#39;Source DEC coordinate derived by the PSF-fitting photometry method&#39;,
+ &#39;segmentation_map_id&#39;: &#39;Source ID in the associated segmentation map&#39;,
+ &#39;vis_det&#39;: &#39;Flag to indicate if the source is detected in the VIS mosaic (1) or is only detected in the NIR mosaic (0)&#39;,
+ &#39;flux_vis_1fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_2fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_vis_4fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_1fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_2fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_3fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_y_4fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_1fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_2fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_3fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_j_4fwhm_aper&#39;: &#39;NIR J band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_1fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_2fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_3fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_h_4fwhm_aper&#39;: &#39;NIR H band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_1fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_2fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_3fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_nir_stack_4fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_1fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_2fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_3fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_decam_4fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_1fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_3fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_4fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_1fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_2fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_3fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_decam_4fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_1fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_2fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_3fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_decam_4fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_1fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_2fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_3fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_decam_4fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_1fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_3fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_lsst_4fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_1fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_2fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_3fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_lsst_4fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_1fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_2fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_3fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_r_ext_lsst_4fwhm_aper&#39;: &#39;Rext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_1fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_2fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_3fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_i_ext_lsst_4fwhm_aper&#39;: &#39;Iext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_1fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_2fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_3fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_z_ext_lsst_4fwhm_aper&#39;: &#39;Zext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_1fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_2fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_3fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_u_ext_megacam_4fwhm_aper&#39;: &#39;Uext Megacam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;}
 </pre></div>
 </div>
 </div>
@@ -1153,15 +1157,15 @@ We can use the <code class="docutils literal notranslate"><span class="pre">poin
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table140388338662672" class="table-striped table-bordered table-condensed">
+<table id="table140040532402704" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_psf</th><th>fluxerr_vis_psf</th><th>flux_y_templfit</th><th>fluxerr_y_templfit</th><th>flux_j_templfit</th><th>fluxerr_j_templfit</th><th>flux_h_templfit</th><th>fluxerr_h_templfit</th><th>point_like_prob</th><th>extended_prob</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
-<tr><td>2718284139656546334</td><td>271.8284139</td><td>65.65463345</td><td>12.01498032</td><td>0.04741815105</td><td>51.19612122</td><td>0.458874613</td><td>56.89655685</td><td>0.4349552691</td><td>56.17173767</td><td>0.4241253436</td><td>0.9730213284</td><td>--</td></tr>
-<tr><td>2719785536656648264</td><td>271.9785537</td><td>65.66482644</td><td>31.63032532</td><td>0.08549753577</td><td>96.24780273</td><td>0.7781062126</td><td>115.8668213</td><td>0.7928025126</td><td>114.639679</td><td>0.8658923507</td><td>0.9961251616</td><td>--</td></tr>
-<tr><td>2718247369656535106</td><td>271.8247369</td><td>65.65351064</td><td>12.83476448</td><td>0.05740290135</td><td>52.80757141</td><td>0.5690165758</td><td>60.46030807</td><td>0.4410717487</td><td>61.1444664</td><td>0.4651491344</td><td>0.97648561</td><td>--</td></tr>
-<tr><td>2717152438656571540</td><td>271.7152439</td><td>65.65715401</td><td>6.691594124</td><td>0.0436687544</td><td>27.39351463</td><td>0.327249229</td><td>33.16018295</td><td>0.3623997569</td><td>33.58624268</td><td>0.3671961129</td><td>0.9698008895</td><td>--</td></tr>
-<tr><td>2721315831656654537</td><td>272.1315831</td><td>65.66545379</td><td>7.238943577</td><td>0.04437031969</td><td>24.85434532</td><td>0.2644696832</td><td>27.87883377</td><td>0.2431959957</td><td>27.74636078</td><td>0.2520694137</td><td>0.9711326361</td><td>--</td></tr>
+<tr><td>2744114360659252222</td><td>274.41143605</td><td>65.92522229</td><td>18.06845093</td><td>0.05907947198</td><td>40.79600143</td><td>0.3914021254</td><td>51.24997711</td><td>0.3443856239</td><td>50.90077591</td><td>0.3428814411</td><td>0.9834615588</td><td>--</td></tr>
+<tr><td>2748261452659161963</td><td>274.82614525</td><td>65.91619631</td><td>20.08031464</td><td>0.05796840787</td><td>62.98400116</td><td>0.402326107</td><td>72.14587402</td><td>0.40771842</td><td>73.11473083</td><td>0.4038525522</td><td>0.9726842046</td><td>--</td></tr>
+<tr><td>2753614816659165447</td><td>275.36148169</td><td>65.91654475</td><td>9.404380798</td><td>0.05080717802</td><td>72.25162506</td><td>0.4641048908</td><td>90.76555634</td><td>0.4693774283</td><td>92.41596222</td><td>0.4599996209</td><td>0.9804971218</td><td>--</td></tr>
+<tr><td>2751521116659187938</td><td>275.15211165</td><td>65.91879386</td><td>8.089911461</td><td>0.029209584</td><td>31.106287</td><td>0.2833509445</td><td>37.05817795</td><td>0.2450377196</td><td>36.19960022</td><td>0.2430710047</td><td>0.9785846472</td><td>--</td></tr>
+<tr><td>2746833910659142932</td><td>274.68339103</td><td>65.91429329</td><td>33.57302475</td><td>0.1107933447</td><td>129.1610565</td><td>0.8352462053</td><td>157.439621</td><td>0.7156305909</td><td>164.0423431</td><td>0.8300358057</td><td>0.9811390638</td><td>--</td></tr>
 </table></div></div></div>
 </div>
 </section>
@@ -1201,7 +1205,7 @@ We can use the <code class="docutils literal notranslate"><span class="pre">poin
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;10k Stars in MER catalog -- IRSA&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/e7209ab423006eb4a71d8327c9fc74d70bfe150d5a49d9ccae4d317d74dd9bbb.png" src="../../_images/e7209ab423006eb4a71d8327c9fc74d70bfe150d5a49d9ccae4d317d74dd9bbb.png" />
+<img alt="../../_images/b3e5efae1951e8b8493e4555603a446d94086b82679204a1b559508beecca61a.png" src="../../_images/b3e5efae1951e8b8493e4555603a446d94086b82679204a1b559508beecca61a.png" />
 </div>
 </div>
 </section>
