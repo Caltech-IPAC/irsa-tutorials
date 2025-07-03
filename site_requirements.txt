@@ -1,4 +1,4 @@
 sphinx
-myst-nb
+git+https://github.com/jaladh-singhal/MyST-NB.git@677-scroll-output-config#egg=myst-nb
 sphinx-book-theme
 sphinx-copybutton
