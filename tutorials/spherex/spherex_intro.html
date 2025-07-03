@@ -496,11 +496,13 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-spherex-spectral-image-mefs-that-overlap-coordinates-you-are-interested-in">5. Search for SPHEREx Spectral Image MEFs that overlap coordinates you are interested in</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examine-the-header-of-one-of-the-spherex-spectral-image-mefs">6. Examine the header of one of the SPHEREx Spectral Image MEFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-a-spherex-spectral-image-mef-using-the-firefly-python-client">7. Visualize a SPHEREx Spectral Image MEF using the Firefly Python Client.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-first-extension-image">8. Explore the first extension: IMAGE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-spatial-wcs">8a. Spatial WCS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-spectral-wcs">8b. Spectral WCS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-how-does-wavelength-vary-across-the-detector">8c. How does wavelength vary across the detector?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-number-of-flagged-pixels-in-this-image">8c. Number of flagged pixels in this image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-first-extension-image">8. Explore the first extension: IMAGE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-spatial-wcs">8a. Spatial WCS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-spectral-wcs">8b. Spectral WCS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-how-does-wavelength-vary-across-the-detector">8c. How does wavelength vary across the detector?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-number-of-flagged-pixels-in-this-image">8d. Number of flagged pixels in this image</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-second-extension-flags">9. Explore the second extension: FLAGS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-third-extension-variance">10. Explore the third extension: VARIANCE</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-fourth-extension-zodi">11. Explore the fourth extension: ZODI</a></li>
@@ -539,7 +541,7 @@ document.write(`
 <li><p><strong>investigate the abundance and composition of water and biogenic ices</strong> in the early phases of star and planetary disk formation.</p></li>
 </ul>
 <p>The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.</p>
-<p>More information is available in the <a class="reference external" href="https://irsa.ipac.caltech.edu/data/SPHEREx/docs/spherex_explanatory_supplement.pdf">SPHEREx Explanatory Supplement</a>.</p>
+<p>More information is available in the <a class="reference external" href="https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR_v1.0.pdf">SPHEREx Explanatory Supplement</a>.</p>
 </section>
 <section id="requirements">
 <h2>3. Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
@@ -866,9 +868,8 @@ WCSNAMEW= &#39;Approximated per-pixel wavelength and bandpass&#39; / WCS label
 <li><p>WCSNAMEA describes zero-based pixel coordinates.</p></li>
 <li><p>WCSNAMEW describes spectral coordinates ‘Wavelength’ and ‘Bandpass’. This WCS contains a reference to the lookup table in the ‘WCS-WAVE’ extension.</p></li>
 </ul>
-</section>
 <section id="a-spatial-wcs">
-<h2>8a. Spatial WCS<a class="headerlink" href="#a-spatial-wcs" title="Link to this heading">#</a></h2>
+<h3>8a. Spatial WCS<a class="headerlink" href="#a-spatial-wcs" title="Link to this heading">#</a></h3>
 <p>Load the Spatial WCS</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -909,7 +910,7 @@ NAXIS : 2040  2040
 </div>
 </section>
 <section id="b-spectral-wcs">
-<h2>8b. Spectral WCS<a class="headerlink" href="#b-spectral-wcs" title="Link to this heading">#</a></h2>
+<h3>8b. Spectral WCS<a class="headerlink" href="#b-spectral-wcs" title="Link to this heading">#</a></h3>
 <p>The use of Linear Variable Filters (LVFs) is a key component of SPHEREx imaging. Each pixel of the detector corresponds to a slightly different wavelength and bandwidth due to the LVF’s gradual variation in spectral transmission across its surface. Contours of constant wavelength are curved due to the method of filter fabrication, so the wavelength-vs-pixel function is inherently two-dimensional.</p>
 <p>A compact, approximate representation of the wavelength and bandwidth per pixel is included in each image using the WAVE-TAB lookup-table mechanism defined in the FITS standard.</p>
 <p>Below we illustrate how to use Spectral WCS to find an approximate wavelength at each pixel.</p>
@@ -974,7 +975,7 @@ and is modeled accordingly in WCS ‘W’, so we turn the SIP distortion off for
 </div>
 </section>
 <section id="c-how-does-wavelength-vary-across-the-detector">
-<h2>8c. How does wavelength vary across the detector?<a class="headerlink" href="#c-how-does-wavelength-vary-across-the-detector" title="Link to this heading">#</a></h2>
+<h3>8c. How does wavelength vary across the detector?<a class="headerlink" href="#c-how-does-wavelength-vary-across-the-detector" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the spectral image data.</span>
@@ -1033,8 +1034,8 @@ Bandpass:
 </div>
 <p>As expected, the wavelengths range from approximately 1.1=16 micron for Detector 2. You can see that the longest wavelengths are at the bottom and the shortest wavelengths are at the top. You can verify this is the case in the Firefly visualization, as well.</p>
 </section>
-<section id="c-number-of-flagged-pixels-in-this-image">
-<h2>8c. Number of flagged pixels in this image<a class="headerlink" href="#c-number-of-flagged-pixels-in-this-image" title="Link to this heading">#</a></h2>
+<section id="d-number-of-flagged-pixels-in-this-image">
+<h3>8d. Number of flagged pixels in this image<a class="headerlink" href="#d-number-of-flagged-pixels-in-this-image" title="Link to this heading">#</a></h3>
 <p>Now let’s take a look at some header keywords that provide information about how many pixels have been flagged during processing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1062,6 +1063,7 @@ HIERARCH L2 N_PHANMISS = 0 / number of flagged phanmiss pixels
 </div>
 </div>
 <p>There are 14 flags in total. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in Table 8 of the <a class="reference external" href="https://irsa.ipac.caltech.edu/data/SPHEREx/docs/spherex_explanatory_supplement.pdf">SPHEREx Explanatory Supplement</a>.</p>
+</section>
 </section>
 <section id="explore-the-second-extension-flags">
 <h2>9. Explore the second extension: FLAGS<a class="headerlink" href="#explore-the-second-extension-flags" title="Link to this heading">#</a></h2>
@@ -1336,11 +1338,13 @@ or problems.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-for-spherex-spectral-image-mefs-that-overlap-coordinates-you-are-interested-in">5. Search for SPHEREx Spectral Image MEFs that overlap coordinates you are interested in</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examine-the-header-of-one-of-the-spherex-spectral-image-mefs">6. Examine the header of one of the SPHEREx Spectral Image MEFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-a-spherex-spectral-image-mef-using-the-firefly-python-client">7. Visualize a SPHEREx Spectral Image MEF using the Firefly Python Client.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-first-extension-image">8. Explore the first extension: IMAGE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-spatial-wcs">8a. Spatial WCS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-spectral-wcs">8b. Spectral WCS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-how-does-wavelength-vary-across-the-detector">8c. How does wavelength vary across the detector?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-number-of-flagged-pixels-in-this-image">8c. Number of flagged pixels in this image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-first-extension-image">8. Explore the first extension: IMAGE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-spatial-wcs">8a. Spatial WCS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-spectral-wcs">8b. Spectral WCS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-how-does-wavelength-vary-across-the-detector">8c. How does wavelength vary across the detector?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-number-of-flagged-pixels-in-this-image">8d. Number of flagged pixels in this image</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-second-extension-flags">9. Explore the second extension: FLAGS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-third-extension-variance">10. Explore the third extension: VARIANCE</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-fourth-extension-zodi">11. Explore the fourth extension: ZODI</a></li>
