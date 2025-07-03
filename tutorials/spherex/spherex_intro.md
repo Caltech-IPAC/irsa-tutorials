@@ -35,7 +35,7 @@ SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 20
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/spherex_explanatory_supplement.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR_v1.0.pdf).
 
 +++
 
@@ -236,7 +236,7 @@ There are two alternative WCS systems:
 
 +++
 
-## 8a. Spatial WCS
+### 8a. Spatial WCS
 
 +++
 
@@ -255,7 +255,7 @@ x, y = wcs.world_to_pixel(SkyCoord(ra=ra, dec=dec, unit="deg"))
 print(ra, dec, x, y)
 ```
 
-## 8b. Spectral WCS
+### 8b. Spectral WCS
 
 The use of Linear Variable Filters (LVFs) is a key component of SPHEREx imaging. Each pixel of the detector corresponds to a slightly different wavelength and bandwidth due to the LVF’s gradual variation in spectral transmission across its surface. Contours of constant wavelength are curved due to the method of filter fabrication, so the wavelength-vs-pixel function is inherently two-dimensional.
 
@@ -290,7 +290,7 @@ wl, bp = spectral_wcs.pixel_to_world(x, y)
 wl, bp
 ```
 
-## 8c. How does wavelength vary across the detector?
+### 8c. How does wavelength vary across the detector?
 
 ```{code-cell} ipython3
 # Read in the spectral image data.
@@ -323,7 +323,7 @@ As expected, the wavelengths range from approximately 1.1=16 micron for Detector
 
 +++
 
-## 8c. Number of flagged pixels in this image
+### 8d. Number of flagged pixels in this image
 
 Now let's take a look at some header keywords that provide information about how many pixels have been flagged during processing.
 
