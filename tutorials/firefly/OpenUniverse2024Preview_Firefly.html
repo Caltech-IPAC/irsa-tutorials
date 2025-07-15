@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -597,7 +597,7 @@ document.write(`
 <li><p>reproject.reproject_interp to convert Roman coadds from STG to TAN projection</p></li>
 <li><p>io.BytesIO for writing a fits file to an in-memory stream</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install numpy astropy s3fs matplotlib firefly_client reproject</span>
@@ -605,7 +605,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -628,7 +628,7 @@ document.write(`
 <section id="learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud">
 <h2>Learn where the OpenUniverse2024 data are hosted in the cloud.<a class="headerlink" href="#learn-where-the-openuniverse2024-data-are-hosted-in-the-cloud" title="Link to this heading">#</a></h2>
 <p>The OpenUniverse2024 data preview is hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon’s Simple Storage Service (s3) buckets, and you need to know some information about those buckets. The OpenUniverse2024 data preview contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BUCKET_NAME</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-simulations&quot;</span>
 <span class="n">ROMAN_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;openuniverse2024/roman/preview&quot;</span>
@@ -648,7 +648,7 @@ document.write(`
 <section id="define-roman-simulated-blocks">
 <h3>Define Roman Simulated “Blocks”<a class="headerlink" href="#define-roman-simulated-blocks" title="Link to this heading">#</a></h3>
 <p>The simulated Roman coadds are arranged in 100 arcsecond blocks, as described in Hirata et al. 2024. Below we define the RA and Dec of the block centers. This cell should not be altered.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Centers of roman data preview blocks. Do not alter.</span>
 <span class="n">ra_block_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">9.76330352298415</span><span class="p">,</span> <span class="mf">9.724522605135252</span><span class="p">,</span> <span class="mf">9.68574158906671</span><span class="p">,</span>
@@ -668,7 +668,7 @@ document.write(`
 <section id="define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec">
 <h3>Define a function that returns the simulated Roman block column/row for a given RA/Dec.<a class="headerlink" href="#define-a-function-that-returns-the-simulated-roman-block-column-row-for-a-given-ra-dec" title="Link to this heading">#</a></h3>
 <p>Blocks are arranged in a grid with axes parallel to RA and Dec. A given RA represents a column of blocks and a given Dec represents a row of blocks. This function returns the block column or row given the block centers from the cell above and a given RA or Dec, respectively.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_block_axis</span><span class="p">(</span><span class="n">block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">):</span>
     <span class="n">ra_or_dec_coord</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">ra_or_dec</span><span class="p">)</span>
@@ -687,7 +687,7 @@ document.write(`
 <section id="define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter">
 <h3>Define a function that retrieves a Roman simulated coadd given a sky position and filter.<a class="headerlink" href="#define-a-function-that-retrieves-a-roman-simulated-coadd-given-a-sky-position-and-filter" title="Link to this heading">#</a></h3>
 <p>Each of the cloud-hosted simulated Roman coadds can be accessed via a S3 filepath. This function returns the access path for the simulated Roman coadd that includes a specified position on the sky and desired filter.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_roman_coadd_fpath</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
     <span class="n">col</span> <span class="o">=</span> <span class="n">get_block_axis</span><span class="p">(</span><span class="n">ra_block_centers</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">)</span>
@@ -703,7 +703,7 @@ document.write(`
 </div>
 <p>Now we use this access path and prefix it with <code class="docutils literal notranslate"><span class="pre">s3://</span></code> and use astropy.fits to extract a subset of it (for more info see <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#subsetting-fits-files-hosted-in-amazon-s3-cloud-storage">this section</a> of astropy docs).</p>
 <p>We use <code class="docutils literal notranslate"><span class="pre">.section</span></code> to retrieve just the science image data from fits HDU as a 2D <code class="docutils literal notranslate"><span class="pre">numpy.array</span></code>, and extract WCS information from fits header as <code class="docutils literal notranslate"><span class="pre">astropy.wcs.WCS</span></code> object. The following function returns a dictionary of both.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
     <span class="c1"># retrive fits file of block/tile from the coadd mosiac</span>
@@ -726,7 +726,7 @@ document.write(`
 <section id="inspect-a-simulated-roman-coadd">
 <h3>Inspect a simulated Roman Coadd<a class="headerlink" href="#inspect-a-simulated-roman-coadd" title="Link to this heading">#</a></h3>
 <p>Choose a filter and position that lies within the data preview region</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mf">9.6055383</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">44.1895542</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
 <span class="n">filter_roman</span> <span class="o">=</span> <span class="s1">&#39;H158&#39;</span> <span class="c1">#F184, H158, J129, K213, and Y106 are available in the data preview</span>
@@ -735,7 +735,7 @@ document.write(`
 </div>
 </div>
 <p>Retrieve the data and header information from the simulated Roman coadd corresponding to the chosen position and filter.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span> <span class="o">=</span> <span class="n">get_roman_coadd</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">filter_roman</span><span class="p">)</span>
 </pre></div>
@@ -745,7 +745,7 @@ document.write(`
 </section>
 <section id="understand-the-size-of-a-simulated-roman-coadd">
 <h3>Understand the size of a simulated Roman coadd.<a class="headerlink" href="#understand-the-size-of-a-simulated-roman-coadd" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of pixels (Y, X)</span>
 <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
@@ -758,7 +758,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel size (scale Y, scale X) [degrees/pixel]</span>
 <span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">()</span>
@@ -771,7 +771,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coadd size (FOV Y, FOV X)</span>
 <span class="p">[(</span><span class="n">num</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;arcsec&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
@@ -789,7 +789,7 @@ document.write(`
 </section>
 <section id="use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position">
 <h3>Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.<a class="headerlink" href="#use-the-wcs-from-the-roman-simulated-header-to-convert-the-specified-coordinate-into-a-pixel-position" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">coord_to_xy</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">world_to_array_index</span><span class="p">(</span><span class="n">coord</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#reverse since 0th axis is y, 1st axis is x</span>
@@ -808,7 +808,7 @@ document.write(`
 </section>
 <section id="use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position">
 <h3>Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.<a class="headerlink" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-roman-simulated-coadd-and-overplot-the-selected-position" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">stretch_color</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clipPercent</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="n">clipPercent</span><span class="p">,</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">clipPercent</span><span class="p">))</span>
@@ -822,7 +822,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6d68f1f050&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2f6784efd0&gt;]
 </pre></div>
 </div>
 <img alt="../../_images/7bd4999e71a2931e03f1c709a5baf9dcae24bfab651de71b1aead6e1ee46ed81.png" src="../../_images/7bd4999e71a2931e03f1c709a5baf9dcae24bfab651de71b1aead6e1ee46ed81.png" />
@@ -836,7 +836,7 @@ document.write(`
 <section id="retrieve-rubin-coadds">
 <h3>Retrieve Rubin Coadds<a class="headerlink" href="#retrieve-rubin-coadds" title="Link to this heading">#</a></h3>
 <p>The OpenUniverse2024 data preview includes only one simulated Rubin coadd per filter. Below we define functions that make it convenient to retrieve the simulated Rubin coadd corresponding to the desired filter. We return data in same structure as the functions we defined above for Roman.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span> 
     <span class="n">coadd_fname_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;deepCoadd_calexp_2877_19_</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">_DC2_u_descdm_preview_data_step3_2877_19_w_2024_12_20240403T150003Z.fits&quot;</span>
@@ -846,7 +846,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_rubin_coadd</span><span class="p">(</span><span class="nb">filter</span><span class="p">):</span>
     <span class="n">coadd_s3_fpath</span> <span class="o">=</span> <span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
@@ -867,7 +867,7 @@ document.write(`
 <section id="inspect-a-simulated-rubin-coadd">
 <h3>Inspect a simulated Rubin Coadd<a class="headerlink" href="#inspect-a-simulated-rubin-coadd" title="Link to this heading">#</a></h3>
 <p>Choose a filter and retrieve the data and header information from the simulated Rubin coadd corresponding to that filter.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filter_rubin</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
 <span class="n">coadd_rubin</span> <span class="o">=</span> <span class="n">get_rubin_coadd</span><span class="p">(</span><span class="n">filter_rubin</span><span class="p">)</span>
@@ -878,7 +878,7 @@ document.write(`
 </section>
 <section id="understand-the-size-of-a-simulated-rubin-coadd">
 <h3>Understand the size of a simulated Rubin coadd.<a class="headerlink" href="#understand-the-size-of-a-simulated-rubin-coadd" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of pixels (Y, X)</span>
 <span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
@@ -891,7 +891,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pixel size (scale Y, scale X) [degrees/pixel]</span>
 <span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">proj_plane_pixel_scales</span><span class="p">()</span>
@@ -904,7 +904,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coadd size (FOV Y, FOV X)</span>
 <span class="p">[(</span><span class="n">num</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;arcsec&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
@@ -922,7 +922,7 @@ document.write(`
 </section>
 <section id="use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position">
 <h3>Use matplotlib imshow to create a static visualization of the Rubin simulated coadd and overplot the selected position.<a class="headerlink" href="#use-matplotlib-imshow-to-create-a-static-visualization-of-the-rubin-simulated-coadd-and-overplot-the-selected-position" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> 
            <span class="n">clim</span><span class="o">=</span><span class="n">stretch_color</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
@@ -933,7 +933,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6da01328d0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2f678aa290&gt;]
 </pre></div>
 </div>
 <img alt="../../_images/284ed1ceb1c12f9a89c2beea96432da7169989e0580b675c56795735d49de5a3.png" src="../../_images/284ed1ceb1c12f9a89c2beea96432da7169989e0580b675c56795735d49de5a3.png" />
@@ -943,7 +943,7 @@ document.write(`
 <section id="define-a-function-that-returns-the-url-for-a-given-s3-filepath">
 <h3>Define a function that returns the URL for a given S3 filepath<a class="headerlink" href="#define-a-function-that-returns-the-url-for-a-given-s3-filepath" title="Link to this heading">#</a></h3>
 <p>Since the OpenUniverse2024 data is available through a public S3 bucket, we can access a given S3 file using HTTPS URL as follows:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">https_url</span><span class="p">(</span><span class="n">s3_fpath</span><span class="p">):</span>
     <span class="n">s3_fpath_without_bucket</span> <span class="o">=</span> <span class="n">s3_fpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
@@ -953,7 +953,7 @@ document.write(`
 </div>
 </div>
 <p>Let’s generate URL for the Rubin coadd we plotted above. Clicking on the returned URL will allow you to download this image locally.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_s3_fpath_rubin</span> <span class="o">=</span> <span class="n">get_rubin_coadd_fpath</span><span class="p">(</span><span class="n">filter_rubin</span><span class="p">)</span>
 <span class="n">https_url</span><span class="p">(</span><span class="n">coadd_s3_fpath_rubin</span><span class="p">)</span>
@@ -972,7 +972,7 @@ document.write(`
 <h2>Compare simulated Roman and Rubin cutouts for a selected position<a class="headerlink" href="#compare-simulated-roman-and-rubin-cutouts-for-a-selected-position" title="Link to this heading">#</a></h2>
 <section id="choose-cutout-size">
 <h3>Choose cutout size<a class="headerlink" href="#choose-cutout-size" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_size</span> <span class="o">=</span> <span class="mi">50</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
 </pre></div>
@@ -982,7 +982,7 @@ document.write(`
 </section>
 <section id="create-the-cutouts">
 <h3>Create the cutouts<a class="headerlink" href="#create-the-cutouts" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_roman</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
 <span class="n">cutout_rubin</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coord</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
@@ -993,7 +993,7 @@ document.write(`
 </section>
 <section id="use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts">
 <h3>Use matplotlib imshow to plot static side-by-side comparisons of the cutouts<a class="headerlink" href="#use-matplotlib-imshow-to-plot-static-side-by-side-comparisons-of-the-cutouts" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
@@ -1028,7 +1028,7 @@ document.write(`
 <h3>Launch and initialize Firefly<a class="headerlink" href="#launch-and-initialize-firefly" title="Link to this heading">#</a></h3>
 <p>There are two ways to initialize a Firefly client from Python, depending on whether you’re running the notebook in JupyterLab or not. Assuming you have <code class="docutils literal notranslate"><span class="pre">jupyter-firefly-extensions</span></code> set up in your environment as explained <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>, you can use <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.</p>
 <p>You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a <a class="reference external" href="https://hub.docker.com/r/ipac/firefly">Firefly Docker image</a> and access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/firefly</span></code>. The URL of the Firefly server is read by both <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> and <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> through the environment variable <code class="docutils literal notranslate"><span class="pre">FIREFLY_URL</span></code>. However, <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> also allows you to pass the URL directly as the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
 <span class="c1"># fc = FireflyClient.make_lab_client()</span>
@@ -1041,7 +1041,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0xNQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1050,7 +1050,7 @@ document.write(`
 <section id="send-the-simulated-rubin-coadd-to-firefly-using-show-fits">
 <h3>Send the simulated Rubin coadd to Firefly using show_fits.<a class="headerlink" href="#send-the-simulated-rubin-coadd-to-firefly-using-show-fits" title="Link to this heading">#</a></h3>
 <p>For displaying the FITS image of Rubin coadd in Firefly, we use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits"><code class="docutils literal notranslate"><span class="pre">show_fits</span></code></a>:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-filter-r&#39;</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">coadd_s3_fpath_rubin</span><span class="p">),</span>
@@ -1072,7 +1072,7 @@ document.write(`
 <p>The Firefly client includes several methods related to controlling ds9 region overlays. To
 overlay a region layer on the loaded FITS images, we can use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer"><code class="docutils literal notranslate"><span class="pre">overlay_region_layer</span></code></a>.</p>
 <p>Region data is defined in ds9 region syntax that can be found <a class="reference external" href="https://ds9.si.edu/doc/ref/region.html">here</a>.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mark the roman coadd blocks as boxes</span>
 <span class="n">roman_regions</span> <span class="o">=</span> <span class="p">[</span>
@@ -1107,7 +1107,7 @@ overlay a region layer on the loaded FITS images, we can use <a class="reference
 <section id="copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook">
 <h3>Copy the coordinates from the coordinate display to the Python notebook<a class="headerlink" href="#copy-the-coordinates-from-the-coordinate-display-to-the-python-notebook" title="Link to this heading">#</a></h3>
 <p>We have provided an example. You can change this based on your interests.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords_of_interest</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="s1">&#39;0h38m25.35s -44d00m10.1s&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span> <span class="c1"># located and copied through UI</span>
 <span class="n">coords_of_interest</span>
@@ -1126,7 +1126,7 @@ overlay a region layer on the loaded FITS images, we can use <a class="reference
 <section id="use-ds9-region-syntax-to-overplot-the-selected-position">
 <h3>Use ds9 region syntax to overplot the selected position<a class="headerlink" href="#use-ds9-region-syntax-to-overplot-the-selected-position" title="Link to this heading">#</a></h3>
 <p>For this we use the id of the region layer we defined above, and add more region data using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data"><code class="docutils literal notranslate"><span class="pre">add_region_data</span></code></a>.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_region</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;icrs;point </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">coords_of_interest</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d # point=cross 15 text=</span><span class="se">{{</span><span class="s1">Blended source</span><span class="se">}}</span><span class="s1">&#39;</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">add_region_data</span><span class="p">(</span><span class="n">region_data</span><span class="o">=</span><span class="n">point_region</span><span class="p">,</span> <span class="n">region_layer_id</span><span class="o">=</span><span class="n">roman_regions_id</span><span class="p">)</span>
@@ -1143,21 +1143,21 @@ overlay a region layer on the loaded FITS images, we can use <a class="reference
 </section>
 <section id="plot-cutouts-of-the-identified-blended-source">
 <h2>Plot cutouts of the identified blended source<a class="headerlink" href="#plot-cutouts-of-the-identified-blended-source" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span> <span class="o">=</span> <span class="n">get_roman_coadd</span><span class="p">(</span><span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">filter_roman</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_size</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_roman</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
 <span class="n">cutout_rubin</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">coords_of_interest</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cutout_size</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">coadd_rubin</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">])</span>
@@ -1165,7 +1165,7 @@ overlay a region layer on the loaded FITS images, we can use <a class="reference
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
@@ -1212,7 +1212,7 @@ overlay a region layer on the loaded FITS images, we can use <a class="reference
 <p>The OpenUniverse2024 data preview includes the input truth files that were used to create the simulated images. These files are in Parquet and HDF5 format, and include information about the properties of galaxies, stars, and transients.</p>
 <p>To list the available files, we use <a class="reference external" href="https://s3fs.readthedocs.io/en/latest/index.html">s3fs</a>. We open a file-system like connection
 to AWS S3 and then simply list (<code class="docutils literal notranslate"><span class="pre">ls</span></code>) truth files directory:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># to browse s3 bucket</span>
 <span class="n">s3</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1231,7 +1231,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Catalog table of star properties (in parquet format)</span>
 <span class="n">pointsource_cat_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">/pointsource_10307.parquet&quot;</span>
@@ -1245,7 +1245,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Catalog table of galaxy properties (in parquet format)</span>
 <span class="n">galaxy_cat_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">TRUTH_FILES_PATH</span><span class="si">}</span><span class="s2">/galaxy_10307.parquet&quot;</span>
@@ -1263,7 +1263,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <h3>Use Firefly’s show_table to overlay the catalogs on interactive image of coadd<a class="headerlink" href="#use-firefly-s-show-table-to-overlay-the-catalogs-on-interactive-image-of-coadd" title="Link to this heading">#</a></h3>
 <p>The input truth files cover a region much larger than the data preview, so we define filters on table to constraint the sources in catalog within the ra and dec bounds of preview data. (Note: you can remove filters through the table UI if you wish to see the entire data)</p>
 <p>You can visualize catalogs interactively with Firefly using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table"><code class="docutils literal notranslate"><span class="pre">show_table</span></code></a>. This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we’ve already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_filters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="sa">f</span><span class="s1">&#39;(&quot;ra&quot; &gt;= </span><span class="si">{</span><span class="n">ra_block_centers</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> AND &quot;ra&quot; &lt;= </span><span class="si">{</span><span class="n">ra_block_centers</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> 
@@ -1280,7 +1280,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">https_url</span><span class="p">(</span><span class="n">pointsource_cat_path</span><span class="p">),</span>
               <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Stars Catalog&#39;</span><span class="p">,</span>
@@ -1295,7 +1295,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gal_cat_tbl_id</span> <span class="o">=</span> <span class="s1">&#39;galaxy_cat&#39;</span>
 
@@ -1319,7 +1319,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <h3>Use Firefly’s apply_table_filters to show only high-redshift galaxies<a class="headerlink" href="#use-firefly-s-apply-table-filters-to-show-only-high-redshift-galaxies" title="Link to this heading">#</a></h3>
 <p>High redshift galaxies are the most interesting, so let’s filter the table we sent to Firefly to only include z&gt;3 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.</p>
 <p>For filtering, we will use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters"><code class="docutils literal notranslate"><span class="pre">apply_table_filters</span></code></a> method on the galaxy table we loaded above.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">apply_table_filters</span><span class="p">(</span><span class="n">tbl_id</span><span class="o">=</span><span class="n">gal_cat_tbl_id</span><span class="p">,</span>
                        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_filters</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;&quot;redshift&quot; &gt; 3&#39;</span><span class="p">]))</span>
@@ -1336,7 +1336,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </section>
 <section id="use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images">
 <h3>Use Firefly’s show_fits_3color to create a 3 color image of the simulated Rubin images<a class="headerlink" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-the-simulated-rubin-images" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># [R, G, B]</span>
 <span class="n">ROMAN_RGB_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;H158&#39;</span><span class="p">,</span> <span class="s1">&#39;J129&#39;</span><span class="p">,</span> <span class="s1">&#39;Y106&#39;</span><span class="p">]</span>
@@ -1346,7 +1346,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 <p>We already have Rubin coadd with catalog overlaid, let’s make a 3 color image to see colors of marked objects more clearly. For this we will use <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color"><code class="docutils literal notranslate"><span class="pre">show_fits_3color</span></code></a> method:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_rubin_3color</span> <span class="o">=</span> <span class="s1">&#39;rubin-coadd-3color&#39;</span>
 <span class="n">threeC</span> <span class="o">=</span> <span class="p">[</span>
@@ -1370,7 +1370,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <section id="use-firefly-s-interactivity-to-identify-a-region-of-interest">
 <h3>Use Firefly’s interactivity to identify a region of interest<a class="headerlink" href="#use-firefly-s-interactivity-to-identify-a-region-of-interest" title="Link to this heading">#</a></h3>
 <p>For example, we found a region of the sky that seems to have a high number of high redshift sources and we copy it from the image display:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># located and copied through UI</span>
 <span class="n">high_z_gal_coords</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="s1">&#39;0h38m00.77s -44d12m10.2s&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span>
@@ -1385,7 +1385,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s also mark it in our region layer, so that it&#39;s easy to pinpoint later</span>
 <span class="n">point_region</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;icrs;point </span><span class="si">{</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">d # point=cross 15 text=</span><span class="se">{{</span><span class="s1">z&gt;3 mock galaxies</span><span class="se">}}</span><span class="s1">&#39;</span>
@@ -1404,7 +1404,7 @@ to AWS S3 and then simply list (<code class="docutils literal notranslate"><span
 <section id="plot-3-color-roman-coadd-containing-your-region-of-interest">
 <h2>Plot 3-color Roman coadd containing your region of interest<a class="headerlink" href="#plot-3-color-roman-coadd-containing-your-region-of-interest" title="Link to this heading">#</a></h2>
 <p>Let’s inspect WCS of Roman coadd first</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_roman</span><span class="p">[</span><span class="s1">&#39;wcs&#39;</span><span class="p">]</span>
 </pre></div>
@@ -1429,7 +1429,7 @@ NAXIS : 2688  2688  15  1
 <h3>Prepare Roman coadds for displaying in Firefly<a class="headerlink" href="#prepare-roman-coadds-for-displaying-in-firefly" title="Link to this heading">#</a></h3>
 <p>Roman coadds have STG projection which cannot be read by Firefly yet. Firefly can display any FITS image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike Rubin 3 color image where we directly passed URL of coadd files to Firefly, we will read Roman coadd files in Python, reproject them from STG to TAN, and write them back to FITS to pass them to Firefly.</p>
 <p>Let’s first define functions to do so:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">reproject_to_TAN</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
     <span class="c1"># Define a new WCS with TAN projection (in CTYPE key)</span>
@@ -1448,7 +1448,7 @@ NAXIS : 2688  2688  15  1
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_fits_stream</span><span class="p">(</span><span class="n">coadd_roman</span><span class="p">):</span>
     <span class="c1"># Create a FITS PrimaryHDU object with the coadd data</span>
@@ -1465,7 +1465,7 @@ NAXIS : 2688  2688  15  1
 </div>
 </div>
 <p>Then we perform all 3 operations we mentioned above for the RGB filters of Roman:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadds_rgb</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">coadds_rgb_reprojected</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1510,7 +1510,7 @@ Writing back to fits stream...
 <section id="use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds">
 <h3>Use Firefly’s show_fits_3color to create a 3 color image of Roman coadds<a class="headerlink" href="#use-firefly-s-show-fits-3color-to-create-a-3-color-image-of-roman-coadds" title="Link to this heading">#</a></h3>
 <p>Now we upload each fits stream (in-memory fits file) to firefly using <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data"><code class="docutils literal notranslate"><span class="pre">upload_fits_data()</span></code></a> and prepare color params to pass to the <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color"><code class="docutils literal notranslate"><span class="pre">show_fits_3color()</span></code></a>.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">three_color_params</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -1521,7 +1521,7 @@ Writing back to fits stream...
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coadd_ff_id_roman_3color</span> <span class="o">=</span> <span class="s1">&#39;roman-coadd-3color-high_z_gal&#39;</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">show_fits_3color</span><span class="p">(</span><span class="n">three_color_params</span><span class="o">=</span><span class="n">three_color_params</span><span class="p">,</span>
@@ -1545,7 +1545,7 @@ Writing back to fits stream...
 <li><p><a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom"><code class="docutils literal notranslate"><span class="pre">set_zoom</span></code></a></p></li>
 <li><p><a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images"><code class="docutils literal notranslate"><span class="pre">align_images</span></code></a></p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_pan</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">high_z_gal_coords</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s1">&#39;j2000&#39;</span><span class="p">)</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1563,7 +1563,7 @@ Writing back to fits stream...
 <section id="use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python">
 <h3>Use Firefly’s set_stretch method to change the stretch of the image display via Python<a class="headerlink" href="#use-firefly-s-set-stretch-method-to-change-the-stretch-of-the-image-display-via-python" title="Link to this heading">#</a></h3>
 <p>The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client’s <a class="reference external" href="https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch"><code class="docutils literal notranslate"><span class="pre">set_stretch</span></code></a> to do this via Python. This is helpful for reproducibility and for scaling up to many images.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_stretch</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="n">coadd_ff_id_roman_3color</span><span class="p">,</span> <span class="n">stype</span><span class="o">=</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;squared&#39;</span><span class="p">,</span> 
                <span class="n">band</span><span class="o">=</span><span class="s1">&#39;ALL&#39;</span><span class="p">,</span> <span class="n">lower_value</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">upper_value</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>

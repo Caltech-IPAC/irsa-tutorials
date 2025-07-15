@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -570,7 +570,7 @@ Your numbers will vary based on many factors including compute power, bandwidth,
 </section>
 <section id="imports">
 <h2>2. Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install astropy astroquery hpgeom matplotlib pandas pyarrow pyvo</span>
@@ -578,7 +578,7 @@ Your numbers will vary based on many factors including compute power, bandwidth,
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>  <span class="c1"># parallelization</span>
 
@@ -608,7 +608,7 @@ Your numbers will vary based on many factors including compute power, bandwidth,
 <p>First, choose which NEOWISE years to include.
 Real use cases are likely to require all ten years but it can be helpful to start with
 fewer while exploring to make things run faster.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># all years =&gt; about 11 CPU, 65G RAM, and 50 minutes runtime</span>
 <span class="n">YEARS</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;addendum&quot;</span><span class="p">]</span>
@@ -620,7 +620,7 @@ fewer while exploring to make things run faster.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sets of columns that we&#39;ll need</span>
 <span class="n">FLUX_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;w1flux&quot;</span><span class="p">,</span> <span class="s2">&quot;w2flux&quot;</span><span class="p">]</span>
@@ -638,7 +638,7 @@ fewer while exploring to make things run faster.</p>
 <h3>3.2 Load NEOWISE metadata<a class="headerlink" href="#load-neowise-metadata" title="Link to this heading">#</a></h3>
 <p>The metadata contains column names, schema, and row-group statistics for every file in the dataset.
 We’ll load it as a pyarrow dataset.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This catalog is so big that even the metadata is big.</span>
 <span class="c1"># Expect this cell to take about 30 seconds per year.</span>
@@ -671,7 +671,7 @@ We’ll load it as a pyarrow dataset.</p>
 Defining them here in the notebook is useful for demonstration and should work seamlessly on Linux, which includes most science platforms.
 Mac and Windows users should see the note at the end of the notebook.
 However, note that this use case is likely too large for a laptop and may perform poorly and/or crash if attempted.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you have your own list of target objects, replace this function to load your sample.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_targets_Downes2001</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
@@ -735,7 +735,7 @@ However, note that this use case is likely too large for a laptop and may perfor
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the main function.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_lightcurves_one_partition</span><span class="p">(</span><span class="n">targets_group</span><span class="p">):</span>
@@ -773,7 +773,7 @@ However, note that this use case is likely too large for a laptop and may perfor
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The filters returned by this function need to be efficient for the specific use case.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_construct_dataset_filters</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">targets_group</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
@@ -825,7 +825,7 @@ However, note that this use case is likely too large for a laptop and may perfor
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_cone_search</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">targets_group</span><span class="p">,</span> <span class="n">pixel_tbl</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a cone search to select NEOWISE detections belonging to each target object.</span>
@@ -865,7 +865,7 @@ However, note that this use case is likely too large for a laptop and may perfor
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This function will be called once for each worker in the pool.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">init_worker</span><span class="p">(</span><span class="n">neowise_ds</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
@@ -900,7 +900,7 @@ However, note that this use case is likely too large for a laptop and may perfor
 <section id="load-light-curves">
 <h2>5. Load light curves<a class="headerlink" href="#load-light-curves" title="Link to this heading">#</a></h2>
 <p>Load the target objects’ coordinates and other info.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">targets_df</span> <span class="o">=</span> <span class="n">load_targets_Downes2001</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">MATCH_RADIUS</span><span class="p">)</span>
 <span class="n">targets_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -913,7 +913,7 @@ Partitions are searched in parallel.
 For targets located near partition boundaries, relevant partitions will be searched
 independently for the given target and the results will be concatenated.
 If searching all NEOWISE years, this may take 45 minutes or more.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Group targets by partition. &#39;load_lightcurves_one_partition&#39; will be called once per group.</span>
 <span class="n">targets_groups</span> <span class="o">=</span> <span class="n">targets_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;healpix_k5&quot;</span><span class="p">)</span>
@@ -935,7 +935,7 @@ If searching all NEOWISE years, this may take 45 minutes or more.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">neowise_lightcurves_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -947,7 +947,7 @@ If searching all NEOWISE years, this may take 45 minutes or more.</p>
 <h2>6. Plot NEOWISE light curves<a class="headerlink" href="#plot-neowise-light-curves" title="Link to this heading">#</a></h2>
 <p>The light curves will have large gaps due to the observing cadence, so we’ll plot each
 “epoch” separately to see them better.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the light curves of the target with the most data</span>
 <span class="n">target_uid</span> <span class="o">=</span> <span class="n">neowise_lightcurves_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;uid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mjd</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>

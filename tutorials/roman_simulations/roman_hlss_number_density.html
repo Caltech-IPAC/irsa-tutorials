@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -562,7 +562,7 @@ document.write(`
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install h5py pandas matplotlib numpy requests</span>
@@ -570,7 +570,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -600,7 +600,7 @@ document.write(`
 <ul class="simple">
 <li><p>This is about 30G of data in total</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span><span class="n">file_url</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -720,7 +720,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set download_all to True to download all files, or False to download only the first file</span>
 <span class="c1"># only a single downloaded file is required to run the notebook in its entirety, </span>
@@ -745,7 +745,7 @@ Successfully downloaded 1 files.
 </section>
 <section id="read-files-into-a-pandas-dataframe-so-we-can-work-with-them">
 <h3>1.2 read files into a pandas dataframe so we can work with them<a class="headerlink" href="#read-files-into-a-pandas-dataframe-so-we-can-work-with-them" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fetch_column_names</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -866,7 +866,7 @@ Successfully downloaded 1 files.
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#don&#39;t change this, the above code downloads the files to this directory</span>
 <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;downloaded_hdf5_files/Roman_small_V2_0.hdf5&#39;</span>
@@ -886,7 +886,7 @@ Successfully downloaded 1 files.
 <section id="pre-process-dataset">
 <h3>1.3 Pre-process dataset<a class="headerlink" href="#pre-process-dataset" title="Link to this heading">#</a></h3>
 <p>Add some value-added columns to the dataframe, and calculate some variables which are used by mulitple functions</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#add a binned redshift column and calculate the edges of the bins</span>
 <span class="n">z_min</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -905,7 +905,7 @@ Successfully downloaded 1 files.
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#quick check to see what we&#39;ve got:</span>
 <span class="n">df</span>
@@ -1058,7 +1058,7 @@ Successfully downloaded 1 files.
 <li><p>Check for missing (NaN) values, including columns with NaNs and their counts.</p></li>
 </ul>
 <p>Note that quite a few of the z_bin values are NaN because they are outside the redshift range of interest for this plot (1 &lt; z &lt; 3)</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the first 5 rows of the dataframe</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1142,7 +1142,7 @@ Successfully downloaded 1 files.
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get general information about the dataframe (e.g., data types, non-null counts)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DataFrame info (Data Types, Non-null counts):&quot;</span><span class="p">)</span>
@@ -1169,7 +1169,7 @@ memory usage: 924.7 MB
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display summary statistics for numeric columns</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Summary statistics for numeric columns:&quot;</span><span class="p">)</span>
@@ -1275,7 +1275,7 @@ memory usage: 924.7 MB
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print memory usage of the DataFrame</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Memory usage of the DataFrame:&quot;</span><span class="p">)</span>
@@ -1299,7 +1299,7 @@ Total memory usage: 924.72 MB
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if there are any NaN (missing) values in the DataFrame</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Checking for NaN (missing) values in the DataFrame:&quot;</span><span class="p">)</span>
@@ -1337,7 +1337,7 @@ dtype: int64
 <li><p>plot of the number of galaxies as a function of dec bin</p></li>
 <li><p>plot the number of galaxies per square degree as a function of dec bin</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_bin_area</span><span class="p">(</span><span class="n">dec_edges</span><span class="p">,</span> <span class="n">ra_width</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1468,7 +1468,7 @@ dtype: int64
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">galaxy_counts</span><span class="p">,</span> <span class="n">counts_per_deg2</span><span class="p">,</span> <span class="n">dec_bins</span> <span class="o">=</span> <span class="n">calculate_counts_per_deg2</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">plot_dec_bins</span><span class="p">(</span><span class="n">dec_bins</span><span class="p">,</span> <span class="n">galaxy_counts</span><span class="p">)</span>
@@ -1486,7 +1486,7 @@ dtype: int64
 <section id="make-number-density-plot">
 <h2>3.0 Make Number density plot<a class="headerlink" href="#make-number-density-plot" title="Link to this heading">#</a></h2>
 <p>This is a first pass at making a number density plot with just a single data file.  We divide the sample into 10 declination bins in order to do a jackknife sampling and obtain error bars for the plot. We choose to use constant dec bins instead of constant RA bins since area is function of cosine dec so we don’t want to average over too much dec.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jackknife_galaxy_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">grid_cells</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1611,7 +1611,7 @@ dtype: int64
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="c1">#setup redshift binning here for consistency in the rest of the code</span>
@@ -1631,15 +1631,15 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original galaxy count: 29382943
-CPU times: user 1.5 s, sys: 65.8 ms, total: 1.57 s
-Wall time: 1.57 s
+CPU times: user 1.44 s, sys: 69.7 ms, total: 1.51 s
+Wall time: 1.5 s
 </pre></div>
 </div>
 <img alt="../../_images/219cf74cfe995ac09fc4d70cab838cb496d1f130be7066101f14b22a98f28a1d.png" src="../../_images/219cf74cfe995ac09fc4d70cab838cb496d1f130be7066101f14b22a98f28a1d.png" />
 </div>
 </div>
 <p>Figure Caption: Number density plot.  Note that the jackknife error bars are displayed on the plot but they are smaller than the point size.  We see the expected shape of this plot, with a fall off toward higher redshift.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#cleanup memory when done with this file:</span>
 <span class="k">del</span> <span class="n">df</span>
@@ -1651,7 +1651,7 @@ Wall time: 1.57 s
 <section id="expand-to-out-of-memory-sized-catalogs">
 <h2>4.0 Expand to out-of-memory sized catalogs<a class="headerlink" href="#expand-to-out-of-memory-sized-catalogs" title="Link to this heading">#</a></h2>
 <p>Originally this section attempted to use dask instead of pandas to hold the data and be able to do this work.  Dask is supposed to be able to do this sort of magic in the background with out of memory catalogs, but in reality, this does not seem to be possible, or at least not possible with a week or so of working on it.  Instead, we will read in the catalogs one at a time, store counts of mean and standard deviation per square degree and then move on to the next catalog.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_area</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1681,7 +1681,7 @@ Wall time: 1.57 s
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">galaxy_counts_per_hdf5_binned</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
@@ -1947,7 +1947,7 @@ Wall time: 1.57 s
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
@@ -1986,8 +1986,8 @@ all_counts sample: [[908.19889809 747.2333674  794.9342837  676.17631576 655.197
    85.80426641  63.65060463  43.55867883  29.37146612  17.62327474]]
 all_counts variance: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
 all_counts dtype: float64
-CPU times: user 4.39 s, sys: 1.41 s, total: 5.8 s
-Wall time: 5.8 s
+CPU times: user 4.03 s, sys: 1.42 s, total: 5.45 s
+Wall time: 5.45 s
 </pre></div>
 </div>
 <img alt="../../_images/70895f06fd1c1da911ba2e9f4155724e173a3f83718bb5b2880a4e1723001316.png" src="../../_images/70895f06fd1c1da911ba2e9f4155724e173a3f83718bb5b2880a4e1723001316.png" />
@@ -1997,7 +1997,7 @@ Wall time: 5.8 s
 <section id="explore-jackknife-uncertainties">
 <h3>4.1 Explore jackknife uncertainties<a class="headerlink" href="#explore-jackknife-uncertainties" title="Link to this heading">#</a></h3>
 <p>The uncertainties are plotted as error bars on the data points above.  There are no jackknife uncertainties if you are only using one file, so they will in that case not be visible on the plot.  This section is for the case where you are using more than one downloaded input file.  Here we explore and plot the jackknife uncertainties in a way that makes them visible.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_jackknife_fractional_uncertainty</span><span class="p">(</span><span class="n">z_bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">std_dev_counts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2028,7 +2028,7 @@ Wall time: 5.8 s
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#make fractional uncertainty plot</span>
 <span class="n">counts_per_deg2</span> <span class="o">=</span> <span class="n">counts_summary</span><span class="p">[</span><span class="s2">&quot;sum_counts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>

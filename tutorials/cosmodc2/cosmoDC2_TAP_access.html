@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -512,7 +512,7 @@ document.write(`
 <h1>Querying CosmoDC2 Mock v1 catalogs<a class="headerlink" href="#querying-cosmodc2-mock-v1-catalogs" title="Link to this heading">#</a></h1>
 <p>This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More information about these catalogs can be found here: https://irsa.ipac.caltech.edu/Missions/cosmodc2.html</p>
 <p>These catalogs can be accessed through IRSA’s Virtual Ovservatory Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the PyVO library.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install numpy matplotlib pyvo</span>
@@ -520,14 +520,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
 </pre></div>
@@ -536,7 +536,7 @@ document.write(`
 </div>
 <section id="list-the-available-dc2-tables">
 <h2>List the available DC2 tables<a class="headerlink" href="#list-the-available-dc2-tables" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">tables</span>
 <span class="k">for</span> <span class="n">tablename</span> <span class="ow">in</span> <span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -569,7 +569,7 @@ cosmodc2mockv1_new
 <li><p><code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_heavy</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_new</span></code>, except that it does not contain galaxies with stellar masses &lt;= 10^7 solar masses.</p></li>
 </ul>
 <p>If you are new to the DC2 catalog, we recommend that you start with <code class="docutils literal notranslate"><span class="pre">cosmodc2mockv1_heavy</span></code></p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose the abridged table to start with.</span>
 <span class="c1"># Queries should be faster on smaller tables.</span>
@@ -583,7 +583,7 @@ cosmodc2mockv1_new
 <section id="how-many-rows-are-in-the-chosen-table">
 <h2>How many rows are in the chosen table?<a class="headerlink" href="#how-many-rows-are-in-the-chosen-table" title="Link to this heading">#</a></h2>
 <p>With TAP, you can query catalogs with constraints specified in IVOA Astronomical Data Query Language (ADQL; https://www.ivoa.net/documents/latest/ADQL.html), which is based on SQL.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, this snippet of ADQL counts the number of elements in</span>
 <span class="c1"># the redshift column of the table we chose.</span>
@@ -598,7 +598,7 @@ cosmodc2mockv1_new
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In order to use TAP with this ADQL string using pyvo, you can do the following:</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">run_async</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
@@ -623,7 +623,7 @@ To learn more about synchronous versus asynchronous PyVO queries please read the
 <section id="what-is-the-default-maximum-number-of-rows-returned-by-the-service">
 <h2>What is the default maximum number of rows returned by the service?<a class="headerlink" href="#what-is-the-default-maximum-number-of-rows-returned-by-the-service" title="Link to this heading">#</a></h2>
 <p>This service will return a maximum of 2 billion rows by default.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span><span class="o">.</span><span class="n">maxrec</span>
 </pre></div>
@@ -636,7 +636,7 @@ To learn more about synchronous versus asynchronous PyVO queries please read the
 </div>
 </div>
 <p>This default maximum can be changed, and there is no hard upper limit to what it can be changed to.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">hardlimit</span><span class="p">)</span>
 </pre></div>
@@ -652,7 +652,7 @@ To learn more about synchronous versus asynchronous PyVO queries please read the
 <section id="list-the-columns-in-the-chosen-table">
 <h2>List the columns in the chosen table<a class="headerlink" href="#list-the-columns-in-the-chosen-table" title="Link to this heading">#</a></h2>
 <p>This table contains 301 columns.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="n">tablename</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
@@ -666,7 +666,7 @@ To learn more about synchronous versus asynchronous PyVO queries please read the
 </div>
 </div>
 <p>Let’s learn a bit more about them.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">:</span><span class="s1">30s</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -983,7 +983,7 @@ htm20                           HTM spatial (x,y,z) index key
 <section id="create-a-histogram-of-redshifts">
 <h2>Create a histogram of redshifts<a class="headerlink" href="#create-a-histogram-of-redshifts" title="Link to this heading">#</a></h2>
 <p>Let’s figure out what redshift range these galaxies cover. Since we found out above that it’s a large catalog, we can start with a spatial search over a small area of 0.1 deg. The ADQL that is needed for the spatial constraint is:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT redshift FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2"> WHERE CONTAINS(POINT(&#39;ICRS&#39;, RAMean, DecMean), CIRCLE(&#39;ICRS&#39;,54.218205903,-37.497959343,.1))=1&quot;</span>
 <span class="n">adql</span>
@@ -997,14 +997,14 @@ htm20                           HTM spatial (x,y,z) index key
 </div>
 </div>
 <p>Now we can use the previously-defined service to execute the query with the spatial contraint.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cone_results</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">run_sync</span><span class="p">(</span><span class="n">adql</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a histogram</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -1034,7 +1034,7 @@ htm20                           HTM spatial (x,y,z) index key
 <h2>Visualize galaxy colors at z ~ 0.5<a class="headerlink" href="#visualize-galaxy-colors-at-z-0-5" title="Link to this heading">#</a></h2>
 <p>Now let’s visualize the galaxy main sequence at z = 2.0. First, we’ll do a narrow redshift cut with no spatial constraint.</p>
 <p>Let’s do it as an asynchronous search since this might take awhile, too.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
 <span class="n">adql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT Mag_true_r_sdss_z0, Mag_true_g_sdss_z0, redshift FROM </span><span class="si">{</span><span class="n">tablename</span><span class="si">}</span><span class="s2"> WHERE redshift &gt; 0.5 and redshift &lt; 0.54&quot;</span>
@@ -1043,7 +1043,7 @@ htm20                           HTM spatial (x,y,z) index key
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mag_true_r_sdss_z0&#39;</span><span class="p">])</span>
 </pre></div>
@@ -1055,7 +1055,7 @@ htm20                           HTM spatial (x,y,z) index key
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Since this results in almost 4 million galaxies,</span>
 <span class="c1"># we will construct a 2D histogram rather than a scatter plot.</span>

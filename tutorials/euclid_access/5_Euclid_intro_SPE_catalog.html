@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -550,7 +550,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <p class="admonition-title">Important</p>
 <p>We rely on <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> features that have been recently added, so please make sure you have version v0.4.10 or newer installed.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed</span>
 <span class="c1"># !pip install matplotlib astropy &#39;astroquery&gt;=0.4.10&#39;</span>
@@ -558,7 +558,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
@@ -582,7 +582,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec">
 <h2>1. Find the MER Tile ID that corresponds to a given RA and Dec<a class="headerlink" href="#find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec" title="Link to this heading">#</a></h2>
 <p>In this case, choose the coordinates from the first notebook to save time downloading the MER mosaic. Search a radius of 1.5 arcminutes around these coordinates.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_radius</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
 <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;HD 168151&#39;</span><span class="p">)</span>
@@ -600,7 +600,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="use-irsa-to-search-for-all-euclid-data-on-this-target">
 <h3>Use IRSA to search for all Euclid data on this target<a class="headerlink" href="#use-irsa-to-search-for-all-euclid-data-on-this-target" title="Link to this heading">#</a></h3>
 <p>This searches specifically in the <code class="docutils literal notranslate"><span class="pre">euclid_DpdMerBksMosaic</span></code> collection which is the MER images and catalogs.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_table</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">)</span>
 </pre></div>
@@ -609,7 +609,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <p>This table lists all MER mosaic images available in this search position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the <a class="reference external" href="https://euclid.caltech.edu/page/euclid-faq-tech/">Euclid documentation at IPAC</a>.</p>
 <p>Note that there are various image types are returned as well, we filter out the <code class="docutils literal notranslate"><span class="pre">science</span></code> images from these:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">science_images</span> <span class="o">=</span> <span class="n">image_table</span><span class="p">[</span><span class="n">image_table</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;science&#39;</span><span class="p">]</span>
 <span class="n">science_images</span>
@@ -618,26 +618,26 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=9</i>
-<table id="table139808274987024" class="table-striped table-bordered table-condensed">
+<table id="table139913327301520" class="table-striped table-bordered table-condensed">
 <thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
-<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>R</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>5.61762e-07</td><td>7.22025e-07</td><td>4.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/R</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>Y</td><td>Infrared</td><td>102158277_NISP</td><td>0.0878</td><td>9.2e-07</td><td>1.146e-06</td><td>4.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/Y</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>H</td><td>Infrared</td><td>102158277_NISP</td><td>0.1026</td><td>1.372e-06</td><td>2e-06</td><td>2.7</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/H</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>J</td><td>Infrared</td><td>102158277_NISP</td><td>0.094</td><td>1.146e-06</td><td>1.372e-06</td><td>5.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/J</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Pan-STARRS</td><td>Pan-STARRS</td><td>science</td><td>3</td><td>image</td><td>I</td><td>Optical</td><td>102158277_PANSTARRS</td><td>1.11</td><td>6.78317e-07</td><td>8.30624e-07</td><td>5.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_PANSTARRS/I</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>102158277_VIS</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_VIS/VIS</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102158277-27C4DD_20241025T124812.358980Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
+<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>R</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>5.61762e-07</td><td>7.22025e-07</td><td>4.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/R</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-R_TILE102158277-CA7AB3_20241025T120300.417407Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>273.74061163858784</td><td>64.50001388888538</td><td>CFHT</td><td>MegaCam</td><td>science</td><td>3</td><td>image</td><td>U</td><td>Optical</td><td>102158277_MegaCam</td><td>--</td><td>3.14751e-07</td><td>4.01839e-07</td><td>4.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_MegaCam/U</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/MEGACAM/EUC_MER_BGSUB-MOSAIC-CFIS-U_TILE102158277-DB8920_20241025T120138.608462Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>G</td><td>Optical</td><td>102158277_WISHES</td><td>1.58</td><td>3.95422e-07</td><td>5.54729e-07</td><td>3.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/G</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-G_TILE102158277-76C6DB_20241025T120401.488065Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
-<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>Y</td><td>Infrared</td><td>102158277_NISP</td><td>0.0878</td><td>9.2e-07</td><td>1.146e-06</td><td>4.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/Y</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102158277-1FE0D9_20241025T122512.777703Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Subaru Telescope</td><td>Hyper Suprime-Cam</td><td>science</td><td>3</td><td>image</td><td>Z</td><td>Optical</td><td>102158277_WISHES</td><td>1.15</td><td>8.36385e-07</td><td>9.49057e-07</td><td>7.9</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_WISHES/Z</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/HSC/EUC_MER_BGSUB-MOSAIC-WISHES-Z_TILE102158277-E3133D_20241025T120342.580582Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
-<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>H</td><td>Infrared</td><td>102158277_NISP</td><td>0.1026</td><td>1.372e-06</td><td>2e-06</td><td>2.7</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/H</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102158277-797A7D_20241025T122514.635323Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
-<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Pan-STARRS</td><td>Pan-STARRS</td><td>science</td><td>3</td><td>image</td><td>I</td><td>Optical</td><td>102158277_PANSTARRS</td><td>1.11</td><td>6.78317e-07</td><td>8.30624e-07</td><td>5.0</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_PANSTARRS/I</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/GPC/EUC_MER_BGSUB-MOSAIC-PANSTARRS-I_TILE102158277-C2B970_20241025T120200.727193Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
-<tr><td>273.74061163858784</td><td>64.50001388888538</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>J</td><td>Infrared</td><td>102158277_NISP</td><td>0.094</td><td>1.146e-06</td><td>1.372e-06</td><td>5.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 274.366109291086 64.76536207691132 273.11511335805267 64.76536180261205 273.1272020139886 64.23206348982802 274.3540218940251 64.23206375763488 274.366109291086 64.76536207691132</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102158277_NISP/J</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102158277/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102158277-DA51EA_20241025T122533.612365Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 </table></div></div></div>
 </div>
 </section>
 <section id="choose-the-vis-image-and-pull-the-tile-id">
 <h3>Choose the VIS image and pull the Tile ID<a class="headerlink" href="#choose-the-vis-image-and-pull-the-tile-id" title="Link to this heading">#</a></h3>
 <p>Extract the tile ID from the <code class="docutils literal notranslate"><span class="pre">obs_id</span></code> column. The values in this column are made a combination of the 9 digit tile ID and the abbreviation of the instrument.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tileID</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;obs_id&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">9</span><span class="p">]</span>
 
@@ -656,7 +656,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="download-spe-catalog-from-irsa-directly-to-this-notebook">
 <h2>2. Download SPE catalog from IRSA directly to this notebook<a class="headerlink" href="#download-spe-catalog-from-irsa-directly-to-this-notebook" title="Link to this heading">#</a></h2>
 <p>Search for all tables in IRSA labeled as euclid</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
@@ -693,7 +693,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
 <span class="n">table_galaxy_candidates</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;</span>
@@ -709,7 +709,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <li><p>How many columns are there?</p></li>
 <li><p>List the column names</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_info</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">list_columns</span><span class="p">(</span><span class="n">catalog</span><span class="o">=</span><span class="n">table_mer</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns_info</span><span class="p">))</span>
@@ -722,7 +722,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_columns</span><span class="p">(</span><span class="n">catalog</span><span class="o">=</span><span class="n">table_1dspectra</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -730,7 +730,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table139809247745616" class="table-striped table-bordered table-condensed">
+<table id="table139912336950608" class="table-striped table-bordered table-condensed">
 <thead><tr><th>column_index</th><th>schema_name</th><th>table_name</th><th>column_name</th><th>description</th><th>unit</th><th>ucd</th><th>utype</th><th>datatype</th><th>arraysize</th><th>size</th><th>principal</th><th>indexed</th><th>std</th><th>irsa_label</th><th>xtype</th><th>irsa_format</th><th>irsa_ref</th></tr></thead>
 <thead><tr><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th></tr></thead>
 <tr><td>1</td><td>euclid</td><td>euclid.objectid_spectrafile_association_q1</td><td>objectid</td><td>Euclid Object ID</td><td></td><td></td><td></td><td>long</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>objectid</td><td></td><td>20d</td><td></td></tr>
@@ -740,7 +740,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <tr><td>5</td><td>euclid</td><td>euclid.objectid_spectrafile_association_q1</td><td>cntr</td><td>entry counter (key) number (unique within table)</td><td></td><td>meta.record;meta.main</td><td></td><td>long</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>cntr</td><td></td><td>12d</td><td></td></tr>
 </table></div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full list of columns and their description</span>
 <span class="n">columns_info</span>
@@ -810,10 +810,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_i_ext_decam_4fwhm_aper&#39;: &#39;Iext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_decam_1fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_decam_2fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_decam_3fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_decam_4fwhm_aper&#39;: &#39;Zext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_u_ext_lsst_1fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
- &#39;fluxerr_u_ext_lsst_2fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_u_ext_lsst_3fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_u_ext_lsst_4fwhm_aper&#39;: &#39;Uext LSST band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_g_ext_lsst_1fwhm_aper&#39;: &#39;Gext LSST band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
@@ -851,10 +851,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_z_ext_panstarrs_1fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_panstarrs_2fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_panstarrs_3fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
+ &#39;fluxerr_g_ext_hsc_3fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_panstarrs_4fwhm_aper&#39;: &#39;Zext PS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_g_ext_hsc_1fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_g_ext_hsc_2fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
- &#39;fluxerr_g_ext_hsc_3fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (3 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_g_ext_hsc_4fwhm_aper&#39;: &#39;Gext HSC band source aperture photometry flux (4 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_hsc_1fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (1 FWHM diameter) on PSF-matched images error&#39;,
  &#39;fluxerr_z_ext_hsc_2fwhm_aper&#39;: &#39;Zext HSC band source aperture photometry flux (2 FWHM diameter) on PSF-matched images error&#39;,
@@ -872,10 +872,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;flux_g_ext_lsst_templfit&#39;: &#39;Gext LSST band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_r_ext_lsst_templfit&#39;: &#39;Rext LSST band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_i_ext_lsst_templfit&#39;: &#39;Iext LSST band source template fitting flux (TPHOT measurement)&#39;,
+ &#39;flux_g_ext_jpcam_templfit&#39;: &#39;Gext JPCAM band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_z_ext_lsst_templfit&#39;: &#39;Zext LSST band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_u_ext_megacam_templfit&#39;: &#39;Uext Megacam band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_r_ext_megacam_templfit&#39;: &#39;Rext Megacam band source template fitting flux (TPHOT measurement)&#39;,
- &#39;flux_g_ext_jpcam_templfit&#39;: &#39;Gext JPCAM band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_i_ext_panstarrs_templfit&#39;: &#39;Iext PS band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_z_ext_panstarrs_templfit&#39;: &#39;Zext PS band source template fitting flux (TPHOT measurement)&#39;,
  &#39;flux_g_ext_hsc_templfit&#39;: &#39;Gext HSC band source template fitting flux (TPHOT measurement)&#39;,
@@ -913,10 +913,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;flux_vis_to_r_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Rext LSST band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_i_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext LSST band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_z_ext_lsst_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)&#39;,
+ &#39;flux_vis_to_i_ext_panstarrs_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext PS band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_u_ext_megacam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_r_ext_megacam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_g_ext_jpcam_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)&#39;,
- &#39;flux_vis_to_i_ext_panstarrs_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Iext PS band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_z_ext_panstarrs_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext PS band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_g_ext_hsc_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)&#39;,
  &#39;flux_vis_to_z_ext_hsc_templfit&#39;: &#39;VIS band source flux on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)&#39;,
@@ -935,10 +935,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_vis_to_z_ext_lsst_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext LSST band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_u_ext_megacam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Uext Megacam band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_r_ext_megacam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Rext Megacam band (TPHOT measurement)&#39;,
+ &#39;fluxerr_vis_to_g_ext_hsc_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_g_ext_jpcam_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext JPCAM band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_i_ext_panstarrs_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Iext PS band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_z_ext_panstarrs_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext PS band (TPHOT measurement)&#39;,
- &#39;fluxerr_vis_to_g_ext_hsc_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Gext HSC band (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_to_z_ext_hsc_templfit&#39;: &#39;VIS band source flux error on a VIS image PSF-matched to Zext HSC band (TPHOT measurement)&#39;,
  &#39;flux_vis_psf&#39;: &#39;VIS band source PSF-fitting photometry flux (TPHOT measurement)&#39;,
  &#39;fluxerr_vis_psf&#39;: &#39;VIS band source PSF-fitting photometry flux error (TPHOT measurement)&#39;,
@@ -975,10 +975,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_g_ext_decam_sersic&#39;: &#39;Gext DECam band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_r_ext_decam_sersic&#39;: &#39;Rext DECam band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_i_ext_decam_sersic&#39;: &#39;Iext DECam band source flux error from the Sersic fit&#39;,
+ &#39;fluxerr_r_ext_lsst_sersic&#39;: &#39;Rext LSST band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_z_ext_decam_sersic&#39;: &#39;Zext DECam band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_u_ext_lsst_sersic&#39;: &#39;Uext LSST band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_g_ext_lsst_sersic&#39;: &#39;Gext LSST band source flux error from the Sersic fit&#39;,
- &#39;fluxerr_r_ext_lsst_sersic&#39;: &#39;Rext LSST band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_i_ext_lsst_sersic&#39;: &#39;Iext LSST band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_z_ext_lsst_sersic&#39;: &#39;Zext LSST band source flux error from the Sersic fit&#39;,
  &#39;fluxerr_u_ext_megacam_sersic&#39;: &#39;Uext Megacam band source flux error from the Sersic fit&#39;,
@@ -1011,10 +1011,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;flux_z_ext_hsc_disk_sersic&#39;: &#39;Zext HSC band source flux from the Disk+Sersic fit&#39;,
  &#39;fluxerr_vis_disk_sersic&#39;: &#39;VIS band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_y_disk_sersic&#39;: &#39;NIR Y band source flux error from the Disk+Sersic fit&#39;,
+ &#39;fluxerr_g_ext_decam_disk_sersic&#39;: &#39;Gext DECam band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_j_disk_sersic&#39;: &#39;NIR J band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_h_disk_sersic&#39;: &#39;NIR H band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_u_ext_decam_disk_sersic&#39;: &#39;Uext DECam band source flux error from the Disk+Sersic fit&#39;,
- &#39;fluxerr_g_ext_decam_disk_sersic&#39;: &#39;Gext DECam band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_r_ext_decam_disk_sersic&#39;: &#39;Rext DECam band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_i_ext_decam_disk_sersic&#39;: &#39;Iext DECam band source flux error from the Disk+Sersic fit&#39;,
  &#39;fluxerr_z_ext_decam_disk_sersic&#39;: &#39;Zext DECam band source flux error from the Disk+Sersic fit&#39;,
@@ -1042,10 +1042,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;sersic_fract_u_ext_lsst_disk_sersic&#39;: &#39;Uext LSST band Sersic fraction&#39;,
  &#39;sersic_fract_g_ext_lsst_disk_sersic&#39;: &#39;Gext LSST band Sersic fraction&#39;,
  &#39;sersic_fract_r_ext_lsst_disk_sersic&#39;: &#39;Rext LSST band Sersic fraction&#39;,
+ &#39;sersic_fract_r_ext_megacam_disk_sersic&#39;: &#39;Rext Megacam band Sersic fraction&#39;,
  &#39;sersic_fract_i_ext_lsst_disk_sersic&#39;: &#39;Iext LSST band Sersic fraction&#39;,
  &#39;sersic_fract_z_ext_lsst_disk_sersic&#39;: &#39;Zext LSST band Sersic fraction&#39;,
  &#39;sersic_fract_u_ext_megacam_disk_sersic&#39;: &#39;Uext Megacam band Sersic fraction&#39;,
- &#39;sersic_fract_r_ext_megacam_disk_sersic&#39;: &#39;Rext Megacam band Sersic fraction&#39;,
  &#39;sersic_fract_g_ext_jpcam_disk_sersic&#39;: &#39;Gext JPCAM band Sersic fraction&#39;,
  &#39;sersic_fract_i_ext_panstarrs_disk_sersic&#39;: &#39;Iext PS band Sersic fraction&#39;,
  &#39;sersic_fract_z_ext_panstarrs_disk_sersic&#39;: &#39;Zext PS band Sersic fraction&#39;,
@@ -1086,10 +1086,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;flag_g_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext LSST flag image&#39;,
  &#39;flag_r_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Rext LSST flag image&#39;,
  &#39;flag_i_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Iext LSST flag image&#39;,
+ &#39;flag_g_ext_jpcam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext JPCAM flag image&#39;,
  &#39;flag_z_ext_lsst&#39;: &#39;Objects flag keeping track of the flagged pixels in the Zext LSST flag image&#39;,
  &#39;flag_u_ext_megacam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Uext Megacam flag image&#39;,
  &#39;flag_r_ext_megacam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Rext Megacam flag image&#39;,
- &#39;flag_g_ext_jpcam&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext JPCAM flag image&#39;,
  &#39;flag_i_ext_panstarrs&#39;: &#39;Objects flag keeping track of the flagged pixels in the Iext PS flag image&#39;,
  &#39;flag_z_ext_panstarrs&#39;: &#39;Objects flag keeping track of the flagged pixels in the Zext PS flag image&#39;,
  &#39;flag_g_ext_hsc&#39;: &#39;Objects flag keeping track of the flagged pixels in the Gext HSC flag image&#39;,
@@ -1153,16 +1153,16 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;spt_ind&#39;: &#39;Spatial (x,y,z) index key&#39;,
  &#39;htm20&#39;: &#39;HTM spatial (x,y,z) index key&#39;,
  &#39;cntr&#39;: &#39;&#39;,
+ &#39;right_ascension_psf_fitting&#39;: &#39;Source RA coordinate derived by the PSF-fitting photometry method&#39;,
  &#39;object_id&#39;: &#39;Euclid unique source identifier&#39;,
  &#39;ra&#39;: &#39;Source barycenter RA coordinate (SExtractor ALPHA_J2000) decimal degrees&#39;,
  &#39;dec&#39;: &#39;Source barycenter DEC coordinate (SExtractor DELTA_J2000) decimal degrees&#39;,
- &#39;right_ascension_psf_fitting&#39;: &#39;Source RA coordinate derived by the PSF-fitting photometry method&#39;,
  &#39;declination_psf_fitting&#39;: &#39;Source DEC coordinate derived by the PSF-fitting photometry method&#39;,
  &#39;segmentation_map_id&#39;: &#39;Source ID in the associated segmentation map&#39;,
+ &#39;flux_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
  &#39;vis_det&#39;: &#39;Flag to indicate if the source is detected in the VIS mosaic (1) or is only detected in the NIR mosaic (0)&#39;,
  &#39;flux_vis_1fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_vis_2fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_vis_3fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_vis_4fwhm_aper&#39;: &#39;VIS band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_y_1fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_y_2fwhm_aper&#39;: &#39;NIR Y band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
@@ -1182,10 +1182,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;flux_nir_stack_4fwhm_aper&#39;: &#39;NIR stack band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_u_ext_decam_1fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_u_ext_decam_2fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
+ &#39;flux_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_u_ext_decam_3fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_u_ext_decam_4fwhm_aper&#39;: &#39;Uext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_g_ext_decam_1fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
- &#39;flux_g_ext_decam_2fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (2 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_g_ext_decam_3fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (3 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_g_ext_decam_4fwhm_aper&#39;: &#39;Gext DECam band source aperture photometry flux (4 FWHM diameter) on PSF-matched images&#39;,
  &#39;flux_r_ext_decam_1fwhm_aper&#39;: &#39;Rext DECam band source aperture photometry flux (1 FWHM diameter) on PSF-matched images&#39;,
@@ -1242,7 +1242,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <li><p>Join the lines and galaxy candidates tables on object_id and spe_rank</p></li>
 </ul>
 <p>Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_query</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.flux_y_templfit, &quot;</span>
     <span class="s2">&quot;lines.spe_line_snr_gf,lines.spe_line_snr_di, lines.spe_line_name, lines.spe_line_central_wl_gf, &quot;</span>
@@ -1269,7 +1269,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <section id="choose-an-object-of-interest-lets-look-at-an-object-with-a-strong-halpha-line-detected-with-high-snr">
 <h3>Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.<a class="headerlink" href="#choose-an-object-of-interest-lets-look-at-an-object-with-a-strong-halpha-line-detected-with-high-snr" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span> <span class="o">=</span> <span class="mi">2737659721646729968</span>
 
@@ -1281,7 +1281,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1</i>
-<table id="table139808270309712" class="table-striped table-bordered table-condensed">
+<table id="table139912336649104" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>tileid</th><th>flux_y_templfit</th><th>spe_line_snr_gf</th><th>spe_line_snr_di</th><th>spe_line_name</th><th>spe_line_central_wl_gf</th><th>spe_line_ew_gf</th><th>spe_z_err</th><th>spe_z</th><th>spe_z_prob</th><th>spe_line_flux_gf</th><th>spe_line_flux_err_gf</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th></th><th>uJy</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th><th>object</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -1291,7 +1291,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </section>
 <section id="pull-the-spectrum-of-this-object">
 <h3>Pull the spectrum of this object<a class="headerlink" href="#pull-the-spectrum-of-this-object" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT *  FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2">  WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -1304,7 +1304,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="the-following-steps-to-read-in-the-spectrum-follows-the-3-euclid-intro-1d-spectra-notebook">
 <h3>The following steps to read in the spectrum follows the 3_Euclid_intro_1D_spectra notebook.<a class="headerlink" href="#the-following-steps-to-read-in-the-spectrum-follows-the-3-euclid-intro-1d-spectra-notebook" title="Link to this heading">#</a></h3>
 <p>This involves reading in the spectrum without readin in the full FITS file, just pulling the extension we want.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result_table2</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">file_uri</span>
@@ -1317,7 +1317,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="n">result_table2</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
@@ -1340,19 +1340,19 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <p class="admonition-title">Tip</p>
 <p>As we use astropy.visualization’s <code class="docutils literal notranslate"><span class="pre">quantity_support</span></code>, matplotlib automatically picks up the axis units from the quantitites we plot.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quantity_support</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f27a63d9e50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f3fe13fa790&gt;
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that the units are missing from the lines table, we manually add Angstrom</span>
 <span class="n">line_wavelengths</span> <span class="o">=</span> <span class="n">obj_row</span><span class="p">[</span><span class="s1">&#39;spe_line_central_wl_gf&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">angstrom</span>

@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -554,7 +554,7 @@ document.write(`
 <li><p><em>numpy</em> - for working with arrays</p></li>
 <li><p><em>pyvo</em> - for queries to Virtual Observatory services at the archives</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install numpy astropy pyvo firefly_client</span>
@@ -563,7 +563,7 @@ document.write(`
 </div>
 </div>
 <p>Call the imports below:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
@@ -581,7 +581,7 @@ document.write(`
 <section id="choose-target-as-example">
 <h2>Choose Target as Example<a class="headerlink" href="#choose-target-as-example" title="Link to this heading">#</a></h2>
 <p>From <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-3881/ace32f#ajace32ff10">Figure 10</a> of the referenced paper, pick the source in the upper right corner (J052736.37+344940.6):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="s2">&quot;05h27m36.37s&quot;</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="s2">&quot;+34d49m40.6s&quot;</span><span class="p">)</span>
 </pre></div>
@@ -617,7 +617,7 @@ document.write(`
 <li><p>Zeropoint for the bandpass in units of Janskys (needed for converting photometric measurements to energy densities)</p></li>
 </ul>
 <p>Set the variables for the photmetry table and each quantity in that data structure:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;mag&#39;</span><span class="p">,</span> <span class="s1">&#39;magerr&#39;</span><span class="p">,</span> <span class="s1">&#39;upper_limit&#39;</span><span class="p">,</span> <span class="s1">&#39;zeropoint&#39;</span><span class="p">],</span>
                   <span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Jy</span><span class="p">])</span>
@@ -626,7 +626,7 @@ document.write(`
 </div>
 </div>
 <p>We query catalog data using IRSA’s TAP (VO Table Access Protocol) service. It’s sufficient to set up the service once, at the beginning of the session:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_tap</span> <span class="o">=</span> <span class="n">pyvo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span><span class="p">)</span>
 </pre></div>
@@ -636,7 +636,7 @@ document.write(`
 <section id="retrieve-2mass-photometry">
 <h3>Retrieve 2MASS photometry<a class="headerlink" href="#retrieve-2mass-photometry" title="Link to this heading">#</a></h3>
 <p>To start, define a function to retrieve 2MASS photometry via a TAP query to IRSA that includes upper limits (note that only the <code class="docutils literal notranslate"><span class="pre">ph_qual</span></code> column on photometric quality of source is used and not the <code class="docutils literal notranslate"><span class="pre">rd_flg</span></code> column on “read flag”):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_2mass_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from 2MASS</span>
@@ -696,14 +696,14 @@ document.write(`
 </div>
 <p>Consider that while the search radius is currently set at 1 degree from the position, that value can be adjusted by changing what the number on the <code class="docutils literal notranslate"><span class="pre">radius</span></code> line is.</p>
 <p>Now gather the rows of 2MASS data and add each of them to the photometry table:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">get_2mass_phot</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">phot_tbl</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
@@ -716,7 +716,7 @@ document.write(`
 <h3>Retrieve AllWISE Photometry<a class="headerlink" href="#retrieve-allwise-photometry" title="Link to this heading">#</a></h3>
 <p>According to the paper referenced above, the detections from the AllWISE catalog were retained if the data quality flags were A, B, or C; if the data quality flag was Z, then the data were provisionally retained with a very large error bar, 30% larger than what appears in the catalog.</p>
 <p>Based on that information, define a function to release AllWISE photometry via a TAP query to IRSA that includes the needed data quality flags and retains upper limits:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_allwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from AllWISE</span>
@@ -783,14 +783,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">get_allwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">phot_tbl</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
@@ -802,7 +802,7 @@ document.write(`
 <section id="retrieve-gaia-dr3-photometry">
 <h3>Retrieve Gaia DR3 Photometry<a class="headerlink" href="#retrieve-gaia-dr3-photometry" title="Link to this heading">#</a></h3>
 <p>Define a function to retrieve Gaia DR3 photometry via a TAP query to IRSA (not considering upper limits as Gaia DR3 ony provides “detections or not” info so actual limits are not given):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_gaia_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from Gaia DR3</span>
@@ -861,14 +861,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">get_gaia_phot</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">phot_tbl</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
@@ -880,7 +880,7 @@ document.write(`
 <section id="retrieve-catwise-photometry">
 <h3>Retrieve CatWISE Photometry<a class="headerlink" href="#retrieve-catwise-photometry" title="Link to this heading">#</a></h3>
 <p>Define a function to retrieve CatWISE photometry via a TAP query to IRSA that includes upper limits (note that CatWISE2020 Catalog is being used rather than CatWISE Preliminary Catalog):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_catwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from CatWISE</span>
@@ -930,14 +930,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">get_catwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">phot_tbl</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
@@ -949,7 +949,7 @@ document.write(`
 <section id="retrieve-unwise-photometry">
 <h3>Retrieve unWISE Photometry<a class="headerlink" href="#retrieve-unwise-photometry" title="Link to this heading">#</a></h3>
 <p>Define a function to retrieve unWISE photometry via a TAP query to IRSA(note that flux units are given in nano-mag, zero-point is carried over from AllWISE, and no flag for upper limits is given):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_unwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get photometry from CatWISE</span>
@@ -999,14 +999,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">get_unwise_phot</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">phot_tbl</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
@@ -1019,7 +1019,7 @@ document.write(`
 <h3>Retrieve Optional Photometry<a class="headerlink" href="#retrieve-optional-photometry" title="Link to this heading">#</a></h3>
 <p>Insert more data retrievals here, following the above formats.</p>
 <p>Note: After more columns are added in the conversion to spectral energy density, the <code class="docutils literal notranslate"><span class="pre">phot_tbl.add_row</span></code> functions will thrown an exception that number of values doesn’t match the number of columns.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SEIP</span>
 <span class="c1"># GLIMPSE</span>
@@ -1036,14 +1036,14 @@ document.write(`
 <section id="convert-magnitudes-to-energy-densities">
 <h2>Convert Magnitudes to Energy Densities<a class="headerlink" href="#convert-magnitudes-to-energy-densities" title="Link to this heading">#</a></h2>
 <p>Use the zeropoint information embedded by the catalog retrieval functions to compute energy densities:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">const</span><span class="o">.</span><span class="n">c</span><span class="o">*</span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">**-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Hz</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;lam_flam&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">factor</span><span class="o">*</span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;zeropoint&quot;</span><span class="p">]</span> <span class="o">*</span>
                             <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.4</span><span class="o">*</span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]))</span>
@@ -1053,7 +1053,7 @@ document.write(`
 </div>
 </div>
 <p>As the above formula was for the photometry measurements given, compute the photometry uncertainty using a similar formula:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;lam_flam_err&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;lam_flam&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;magerr&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">/</span><span class="mf">2.5</span>
 </pre></div>
@@ -1061,7 +1061,7 @@ document.write(`
 </div>
 </div>
 <p>Check the energy density values for each converted value below:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;lam_flam&quot;</span><span class="p">]</span>
 </pre></div>
@@ -1072,7 +1072,7 @@ document.write(`
 \[[2.5447322 \times 10^{-12},~2.6163133 \times 10^{-12},~1.8539516 \times 10^{-12},~1.2202778 \times 10^{-12},~1.0192029 \times 10^{-12},~1.0054718 \times 10^{-12},~1.0843915 \times 10^{-12},~6.6948035 \times 10^{-13},~2.7315035 \times 10^{-13},~1.3028017 \times 10^{-12},~1.214671 \times 10^{-12},~9.6529632 \times 10^{-13},~0,~0] \; \mathrm{\frac{erg}{s\,cm^{2}}}\]</div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span><span class="p">[</span><span class="s2">&quot;lam_flam_err&quot;</span><span class="p">]</span>
 </pre></div>
@@ -1084,7 +1084,7 @@ document.write(`
 </div>
 </div>
 <p>Run the following cell to view the full photometry table and its values for each column (ex. zeropoint, upper limit):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phot_tbl</span>
 </pre></div>
@@ -1092,7 +1092,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=14</i>
-<table id="table139872886583056" class="table-striped table-bordered table-condensed">
+<table id="table140651256332368" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>wavelength</th><th>mag</th><th>magerr</th><th>upper_limit</th><th>zeropoint</th><th>lam_flam</th><th>lam_flam_err</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th>micron</th><th></th><th></th><th></th><th>Jy</th><th>erg / (s cm2)</th><th>erg / (s cm2)</th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th></tr></thead>
@@ -1117,7 +1117,7 @@ document.write(`
 <h2>Upload to Firefly<a class="headerlink" href="#upload-to-firefly" title="Link to this heading">#</a></h2>
 <p>There are two ways to initialize a Firefly client from Python, depending on whether you’re running the notebook in JupyterLab or not. Assuming you have <code class="docutils literal notranslate"><span class="pre">jupyter-firefly-extensions</span></code> set up in your environment as explained <a class="reference external" href="https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md">here</a>, you can use <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.</p>
 <p>You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a <a class="reference external" href="https://hub.docker.com/r/ipac/firefly">Firefly Docker image</a> and access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8080/firefly</span></code>. The URL of the Firefly server is read by both <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> and <code class="docutils literal notranslate"><span class="pre">make_lab_client()</span></code> through the environment variable <code class="docutils literal notranslate"><span class="pre">FIREFLY_URL</span></code>. However, <code class="docutils literal notranslate"><span class="pre">make_client()</span></code> also allows you to pass the URL directly as the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed</span>
 <span class="c1"># fc = FireflyClient.make_lab_client()</span>
@@ -1130,23 +1130,23 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0xNQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
 </div>
 <p>In the event that there are problems with the tab opened above, run the below command to obtain a web link that can be opened in a browser directly:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">display_url</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0wMw"" target="_blank">this link</a></div></div>
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0xNQ"" target="_blank">this link</a></div></div>
 </div>
 <p>Write the photometry table to a FITS file:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tblpath</span> <span class="o">=</span> <span class="s2">&quot;./phot_tbl.fits&quot;</span>
 <span class="n">phot_tbl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tblpath</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1155,7 +1155,7 @@ document.write(`
 </div>
 </div>
 <p>Upload the table (FITS file) to Firefly:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tval</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">tblpath</span><span class="p">)</span>
 </pre></div>
@@ -1163,7 +1163,7 @@ document.write(`
 </div>
 </div>
 <p>Show the table in Firefly:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">show_table</span><span class="p">(</span><span class="n">tval</span><span class="p">,</span> <span class="n">tbl_id</span><span class="o">=</span><span class="s2">&quot;photometry&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SED Photometry&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1176,7 +1176,7 @@ document.write(`
 </div>
 </div>
 <p>Specify the columns and markers for the SED plot:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trace1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tbl_id</span><span class="o">=</span><span class="s2">&quot;photometry&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;tables::wavelength&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;tables::lam_flam&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span> <span class="n">error_y</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="s2">&quot;tables::lam_flam_err&quot;</span><span class="p">),</span>
@@ -1187,7 +1187,7 @@ document.write(`
 </div>
 </div>
 <p>Specify the title and axes for the SED plot:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">layout_s</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;SED&quot;</span><span class="p">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Wavelength (microns)&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">),</span>
                 <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Energy density (erg/s/cm2)&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">))</span>
@@ -1196,7 +1196,7 @@ document.write(`
 </div>
 </div>
 <p>Display the SED plot in Firefly:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">show_chart</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="n">layout_s</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">trace_data</span><span class="p">)</span>
 </pre></div>
@@ -1213,7 +1213,7 @@ document.write(`
 <section id="retrieve-and-display-images">
 <h2>Retrieve and Display Images<a class="headerlink" href="#retrieve-and-display-images" title="Link to this heading">#</a></h2>
 <p>Use queries directed at Simple Image Access services to retrieve images:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irsa_sia</span> <span class="o">=</span> <span class="n">pyvo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">SIAService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/cgi-bin/2MASS/IM/nph-im_sia?type=at&amp;ds=asky&amp;&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1222,7 +1222,7 @@ document.write(`
 </div>
 <section id="get-2mass-images">
 <h3>Get 2MASS Images<a class="headerlink" href="#get-2mass-images" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_2mass_images</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">search_size</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve 2MASS images</span>
@@ -1264,14 +1264,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">j_fname</span><span class="p">,</span> <span class="n">h_fname</span><span class="p">,</span> <span class="n">k_fname</span> <span class="o">=</span> <span class="n">get_2mass_images</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">j_fname</span><span class="p">),</span> <span class="n">plot_id</span><span class="o">=</span><span class="s2">&quot;2MASS J&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;2MASS J&quot;</span><span class="p">)</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">show_fits</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">h_fname</span><span class="p">),</span> <span class="n">plot_id</span><span class="o">=</span><span class="s2">&quot;2MASS H&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;2MASS H&quot;</span><span class="p">)</span>
@@ -1285,7 +1285,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">set_zoom</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="s2">&quot;2MASS J&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
 <span class="n">fc</span><span class="o">.</span><span class="n">set_pan</span><span class="p">(</span><span class="n">plot_id</span><span class="o">=</span><span class="s2">&quot;2MASS J&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span>
@@ -1306,7 +1306,7 @@ document.write(`
 </div>
 </div>
 <p>For turning on “Align and Lock by WCS” in these images, use:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">align_images</span><span class="p">(</span><span class="n">lock_match</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>

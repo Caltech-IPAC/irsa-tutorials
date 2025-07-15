@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -543,7 +543,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <li><p><em>astropy.utils.data</em> for downloading files</p></li>
 <li><p><em>astropy.io</em> to manipulate FITS files</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install matplotlib astropy pyvo</span>
@@ -551,7 +551,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
@@ -569,7 +569,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <section id="section-1-setup">
 <h2>Section 1 - Setup<a class="headerlink" href="#section-1-setup" title="Link to this heading">#</a></h2>
 <p>Set images to display in the notebook</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -577,7 +577,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 <p>Define coordinates of a bright star</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra</span> <span class="o">=</span> <span class="mf">314.30417</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="mf">77.595559</span>
@@ -592,7 +592,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <p>Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/</p>
 <p>Limit by Publisher “NASA/IPAC Infrared Science Archive” and Capability Type “Simple Image Access Protocol” then search on “AllWISE Atlas”</p>
 <p>Locate the SIA2 URL https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">allwise_service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">SIAService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?&quot;</span><span class="p">)</span>
 </pre></div>
@@ -603,7 +603,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <section id="section-3-search-the-service">
 <h2>Section 3 - Search the service<a class="headerlink" href="#section-3-search-the-service" title="Link to this heading">#</a></h2>
 <p>Search for images covering within 1 arcsecond of the star</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span> <span class="o">=</span> <span class="n">allwise_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
 </pre></div>
@@ -611,7 +611,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 <p>Inspect the table that is returned</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span>
 </pre></div>
@@ -631,7 +631,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">colnames</span>
 </pre></div>
@@ -665,7 +665,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()[</span><span class="s1">&#39;sia_bp_id&#39;</span><span class="p">]</span>
 </pre></div>
@@ -684,7 +684,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 <section id="section-4-locate-and-download-an-image-of-interest">
 <h2>Section 4 - Locate and download an image of interest<a class="headerlink" href="#section-4-locate-and-download-an-image-of-interest" title="Link to this heading">#</a></h2>
 <p>Let’s search the image results for the W3 band image.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">im_table</span><span class="p">)):</span>
     <span class="k">if</span> <span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;sia_bp_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;W3&#39;</span><span class="p">:</span>
@@ -700,7 +700,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </div>
 </div>
 <p>Download the image and open it in Astropy</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getdataurl</span><span class="p">(),</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">image1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -711,14 +711,14 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </section>
 <section id="section-5-extract-a-cutout-and-plot-it">
 <h2>Section 5 - Extract a cutout and plot it<a class="headerlink" href="#section-5-extract-a-cutout-and-plot-it" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="n">wcs</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
 <span class="n">wcs</span> <span class="o">=</span> <span class="n">cutout</span><span class="o">.</span><span class="n">wcs</span>
@@ -726,7 +726,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
@@ -738,7 +738,7 @@ W1 Coadd 3150p772_ac51 ... 3150p772_ac51
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f532b4a4510&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f361c515250&gt;
 </pre></div>
 </div>
 <img alt="../../_images/1e61cc78bf1fcb82be4c026f242d36557c2e70cab270758cb1c68f254a23d43e.png" src="../../_images/1e61cc78bf1fcb82be4c026f242d36557c2e70cab270758cb1c68f254a23d43e.png" />

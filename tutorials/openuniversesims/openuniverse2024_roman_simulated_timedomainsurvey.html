@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -526,7 +526,7 @@ document.write(`
 </section>
 <section id="install-and-import-required-modules">
 <h2>Install and Import required modules<a class="headerlink" href="#install-and-import-required-modules" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy</span>
@@ -534,7 +534,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -566,7 +566,7 @@ document.write(`
 </section>
 <section id="define-a-module-to-get-the-date-mjd-of-a-particular-pointing">
 <h2>Define a module to get the date (mjd) of a particular pointing.<a class="headerlink" href="#define-a-module-to-get-the-date-mjd-of-a-particular-pointing" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_mjd</span><span class="p">(</span><span class="n">pointing</span><span class="p">,</span>
             <span class="n">obseq_path</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;s3://nasa-irsa-simulations/openuniverse2024/roman/preview/RomanTDS/Roman_TDS_obseq_11_6_23.fits&#39;</span><span class="p">):</span>
@@ -594,7 +594,7 @@ document.write(`
 </section>
 <section id="define-a-module-to-create-an-animated-gif-from-a-collection-of-cutouts">
 <h2>Define a module to create an animated gif from a collection of cutouts.<a class="headerlink" href="#define-a-module-to-create-an-animated-gif-from-a-collection-of-cutouts" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">animate_stamps</span><span class="p">(</span><span class="n">stamps</span><span class="p">,</span> <span class="n">savepath</span><span class="p">,</span> <span class="n">no_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                    <span class="n">labels</span><span class="o">=</span><span class="p">[],</span><span class="n">labelxy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.95</span><span class="p">),</span>
@@ -644,7 +644,7 @@ document.write(`
 </section>
 <section id="read-in-the-observation-sequence-file-to-learn-more-about-the-observations-that-make-up-the-simulated-roman-time-domain-survey">
 <h2>Read in the Observation Sequence File to learn more about the “observations” that make up the simulated Roman Time Domain Survey.<a class="headerlink" href="#read-in-the-observation-sequence-file-to-learn-more-about-the-observations-that-make-up-the-simulated-roman-time-domain-survey" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the (simulated) Observation Sequence File.</span>
 
@@ -684,7 +684,7 @@ document.write(`
 </section>
 <section id="what-is-the-spatial-and-temporal-coverage-of-the-openuniverse2024-roman-tds-data-preview">
 <h2>What is the spatial and temporal coverage of the openuniverse2024 Roman TDS data preview?<a class="headerlink" href="#what-is-the-spatial-and-temporal-coverage-of-the-openuniverse2024-roman-tds-data-preview" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the ranges of RA, Dec, and date listed in the observation sequence file.</span>
 
@@ -708,7 +708,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </section>
 <section id="read-in-the-supernova-analysis-snana-file">
 <h2>Read in the Supernova Analysis (SNANA) file.<a class="headerlink" href="#read-in-the-supernova-analysis-snana-file" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parquet_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;s3://</span><span class="si">{</span><span class="n">BUCKET_NAME</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">ROMAN_PREFIX</span><span class="si">}</span><span class="s1">/roman_rubin_cats_v1.1.2_faint/snana_10307.parquet&#39;</span>
 <span class="n">transients</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">parquet_file</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">s3</span><span class="p">)</span>
@@ -719,7 +719,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </section>
 <section id="let-s-find-a-relatively-nearby-sn-ia-that-lies-within-the-region-of-the-data-preview">
 <h2>Let’s find a relatively nearby SN Ia that lies within the region of the data preview.<a class="headerlink" href="#let-s-find-a-relatively-nearby-sn-ia-that-lies-within-the-region-of-the-data-preview" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#List the unique models in the SNANA file.</span>
 <span class="n">unique_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">transients</span><span class="p">[</span><span class="s1">&#39;model_name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -741,7 +741,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Most of the models are non SNIa (NON1ASED).</span>
 <span class="c1"># Choose only the SNIa</span>
@@ -756,7 +756,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose the SNIa that overlap with the spatial extent of the OpenUniverse2024 Roman TDS data preview.</span>
 <span class="n">ra_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">sn1a</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ra_min</span><span class="p">,</span> <span class="n">sn1a</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ra_max</span><span class="p">)</span>
@@ -774,7 +774,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose the SNIa in the data preview that are nearby, at redshifts less than 0.7.</span>
 <span class="n">nearby_preview_sn1a</span> <span class="o">=</span> <span class="n">preview_sn1a</span><span class="p">[</span><span class="n">preview_sn1a</span><span class="p">[</span><span class="s1">&#39;z_CMB&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.7</span><span class="p">]</span>
@@ -788,7 +788,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s choose SN 20000808.</span>
 <span class="n">oid</span> <span class="o">=</span> <span class="mi">20000808</span>
@@ -804,7 +804,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </section>
 <section id="read-in-the-auxiliary-file-that-lists-the-simulated-roman-tds-images-covering-the-chosen-snia">
 <h2>Read in the auxiliary file that lists the simulated Roman TDS images covering the chosen SNIa.<a class="headerlink" href="#read-in-the-auxiliary-file-that-lists-the-simulated-roman-tds-images-covering-the-chosen-snia" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The auxiliary file contains all the images this thing is in.</span>
 <span class="c1"># If you need to download this file, see https://irsa.ipac.caltech.edu/docs/notebooks/.</span>
@@ -1080,7 +1080,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </section>
 <section id="create-cutouts-of-the-chosen-snia-in-the-band-of-your-choice">
 <h2>Create cutouts of the chosen SNIa in the band of your choice.<a class="headerlink" href="#create-cutouts-of-the-chosen-snia-in-the-band-of-your-choice" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band</span> <span class="o">=</span> <span class="s1">&#39;R062&#39;</span>
 <span class="n">instances</span> <span class="o">=</span> <span class="n">instances</span><span class="p">[</span><span class="n">instances</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">band</span><span class="p">]</span>
@@ -1088,7 +1088,7 @@ mjd_min, mjd_max: 62000.02139 63563.0579
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Make the cutouts; this will take a couple of minutes.</span>
 <span class="n">stamps</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1196,7 +1196,7 @@ s3://nasa-irsa-simulations/openuniverse2024/roman/preview/RomanTDS/images/simple
 </section>
 <section id="make-an-animated-gif-out-of-the-cutouts">
 <h2>Make an animated gif out of the cutouts.<a class="headerlink" href="#make-an-animated-gif-out-of-the-cutouts" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">savepath</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SN</span><span class="si">{</span><span class="n">oid</span><span class="si">}</span><span class="s1">.gif&#39;</span>
 <span class="n">savepath</span>

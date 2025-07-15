@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -619,7 +619,7 @@ A fully-worked example is shown in the light curve notebook linked below.</p>
 </section>
 <section id="imports">
 <h2>2. Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install hpgeom pandas pyarrow</span>
@@ -627,7 +627,7 @@ A fully-worked example is shown in the light curve notebook linked below.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>  <span class="c1"># parse strings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>  <span class="c1"># check size of loaded data</span>
@@ -648,7 +648,7 @@ A fully-worked example is shown in the light curve notebook linked below.</p>
 <h3>3.1 Define variables and helper functions<a class="headerlink" href="#define-variables-and-helper-functions" title="Link to this heading">#</a></h3>
 <p>Choose which NEOWISE years to include.
 Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># All NEOWISE years =&gt; about 40G RAM and 10 minutes runtime</span>
 <span class="n">YEARS</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;year</span><span class="si">{</span><span class="n">yr</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;addendum&quot;</span><span class="p">]</span>
@@ -661,7 +661,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 </div>
 </div>
 <p>Column and partition variables:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># subset of columns to load</span>
 <span class="n">flux_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;w1flux&quot;</span><span class="p">,</span> <span class="s2">&quot;w1sigflux&quot;</span><span class="p">,</span> <span class="s2">&quot;w2flux&quot;</span><span class="p">,</span> <span class="s2">&quot;w2sigflux&quot;</span><span class="p">]</span>
@@ -676,7 +676,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 </div>
 </div>
 <p>Paths:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;re going to look at several different files, so make a function to return the path.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">neowise_path</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;_metadata&quot;</span><span class="p">):</span>
@@ -704,7 +704,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 </div>
 </div>
 <p>Some representative partitions and files (see dataset stats in the Appendix for how we determine these values):</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pixel index of the median partition and the biggest partition by number of rows</span>
 <span class="n">median_part</span> <span class="o">=</span> <span class="mi">11_831</span>
@@ -718,7 +718,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 </div>
 </div>
 <p>Convenience function for displaying a table size:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll use this function throughout the notebook to see how big different tables are.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_table_size</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pixel_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -744,7 +744,7 @@ Expect the notebook to require about 4G RAM and 1 minute of runtime per year.</p
 <h3>3.2 Load NEOWISE metadata as a pyarrow dataset<a class="headerlink" href="#load-neowise-metadata-as-a-pyarrow-dataset" title="Link to this heading">#</a></h3>
 <p>The metadata contains column names, schema, and row-group statistics for every file in the dataset.
 Later, we will use this pyarrow dataset object to slice and query the catalog in several different ways.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This catalog is so big that even the metadata is big.</span>
 <span class="c1"># Expect this cell to take about 30 seconds per year.</span>
@@ -775,7 +775,7 @@ and the same methods can be applied to them individually.</p>
 <p>This example shows how to load data from each partition separately.
 The actual “slicing” is done by applying a filter to the pyarrow dataset <code class="docutils literal notranslate"><span class="pre">neowise_ds</span></code>.
 Constructing filters was discussed in the AllWISE notebook linked above.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># number of order K pixels covering the full sky</span>
 <span class="n">npixels</span> <span class="o">=</span> <span class="n">hpgeom</span><span class="o">.</span><span class="n">nside_to_npixel</span><span class="p">(</span><span class="n">hpgeom</span><span class="o">.</span><span class="n">order_to_nside</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">K</span><span class="p">))</span>
@@ -803,7 +803,7 @@ Constructing filters was discussed in the AllWISE notebook linked above.</p>
 containing all NEOWISE sources with an ra/dec falling within HEALPix order 5 pixel <code class="docutils literal notranslate"><span class="pre">pix</span></code>.
 Use <code class="docutils literal notranslate"><span class="pre">pixel_tbl.to_pandas()</span></code> to convert the table to a pandas dataframe.</p>
 <p>How big are the partitions? (see Appendix for details)</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># median partition</span>
 <span class="n">median_part_tbl</span> <span class="o">=</span> <span class="n">neowise_ds</span><span class="o">.</span><span class="n">to_table</span><span class="p">(</span>
@@ -818,7 +818,7 @@ Use <code class="docutils literal notranslate"><span class="pre">pixel_tbl.to_pa
 (The recommended maximum for an in-memory table/dataframe is typically 1GB, but there is
 no strict upper limit – performance will depend on the compute resources available.)</p>
 <p>However, beware that the largest partitions are quite large:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># biggest partition</span>
 <span class="c1"># this is very large, so we&#39;ll restrict the number of columns to one</span>
@@ -833,7 +833,7 @@ no strict upper limit – performance will depend on the compute resources avail
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># cleanup</span>
 <span class="k">del</span> <span class="n">median_part_tbl</span>
@@ -852,7 +852,7 @@ Thus it should be reasonable to load at least a subset of columns for every row 
 <p>The actual “slicing” here is done by using <code class="docutils literal notranslate"><span class="pre">neowise_ds</span></code> to access a
 dataset <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.Fragment.html">Fragment</a>
 (<code class="docutils literal notranslate"><span class="pre">frag</span></code> in the code below) which represents a single file.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># slice by file and iterate</span>
 <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">neowise_ds</span><span class="o">.</span><span class="n">get_fragments</span><span class="p">():</span>
@@ -876,7 +876,7 @@ dataset <a class="reference external" href="https://arrow.apache.org/docs/python
 <p>This can be combined with the previous example to iterate over the files in a single partition
 (left as an exercise for the reader).</p>
 <p>How big are the files?</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># median file</span>
 <span class="n">median_file_frag</span> <span class="o">=</span> <span class="p">[</span>
@@ -888,7 +888,7 @@ dataset <a class="reference external" href="https://arrow.apache.org/docs/python
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># biggest file</span>
 <span class="n">biggest_file_frag</span> <span class="o">=</span> <span class="p">[</span>
@@ -900,7 +900,7 @@ dataset <a class="reference external" href="https://arrow.apache.org/docs/python
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># cleanup</span>
 <span class="k">del</span> <span class="n">median_file_tbl</span>
@@ -917,7 +917,7 @@ We actually created these “slices” in the Setup section with <code class="do
 same list is now accessible in <code class="docutils literal notranslate"><span class="pre">neowise_ds.children</span></code> used below.
 Any of the techniques shown in this notebook or those listed under “See also” can also
 be applied to the per-year datasets.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># slice by year and iterate. zip with YEARS so that we know which slice this is.</span>
 <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">year_ds</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">YEARS</span><span class="p">,</span> <span class="n">neowise_ds</span><span class="o">.</span><span class="n">children</span><span class="p">):</span>
@@ -997,7 +997,7 @@ the slices to speed up your code.</p></li>
 <h3>A.2 Inspect dataset stats<a class="headerlink" href="#a-2-inspect-dataset-stats" title="Link to this heading">#</a></h3>
 <p>When deciding how to slice and filter the dataset, it can be useful to understand
 dataset statistics like partition and file sizes.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">pixel_index_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">k_column</span><span class="o">=</span><span class="n">KCOLUMN</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the path and return the partition pixel index.</span>
@@ -1020,7 +1020,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load some file statistics to a dataframe</span>
 <span class="n">file_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -1034,14 +1034,14 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file_stats</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file_stats</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
@@ -1050,7 +1050,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 <section id="a-2-1-dataset-statistics-per-file">
 <h4>A.2.1 Dataset statistics per file<a class="headerlink" href="#a-2-1-dataset-statistics-per-file" title="Link to this heading">#</a></h4>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># visualize distribution of file sizes (number of rows)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">file_stats</span><span class="o">.</span><span class="n">numrows</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1060,7 +1060,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># largest file</span>
 <span class="n">file_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">file_stats</span><span class="o">.</span><span class="n">numrows</span> <span class="o">==</span> <span class="n">file_stats</span><span class="o">.</span><span class="n">numrows</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1068,7 +1068,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># median file</span>
 <span class="n">file_stats</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;numrows&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">file_stats</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
@@ -1079,7 +1079,7 @@ dataset statistics like partition and file sizes.</p>
 </section>
 <section id="a-2-2-dataset-statistics-per-partition">
 <h4>A.2.2 Dataset statistics per partition<a class="headerlink" href="#a-2-2-dataset-statistics-per-partition" title="Link to this heading">#</a></h4>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get stats per partition</span>
 <span class="n">k_groups</span> <span class="o">=</span> <span class="n">file_stats</span><span class="p">[[</span><span class="n">KCOLUMN</span><span class="p">,</span> <span class="s2">&quot;numrows&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KCOLUMN</span><span class="p">)</span>
@@ -1089,21 +1089,21 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">per_part</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">per_part</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># visualize number of rows per partition</span>
 <span class="n">per_part</span><span class="o">.</span><span class="n">numrows</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -1113,7 +1113,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># largest partition</span>
 <span class="n">per_part</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">per_part</span><span class="o">.</span><span class="n">numrows</span> <span class="o">==</span> <span class="n">per_part</span><span class="o">.</span><span class="n">numrows</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
@@ -1121,7 +1121,7 @@ dataset statistics like partition and file sizes.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># median partition</span>
 <span class="n">per_part</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;numrows&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">per_part</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>

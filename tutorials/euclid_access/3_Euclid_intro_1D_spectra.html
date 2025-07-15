@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -538,7 +538,7 @@ If you have questions about it, please contact the <a class="reference external"
 <p class="admonition-title">Important</p>
 <p>We rely on <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> features that have been recently added, so please make sure you have version v0.4.10 or newer installed.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed</span>
 <span class="c1"># !pip install matplotlib astropy &#39;astroquery&gt;=0.4.10&#39;</span>
@@ -546,7 +546,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
 
@@ -568,7 +568,7 @@ If you have questions about it, please contact the <a class="reference external"
 <h2>1. Search for the spectrum of a specific galaxy<a class="headerlink" href="#search-for-the-spectrum-of-a-specific-galaxy" title="Link to this heading">#</a></h2>
 <p>First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.</p>
 <p>Search for all tables in IRSA labeled as “euclid”.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
@@ -605,7 +605,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_1dspectra</span> <span class="o">=</span> <span class="s1">&#39;euclid.objectid_spectrafile_association_q1&#39;</span>
 </pre></div>
@@ -615,7 +615,7 @@ If you have questions about it, please contact the <a class="reference external"
 </section>
 <section id="search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table">
 <h2>2. Search for the spectrum of a specific galaxy in the 1D spectra table<a class="headerlink" href="#search-for-the-spectrum-of-a-specific-galaxy-in-the-1d-spectra-table" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obj_id</span> <span class="o">=</span> <span class="mi">2689918641685825137</span>
 </pre></div>
@@ -623,7 +623,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <p>We will use TAP and an ASQL query to find the spectral data for our galaxy. (ADQL is the <a class="reference external" href="https://www.ivoa.net/documents/latest/ADQL.html">IVOA Astronomical Data Query Language</a> and is based on SQL.)</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -634,7 +634,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <p>Pull out the file name from the <code class="docutils literal notranslate"><span class="pre">result</span></code> table:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">file_uri</span>
@@ -651,7 +651,7 @@ If you have questions about it, please contact the <a class="reference external"
 <section id="read-in-the-spectrum-for-only-our-specific-object">
 <h2>3. Read in the spectrum for only our specific object<a class="headerlink" href="#read-in-the-spectrum-for-only-our-specific-object" title="Link to this heading">#</a></h2>
 <p>Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hdul = fits.open(file_uri)</span>
 <span class="c1"># hdul.info()</span>
@@ -660,7 +660,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <p>Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
@@ -677,7 +677,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum</span>
 </pre></div>
@@ -685,7 +685,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=531</i>
-<table id="table140113917847952" class="table-striped table-bordered table-condensed">
+<table id="table140553848320784" class="table-striped table-bordered table-condensed">
 <thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th></tr></thead>
 <thead><tr><th>Angstrom</th><th>erg / (Angstrom s cm2)</th><th>Number</th><th>Number</th><th>erg2 / (Angstrom2 s2 cm4)</th><th>Number</th></tr></thead>
 <thead><tr><th>float32</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float64</th></tr></thead>
@@ -710,7 +710,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <tr><td>19002.0</td><td>-0.33820343017578125</td><td>66.0</td><td>0.809532642364502</td><td>0.01680051162838936</td><td>4.0</td></tr>
 </table></div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spec_header</span>
 </pre></div>
@@ -762,14 +762,14 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <p class="admonition-title">Tip</p>
 <p>As we use astropy.visualization’s <code class="docutils literal notranslate"><span class="pre">quantity_support</span></code>, matplotlib automatically picks up the axis units from the quantitites we plot.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quantity_support</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f6ef8661e50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7fd550253650&gt;
 </pre></div>
 </div>
 </div>
@@ -783,7 +783,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <li><p>MASK values can be used to determine which flux bins to discard. MASK = odd and MASK &gt;=64 means the flux bins not be used.</p></li>
 </ul>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signal_scaled</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">spec_header</span><span class="p">[</span><span class="s1">&#39;FSCALE&#39;</span><span class="p">]</span>
 </pre></div>
@@ -791,7 +791,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 </div>
 </div>
 <p>We investigate the MASK column to see which flux bins are recommended to keep vs “Do Not Use”</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Mask value&#39;</span><span class="p">)</span>
@@ -807,7 +807,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 </div>
 </div>
 <p>We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">)</span>
 

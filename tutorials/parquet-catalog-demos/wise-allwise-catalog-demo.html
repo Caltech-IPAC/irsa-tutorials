@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -535,7 +535,7 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 </section>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install &#39;pandas&gt;=1.5.2&#39; &#39;pyarrow&gt;=10.0.1&#39; matplotlib hpgeom astropy</span>
@@ -543,7 +543,7 @@ Each method accesses the parquet files a bit differently and is useful for diffe
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -570,7 +570,7 @@ We’ll use <a class="reference external" href="https://arrow.apache.org/docs/py
 <a class="reference external" href="https://s3fs.readthedocs.io/en/latest/index.html">s3fs</a> is another common option.
 The call to <code class="docutils literal notranslate"><span class="pre">S3FileSystem</span></code> will look for AWS credentials in environment variables and/or the file ~/.aws/credentials.
 Credentials can also be passed as keyword arguments.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bucket</span> <span class="o">=</span> <span class="s2">&quot;nasa-irsa-wise&quot;</span>
 <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;wise/allwise/catalogs/p3as_psd/healpix_k5&quot;</span>
@@ -583,7 +583,7 @@ Credentials can also be passed as keyword arguments.</p>
 </div>
 <p>These limits will be used to query the catalog using specific filters created in examples below.
 The Schema Access section (below) shows how to access column names and other schema information.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1mpro_min</span> <span class="o">=</span> <span class="mf">10.0</span>
 <span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span>  <span class="c1"># deg</span>
@@ -598,7 +598,7 @@ The Schema Access section (below) shows how to access column names and other sch
 Queries can be most efficient when a filter on the partition column is included, since the reader can skip those partitions entirely.
 Thus, for queries that include ra/dec constraints, we can usually speed up load times significantly by including a constraint on the HEALPix order 5 pixel index.
 The required pixel indexes can be calculated using <a class="reference external" href="https://hpgeom.readthedocs.io/en/latest/index.html">hpgeom</a>, as demonstrated here.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># the catalog is partitioned by HEALPix pixel index at order 5</span>
 <span class="n">nside</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">order_to_nside</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>  <span class="c1"># number of order 5 pixels along one side of a base pixel</span>
@@ -606,7 +606,7 @@ The required pixel indexes can be calculated using <a class="reference external"
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># polygon search: get the set of pixel indexes that overlap the ra/dec polygon</span>
 <span class="n">polygon_pixels</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_polygon</span><span class="p">(</span>
@@ -627,7 +627,7 @@ The required pixel indexes can be calculated using <a class="reference external"
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cone search: get the set of pixel indexes that overlap a 5&#39; circle around the ra/dec min</span>
 <span class="n">cone_pixels</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">query_circle</span><span class="p">(</span>
@@ -658,7 +658,7 @@ Filter for magnitudes above our w1mpro limit and a sky-area limited to the ra/de
 <p>Pandas actually uses either pyarrow or fastparquet to interact with parquet files.
 We’ll choose pyarrow (the default).
 For filter options, see the <code class="docutils literal notranslate"><span class="pre">filters</span></code> arg description in <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.parquet.ParquetDataset.html#pyarrow.parquet.ParquetDataset">ParquetDataset</a>.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="c1"># expect this to take 40-90 seconds</span>
@@ -686,8 +686,8 @@ For filter options, see the <code class="docutils literal notranslate"><span cla
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.04 s, sys: 1.62 s, total: 7.66 s
-Wall time: 20 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.25 s, sys: 1.6 s, total: 7.85 s
+Wall time: 19.4 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -782,7 +782,7 @@ The construction of columns/filters is more involved than before because they mu
 This is demonstrated below.
 Note that the catalog uses a file naming scheme called “hive”, which the reader uses to identify partitions.
 In other examples this is recognized automatically, but here we must pass it explicitly.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define new columns for colors W1-W2 and W3-W4</span>
 <span class="n">w1w2</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w1mpro&quot;</span><span class="p">),</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;w2mpro&quot;</span><span class="p">))</span>
@@ -794,7 +794,7 @@ In other examples this is recognized automatically, but here we must pass it exp
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="c1"># expect this to take 20-60 seconds.</span>
@@ -835,13 +835,13 @@ In other examples this is recognized automatically, but here we must pass it exp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.34 s, sys: 2.4 s, total: 6.73 s
-Wall time: 12.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.35 s, sys: 2.41 s, total: 6.76 s
+Wall time: 12.8 s
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">pyarrow_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 </pre></div>
@@ -853,7 +853,7 @@ Wall time: 12.4 s
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colorbar_norm</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># for an all-sky search, use vmax=100_000</span>
 <span class="n">pyarrow_df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hexbin</span><span class="p">(</span><span class="s2">&quot;w3w4&quot;</span><span class="p">,</span> <span class="s2">&quot;w1w2&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">colorbar_norm</span><span class="p">)</span>
@@ -877,7 +877,7 @@ However, we can get pretty fast results by filtering down to the HEALPix pixels 
 We’ll load the data with pyarrow because because it makes this query significantly faster than with pandas (see explanation in Example 2).
 (Note that astropy can also read parquet, but it can only read a single file at a time and so is less convenient.)
 We’ll use <a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord.match_to_catalog_sky">astropy.coordinates.SkyCoord.match_to_catalog_sky</a> to do the actual nearest neighbor search.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct dictionary of pixels covering a cone around each polygon corner</span>
 <span class="c1"># we did this once before but now we want all 4 corners</span>
@@ -899,7 +899,7 @@ We’ll use <a class="reference external" href="https://docs.astropy.org/en/stab
 </div>
 </div>
 <p>Find the 3 nearest neighbors of each corner:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="c1"># expect this to take 30-60 seconds</span>
@@ -947,8 +947,8 @@ neighbor 3, corner (25, 72): 243172601351003808 at on-sky dist [22.86047987] arc
 neighbor 1, corner (25, 62): 252162001351031532 at on-sky dist [7.458129] arcsec
 neighbor 2, corner (25, 62): 252162001351031550 at on-sky dist [14.2719862] arcsec
 neighbor 3, corner (25, 62): 252162001351031549 at on-sky dist [18.96407889] arcsec
-CPU times: user 7.47 s, sys: 9.52 s, total: 17 s
-Wall time: 59.3 s
+CPU times: user 7.58 s, sys: 9.43 s, total: 17 s
+Wall time: 50.4 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[157162001351035963,
@@ -968,7 +968,7 @@ Wall time: 59.3 s
 </div>
 </div>
 <p>Load all the data (all columns) for all nearest neighbors:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="c1"># expect this to take 15-25 seconds</span>
@@ -982,8 +982,8 @@ Wall time: 59.3 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.51 s, sys: 2.12 s, total: 4.63 s
-Wall time: 4.79 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.55 s, sys: 1.66 s, total: 4.21 s
+Wall time: 4.14 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1328,14 +1328,14 @@ Wall time: 4.79 s
 The example below loads it using the <code class="docutils literal notranslate"><span class="pre">_common_metadata</span></code> file and <a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.dataset.parquet_dataset.html">pyarrow.dataset.parquet_dataset</a>.
 Note that the schema can also be accessed from the metadata in the footer of each Parquet file and from the <code class="docutils literal notranslate"><span class="pre">_metadata</span></code> file, but the method used here is generally faster and easier.
 In addition, this <code class="docutils literal notranslate"><span class="pre">_common_metadata</span></code> file has extra information (units and descriptions) stored in the custom metadata of each column.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parquet_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parquet_root</span><span class="si">}</span><span class="s2">/_common_metadata&quot;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># access individual columns by name or index</span>
 <span class="n">fld</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># equivalently: fld = schema.field(&quot;ra&quot;)</span>
@@ -1363,7 +1363,7 @@ J2000 right ascension with respect to the 2MASS PSC reference frame from the non
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># full list of column names</span>
 <span class="n">schema</span><span class="o">.</span><span class="n">names</span>

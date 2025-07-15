@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -557,7 +557,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <p class="admonition-title">Important</p>
 <p>We rely on <code class="docutils literal notranslate"><span class="pre">astroquery</span></code> features that have been recently added, so please make sure you have version v0.4.10 or newer installed.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install matplotlib &#39;astropy&gt;=5.3&#39; &#39;astroquery&gt;=0.4.10&#39; fsspec firefly_client</span>
@@ -565,7 +565,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -593,7 +593,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec">
 <h2>1. Find the MER Tile ID that corresponds to a given RA and Dec<a class="headerlink" href="#find-the-mer-tile-id-that-corresponds-to-a-given-ra-and-dec" title="Link to this heading">#</a></h2>
 <p>In this case, choose random coordinates to show a different MER mosaic image. Search a radius around these coordinates.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra</span> <span class="o">=</span> <span class="mi">268</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="mi">66</span>
@@ -611,7 +611,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <p class="admonition-title">Note</p>
 <p>This table lists all MER mosaic images available in this position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the <a class="reference external" href="https://euclid.caltech.edu/page/euclid-faq-tech/">Euclid documentation at IPAC</a>. We use the <code class="docutils literal notranslate"><span class="pre">facility</span></code> argument below to query for Euclid images only.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_table</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;euclid_DpdMerBksMosaic&#39;</span><span class="p">,</span> <span class="n">facility</span><span class="o">=</span><span class="s1">&#39;Euclid&#39;</span><span class="p">)</span>
 </pre></div>
@@ -619,7 +619,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 <p>Note that there are various image types are returned as well, we filter out the science images from these:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">science_images</span> <span class="o">=</span> <span class="n">image_table</span><span class="p">[</span><span class="n">image_table</span><span class="p">[</span><span class="s1">&#39;dataproduct_subtype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;science&#39;</span><span class="p">]</span>
 <span class="n">science_images</span>
@@ -628,18 +628,18 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=4</i>
-<table id="table139919109419472" class="table-striped table-bordered table-condensed">
+<table id="table140151492988880" class="table-striped table-bordered table-condensed">
 <thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
+<tr><td>267.66769845285177</td><td>66.00001388888512</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>102159190_VIS</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102159190-6E6EF8_20241025T010045.358775Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 268.33021981662876 66.26526742211499 267.0051763768436 66.26526712809576 267.01888399697356 65.73197256576843 268.3165136239277 65.73197285251409 268.33021981662876 66.26526742211499</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102159190_VIS/VIS</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102159190/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102159190-6E6EF8_20241025T010045.358775Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>267.66769845285177</td><td>66.00001388888512</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>H</td><td>Infrared</td><td>102159190_NISP</td><td>0.1026</td><td>1.372e-06</td><td>2e-06</td><td>2.7</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102159190-2E0C34_20241024T211805.202819Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 268.33021981662876 66.26526742211499 267.0051763768436 66.26526712809576 267.01888399697356 65.73197256576843 268.3165136239277 65.73197285251409 268.33021981662876 66.26526742211499</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102159190_NISP/H</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-H_TILE102159190-2E0C34_20241024T211805.202819Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>267.66769845285177</td><td>66.00001388888512</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>Y</td><td>Infrared</td><td>102159190_NISP</td><td>0.0878</td><td>9.2e-07</td><td>1.146e-06</td><td>4.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102159190-91C6B0_20241024T212204.431524Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 268.33021981662876 66.26526742211499 267.0051763768436 66.26526712809576 267.01888399697356 65.73197256576843 268.3165136239277 65.73197285251409 268.33021981662876 66.26526742211499</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102159190_NISP/Y</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-Y_TILE102159190-91C6B0_20241024T212204.431524Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 <tr><td>267.66769845285177</td><td>66.00001388888512</td><td>Euclid</td><td>NISP</td><td>science</td><td>3</td><td>image</td><td>J</td><td>Infrared</td><td>102159190_NISP</td><td>0.094</td><td>1.146e-06</td><td>1.372e-06</td><td>5.6</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102159190-466EA5_20241024T213358.873569Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 268.33021981662876 66.26526742211499 267.0051763768436 66.26526712809576 267.01888399697356 65.73197256576843 268.3165136239277 65.73197285251409 268.33021981662876 66.26526742211499</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102159190_NISP/J</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102159190/NISP/EUC_MER_BGSUB-MOSAIC-NIR-J_TILE102159190-466EA5_20241024T213358.873569Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
-<tr><td>267.66769845285177</td><td>66.00001388888512</td><td>Euclid</td><td>VIS</td><td>science</td><td>3</td><td>image</td><td>VIS</td><td>Optical</td><td>102159190_VIS</td><td>0.16</td><td>5.5e-07</td><td>9e-07</td><td>2.1</td><td>Euclid on-the-fly</td><td>https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/MER/102159190/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102159190-6E6EF8_20241025T010045.358775Z_00.00.fits</td><td>image/fits</td><td>1474566</td><td>--</td><td>POLYGON ICRS 268.33021981662876 66.26526742211499 267.0051763768436 66.26526712809576 267.01888399697356 65.73197256576843 268.3165136239277 65.73197285251409 268.33021981662876 66.26526742211499</td><td>euclid_DpdMerBksMosaic</td><td>SCIENCE</td><td>mosaic</td><td></td><td></td><td>--</td><td></td><td></td><td></td><td></td><td>field</td><td>--</td><td>False</td><td></td><td>2025-05-01 00:00:00</td><td>19200</td><td>19200</td><td>0.100000000000008</td><td>False</td><td>--</td><td>--</td><td>--</td><td>--</td><td>ivo://irsa.ipac/euclid_DpdMerBksMosaic?102159190_VIS/VIS</td><td>0.533333333333376</td><td>--</td><td></td><td>--</td><td>{&quot;aws&quot;: {&quot;bucket_name&quot;: &quot;nasa-irsa-euclid-q1&quot;, &quot;key&quot;:&quot;q1/MER/102159190/VIS/EUC_MER_BGSUB-MOSAIC-VIS_TILE102159190-6E6EF8_20241025T010045.358775Z_00.00.fits&quot;, &quot;region&quot;: &quot;us-east-1&quot;}}</td><td></td><td>1</td></tr>
 </table></div></div></div>
 </div>
 <p>Choose the VIS image and pull the filename and tileID</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">tileID</span> <span class="o">=</span> <span class="n">science_images</span><span class="p">[</span><span class="n">science_images</span><span class="p">[</span><span class="s1">&#39;energy_bandpassname&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VIS&#39;</span><span class="p">][</span><span class="s1">&#39;obs_id&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">9</span><span class="p">]</span>
@@ -659,7 +659,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <section id="download-phz-catalog-from-irsa">
 <h2>2. Download PHZ catalog from IRSA<a class="headerlink" href="#download-phz-catalog-from-irsa" title="Link to this heading">#</a></h2>
 <p>Use IRSA’s TAP to search catalogs</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Irsa</span><span class="o">.</span><span class="n">list_catalogs</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;euclid&#39;</span><span class="p">)</span>
 </pre></div>
@@ -696,7 +696,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_mer</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_mer_catalogue&#39;</span>
 <span class="n">table_phz</span> <span class="o">=</span> <span class="s1">&#39;euclid_q1_phz_photo_z&#39;</span>
@@ -711,7 +711,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <li><p>How many columns are there?</p></li>
 <li><p>List the column names</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_info</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">list_columns</span><span class="p">(</span><span class="n">catalog</span><span class="o">=</span><span class="n">table_phz</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns_info</span><span class="p">))</span>
@@ -735,7 +735,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 <li><p>phz_90_int1,  phz_90_int2 (The phz PDF interval containing 90% of the probability, upper and lower values)</p></li>
 </ul>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full list of columns and their description</span>
 <span class="n">columns_info</span>
@@ -783,10 +783,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_u_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_g_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_r_ext_lsst_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_g_ext_hsc_unif&#39;: &#39;&#39;,
  &#39;fluxerr_i_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_z_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_u_ext_megacam_unif&#39;: &#39;&#39;,
- &#39;fluxerr_g_ext_hsc_unif&#39;: &#39;&#39;,
  &#39;fluxerr_r_ext_megacam_unif&#39;: &#39;&#39;,
  &#39;fluxerr_i_ext_panstarrs_unif&#39;: &#39;&#39;,
  &#39;fluxerr_z_ext_hsc_unif&#39;: &#39;&#39;,
@@ -834,7 +834,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <li><p>We search just a 5 arcminute box around an RA and Dec</p></li>
 </ul>
 <p>Search based on <code class="docutils literal notranslate"><span class="pre">tileID</span></code>:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">######################## User defined section ############################</span>
 <span class="c1">## How large do you want the image cutout to be?</span>
@@ -850,7 +850,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;SELECT DISTINCT mer.object_id, mer.ra, mer.dec, &quot;</span>
         <span class="s2">&quot;phz.flux_vis_unif, phz.flux_y_unif, phz.flux_j_unif, phz.flux_h_unif, &quot;</span>
@@ -877,7 +877,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table139920111346576" class="table-striped table-bordered table-condensed">
+<table id="table140151478486224" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -898,7 +898,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <section id="read-in-a-cutout-of-the-mer-image-from-irsa-directly">
 <h2>3. Read in a cutout of the MER image from IRSA directly<a class="headerlink" href="#read-in-a-cutout-of-the-mer-image-from-irsa-directly" title="Link to this heading">#</a></h2>
 <p>Due to the large field of view of the MER mosaic, let’s cut out a smaller section (5’x5’) of the MER mosaic to inspect the image.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Use fsspec to interact with the fits file without downloading the full file</span>
 <span class="n">hdu</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">use_fsspec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -912,7 +912,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
@@ -924,7 +924,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">norm</span> <span class="o">=</span> <span class="n">ImageNormalize</span><span class="p">(</span><span class="n">cutout_image</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">PercentileInterval</span><span class="p">(</span><span class="mf">99.9</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="n">AsinhStretch</span><span class="p">())</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cutout_image</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
@@ -943,7 +943,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 <p>We can rely on astropy’s WCSAxes framework for making plots of Astronomical data in Matplotlib. Please note the usage of <code class="docutils literal notranslate"><span class="pre">projection</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> arguments in the code example below.</p>
 <p>For more info, please visit the <a class="reference external" href="https://docs.astropy.org/en/stable/visualization/wcsaxes/index.html">WCSAxes documentation</a>.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">cutout_image</span><span class="o">.</span><span class="n">wcs</span><span class="p">)</span>
 
@@ -963,14 +963,14 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </section>
 <section id="pull-the-spectra-on-the-top-brightest-source-based-on-object-id">
 <h2>5. Pull the spectra on the top brightest source based on object ID<a class="headerlink" href="#pull-the-spectra-on-the-top-brightest-source-based-on-object-id" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result_galaxies</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="s1">&#39;flux_h_unif&#39;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result_galaxies</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 </pre></div>
@@ -978,7 +978,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=3</i>
-<table id="table139919065177168" class="table-striped table-bordered table-condensed">
+<table id="table140151474180176" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -988,7 +988,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </table></div></div></div>
 </div>
 <p>Let’s pick one of these galaxies. Note that the table has been sorted above, we can use the same index here and below to access the data for this particular galaxy.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
 
@@ -999,7 +999,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 <p>We will use TAP and an ASQL query to find the spectral data for this particular galaxy.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adql_object</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table_1dspectra</span><span class="si">}</span><span class="s2"> WHERE objectid = </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -1011,14 +1011,14 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1</i>
-<table id="table139919504917008" class="table-striped table-bordered table-condensed">
+<table id="table140151472526224" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objectid</th><th>tileid</th><th>uri</th><th>hdu</th><th>cntr</th></tr></thead>
 <thead><tr><th>int64</th><th>int64</th><th>object</th><th>int64</th><th>int64</th></tr></thead>
 <tr><td>2678016284659732166</td><td>102159190</td><td>ibe/data/euclid/q1/SIR/102159190/EUC_SIR_W-COMBSPEC_102159190_2024-11-05T16:14:02.114614Z.fits</td><td>1525</td><td>59948</td></tr>
 </table></div></div></div>
 </div>
 <p>Pull out the file name from the <code class="docutils literal notranslate"><span class="pre">result_spectra</span></code> table:</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result_spectra</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">file_uri</span>
@@ -1031,7 +1031,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="n">result_spectra</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
@@ -1053,19 +1053,19 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <p class="admonition-title">Tip</p>
 <p>As we use astropy.visualization’s quantity_support, matplotlib automatically picks up the axis units from the quantitites we plot.</p>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quantity_support</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f41749386d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f778ec61e50&gt;
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">])</span>
 
@@ -1080,7 +1080,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <p>Let’s cut out a very small patch of the MER image to see what this galaxy looks like. Remember that we sorted the table above, so can reuse the same index to pick up the coordinates for the galaxy. Otherwise we could filter on the object ID.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result_galaxies</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 </pre></div>
@@ -1088,14 +1088,14 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><i>Row index=2</i>
-<table id="table139919104451408">
+<table id="table140151473188688">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
 <tr><td>2678016284659732166</td><td>267.80162845</td><td>65.97321669</td><td>1.291915237</td><td>5.271049845</td><td>7.114689858</td><td>10.88637487</td><td>2</td><td>1.419999957</td><td>1.25999999</td><td>1.480000019</td></tr>
 </table></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## How large do you want the image cutout to be?</span>
 <span class="n">size_galaxy_cutout</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
@@ -1104,14 +1104,14 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">ra</span></code> and <code class="docutils literal notranslate"><span class="pre">dec</span></code> columns for the galaxy to create a <code class="docutils literal notranslate"><span class="pre">SkyCoord</span></code>.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords_galaxy</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">result_galaxies</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="n">result_galaxies</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coords_galaxy</span>
 </pre></div>
@@ -1125,7 +1125,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <p>We haven’t closed the image file above, so use <code class="docutils literal notranslate"><span class="pre">Cutout2D</span></code> again to cut out a section around the galaxy.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout_galaxy</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">coords_galaxy</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size_galaxy_cutout</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="n">WCS</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
 </pre></div>
@@ -1133,7 +1133,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <p>Plot to show the cutout on the galaxy</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">cutout_galaxy</span><span class="o">.</span><span class="n">wcs</span><span class="p">)</span>
 
@@ -1143,7 +1143,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f416b693690&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f778f1711d0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" src="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" />
@@ -1154,7 +1154,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <section id="load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly">
 <h2>6. Load the image on Firefly to be able to interact with the data directly<a class="headerlink" href="#load-the-image-on-firefly-to-be-able-to-interact-with-the-data-directly" title="Link to this heading">#</a></h2>
 <p>Save the data locally if you have not already done so, in order to upload to IRSA viewer.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">download_path</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
@@ -1175,7 +1175,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 <h3>Vizualize the image with Firefly<a class="headerlink" href="#vizualize-the-image-with-firefly" title="Link to this heading">#</a></h3>
 <p>First initialize the client, then set the path to the image, upload it to firefly, load it and align with WCS.</p>
 <p>Note this can take a while to upload the full MER image.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span> <span class="o">=</span> <span class="n">FireflyClient</span><span class="o">.</span><span class="n">make_client</span><span class="p">(</span><span class="s1">&#39;https://irsa.ipac.caltech.edu/irsaviewer&#39;</span><span class="p">)</span>
 
@@ -1186,7 +1186,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0wMw"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0xNQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1194,7 +1194,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </section>
 <section id="save-the-table-as-a-csv-for-firefly-upload">
 <h3>Save the table as a CSV for Firefly upload<a class="headerlink" href="#save-the-table-as-a-csv-for-firefly-upload" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_path</span><span class="p">,</span> <span class="s2">&quot;mer_df.csv&quot;</span><span class="p">)</span>
 <span class="n">result_galaxies</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
@@ -1205,7 +1205,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </section>
 <section id="upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image">
 <h3>Upload the CSV table to Firefly and display as an overlay on the FITS image<a class="headerlink" href="#upload-the-csv-table-to-firefly-and-display-as-an-overlay-on-the-fits-image" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uploaded_table</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded Table URL: </span><span class="si">{</span><span class="n">uploaded_table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1215,7 +1215,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_14846281091024106993_mer_df.csv
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_107572942725428747_mer_df.csv
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}

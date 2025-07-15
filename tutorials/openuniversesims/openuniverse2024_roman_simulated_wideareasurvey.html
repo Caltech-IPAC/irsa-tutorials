@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -521,7 +521,7 @@ document.write(`
 </section>
 <section id="install-and-import-required-modules">
 <h2>Install and Import required modules<a class="headerlink" href="#install-and-import-required-modules" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install astropy numpy s3fs</span>
@@ -529,7 +529,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import modules</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
@@ -546,7 +546,7 @@ document.write(`
 Dec = -44.1 deg. This region is divided into 1296 blocks (36 rows and 36 columns),
 each 100 arcsec across.</p>
 <p>The data preview presented here covers the central 20x20 arcmin, corresponding to 144 blocks (12 rows and 12 columns).</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Choose an RA, DEC of interest.</span>
 <span class="n">ra</span> <span class="o">=</span> <span class="mf">9.5981595</span>
@@ -597,7 +597,7 @@ ROW: 14
 </section>
 <section id="browse-the-bucket-containing-the-simulated-roman-coadds">
 <h2>Browse the bucket containing the simulated Roman coadds.<a class="headerlink" href="#browse-the-bucket-containing-the-simulated-roman-coadds" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># create an S3 client</span>
 
@@ -623,7 +623,7 @@ ROW: 14
 <section id="identify-a-roman-simulated-coadd-by-filter-row-and-column">
 <h2>Identify a Roman simulated coadd by filter, row, and column.<a class="headerlink" href="#identify-a-roman-simulated-coadd-by-filter-row-and-column" title="Link to this heading">#</a></h2>
 <p>A simulated coadd can be uniquely identified by filter, row, and column.</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Choose a filter, row, and column</span>
 <span class="n">FILTER</span> <span class="o">=</span> <span class="s1">&#39;H158&#39;</span> <span class="c1">#Filters F184, H158, J129, K213, and Y106 are available in the data preview.</span>
@@ -650,7 +650,7 @@ ROW: 14
 </section>
 <section id="take-a-closer-look-at-the-simulated-coadd-file-you-identified">
 <h2>Take a closer look at the simulated coadd file you identified.<a class="headerlink" href="#take-a-closer-look-at-the-simulated-coadd-file-you-identified" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Show a summary of extensions for this file.</span>
 

@@ -30,7 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -543,7 +543,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <li><p><em>astropy.utils.data</em> for downloading files</p></li>
 <li><p><em>astropy.io</em> to manipulate FITS files</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the next line to install dependencies if needed.</span>
 <span class="c1"># !pip install matplotlib astropy pyvo</span>
@@ -551,7 +551,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vo</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
@@ -569,7 +569,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <section id="section-1-setup">
 <h2>Section 1 - Setup<a class="headerlink" href="#section-1-setup" title="Link to this heading">#</a></h2>
 <p>Set images to display in the notebook</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -577,7 +577,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 <p>Define coordinates of a bright source</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra</span> <span class="o">=</span> <span class="mf">149.99986</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="mf">2.24875</span>
@@ -592,7 +592,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <p>Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/</p>
 <p>Limit by Publisher “NASA/IPAC Infrared Science Archive” and Capability Type “Simple Image Access Protocol” then search on “COSMOS”</p>
 <p>Locate the SIA2 URL https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&amp;hdr_location=%5CCOSMOSDataPath%5C&amp;collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&amp;SIAP_ACTIVE=1&amp;</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cosmos_service</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">SIAService</span><span class="p">(</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&amp;hdr_location=%5CCOSMOSDataPath%5C&amp;collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&amp;SIAP_ACTIVE=1&amp;&quot;</span><span class="p">)</span>
 </pre></div>
@@ -603,7 +603,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 <section id="section-3-search-the-service">
 <h2>Section 3 - Search the service<a class="headerlink" href="#section-3-search-the-service" title="Link to this heading">#</a></h2>
 <p>Search for images covering within 1 arcsecond of the star</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span> <span class="o">=</span> <span class="n">cosmos_service</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">)</span>
 </pre></div>
@@ -611,7 +611,7 @@ Other datasets at IRSA are available through other SIA services:</p>
 </div>
 </div>
 <p>Inspect the table of images that is returned</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span>
 </pre></div>
@@ -646,7 +646,7 @@ float64 ...
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">colnames</span>
 </pre></div>
@@ -702,7 +702,7 @@ float64 ...
 </div>
 </div>
 <p>View the first ten entries of the table</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im_table</span><span class="o">.</span><span class="n">to_table</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
@@ -710,7 +710,7 @@ float64 ...
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=10</i>
-<table id="table140349492874000" class="table-striped table-bordered table-condensed">
+<table id="table140672661409296" class="table-striped table-bordered table-condensed">
 <thead><tr><th>ra</th><th>dec</th><th>cra</th><th>cdec</th><th>naxis1</th><th>naxis2</th><th>ctype1</th><th>ctype2</th><th>crval1</th><th>crval2</th><th>crpix1</th><th>crpix2</th><th>cdelt1</th><th>cdelt2</th><th>crota2</th><th>ra1</th><th>dec1</th><th>ra2</th><th>dec2</th><th>ra3</th><th>dec3</th><th>ra4</th><th>dec4</th><th>equinox</th><th>hdu</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_type</th><th>file_type</th><th>band_name</th><th>wavelength</th><th>access_estsize</th><th>s_fov</th><th>tile</th><th>fname</th><th>dataset</th><th>cutout</th><th>sia_desc</th><th>sia_naxes</th><th>sia_naxis</th><th>sia_scale</th><th>sia_cdmatrix</th><th>sia_format</th><th>sia_url</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>int32</th><th>int32</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>int32</th><th>float64</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>int32</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th></tr></thead>
@@ -730,7 +730,7 @@ float64 ...
 <section id="section-4-locate-and-download-an-image-of-interest">
 <h2>Section 4 - Locate and download an image of interest<a class="headerlink" href="#section-4-locate-and-download-an-image-of-interest" title="Link to this heading">#</a></h2>
 <p>Locate the first image in the band_name of i+</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">im_table</span><span class="p">)):</span>
     <span class="k">if</span> <span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;band_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;i+&#39;</span><span class="p">:</span>
@@ -746,7 +746,7 @@ float64 ...
 </div>
 </div>
 <p>Download the image</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">im_table</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getdataurl</span><span class="p">(),</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">image1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -757,7 +757,7 @@ float64 ...
 </section>
 <section id="section-5-extract-a-cutout-and-plot-it">
 <h2>Section 5 - Extract a cutout and plot it<a class="headerlink" href="#section-5-extract-a-cutout-and-plot-it" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wcs</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 </pre></div>
@@ -765,7 +765,7 @@ float64 ...
 </div>
 </div>
 <p>Make a cutout centered on the position</p>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutout</span> <span class="o">=</span> <span class="n">Cutout2D</span><span class="p">(</span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="n">wcs</span><span class="o">=</span><span class="n">wcs</span><span class="p">)</span>
 <span class="n">wcs</span> <span class="o">=</span> <span class="n">cutout</span><span class="o">.</span><span class="n">wcs</span>
@@ -773,7 +773,7 @@ float64 ...
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
@@ -784,7 +784,7 @@ float64 ...
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fa5a95181d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff0e8004710&gt;
 </pre></div>
 </div>
 <img alt="../../_images/a9c27312f694e54ad2fa83ab3ae2ff5e4428111bd898c6d281515aaa33bdcc95.png" src="../../_images/a9c27312f694e54ad2fa83ab3ae2ff5e4428111bd898c6d281515aaa33bdcc95.png" />
