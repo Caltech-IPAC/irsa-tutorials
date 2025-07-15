@@ -45,6 +45,7 @@ exclude_patterns = ['_build', 'notes', '.tox', '.tmp', '.pytest_cache', 'README.
 nb_execution_timeout = 1200
 nb_merge_streams = True
 nb_execution_mode = "cache"
+nb_scroll_outputs = True
 
 nb_execution_excludepatterns = []
 
