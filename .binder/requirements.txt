@@ -2,7 +2,7 @@
 # undeclared optional dependencies of functionalities we rely on
 #
 tqdm
-numpy>=1.24
+numpy>=1.24,<=2.2
 matplotlib>=3.7
 astropy>=5.3
 pyvo>=1.5
@@ -23,6 +23,7 @@ fsspec
 sep>=1.4
 h5py
 requests
+lsdb
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
