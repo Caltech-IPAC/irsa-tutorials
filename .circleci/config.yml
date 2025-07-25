@@ -14,7 +14,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - pip-cache-{{ checksum "site-requirements.txt" }}
+            - pip-cache-{{ checksum "site_requirements.txt" }}
 
       - run:
           name: Install Node.js
@@ -31,7 +31,7 @@ jobs:
           name: Install Python dependencies
           command: |
             python -m pip install --upgrade pip
-            if [ -f site-requirements.txt ]; then pip install -r site-requirements.txt; fi
+            if [ -f site_requirements.txt ]; then pip install -r site_requirements.txt; fi
 
       - save_cache:
           key: node-cache-v1
@@ -39,7 +39,7 @@ jobs:
             - node_modules
 
       - save_cache:
-          key: pip-cache-{{ checksum "site-requirements.txt" }}
+          key: pip-cache-{{ checksum "site_requirements.txt" }}
           paths:
             - ~/.cache/pip
 
