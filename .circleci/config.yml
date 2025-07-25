@@ -1,46 +1,66 @@
 version: 2.1
 
-jobs:
 
+jobs:
   build-docs:
     docker:
-      - image: cimg/python:3.12
-
+      - image: cimg/python:3.13
     steps:
-      - attach_workspace:
-          at: ~/
-
       - checkout
-
-      - run:
-          name: Install CI dependencies
-          command: python -m pip install --upgrade tox
 
       - restore_cache:
           keys:
-              - jupyter_ch
+            - node-cache-v1
+
+      - restore_cache:
+          keys:
+            - pip-cache-{{ checksum "site-requirements.txt" }}
 
       - run:
-          name: Build HTML rendering of notebooks
-          no_output_timeout: 30m
+          name: Install Node.js
           command: |
-            python -m tox -e py312-buildhtml
+            curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+
+      - run:
+          name: Install mystmd
+          command: |
+            npm install mystmd
+
+      - run:
+          name: Install Python dependencies
+          command: |
+            python -m pip install --upgrade pip
+            if [ -f site-requirements.txt ]; then pip install -r site-requirements.txt; fi
 
       - save_cache:
-          key: jupyter_ch
+          key: node-cache-v1
           paths:
-            - _build/.jupyter_cache
+            - node_modules
+
+      - save_cache:
+          key: pip-cache-{{ checksum "site-requirements.txt" }}
+          paths:
+            - ~/.cache/pip
+
+      - run:
+          name: Build documentation
+          environment:
+            # Ensure this is same as store_artifacts path below
+            DOCS_PATH: _build/html
+          command: |
+            export BASE_URL="/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/$DOCS_PATH"
+
+            (npx myst build --html)
+
+            ## Temporary hack to remove unused thebe JS
+            rm _build/html/*thebe*.js
 
       - store_artifacts:
           path: _build/html
 
-      - persist_to_workspace:
-          root: _build
-          paths:
-            - html
-
 workflows:
   version: 2
-  default:
+  build-and-docs:
     jobs:
       - build-docs
