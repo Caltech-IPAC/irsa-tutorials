@@ -9,6 +9,7 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Analyzing cloud-hosted AllWISE Source Catalog in Parquet format

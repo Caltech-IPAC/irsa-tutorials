@@ -9,6 +9,7 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images

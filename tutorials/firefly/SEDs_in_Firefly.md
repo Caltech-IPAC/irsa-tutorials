@@ -9,6 +9,7 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Using Firefly visualization tools in Python to vet SEDs

@@ -10,6 +10,7 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Introduction to SPHEREx Spectral Images
