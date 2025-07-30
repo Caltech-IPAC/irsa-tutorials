@@ -51,7 +51,7 @@ jobs:
           command: |
             export BASE_URL="/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/$DOCS_PATH"
 
-            (npx myst build --html)
+            (npx myst build --execute)
 
             ## Temporary hack to remove unused thebe JS
             rm _build/html/*thebe*.js
