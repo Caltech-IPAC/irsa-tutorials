@@ -9,6 +9,7 @@ kernelspec:
   display_name: science_demo
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Analyzing cloud-hosted simulated Roman coadded images

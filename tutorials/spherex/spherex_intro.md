@@ -7,9 +7,10 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.17.2
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
+skip_execution: true
 ---
 
 # Introduction to SPHEREx Spectral Images

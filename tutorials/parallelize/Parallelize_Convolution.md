@@ -9,6 +9,7 @@ kernelspec:
   display_name: Python [conda env:clonenv]
   language: python
   name: python3
+skip_execution: true
 ---
 
 # Parallelizing image convolution
