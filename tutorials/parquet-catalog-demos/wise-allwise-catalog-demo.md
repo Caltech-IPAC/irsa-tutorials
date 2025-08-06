@@ -77,7 +77,7 @@ bucket = "nasa-irsa-wise"
 folder = "wise/allwise/catalogs/p3as_psd/healpix_k5"
 parquet_root = f"{bucket}/{folder}/wise-allwise.parquet"
 
-fs = S3FileSystem(region="us-west-2")  # the bucket is in region us-west-2
+fs = S3FileSystem(region="us-west-2", anonymous=True)  # the bucket is in region us-west-2
 ```
 
 These limits will be used to query the catalog using specific filters created in examples below.
