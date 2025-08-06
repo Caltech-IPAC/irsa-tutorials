@@ -45,6 +45,7 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/parquet-catalog-demos/wise-allwise-catalog-demo';</script>
+    <link rel="icon" href="../../_static/irsa-favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet" href="neowise-source-table-strategies.html" />
@@ -576,7 +577,7 @@ Credentials can also be passed as keyword arguments.</p>
 <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;wise/allwise/catalogs/p3as_psd/healpix_k5&quot;</span>
 <span class="n">parquet_root</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/wise-allwise.parquet&quot;</span>
 
-<span class="n">fs</span> <span class="o">=</span> <span class="n">S3FileSystem</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-west-2&quot;</span><span class="p">)</span>  <span class="c1"># the bucket is in region us-west-2</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">S3FileSystem</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-west-2&quot;</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># the bucket is in region us-west-2</span>
 </pre></div>
 </div>
 </div>
@@ -686,8 +687,8 @@ For filter options, see the <code class="docutils literal notranslate"><span cla
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.25 s, sys: 1.6 s, total: 7.85 s
-Wall time: 19.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.28 s, sys: 1.85 s, total: 8.13 s
+Wall time: 15.5 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -766,6 +767,14 @@ Wall time: 19.4 s
 </table>
 </div></div></div>
 </div>
+<div class="cell config_scroll_outputs docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delete pandas_df to save memory. This is useful when running on a machine with a small amount of RAM.</span>
+<span class="k">del</span> <span class="n">pandas_df</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn">
 <h2>Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)<a class="headerlink" href="#example-2-pyarrow-with-advanced-filters-color-color-cuts-for-agn" title="Link to this heading">#</a></h2>
@@ -835,8 +844,8 @@ In other examples this is recognized automatically, but here we must pass it exp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.35 s, sys: 2.41 s, total: 6.76 s
-Wall time: 12.8 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.6 s, sys: 2.93 s, total: 7.53 s
+Wall time: 13.7 s
 </pre></div>
 </div>
 </div>
@@ -864,7 +873,16 @@ Wall time: 12.8 s
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;w3w4&#39;, ylabel=&#39;w1w2&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/9a7465aac3a120edb06a01ea6287a221c6f37e6ec778992803eb8af738fd5be7.png" src="../../_images/9a7465aac3a120edb06a01ea6287a221c6f37e6ec778992803eb8af738fd5be7.png" />
+<img alt="../../_images/cebec790e198791e3cb32b8394d6b237cc20148d36990e60ed0f58598b88375f.png" src="../../_images/cebec790e198791e3cb32b8394d6b237cc20148d36990e60ed0f58598b88375f.png" />
+</div>
+</div>
+<div class="cell config_scroll_outputs docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delete variables to save memory. This is useful when running on a machine with a small amount of RAM.</span>
+<span class="k">del</span> <span class="n">pyarrow_ds</span>
+<span class="k">del</span> <span class="n">pyarrow_df</span>
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -947,8 +965,8 @@ neighbor 3, corner (25, 72): 243172601351003808 at on-sky dist [22.86047987] arc
 neighbor 1, corner (25, 62): 252162001351031532 at on-sky dist [7.458129] arcsec
 neighbor 2, corner (25, 62): 252162001351031550 at on-sky dist [14.2719862] arcsec
 neighbor 3, corner (25, 62): 252162001351031549 at on-sky dist [18.96407889] arcsec
-CPU times: user 7.58 s, sys: 9.43 s, total: 17 s
-Wall time: 50.4 s
+CPU times: user 4.62 s, sys: 819 ms, total: 5.44 s
+Wall time: 11.8 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[157162001351035963,
@@ -982,8 +1000,8 @@ Wall time: 50.4 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.55 s, sys: 1.66 s, total: 4.21 s
-Wall time: 4.14 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.92 s, sys: 1.15 s, total: 3.07 s
+Wall time: 2.37 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1320,6 +1338,15 @@ Wall time: 4.14 s
 </table>
 <p>12 rows × 300 columns</p>
 </div></div></div>
+</div>
+<div class="cell config_scroll_outputs docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delete variables to save memory. This is useful when running on a machine with a small amount of RAM.</span>
+<span class="k">del</span> <span class="n">pyarrow_ds</span>
+<span class="k">del</span> <span class="n">neighbors_df</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="schema-access">

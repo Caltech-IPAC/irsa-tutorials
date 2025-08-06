@@ -45,6 +45,7 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/euclid_access/4_Euclid_intro_PHZ_catalog';</script>
+    <link rel="icon" href="../../_static/irsa-favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Euclid Q1: SPE catalogs" href="5_Euclid_intro_SPE_catalog.html" />
@@ -628,7 +629,7 @@ If you have questions about this notebook, please contact the <a class="referenc
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=4</i>
-<table id="table140151492988880" class="table-striped table-bordered table-condensed">
+<table id="table140274116341136" class="table-striped table-bordered table-condensed">
 <thead><tr><th>s_ra</th><th>s_dec</th><th>facility_name</th><th>instrument_name</th><th>dataproduct_subtype</th><th>calib_level</th><th>dataproduct_type</th><th>energy_bandpassname</th><th>energy_emband</th><th>obs_id</th><th>s_resolution</th><th>em_min</th><th>em_max</th><th>em_res_power</th><th>proposal_title</th><th>access_url</th><th>access_format</th><th>access_estsize</th><th>t_exptime</th><th>s_region</th><th>obs_collection</th><th>obs_intent</th><th>algorithm_name</th><th>facility_keywords</th><th>instrument_keywords</th><th>environment_photometric</th><th>proposal_id</th><th>proposal_pi</th><th>proposal_project</th><th>target_name</th><th>target_type</th><th>target_standard</th><th>target_moving</th><th>target_keywords</th><th>obs_release_date</th><th>s_xel1</th><th>s_xel2</th><th>s_pixel_scale</th><th>position_timedependent</th><th>t_min</th><th>t_max</th><th>t_resolution</th><th>t_xel</th><th>obs_publisher_did</th><th>s_fov</th><th>em_xel</th><th>pol_states</th><th>pol_xel</th><th>cloud_access</th><th>o_ucd</th><th>upload_row_id</th></tr></thead>
 <thead><tr><th>deg</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th>m</th><th>m</th><th></th><th></th><th></th><th></th><th>kbyte</th><th>s</th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>arcsec</th><th></th><th>d</th><th>d</th><th>s</th><th></th><th></th><th>deg</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int16</th><th>object</th><th>object</th><th>object</th><th>object</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>int64</th><th>float64</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>object</th><th>object</th><th>object</th><th>object</th><th>object</th><th>bool</th><th>bool</th><th>object</th><th>object</th><th>int64</th><th>int64</th><th>float64</th><th>bool</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>object</th><th>float64</th><th>int64</th><th>object</th><th>int64</th><th>object</th><th>object</th><th>int64</th></tr></thead>
@@ -783,10 +784,10 @@ If you have questions about this notebook, please contact the <a class="referenc
  &#39;fluxerr_u_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_g_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_r_ext_lsst_unif&#39;: &#39;&#39;,
- &#39;fluxerr_g_ext_hsc_unif&#39;: &#39;&#39;,
  &#39;fluxerr_i_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_z_ext_lsst_unif&#39;: &#39;&#39;,
  &#39;fluxerr_u_ext_megacam_unif&#39;: &#39;&#39;,
+ &#39;fluxerr_g_ext_hsc_unif&#39;: &#39;&#39;,
  &#39;fluxerr_r_ext_megacam_unif&#39;: &#39;&#39;,
  &#39;fluxerr_i_ext_panstarrs_unif&#39;: &#39;&#39;,
  &#39;fluxerr_z_ext_hsc_unif&#39;: &#39;&#39;,
@@ -877,7 +878,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=5</i>
-<table id="table140151478486224" class="table-striped table-bordered table-condensed">
+<table id="table140273412234832" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -932,7 +933,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a9cf7391b5f6361ba8b2c4fdf0608a410d96139beedc3ec05be7e72c261638f7.png" src="../../_images/a9cf7391b5f6361ba8b2c4fdf0608a410d96139beedc3ec05be7e72c261638f7.png" />
+<img alt="../../_images/1d6366108695bf83b5c2c5c16b2960a495d7c2621b2743a02252f188f71fb2d6.png" src="../../_images/1d6366108695bf83b5c2c5c16b2960a495d7c2621b2743a02252f188f71fb2d6.png" />
 </div>
 </div>
 </section>
@@ -957,7 +958,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/34b22bb7cde7427349033c6a88d87f342ebf636518dca0d5e94563dca6a88bb6.png" src="../../_images/34b22bb7cde7427349033c6a88d87f342ebf636518dca0d5e94563dca6a88bb6.png" />
+<img alt="../../_images/fa3303268537b131884d63f0a44f39000bdd60bb4253aaae0014e2f4462c8038.png" src="../../_images/fa3303268537b131884d63f0a44f39000bdd60bb4253aaae0014e2f4462c8038.png" />
 </div>
 </div>
 </section>
@@ -978,7 +979,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=3</i>
-<table id="table140151474180176" class="table-striped table-bordered table-condensed">
+<table id="table140273390328336" class="table-striped table-bordered table-condensed">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -1011,7 +1012,7 @@ The _unif fluxes are: “Unified flux recomputed after correction from galactic 
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>Table length=1</i>
-<table id="table140151472526224" class="table-striped table-bordered table-condensed">
+<table id="table140273404649488" class="table-striped table-bordered table-condensed">
 <thead><tr><th>objectid</th><th>tileid</th><th>uri</th><th>hdu</th><th>cntr</th></tr></thead>
 <thead><tr><th>int64</th><th>int64</th><th>object</th><th>int64</th><th>int64</th></tr></thead>
 <tr><td>2678016284659732166</td><td>102159190</td><td>ibe/data/euclid/q1/SIR/102159190/EUC_SIR_W-COMBSPEC_102159190_2024-11-05T16:14:02.114614Z.fits</td><td>1525</td><td>59948</td></tr>
@@ -1060,7 +1061,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f778ec61e50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f93f19b8bd0&gt;
 </pre></div>
 </div>
 </div>
@@ -1076,7 +1077,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9863cc7765ebb966048a8a213eccc7dc5ce3a28b2e6360905a52bf954b1ac463.png" src="../../_images/9863cc7765ebb966048a8a213eccc7dc5ce3a28b2e6360905a52bf954b1ac463.png" />
+<img alt="../../_images/a8fa99a569a68323426698461713368715156fe6aaa030b0222d3933deafa244.png" src="../../_images/a8fa99a569a68323426698461713368715156fe6aaa030b0222d3933deafa244.png" />
 </div>
 </div>
 <p>Let’s cut out a very small patch of the MER image to see what this galaxy looks like. Remember that we sorted the table above, so can reuse the same index to pick up the coordinates for the galaxy. Otherwise we could filter on the object ID.</p>
@@ -1088,7 +1089,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><i>Row index=2</i>
-<table id="table140151473188688">
+<table id="table140273414358928">
 <thead><tr><th>object_id</th><th>ra</th><th>dec</th><th>flux_vis_unif</th><th>flux_y_unif</th><th>flux_j_unif</th><th>flux_h_unif</th><th>phz_classification</th><th>phz_median</th><th>phz_90_int1</th><th>phz_90_int2</th></tr></thead>
 <thead><tr><th></th><th>deg</th><th>deg</th><th>uJy</th><th>uJy</th><th>uJy</th><th>uJy</th><th></th><th></th><th></th><th></th></tr></thead>
 <thead><tr><th>int64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>float64</th><th>int64</th><th>float32</th><th>float32</th><th>float32</th></tr></thead>
@@ -1143,10 +1144,10 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f778f1711d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f941451d590&gt;
 </pre></div>
 </div>
-<img alt="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" src="../../_images/b2d7b7cec12cc2505ce05683a62c96ed152c32052cc3d5e60e6f080edb28779d.png" />
+<img alt="../../_images/62f3e6b1b750bd75911b4c131745919197adf2afeed8d2d8cba0fbd7909f9894.png" src="../../_images/62f3e6b1b750bd75911b4c131745919197adf2afeed8d2d8cba0fbd7909f9894.png" />
 </div>
 </div>
 </section>
@@ -1186,7 +1187,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wNy0xNQ"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wOC0wNg"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -1215,7 +1216,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_107572942725428747_mer_df.csv
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploaded Table URL: ${upload-dir}/upload_11091461268936736921_mer_df.csv
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
