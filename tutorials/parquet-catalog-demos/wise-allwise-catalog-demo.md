@@ -165,6 +165,11 @@ pandas_df = pd.read_parquet(
 pandas_df.describe()
 ```
 
+```{code-cell} ipython3
+# Delete pandas_df to save memory. This is useful when running on a machine with a small amount of RAM.
+del pandas_df
+```
+
 ## Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)
 
 +++
@@ -240,6 +245,12 @@ colorbar_norm = colors.LogNorm(vmin=1, vmax=10)  # for an all-sky search, use vm
 pyarrow_df.plot.hexbin("w3w4", "w1w2", norm=colorbar_norm)
 ```
 
+```{code-cell} ipython3
+# Delete variables to save memory. This is useful when running on a machine with a small amount of RAM.
+del pyarrow_ds
+del pyarrow_df
+```
+
 ## Example 3:  Nearest-neighbor search (using pyarrow and astropy)
 
 +++
@@ -309,6 +320,12 @@ neighbors_df = pyarrow_ds.to_table(
 ).to_pandas()
 
 neighbors_df
+```
+
+```{code-cell} ipython3
+# Delete variables to save memory. This is useful when running on a machine with a small amount of RAM.
+del pyarrow_ds
+del neighbors_df
 ```
 
 ## Schema Access
