@@ -7,53 +7,8 @@ project:
   keywords: [astronomy]
   authors: [IRSA Scientists and Developers]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
-  toc:
-    - title: IRSA Tutorials
-      file: index.md
-    - title: VO on-prem data access
-      children:
-        - file: tutorials/irsa-sia-examples/sia_2mass_allsky.md
-        - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
-        - file: tutorials/irsa-sia-examples/sia_cosmos.md
-        - file: tutorials/irsa-sia-examples/siav2_seip.md
-        - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
-    - title: Cloud data access
-      children:
-        - file: tutorials/cloud_access/cloud-access-intro.md
-        - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
-        - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
-        - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
-        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
-        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
-        - file: tutorials/cloud_access/euclid-cloud-access.md
-    - title: Euclid
-      children:
-        - title: Euclid Early Release Observations
-          children:
-            - file: tutorials/euclid_access/Euclid_ERO.md
-        - title: Euclid Quick Release 1
-          children:
-            - file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
-            - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
-            - file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
-            - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
-            - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
-            - file: tutorials/cloud_access/euclid-cloud-access.md
-    - title: SPHEREx
-      children:
-        - file: tutorials/spherex/spherex_intro.md
-    - title: Visualizations with Firefly
-      children:
-        - file: tutorials/firefly/SEDs_in_Firefly.md
-        - file: tutorials/firefly/NEOWISE_light_curve_demo.md
-        - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
-    - title: Simulated Data
-      children:
-        - file: tutorials/roman_simulations/roman_hlss_number_density.md
-    - title: Generic techniques
-      children:
-        - file: tutorials/parallelize/Parallelize_Convolution.md
-
+extends:
+  - toc.yml
 site:
   template: book-theme
   options:
