@@ -30,18 +30,12 @@ jobs:
       - run:
           name: Install Python dependencies
           command: |
-            python -m pip install --upgrade pip
-            if [ -f site_requirements.txt ]; then pip install -r site_requirements.txt; fi
+            python -m pip install --upgrade pip tox
 
       - save_cache:
           key: node-cache-v1
           paths:
             - node_modules
-
-      - save_cache:
-          key: pip-cache-{{ checksum "site_requirements.txt" }}
-          paths:
-            - ~/.cache/pip
 
       - run:
           name: Build documentation
@@ -51,10 +45,12 @@ jobs:
           command: |
             export BASE_URL="/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/$DOCS_PATH"
 
-            (npx myst build --html)
+            python -m tox -e py312-buildhtml
 
-            ## Temporary hack to remove unused thebe JS
-            rm _build/html/*thebe*.js
+      - save_cache:
+          key: pip-cache-{{ checksum "site_requirements.txt" }}
+          paths:
+            - ~/.cache/pip
 
       - store_artifacts:
           path: _build/html
