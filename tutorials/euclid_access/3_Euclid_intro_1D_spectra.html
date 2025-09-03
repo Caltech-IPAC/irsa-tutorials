@@ -576,12 +576,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
- &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
- &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
- &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
- &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;,
- &#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
  &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
  &#39;euclid_q1_mer_cutouts&#39;: &#39;Euclid Q1 MER Cutouts&#39;,
  &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
@@ -601,7 +596,12 @@ If you have questions about it, please contact the <a class="reference external"
  &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
  &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
  &#39;euclid_q1_spectro_model_catalog_spe_lines_catalog&#39;: &#39;Euclid Q1 SPE Models Catalog - Lines&#39;,
- &#39;euclid_q1_spectro_model_catalog_spe_star_models&#39;: &#39;Euclid Q1 SPE Star Models Catalog&#39;}
+ &#39;euclid_q1_spectro_model_catalog_spe_star_models&#39;: &#39;Euclid Q1 SPE Star Models Catalog&#39;,
+ &#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
+ &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
+ &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
+ &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
+ &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;}
 </pre></div>
 </div>
 </div>
@@ -686,7 +686,7 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=531</i>
-<table id="table139887244099984" class="table-striped table-bordered table-condensed">
+<table id="table140157692254928" class="table-striped table-bordered table-condensed">
 <thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th></tr></thead>
 <thead><tr><th>Angstrom</th><th>erg / (Angstrom s cm2)</th><th>Number</th><th>Number</th><th>erg2 / (Angstrom2 s2 cm4)</th><th>Number</th></tr></thead>
 <thead><tr><th>float32</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float64</th></tr></thead>
@@ -770,7 +770,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f3a096c9e90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f7901756d90&gt;
 </pre></div>
 </div>
 </div>
@@ -804,7 +804,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Values of MASK by flux bin&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/65a632557c6b15ba8479e66a6a72db37a1ebe77e69fd1134f72c73aacd7c3513.png" src="../../_images/65a632557c6b15ba8479e66a6a72db37a1ebe77e69fd1134f72c73aacd7c3513.png" />
+<img alt="../../_images/11e2aeabcb3c12d08c956a425b98c0dbc5dfc46e4ed6a9245b9bd0209b0431c5.png" src="../../_images/11e2aeabcb3c12d08c956a425b98c0dbc5dfc46e4ed6a9245b9bd0209b0431c5.png" />
 </div>
 </div>
 <p>We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.</p>
@@ -826,7 +826,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Object ID 2689918641685825137&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/0d9b0b174b775ad8d5cbc6d767125321ec035515bbfd0213f6e93d19df0d0c49.png" src="../../_images/0d9b0b174b775ad8d5cbc6d767125321ec035515bbfd0213f6e93d19df0d0c49.png" />
+<img alt="../../_images/c2668be81500979bcb5a5fc6c002f4d6d1d7aa53e67bc2990e6ccde0e3ff0dbf.png" src="../../_images/c2668be81500979bcb5a5fc6c002f4d6d1d7aa53e67bc2990e6ccde0e3ff0dbf.png" />
 </div>
 </div>
 </section>
