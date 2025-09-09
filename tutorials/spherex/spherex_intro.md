@@ -94,7 +94,7 @@ There are currently three collections available:
 
 * `'spherex_qr'` -- the Quick Release Observations, for more information see [SPHEREx archive documentation at IRSA]().
 * `'spherex_qr_cal'` -- the Quick Release Calibration products.
-* `'spherex_qr_deep'` -- 
+* `'spherex_qr_deep'` --
 
 ```{code-cell} ipython3
 results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr')
@@ -119,21 +119,6 @@ The `'access_url'` column is particularly important because it tells you how to 
 
 ```{code-cell} ipython3
 results['access_url'][0]
-```
-
-Examining this URL, it does not provide direct access to the SPHEREx spectral image. Rather, it returns a file that lists all the data products and services associated with this spectral image. For the SPHEREx Quick Release products, this includes:
-
-(1) the primary product, a Spectral Image MEF ('semantics' column is #this); and
-
-(2) a cutout service ('semantics' is #cutout).
-
-Most users will be interested in the primary (#this) product. Here's how you get the URL to download it for the first row:
-
-```{code-cell} ipython3
-datalink_url = results['access_url'][0]
-datalink_content = DatalinkResults.from_result_url(datalink_url)
-spectral_image_url = next(datalink_content.bysemantics("#this")).access_url
-spectral_image_url
 ```
 
 You can put this URL into a browser to download the file. Or you can work with it in Python, as shown below.
