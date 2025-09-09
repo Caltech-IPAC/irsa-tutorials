@@ -118,7 +118,8 @@ results.colnames
 The `'access_url'` column is particularly important because it tells you how to access the data. Let's look at the `'access_url'` value for the first row:
 
 ```{code-cell} ipython3
-results['access_url'][0]
+spectral_image_url = results['access_url'][0]
+print(spectral_image_url)
 ```
 
 You can put this URL into a browser to download the file. Or you can work with it in Python, as shown below.
