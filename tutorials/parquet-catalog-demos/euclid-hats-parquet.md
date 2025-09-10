@@ -1066,6 +1066,7 @@ Finally, the SPE tables 'z', 'lines', and 'models' required special handling as 
 Below, we follow IRSA's
 [Cloud Access notebook](https://caltech-ipac.github.io/irsa-tutorials/tutorials/cloud_access/cloud-access-intro.html#navigate-a-catalog-and-perform-a-basic-query)
 to inspect the parquet schema.
+The schema is accessible from the PyArrow dataset object we already loaded (`dataset.schema`) but we load it here from the `_common_metadata` file because it includes column metadata (units and descriptions) that is not present in `dataset.schema`.
 
 ```{code-cell}
 schema = pyarrow.parquet.read_schema(euclid_parquet_schema_path, filesystem=s3_filesystem)
@@ -1121,24 +1122,27 @@ external_flux_columns[:4]
 
 +++
 
-In addition to the columns from Euclid Q1 tables, the following columns have been added to this dataset:
+Several columns have been added to this dataset that are not in the original Euclid Q1 tables:
 
 - 'tileid' : Euclid MER tile index.
 - '_healpix_9' : HEALPix order 9 pixel index. Useful for spatial queries.
 - '_healpix_19' : HEALPix order 19 pixel index. Useful for spatial queries.
 - '_healpix_29' : (hats column) HEALPix order 29 pixel index. Useful for spatial queries.
-- 'Norder' : (hats column) HEALPix order at which the data is partitioned.
-- 'Npix' : (hats column) HEALPix pixel index at order Norder.
-- 'Dir' : (hats column) Integer equal to 10_000 * floor[Npix / 10_000].
-
-These columns are at either the beginning or the end of the schema.
 
 ```{code-cell}
 schema.names[:5]
 ```
 
+In addition, the following columns are used for the HATS partitioning:
+
+- 'Norder' : (hats column) HEALPix order at which the data is partitioned.
+- 'Npix' : (hats column) HEALPix pixel index at order Norder.
+- 'Dir' : (hats column) Integer equal to 10_000 * floor[Npix / 10_000].
+
+They appear at the end of the schema and are also accessible from the PyArrow dataset partitioning object.
+
 ```{code-cell}
-schema.names[-5:]
+dataset.partitioning.schema
 ```
 
 ## About this notebook
