@@ -43,7 +43,7 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.
 
 ```{code-cell} ipython3
-# !pip install numpy matplotlib astropy pyvo firefly-client
+# pip install numpy matplotlib astropy astroquery firefly-client
 ```
 
 ## 4. Imports
