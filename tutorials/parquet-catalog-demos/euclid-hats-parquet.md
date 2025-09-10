@@ -13,16 +13,16 @@ kernelspec:
 
 # Euclid Q1 Catalogs in HATS Parquet
 
-This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with Python.
+This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by Caltech-IPAC/IRSA and demonstrates access with Python.
 
 +++
 
 ## Learning Goals
 
-By the end of this tutorial, you will:
+By the end of this tutorial, you will be able to:
 
 - Query the dataset for galaxies, QSOs, and stars with quality fluxes, redshifts, and morphology.
-- Understand the format and schema of this dataset.
+- Understand the format and organization of this dataset.
 - Learn how to work with this HATS Parquet product using the PyArrow Python library.
 
 +++
@@ -167,6 +167,7 @@ def flux_to_magnitude(flux_col_name: str, color_col_names: tuple[str, str] | Non
 
 ```{code-cell}
 # Load the catalog as a PyArrow dataset. This is used in many examples below.
+# Include partitioning="hive" so PyArrow understands the file naming scheme and can navigate the partitions.
 dataset = pyarrow.dataset.parquet_dataset(euclid_parquet_metadata_path, partitioning="hive", filesystem=s3_filesystem)
 ```
 
@@ -355,7 +356,7 @@ Load a quality SPE sample. Cuts are from Le Brun sec. 3.3 and 6.2.
 
 The NISP instrument was built to target Halpha emitting galaxies, which effectively means 0.9 < z < 1.8.
 SPE redshifts are reliable in that regime.
-However, this represents <2% of the total delivered by the SPE pipeline, so it's crucial to make cuts in order to get it.
+However, this represents <2% of the total delivered by the SPE pipeline, so it's crucial to make cuts in order to obtain a sample of galaxies with robust spectroscopic redshifts.
 
 ```{code-cell}
 # SPE probability of the rank 0 (best) redshift estimate, assuming galaxy.
@@ -377,7 +378,7 @@ spe_filter = (
     & (pc.field(SPURIOUS_FLAG) == 0)
     & (pc.field("mer_det_quality_flag") < 4)
     # High quality SPE galaxies.
-    & (pc.field(SPE_GAL_Z_PROB) > 0.99)  # [FIXME] Andreas says > 0.999. Also mentioned in sec. 6.2.
+    & (pc.field(SPE_GAL_Z_PROB) > 0.999)
     & (pc.field(EMISSION_LINE_WIDTH) < 680)
     # Halpha emitters.
     & (pc.field(HALPHA_LINE_FLUX) > 2e-16)
