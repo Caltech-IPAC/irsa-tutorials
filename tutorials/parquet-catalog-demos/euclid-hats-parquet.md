@@ -1040,12 +1040,12 @@ In the right panel (Galaxy), we see good agreement between the PDFs except at z=
 
 This Euclid Q1 HATS Catalog contains the 14 Euclid tables listed in the introduction, joined on 'object_id' into a single parquet dataset.
 In addition, the Euclid 'tileid' for each object has been added, as well as a few HATS- and HEALPix-related columns.
-All Euclid column names have been lower-cased and the table name has been prepended (e.g., 'FLUX_H_TEMPLFIT' -> 'mer_flux_h_templift'), except for the following:
+All Euclid column names have been lower-cased and the table name has been prepended (e.g., 'FLUX_H_TEMPLFIT' -> 'mer_flux_h_templfit'), except for the following:
 
 - object_id : Euclid MER Object ID. Unique identifier of a row in this dataset.
 - tileid : ID of the Euclid Tile the object was detected in.
-- ra : Right ascension. This is 'RIGHT_ASCENSION' from the 'mer' table. Named shortened to match other IRSA services.
-- dec : Declination. This is 'DECLINATION' from the 'mer' table. Named shortened to match other IRSA services.
+- ra : 'RIGHT_ASCENSION' from the 'mer' table. Named shortened to match other IRSA services.
+- dec : 'DECLINATION' from the 'mer' table. Named shortened to match other IRSA services.
 
 In addition to the above changes, all non-alphanumeric characters in column names have been replaced with an underscore for compatibility with various libraries and services (e.g., 'E(B-V)' -> 'physparamqso_e_b_v_').
 Finally, the SPE tables 'z', 'lines', and 'models' required special handling as follows:
