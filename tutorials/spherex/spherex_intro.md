@@ -59,7 +59,6 @@ from astropy import units as u
 from astropy.coordinates import SkyCoord
 
 from astroquery.ipac.irsa import Irsa
-from pyvo.dal.adhoc import DatalinkResults
 
 from firefly_client import FireflyClient
 ```
@@ -78,7 +77,7 @@ coord = SkyCoord(ra_deg, dec_deg, unit='deg')
 search_radius = 1 * u.arcsec
 ```
 
-Query IRSA for a list of Spectral Image MEFs that overlap this position. We use the [IRSA module in astroquery](https://astroquery.readthedocs.io/en/latest/ipac/irsa/irsa.html) and the Simple Image Access API.
+Query IRSA for a list of Spectral Image MEFs that overlap this position. We use the [IRSA module in astroquery](https://astroquery.readthedocs.io/en/latest/ipac/irsa/irsa.html) and the Simple Image Access (SIA) API.
 
 +++
 
@@ -90,11 +89,12 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 
 +++
 
+The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
 There are currently three collections available:
 
-* `'spherex_qr'` -- the Quick Release Observations, for more information see [SPHEREx archive documentation at IRSA]().
-* `'spherex_qr_cal'` -- the Quick Release Calibration products.
-* `'spherex_qr_deep'` --
+* `'spherex_qr'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr_cal'` -- Quick Release **Calibration files**
+* `'spherex_qr_deep'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
 results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr')
