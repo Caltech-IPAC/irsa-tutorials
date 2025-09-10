@@ -13,7 +13,7 @@ kernelspec:
 
 # Euclid Q1 Catalogs in HATS Parquet
 
-This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with python.
+This notebook introduces the [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) HATS Collection served by IPAC/IRSA and demonstrates access with Python.
 
 +++
 
@@ -73,21 +73,19 @@ See also:
 
 ### 1.2 Parquet, HEALPix, and HATS
 
-Parquet, HEALPix, and HATS are described in more detail at [https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/](https://irsadev.ipac.caltech.edu:9051/cloud_access/parquet/).
-([FIXME] Currently requires IPAC VPN. Update url when the page is published to ops.)
+Parquet, HEALPix, and HATS are described in more detail at [https://irsa.ipac.caltech.edu/docs/parquet_catalogs/](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/).
 In brief:
 
 - [Apache Parquet](https://parquet.apache.org/docs/) is a file format that includes rich metadata and supports fast SQL-like queries on large datasets.
-  - [PyArrow](https://arrow.apache.org/docs/python/) (python library) is a particularly efficient and flexible Parquet reader and we demonstrate its use below.
+  - [PyArrow](https://arrow.apache.org/docs/python/) (Python library) is a particularly efficient and flexible Parquet reader and we demonstrate its use below.
       Note that while PyArrow filters are more powerful than those offered by other libraries, they can be cumbersome to construct --
       For more information, we recommend IRSA's [AllWISE Parquet tutorial](https://caltech-ipac.github.io/irsa-tutorials/tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.html).
-- [HEALPix](https://healpix.jpl.nasa.gov/) (Hierarchical Equal Area isoLatitude Pixelization; Górski et al., 2005) is a tiling of the sky into equal-area pixels.
+- [HEALPix](https://irsa.ipac.caltech.edu/healpix/) (Hierarchical Equal Area isoLatitude Pixelization; Górski et al., 2005) is a tiling of the sky into equal-area pixels.
     - The HEALPix "order" determines the pixel area: higher order => smaller pixels, better resolution, and more total pixels required to cover the sky.
 - [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme) is a HEALPix-based partitioning scheme (plus metadata) for Parquet datasets.
   - The HEALPix order at which data is partitioned is adaptive -- it varies along with the on-sky density of rows in a given catalog, with the aim of creating partitions (files) that have roughly equal numbers of rows (important for efficient access).
-      The Euclid Q1 density and partitioning can be seen at [https://irsadev.ipac.caltech.edu/data/download/parquet/test/euclid/q1/catalogues/hats/skymap.png](https://irsadev.ipac.caltech.edu/data/download/parquet/test/euclid/q1/catalogues/hats/skymap.png).
-      ([FIXME] Currently requires IPAC VPN. Update url when the page is published to ops. Alternately, could consider pulling this file and displaying it here. I have code to do it three different ways but all are a bit clunky and there's so much else going on in this notebook that currently it seems better not to add this.)
-  - [LSDB](https://docs.lsdb.io/) is a python library specifically designed to support large-scale astronomy use cases with HATS datasets.
+      The Euclid Q1 density and partitioning can be seen at [https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png).
+  - [LSDB](https://docs.lsdb.io/) is a Python library specifically designed to support large-scale astronomy use cases with HATS datasets.
       It provides simple interfaces that allow users to perform (e.g.,) full-catalog cross matches with just a few lines of code.
       We demonstrate its use below.
       LSDB uses [Dask](https://docs.dask.org/) to run many core tasks.
