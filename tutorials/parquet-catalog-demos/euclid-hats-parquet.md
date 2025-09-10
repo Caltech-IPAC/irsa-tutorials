@@ -23,7 +23,7 @@ By the end of this tutorial, you will:
 
 - Query the dataset to find and create figures for galaxies, QSOs, and stars with quality fluxes, redshifts, and morphology.
 - Understand the format and schema of this dataset.
-- Learn how to work with this HATS Parquet product using the LSDB and PyArrow python libraries.
+- Learn how to work with this HATS Parquet product using the PyArrow Python library.
 
 +++
 
@@ -85,36 +85,17 @@ In brief:
 - [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme) is a HEALPix-based partitioning scheme (plus metadata) for Parquet datasets.
   - The HEALPix order at which data is partitioned is adaptive -- it varies along with the on-sky density of rows in a given catalog, with the aim of creating partitions (files) that have roughly equal numbers of rows (important for efficient access).
       The Euclid Q1 density and partitioning can be seen at [https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png).
-  - [LSDB](https://docs.lsdb.io/) is a Python library specifically designed to support large-scale astronomy use cases with HATS datasets.
-      It provides simple interfaces that allow users to perform (e.g.,) full-catalog cross matches with just a few lines of code.
-      We demonstrate its use below.
-      LSDB uses [Dask](https://docs.dask.org/) to run many core tasks.
-      The Dask client configurations used in this notebook should work well for most use cases.
-      But, if you run into trouble (e.g., worker memory issues) or just want to tinker and don't know where to start,
-      we recommend LSDB's [Dask cluster configuration tips](https://docs.lsdb.io/en/stable/tutorials/dask-cluster-tips.html).
 
 +++
 
 ## 2. Installs and imports
 
-+++
-
-```{important}
-We rely on ``lsdb>=0.5.2``, ``hpgeom>=1.4``, ``numpy>=2.0``, and ``pyerfa>=2.0.1.3`` for features that have been recently added. Please make sure that you have sufficiently recent versions installed.
-```
-
-[FIXME] Prune dependencies and imports once it's clear which libraries will be used.
-
 ```{code-cell}
 # # Uncomment the next line to install dependencies if needed.
-# %pip install 'lsdb>=0.5.2' 'hpgeom>=1.4' matplotlib 'numpy>=2.0' 'pyerfa>=2.0.1.3' s3fs
+# %pip install hpgeom matplotlib numpy pandas pyarrow s3fs
 ```
 
 ```{code-cell}
-# import os  # Determine number of CPUs (for parallelization)
-# import dask.distributed  # Parallelize catalog queries
-# import lsdb  # Query the catalog
-# import matplotlib.colors  # Make figures look nice
 import hpgeom
 import matplotlib.pyplot as plt  # Create figures
 import numpy as np  # Math
@@ -128,20 +109,6 @@ import pyarrow.fs  # Simple S3 filesystem pointer
 pd.options.mode.copy_on_write = True
 ```
 
-```{tip}
-If you run into an error that looks like,
-
-> AttributeError: _ARRAY_API not found
-
-or:
-
-> A module that was compiled using NumPy 1.x cannot be run in NumPy 2.1.3 as it may crash.
-
-make sure you have restarted the kernel since doing `pip install`. Then re-run the cell **twice**.
-```
-
-+++
-
 ## 3. Setup
 
 +++
@@ -152,9 +119,8 @@ make sure you have restarted the kernel since doing `pip install`. Then re-run t
 s3_bucket = "nasa-irsa-euclid-q1"
 euclid_prefix = "contributed/q1/merged_objects/hats"
 
-euclid_hats_collection_uri = f"s3://{s3_bucket}/{euclid_prefix}"  # for lsdb
-euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_metadata"  # for pyarrow
-euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_common_metadata"  # for pyarrow
+euclid_parquet_metadata_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_metadata"
+euclid_parquet_schema_path = f"{s3_bucket}/{euclid_prefix}/euclid_q1_merged_objects-hats/dataset/_common_metadata"
 
 s3_filesystem = pyarrow.fs.S3FileSystem(anonymous=True)
 ```
@@ -1147,6 +1113,6 @@ dataset.partitioning.schema
 
 **Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
 
-**Updated:** 2025-06-30
+**Updated:** 2025-09-10
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
