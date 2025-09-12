@@ -7,6 +7,8 @@ project:
   keywords: [astronomy]
   authors: [IRSA Scientists and Developers]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
+  settings:
+    output_matplotlib_strings: remove
 extends:
   - toc.yml
 site:
