@@ -7,9 +7,9 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.17.2
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 # Introduction to SPHEREx Spectral Images
@@ -43,7 +43,7 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.
 
 ```{code-cell} ipython3
-# !pip install numpy matplotlib astropy pyvo firefly-client
+# pip install numpy matplotlib astropy astroquery firefly-client
 ```
 
 ## 4. Imports
@@ -58,8 +58,7 @@ from astropy.table import Table
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 
-import pyvo
-from pyvo.dal.adhoc import DatalinkResults
+from astroquery.ipac.irsa import Irsa
 
 from firefly_client import FireflyClient
 ```
@@ -73,31 +72,32 @@ Define some coordinates of interest.
 ```{code-cell} ipython3
 ra_deg = 304.693508808
 dec_deg = 42.4436872991
+
+coord = SkyCoord(ra_deg, dec_deg, unit='deg')
+search_radius = 1 * u.arcsec
 ```
 
-Query IRSA for a list of Spectral Image MEFs that overlap this position.
+Query IRSA for a list of Spectral Image MEFs that overlap this position. We use the [IRSA module in astroquery](https://astroquery.readthedocs.io/en/latest/ipac/irsa/irsa.html) and the Simple Image Access (SIA) API.
+
++++
+
+```{tip}
+The IRSA SIA collections can be listed using using the ``list_collections`` method, we can filter on the ones containing "spherex" in the collection name:
+
+    Irsa.list_collections(filter='spherex')
+```
+
++++
+
+The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
+There are currently three collections available:
+
+* `'spherex_qr'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr_cal'` -- Quick Release **Calibration files**
+* `'spherex_qr_deep'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-# Define the TAP service URL for IRSA
-tap_url = "https://irsa.ipac.caltech.edu/TAP"
-
-# Connect to the TAP service
-service = pyvo.dal.TAPService(tap_url)
-
-# Define your ADQL query
-query = "SELECT * FROM spherex.obscore WHERE CONTAINS(POINT('ICRS',"+str(ra_deg)+","+str(dec_deg)+"), s_region)=1"
-
-# Submit the asynchronous query
-job = service.submit_job(query)
-
-# Run the job (starts the query execution on the server)
-job.run()
-
-# Wait for the job to complete (polling)
-job.wait(phases=["COMPLETED", "ERROR", "ABORTED"], timeout=300)
-
-# Capture the results
-results = job.fetch_result()
+results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr')
 ```
 
 Each row of the results of your query represents a different spectral image.
@@ -112,28 +112,14 @@ len(results)
 The query results provide a lot of metadata about each spectral image. These columns have standard names as defined by the IVOA. Let's list them:
 
 ```{code-cell} ipython3
-list(results.fieldnames)
+results.colnames
 ```
 
-The 'access_url' column is particularly important because it tells you how to access the data. Let's look at the 'access_url' value for the first row:
+The `'access_url'` column is particularly important because it tells you how to access the data. Let's look at the `'access_url'` value for the first row:
 
 ```{code-cell} ipython3
-results['access_url'][0]
-```
-
-Examining this URL, it does not provide direct access to the SPHEREx spectral image. Rather, it returns a file that lists all the data products and services associated with this spectral image. For the SPHEREx Quick Release products, this includes:
-
-(1) the primary product, a Spectral Image MEF ('semantics' column is #this); and
-
-(2) a cutout service ('semantics' is #cutout).
-
-Most users will be interested in the primary (#this) product. Here's how you get the URL to download it for the first row:
-
-```{code-cell} ipython3
-datalink_url = results['access_url'][0]
-datalink_content = DatalinkResults.from_result_url(datalink_url)
-spectral_image_url = next(datalink_content.bysemantics("#this")).access_url
-spectral_image_url
+spectral_image_url = results['access_url'][0]
+print(spectral_image_url)
 ```
 
 You can put this URL into a browser to download the file. Or you can work with it in Python, as shown below.

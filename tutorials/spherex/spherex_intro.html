@@ -549,7 +549,7 @@ document.write(`
 <p>The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.</p>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install numpy matplotlib astropy pyvo firefly-client</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pip install numpy matplotlib astropy astroquery firefly-client</span>
 </pre></div>
 </div>
 </div>
@@ -568,8 +568,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvo</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyvo.dal.adhoc</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatalinkResults</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astroquery.ipac.irsa</span><span class="w"> </span><span class="kn">import</span> <span class="n">Irsa</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">firefly_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FireflyClient</span>
 </pre></div>
@@ -584,33 +583,31 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ra_deg</span> <span class="o">=</span> <span class="mf">304.693508808</span>
 <span class="n">dec_deg</span> <span class="o">=</span> <span class="mf">42.4436872991</span>
+
+<span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra_deg</span><span class="p">,</span> <span class="n">dec_deg</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+<span class="n">search_radius</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Query IRSA for a list of Spectral Image MEFs that overlap this position.</p>
+<p>Query IRSA for a list of Spectral Image MEFs that overlap this position. We use the <a class="reference external" href="https://astroquery.readthedocs.io/en/latest/ipac/irsa/irsa.html">IRSA module in astroquery</a> and the Simple Image Access (SIA) API.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The IRSA SIA collections can be listed using using the <code class="docutils literal notranslate"><span class="pre">list_collections</span></code> method, we can filter on the ones containing “spherex” in the collection name:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Irsa.list_collections(filter=&#39;spherex&#39;)
+</pre></div>
+</div>
+</div>
+<p>The collections are documented at <a class="reference external" href="https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis">SPHEREx Data Access: Application Program Interfaces (APIs)</a>
+There are currently three collections available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'spherex_qr'</span></code> – Quick Release Spectral Image MEFs that are part of the SPHEREx <strong>Wide Survey</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'spherex_qr_cal'</span></code> – Quick Release <strong>Calibration files</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'spherex_qr_deep'</span></code> – Quick Release Spectral Image MEFs that are part of the SPHEREx <strong>Deep Survey</strong></p></li>
+</ul>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the TAP service URL for IRSA</span>
-<span class="n">tap_url</span> <span class="o">=</span> <span class="s2">&quot;https://irsa.ipac.caltech.edu/TAP&quot;</span>
-
-<span class="c1"># Connect to the TAP service</span>
-<span class="n">service</span> <span class="o">=</span> <span class="n">pyvo</span><span class="o">.</span><span class="n">dal</span><span class="o">.</span><span class="n">TAPService</span><span class="p">(</span><span class="n">tap_url</span><span class="p">)</span>
-
-<span class="c1"># Define your ADQL query</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM spherex.obscore WHERE CONTAINS(POINT(&#39;ICRS&#39;,&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ra_deg</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dec_deg</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;), s_region)=1&quot;</span>
-
-<span class="c1"># Submit the asynchronous query</span>
-<span class="n">job</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">submit_job</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-
-<span class="c1"># Run the job (starts the query execution on the server)</span>
-<span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-
-<span class="c1"># Wait for the job to complete (polling)</span>
-<span class="n">job</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">phases</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;COMPLETED&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;ABORTED&quot;</span><span class="p">],</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-
-<span class="c1"># Capture the results</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">Irsa</span><span class="o">.</span><span class="n">query_sia</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">),</span> <span class="n">collection</span><span class="o">=</span><span class="s1">&#39;spherex_qr&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -634,105 +631,76 @@ Let’s see how many images are returned today.</p>
 <p>The query results provide a lot of metadata about each spectral image. These columns have standard names as defined by the IVOA. Let’s list them:</p>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">colnames</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;obs_id&#39;,
- &#39;s_ra&#39;,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;s_ra&#39;,
  &#39;s_dec&#39;,
- &#39;energy_bandpassname&#39;,
- &#39;em_min&#39;,
- &#39;em_max&#39;,
- &#39;t_min&#39;,
- &#39;t_max&#39;,
- &#39;t_exptime&#39;,
- &#39;access_url&#39;,
- &#39;access_format&#39;,
- &#39;dataproduct_type&#39;,
- &#39;calib_level&#39;,
- &#39;target_name&#39;,
- &#39;obs_title&#39;,
- &#39;obs_collection&#39;,
  &#39;facility_name&#39;,
  &#39;instrument_name&#39;,
- &#39;obs_creation_date&#39;,
- &#39;obs_creator_name&#39;,
- &#39;obs_release_date&#39;,
- &#39;obs_publisher_did&#39;,
- &#39;publisher_id&#39;,
- &#39;bib_reference&#39;,
- &#39;data_rights&#39;,
- &#39;s_fov&#39;,
- &#39;s_region&#39;,
- &#39;s_resolution&#39;,
- &#39;s_xel1&#39;,
- &#39;s_xel2&#39;,
- &#39;s_ucd&#39;,
- &#39;s_unit&#39;,
- &#39;s_resolution_min&#39;,
- &#39;s_resolution_max&#39;,
- &#39;s_calib_status&#39;,
- &#39;s_pixel_scale&#39;,
- &#39;t_xel&#39;,
- &#39;t_resolution&#39;,
- &#39;em_xel&#39;,
- &#39;em_calib_status&#39;,
- &#39;em_res_power&#39;,
- &#39;pol_xel&#39;,
- &#39;proposal_id&#39;,
+ &#39;dataproduct_subtype&#39;,
+ &#39;calib_level&#39;,
+ &#39;dataproduct_type&#39;,
+ &#39;energy_bandpassname&#39;,
  &#39;energy_emband&#39;,
- &#39;position_timedependent&#39;,
+ &#39;obs_id&#39;,
+ &#39;s_resolution&#39;,
+ &#39;em_min&#39;,
+ &#39;em_max&#39;,
+ &#39;em_res_power&#39;,
+ &#39;proposal_title&#39;,
+ &#39;access_url&#39;,
+ &#39;access_format&#39;,
+ &#39;access_estsize&#39;,
+ &#39;t_exptime&#39;,
+ &#39;s_region&#39;,
+ &#39;obs_collection&#39;,
  &#39;obs_intent&#39;,
  &#39;algorithm_name&#39;,
  &#39;facility_keywords&#39;,
  &#39;instrument_keywords&#39;,
  &#39;environment_photometric&#39;,
+ &#39;proposal_id&#39;,
+ &#39;proposal_pi&#39;,
  &#39;proposal_project&#39;,
+ &#39;target_name&#39;,
  &#39;target_type&#39;,
  &#39;target_standard&#39;,
  &#39;target_moving&#39;,
  &#39;target_keywords&#39;,
- &#39;proposal_pi&#39;,
- &#39;access_estsize&#39;,
+ &#39;obs_release_date&#39;,
+ &#39;s_xel1&#39;,
+ &#39;s_xel2&#39;,
+ &#39;s_pixel_scale&#39;,
+ &#39;position_timedependent&#39;,
+ &#39;t_min&#39;,
+ &#39;t_max&#39;,
+ &#39;t_resolution&#39;,
+ &#39;t_xel&#39;,
+ &#39;obs_publisher_did&#39;,
+ &#39;s_fov&#39;,
+ &#39;em_xel&#39;,
+ &#39;pol_states&#39;,
+ &#39;pol_xel&#39;,
+ &#39;cloud_access&#39;,
  &#39;o_ucd&#39;,
- &#39;ipac_gid&#39;,
- &#39;ipac_pub_date&#39;,
- &#39;pt&#39;,
- &#39;poly&#39;]
+ &#39;upload_row_id&#39;]
 </pre></div>
 </div>
 </div>
 </div>
-<p>The ‘access_url’ column is particularly important because it tells you how to access the data. Let’s look at the ‘access_url’ value for the first row:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">'access_url'</span></code> column is particularly important because it tells you how to access the data. Let’s look at the <code class="docutils literal notranslate"><span class="pre">'access_url'</span></code> value for the first row:</p>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectral_image_url</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spectral_image_url</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/datalink/links/spherex?ID=ivo://irsa.ipac/spherex_qr?2025W18_1B_0157_2/D1&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Examining this URL, it does not provide direct access to the SPHEREx spectral image. Rather, it returns a file that lists all the data products and services associated with this spectral image. For the SPHEREx Quick Release products, this includes:</p>
-<p>(1) the primary product, a Spectral Image MEF (‘semantics’ column is #this); and</p>
-<p>(2) a cutout service (‘semantics’ is #cutout).</p>
-<p>Most users will be interested in the primary (#this) product. Here’s how you get the URL to download it for the first row:</p>
-<div class="cell config_scroll_outputs docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datalink_url</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;access_url&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">datalink_content</span> <span class="o">=</span> <span class="n">DatalinkResults</span><span class="o">.</span><span class="n">from_result_url</span><span class="p">(</span><span class="n">datalink_url</span><span class="p">)</span>
-<span class="n">spectral_image_url</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">datalink_content</span><span class="o">.</span><span class="n">bysemantics</span><span class="p">(</span><span class="s2">&quot;#this&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">access_url</span>
-<span class="n">spectral_image_url</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/ibe/data/spherex/qr/level2/2025W18_1B/l2b-v13-2025-198/1/level2_2025W18_1B_0157_2D1_spx_l2b-v13-2025-198.fits&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://irsa.ipac.caltech.edu/ibe/data/spherex/qr/level2/2025W18_1B/l2b-v13-2025-198/4/level2_2025W18_1B_0157_2D4_spx_l2b-v13-2025-198.fits
 </pre></div>
 </div>
 </div>
@@ -750,7 +718,7 @@ Let’s see how many images are returned today.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/5c32152b92f92a908f9cb89ff3983bcc/contents
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: /home/runner/.astropy/cache/download/url/aff048d4c56ba987c96f9d2e6f471343/contents
 No.    Name      Ver    Type      Cards   Dimensions   Format
   0  PRIMARY       1 PrimaryHDU       5   ()      
   1  IMAGE         1 ImageHDU       217   (2040, 2040)   float32   
@@ -758,7 +726,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
   3  VARIANCE      1 ImageHDU       119   (2040, 2040)   float32   
   4  ZODI          1 ImageHDU       119   (2040, 2040)   float32   
   5  PSF           1 ImageHDU       509   (101, 101, 121)   float32   
-  6  WCS-WAVE      1 BinTableHDU     18   1R x 3C   [7J, 7J, 98E]
+  6  WCS-WAVE      1 BinTableHDU     18   1R x 3C   [13J, 13J, 338E]
 </pre></div>
 </div>
 </div>
@@ -787,7 +755,7 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
+<div class="output text_html">Open your web browser to <a href="https://irsa.ipac.caltech.edu/irsaviewer/?__wsch=MjAyNS0wOS0xMg"" target="_blank">this link</a></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;success&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -840,10 +808,10 @@ No.    Name      Ver    Type      Cards   Dimensions   Format
 NAXIS1: 2040
 NAXIS2: 2040
 BUNIT: MJy / sr
-DETECTOR: 1
+DETECTOR: 4
 OBSID: 2025W18_1B_0157_2
-DATE: 2025-07-17T20:28:57.406
-PSF_FWHM: 5.029344163983229
+DATE: 2025-07-18T00:07:08.811
+PSF_FWHM: 6.0230709217726535
 </pre></div>
 </div>
 </div>
@@ -884,10 +852,10 @@ WCSNAMEW= &#39;Approximated per-pixel wavelength and bandpass&#39; / WCS label
 
 Number of WCS axes: 2
 CTYPE : &#39;RA---TAN-SIP&#39; &#39;DEC--TAN-SIP&#39; 
-CRVAL : 304.142120099 43.5289919506 
+CRVAL : 304.141682837 43.5491436591 
 CRPIX : 1020.5 1020.5 
-PC1_1 PC1_2  : -0.00159755470958 -0.000549937990661 
-PC2_1 PC2_2  : -0.000611817559668 0.00161816418807 
+PC1_1 PC1_2  : -0.00160258389753 -0.000547226371435 
+PC2_1 PC2_2  : -0.00061096946265 0.00162099177297 
 CDELT : 1.0 1.0 
 NAXIS : 2040  2040
 </pre></div>
@@ -904,7 +872,7 @@ NAXIS : 2040  2040
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304.142120099 43.5289919506 1019.0039070141772 1020.8106768185589
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304.141682837 43.5491436591 1019.3357611126833 1020.3856999640356
 </pre></div>
 </div>
 </div>
@@ -969,7 +937,7 @@ and is modeled accordingly in WCS ‘W’, so we turn the SIP distortion off for
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;SpectralCoord 0.90461451 um&gt;, &lt;Quantity 0.02313592 um&gt;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;SpectralCoord 3.00582716 um&gt;, &lt;Quantity 0.08612685 um&gt;)
 </pre></div>
 </div>
 </div>
@@ -998,21 +966,21 @@ and is modeled accordingly in WCS ‘W’, so we turn the SIP distortion off for
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wavelength: 
- [[1.12631679 1.12629733 1.12627787 ... 1.126608   1.1266278  1.12664759]
- [1.12609689 1.12607743 1.12605798 ... 1.12638815 1.12640794 1.12642774]
- [1.125877   1.12585754 1.12583808 ... 1.1261683  1.12618809 1.12620788]
+ [[3.8652277  3.86514933 3.86507097 ... 3.86153065 3.86160558 3.86168051]
+ [3.86436234 3.86428395 3.86420556 ... 3.86066508 3.86074003 3.86081498]
+ [3.86349698 3.86341857 3.86334016 ... 3.85979951 3.85987448 3.85994945]
  ...
- [0.74555063 0.74553469 0.74551874 ... 0.7458939  0.74591023 0.74592655]
- [0.74539676 0.74538082 0.74536488 ... 0.74574004 0.74575636 0.74577269]
- [0.74524289 0.74522695 0.74521101 ... 0.74558618 0.7456025  0.74561882]] um
+ [2.40904977 2.40900849 2.40896721 ... 2.40604904 2.40608748 2.40612591]
+ [2.40848578 2.40844456 2.40840333 ... 2.40548595 2.40552433 2.4055627 ]
+ [2.40792179 2.40788062 2.40783946 ... 2.40492285 2.40496117 2.40499949]] um
 Bandpass: 
- [[0.02880606 0.02880556 0.02880506 ... 0.0288135  0.02881401 0.02881452]
- [0.02880043 0.02879994 0.02879944 ... 0.02880788 0.02880839 0.02880889]
- [0.02879481 0.02879431 0.02879381 ... 0.02880226 0.02880276 0.02880327]
+ [[0.1107515  0.11074926 0.11074701 ... 0.11064557 0.11064772 0.11064987]
+ [0.11072671 0.11072446 0.11072221 ... 0.11062077 0.11062292 0.11062507]
+ [0.11070191 0.11069966 0.11069742 ... 0.11059597 0.11059812 0.11060027]
  ...
- [0.01906779 0.01906738 0.01906698 ... 0.01907657 0.01907699 0.01907741]
- [0.01906386 0.01906345 0.01906304 ... 0.01907264 0.01907305 0.01907347]
- [0.01905992 0.01905951 0.01905911 ... 0.0190687  0.01906912 0.01906954]] um
+ [0.06902721 0.06902602 0.06902484 ... 0.06894123 0.06894233 0.06894343]
+ [0.06901105 0.06900987 0.06900869 ... 0.0689251  0.0689262  0.0689273 ]
+ [0.06899489 0.06899371 0.06899253 ... 0.06890896 0.06891006 0.06891116]] um
 </pre></div>
 </div>
 </div>
@@ -1030,7 +998,7 @@ Bandpass:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6b639a36243b0c433b61620284fe1a6214d032cfd58f4d6931c7bad9efe6d5cf.png" src="../../_images/6b639a36243b0c433b61620284fe1a6214d032cfd58f4d6931c7bad9efe6d5cf.png" />
+<img alt="../../_images/1385a3f82e585a4ecd5956430b6376f459cff55f51cfb88f81391eede347f5cc.png" src="../../_images/1385a3f82e585a4ecd5956430b6376f459cff55f51cfb88f81391eede347f5cc.png" />
 </div>
 </div>
 <p>As expected, the wavelengths range from approximately 1.1=16 micron for Detector 2. You can see that the longest wavelengths are at the bottom and the shortest wavelengths are at the top. You can verify this is the case in the Firefly visualization, as well.</p>
@@ -1046,16 +1014,16 @@ Bandpass:
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HIERARCH L2 N_NONLINEAR = 0 / number of pixels flagged nonlinear                
-HIERARCH L2 N_PERSIST = 18614 / number of pixels flagged persist                
-HIERARCH L2 N_HOT =                    2 / number of pixels flagged hot         
-HIERARCH L2 N_COLD = 1402 / number of pixels flagged cold                       
-HIERARCH L2 N_SOURCE = 3730054 / number of source flagged pixels                
-HIERARCH L2 N_OUTLIER = 23451 / number of flagged outlier pixels                
-HIERARCH L2 N_TRANSIENT = 52193 / number of flagged transient pixels            
-HIERARCH L2 N_OVERFLOW = 2069 / number of flagged overflow pixels               
-HIERARCH L2 N_SUR_ERROR = 29599 / number of flagged sur error pixels            
-HIERARCH L2 N_NONFUNC = 1898 / number of flagged nonfunctional pixels           
-HIERARCH L2 N_DICHROIC = 0 / number of flagged pixels due to low efficiency of d
+HIERARCH L2 N_PERSIST = 19400 / number of pixels flagged persist                
+HIERARCH L2 N_HOT =                    4 / number of pixels flagged hot         
+HIERARCH L2 N_COLD = 1323 / number of pixels flagged cold                       
+HIERARCH L2 N_SOURCE = 4136057 / number of source flagged pixels                
+HIERARCH L2 N_OUTLIER = 3491 / number of flagged outlier pixels                 
+HIERARCH L2 N_TRANSIENT = 85457 / number of flagged transient pixels            
+HIERARCH L2 N_OVERFLOW = 7045 / number of flagged overflow pixels               
+HIERARCH L2 N_SUR_ERROR = 49525 / number of flagged sur error pixels            
+HIERARCH L2 N_NONFUNC = 12713 / number of flagged nonfunctional pixels          
+HIERARCH L2 N_DICHROIC = 112375 / number of flagged pixels due to low efficiency
 HIERARCH L2 N_MISSING = 0 / number of flagged pixels with missing data          
 HIERARCH L2 N_FULLSAMPLE = 240 / number of flagged full-sample pixels           
 HIERARCH L2 N_PHANMISS = 0 / number of flagged phanmiss pixels                  
@@ -1212,21 +1180,21 @@ BUNIT:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XTENSION= &#39;BINTABLE&#39;           / binary table extension                         
 BITPIX  =                    8 / array data type                                
 NAXIS   =                    2 / number of array dimensions                     
-NAXIS1  =                  448 / length of dimension 1                          
+NAXIS1  =                 1456 / length of dimension 1                          
 NAXIS2  =                    1 / length of dimension 2                          
 PCOUNT  =                    0 / number of group parameters                     
 GCOUNT  =                    1 / number of groups                               
 TFIELDS =                    3 / number of table fields                         
 EXTNAME = &#39;WCS-WAVE&#39;                                                            
 TTYPE1  = &#39;X       &#39;                                                            
-TFORM1  = &#39;7J      &#39;                                                            
-TDIM1   = &#39;(7)     &#39;                                                            
+TFORM1  = &#39;13J     &#39;                                                            
+TDIM1   = &#39;(13)    &#39;                                                            
 TTYPE2  = &#39;Y       &#39;                                                            
-TFORM2  = &#39;7J      &#39;                                                            
-TDIM2   = &#39;(7)     &#39;                                                            
+TFORM2  = &#39;13J     &#39;                                                            
+TDIM2   = &#39;(13)    &#39;                                                            
 TTYPE3  = &#39;VALUES  &#39;                                                            
-TFORM3  = &#39;98E     &#39;                                                            
-TDIM3   = &#39;(2,7,7) &#39;                                                            
+TFORM3  = &#39;338E    &#39;                                                            
+TDIM3   = &#39;(2,13,13)&#39;                                                           
 </pre></div>
 </div>
 </div>
@@ -1262,9 +1230,9 @@ Column names: [&#39;X&#39;, &#39;Y&#39;, &#39;VALUES&#39;]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X: [   1  341  681 1021 1361 1701 2040]
-Y: [   1  341  681 1021 1361 1701 2040]
-Dimensions of VALUES array: (7, 7, 2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X: [   1  171  341  511  681  851 1021 1191 1361 1531 1701 1871 2040]
+Y: [   1  171  341  511  681  851 1021 1191 1361 1531 1701 1871 2040]
+Dimensions of VALUES array: (13, 13, 2)
 </pre></div>
 </div>
 </div>
