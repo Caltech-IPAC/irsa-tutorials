@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build-docs:
     docker:
-      - image: cimg/python:3.13
+      - image: cimg/python:3.12
     steps:
       - checkout
 
@@ -46,7 +46,7 @@ jobs:
           command: |
             export BASE_URL="/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/$DOCS_PATH"
 
-            python -m tox -e py313-buildhtml
+            python -m tox -e py312-buildhtml
 
       - save_cache:
           key: pip-cache-{{ checksum "site_requirements.txt" }}
