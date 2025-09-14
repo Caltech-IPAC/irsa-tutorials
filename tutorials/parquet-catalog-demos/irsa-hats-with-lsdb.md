@@ -16,15 +16,29 @@ kernelspec:
 +++
 
 ## Learning Goals
-TBD
+
+By the end of this tutorial, you will learn how to:
+
+- Use the `lsdb` library to access IRSA HATS collections from the cloud.
+- Define spatial, column, and row filters to read only a portion of large HATS catalogs.
+- Crossmatch catalogs using `lsdb` and visualize the results.
+- Perform index searches on HATS catalogs using `lsdb`.
 
 +++
 
 ## Introduction
 
-TBD: add text on HATS. Euclid, ZTF objects and LCs
+IRSA provides several astronomical catalogs in spatially partitioned [Parquet format](https://parquet.apache.org/), enabling efficient access and scalable analysis of large datasets. Among these are the [HATS](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats) (Hierarchical Adaptive Tiling Scheme) collections, which organize catalog data using adaptive [HEALPix](https://irsa.ipac.caltech.edu/healpix/)-based partitioning for parallelizable queries and crossmatching.
 
-HATS info: https://irsa.ipac.caltech.edu/docs/parquet_catalogs/
+For more details on HATS collections, partitioning, and schema organization, see the IRSA documentation on [Parquet catalogs](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/).
+
+This notebook demonstrates how to access and analyze HATS collections using the [lsdb](https://docs.lsdb.io/en/latest/index.html) Python library, which makes it convenient to work with these large datasets. We will explore the following IRSA HATS collections in this tutorial:
+
+- Euclid Q1: MER (multi-wavelength mosaics) final catalog, photometric redshift catalogs, and spectroscopic catalogs joined on MER Object ID.
+- ZTF DR23 Objects Table: catalog of PSF-fit photometry detections extracted from ZTF reference images, including "collapsed-lightcurve" metrics.
+- ZTF DR23 Lightcurves: catalog of PSF-fit photometry detections extracted from single-exposure images at the locations of Objects Table detections.
+
+We will use lsdb to leverage HATS partitioning for performing fast spatial queries on a relatively large area of sky and for crossmatching sources between Euclid and ZTF to identify variable galaxy candidates and visualize their light curves.
 
 +++
 
@@ -32,7 +46,7 @@ HATS info: https://irsa.ipac.caltech.edu/docs/parquet_catalogs/
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs lsdb pyarrow pandas numpy astropy dask matplotlib
+# !pip install s3fs lsdb>=0.5.6 pyarrow pandas numpy astropy dask matplotlib
 ```
 
 ```{code-cell} ipython3
@@ -54,7 +68,8 @@ pd.set_option("display.min_rows", 18) # to show more rows when truncated view
 ```
 
 ## 1. Locate HATS collections in the cloud
-From IRSA's [cloud data access page](https://irsa.ipac.caltech.edu/cloud_access/), let's identify the bucket and the path prefix of HATS Collections for Euclid Q1 and ZTF DR23.
+
+From IRSA's [cloud data access page](https://irsa.ipac.caltech.edu/cloud_access/), let's identify the bucket and path prefix for the HATS Collections for Euclid Q1 and ZTF DR23:
 
 ```{code-cell} ipython3
 euclid_q1_bucket = "nasa-irsa-euclid-q1"
@@ -65,13 +80,13 @@ ztf_hats_prefix = "contributed/dr23/objects/hats"
 ztf_lc_hats_prefix = "contributed/dr23/lc/hats"
 ```
 
-[s3fs](https://s3fs.readthedocs.io/en/latest/) provides a filesystem-like python interface for AWS S3 buckets. First we create a s3 client:
+[s3fs](https://s3fs.readthedocs.io/en/latest/) provides a filesystem-like Python interface for AWS S3 buckets. First, we create an S3 client:
 
 ```{code-cell} ipython3
 s3 = s3fs.S3FileSystem(anon=True)
 ```
 
-Using the s3 client, now we can list the contents of the Euclid Q1 HATS **collection**:
+Using the S3 client, we can now list the contents of the Euclid Q1 HATS **collection**:
 
 ```{code-cell} ipython3
 s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}")
@@ -83,15 +98,15 @@ In this collection, you can see collection properties, catalog, index table, and
 s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}/euclid_q1_merged_objects-hats")
 ```
 
-And then in this catalog, let's list the contents of the **Parquet dataset** that follows HEALPix-based partitioning scheme (and contains metadata):
+And then, in this catalog, let's list the contents of the **Parquet dataset** that follows the HEALPix-based partitioning scheme (and contains metadata):
 
 ```{code-cell} ipython3
 s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}/euclid_q1_merged_objects-hats/dataset")
 ```
 
-You can explore more directories to see how this HATS collection follows the directory structure described in IRSA's documentation on [HATS partitioning and HATS Collections](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats). 
+You can explore more directories to see how this HATS collection follows the directory structure described in IRSA's documentation on [HATS partitioning and HATS Collections](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats).
 
-The parquet file containing the schema for this dataset (with units, description, etc.) is stored in the `_common_metadata` directory. Let's save its path for later use:
+The Parquet file containing the schema for this dataset (with units, description, etc.) is stored in the `_common_metadata` directory. Let's save its path for later use:
 
 ```{code-cell} ipython3
 euclid_q1_schema_path = "euclid_q1_merged_objects-hats/dataset/_common_metadata"
@@ -109,7 +124,7 @@ ztf_schema_path = "ztf_dr23_objects-hats/dataset/_common_metadata"
 
 ## 2. Open the HATS catalogs
 
-Now we can use [lsdb](https://docs.lsdb.io/en/latest/index.html) to open the HATS catalogs we identified above, starting with the Euclid Q1 catalog. Note that we can simply pass the HATS collection path and it will automatically identify the catalog inside it and will make use of the ancilliary data (index table and margin cache) when needed. Also, we prefix the path with `s3://` to indicate that it is an S3 path.
+Now we can use [lsdb](https://docs.lsdb.io/en/latest/index.html) to open the HATS catalogs we identified above, starting with the Euclid Q1 catalog. Note that we can simply pass the HATS collection path and it will automatically identify the catalog inside it and make use of the ancillary data (index table and margin cache) when needed. Also, we prefix the path with `s3://` to indicate that it is an S3 path.
 
 ```{code-cell} ipython3
 euclid_catalog = lsdb.open_catalog(f"s3://{euclid_q1_bucket}/{euclid_q1_hats_prefix}")
@@ -117,9 +132,10 @@ euclid_catalog
 ```
 
 Few things to note here:
-- this catalog is opened [lazily](https://docs.lsdb.io/en/latest/tutorials/lazy_operations.html), i.e. no data is read from S3 bucket into memory yet.
-- since we did not specify any columns to select from this very wide catalog, we get 7 default columns out of 1593 available columns!
-- we see the HEALPix order and pixels at which this catalog is partitioned.
+
+- This catalog is opened [lazily](https://docs.lsdb.io/en/latest/tutorials/lazy_operations.html), i.e., no data is read from the S3 bucket into memory yet.
+- Since we did not specify any columns to select from this very wide catalog, we get 7 default columns out of 1593 available columns!
+- We see the HEALPix order and pixels at which this catalog is partitioned.
 
 Let's plot the sky coverage of this catalog:
 
@@ -127,7 +143,7 @@ Let's plot the sky coverage of this catalog:
 euclid_catalog.plot_pixels()
 ```
 
-Since HATS does adaptive tile-based partitioning, we see higher order HealPix tiles in regions with higher source density and lower order tiles in regions with lower source density.
+Since HATS uses adaptive tile-based partitioning, we see higher order HealPix tiles in regions with higher source density and lower order tiles in regions with lower source density.
 
 Now let's open the ZTF DR23 Objects catalog in a similar manner and view its sky coverage:
 
@@ -144,7 +160,7 @@ ztf_catalog.plot_pixels()
 
 ### 3.1 Define a spatial filter
 
-From above two plots, it's clear that ZTF DR23 Objects catalog covers a much larger area of the sky compared to Euclid Q1 catalog. So for cross-matching, we can safely pick Euclid Deep Field North (EDF-N) region that is covered by both catalogs. From [Euclid user guide at IRSA](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) Table 1, we identify the following for EDF-N region:
+From the above two plots, it's clear that the ZTF DR23 Objects catalog covers a much larger area of the sky compared to the Euclid Q1 catalog. So for cross-matching, we can safely pick the Euclid Deep Field North (EDF-N) region that is covered by both catalogs. From the [Euclid user guide at IRSA](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) Table 1, we identify the following for the EDF-N region:
 
 ```{code-cell} ipython3
 euclid_DF_N_center = SkyCoord('17:58:55.9 +66:01:03.7', unit=('hourangle', 'deg'))
@@ -157,7 +173,7 @@ euclid_DF_N_radius = 0.5 * u.deg  # smaller radius to reduce execution time for 
 euclid_DF_N_radius
 ```
 
-Now using lsdb, we define a cone [search object](https://docs.lsdb.io/en/latest/tutorials/region_selection.html#4.-The-Search-object) for this region that can be passed as a spatial filter when querying the catalogs:
+Now, using lsdb, we define a cone [search object](https://docs.lsdb.io/en/latest/tutorials/region_selection.html#4.-The-Search-object) for this region that can be passed as a spatial filter when querying the catalogs:
 
 ```{code-cell} ipython3
 spatial_filter = lsdb.ConeSearch(
@@ -228,9 +244,9 @@ euclid_schema_df[
 ]
 ```
 
-"phz_phz_median" gives us median photometric redshift of sources, while "phz_phz_classification" can be used to filter the Euclid catalog to only galaxy type sources. 
+"phz_phz_median" gives us the median photometric redshift of sources, while "phz_phz_classification" can be used to filter the Euclid catalog to only galaxy-type sources.
 
-You can explore the schema DataFrame further to identify any other columns of interest. It is also useful to go through the description of Euclid Q1 data products and papers that contains different PHZ, MER, etc. catalog tables that are merged in this HATS catalog which are linked in the [Euclid Q1 HATS Parquet notebook](https://caltech-ipac.github.io/irsa-tutorials/#todo-add-when-available).
+You can explore the schema DataFrame further to identify any other columns of interest. It is also useful to go through the description of Euclid Q1 data products and papers that contain different PHZ, MER, etc. catalog tables that are merged in this HATS catalog, which are linked in the [Euclid Q1 HATS Parquet notebook](https://caltech-ipac.github.io/irsa-tutorials/#todo-add-when-available).
 
 +++
 
@@ -238,7 +254,7 @@ You can explore the schema DataFrame further to identify any other columns of in
 
 +++
 
-For this tutorial, following columns are most relevant to us:
+For this tutorial, the following columns are most relevant to us:
 
 ```{code-cell} ipython3
 euclid_columns = euclid_schema_df['name'].iloc[:7].tolist() # the positional and ID columns
@@ -255,7 +271,7 @@ euclid_columns.extend([
 
 +++
 
-To identify the galaxies with quality redshifts in this catalog, following filters can be applied to the rows (from [Tucci et al. 2025](https://arxiv.org/pdf/2503.15306) section 5.3):
+To identify the galaxies with quality redshifts in this catalog, the following filters can be applied to the rows (from [Tucci et al. 2025](https://arxiv.org/pdf/2503.15306) section 5.3):
 
 Note that these filters are defined as lists of lists, where each inner list represents a single condition in the format `[column_name, operator, value]` and the conditions are combined using logical AND. More on filters that lsdb supports can be found in its [documentation](https://docs.lsdb.io/en/latest/getting-started.html#performing-filters).
 
@@ -278,7 +294,7 @@ galaxy_filters = [
 
 ## 4. Define filters for querying ZTF DR23 Objects catalog
 
-Since we are interested in cross-matching ZTF DR23 Objects with Euclid Q1 catalog, we will use the same spatial filter defined above.
+Since we are interested in cross-matching ZTF DR23 Objects with the Euclid Q1 catalog, we will use the same spatial filter defined above.
 
 We can define column and row filters for the ZTF catalog based on its schema, similar to the previous section:
 
@@ -294,9 +310,9 @@ ztf_schema_df
 ztf_schema_df[ztf_schema_df["unit"].str.contains("mag")] # to identify magnitude quantities
 ```
 
-You can explore the schema further to identify other columns of interest. It's also useful to go through [ZTF DR23 release notes](https://irsa.ipac.caltech.edu/data/ZTF/docs/releases/ztf_release_notes_latest) and [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) at IRSA for more details on column selections and caveats.
+You can explore the schema further to identify other columns of interest. It's also useful to go through the [ZTF DR23 release notes](https://irsa.ipac.caltech.edu/data/ZTF/docs/releases/ztf_release_notes_latest) and [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) at IRSA for more details on column selections and caveats.
 
-For this tutorial, following columns are most relevant to us:
+For this tutorial, the following columns are most relevant to us:
 
 ```{code-cell} ipython3
 ztf_columns = ztf_schema_df["name"].tolist()[:6]
@@ -317,7 +333,7 @@ The rationale for selecting these columns is as follows:
 ztf_schema_df[ztf_schema_df.name.isin(ztf_columns)]
 ```
 
-For a quality cut, we apply following filter on the number of good epochs (from [Coughlin et al. 2021](https://academic.oup.com/mnras/article/505/2/2954/6284767) section 2):
+For a quality cut, we apply the following filter on the number of good epochs (from [Coughlin et al. 2021](https://academic.oup.com/mnras/article/505/2/2954/6284767) section 2):
 
 ```{code-cell} ipython3
 quality_filters = [
@@ -327,7 +343,7 @@ quality_filters = [
 
 ## 5. Crossmatch: Euclid Q1 x ZTF DR23 Objects
 
-Now that we have defined the spatial, column, and row filters for both catalogs, we can use lsdb to perform the cross-match.
+Now that we have defined the spatial, column, and row filters for both catalogs, we can use lsdb to perform the crossmatch.
 
 +++
 
@@ -347,7 +363,7 @@ euclid_cone
 
 Notice how the number of partitions reduced from 114 (in section 2) to only a few partitions that are within the spatial filter. This allows LSDB to avoid loading unused parts of the catalog. Also, we see only the columns we selected in the column filters.
 
-Now similarly, we open the ZTF DR23 Objects catalog with its defined filters:
+Now, similarly, we open the ZTF DR23 Objects catalog with its defined filters:
 
 ```{code-cell} ipython3
 ztf_cone = lsdb.open_catalog(
@@ -359,9 +375,9 @@ ztf_cone = lsdb.open_catalog(
 ztf_cone
 ```
 
-We see a similar reduction in number of partitions for this catalog as well and our column selection is applied.
+We see a similar reduction in the number of partitions for this catalog as well, and our column selection is applied.
 
-Now we can use lsdb's [crossmatch functionality](https://docs.lsdb.io/en/latest/tutorials/pre_executed/crossmatching.html#2.-Perform-the-crossmatch-on-the-small-catalogs) to plan a cross-match between these two filtered catalogs. Note that the order of crossmatch matters: the lsdb's algorithm takes each object in the left catalog and finds the closest spatial match from the right catalog. Since Euclid is more denser than ZTF, we put it on the left side of the crossmatch to maximize the number of matches. For more details on the parameters, refer to the documentation linked.
+Now we can use lsdb's [crossmatch functionality](https://docs.lsdb.io/en/latest/tutorials/pre_executed/crossmatching.html#2.-Perform-the-crossmatch-on-the-small-catalogs) to plan a crossmatch between these two filtered catalogs. Note that the order of crossmatch matters: lsdb's algorithm takes each object in the left catalog and finds the closest spatial match from the right catalog. Since Euclid is denser than ZTF, we put it on the left side of the crossmatch to maximize the number of matches. For more details on the parameters, refer to the documentation linked.
 
 ```{code-cell} ipython3
 euclid_x_ztf = euclid_cone.crossmatch(
@@ -373,13 +389,13 @@ euclid_x_ztf = euclid_cone.crossmatch(
 euclid_x_ztf
 ```
 
-Note how the resulting crossmatched catalog contains columns from both catalogs with the suffixes we passed. As we noticed with opening the catalog, this created a crossmatch catalog object lazily but did not execute the crossmatch.
+Note how the resulting crossmatched catalog contains columns from both catalogs with the suffixes we passed. As we noticed when opening the catalog, this created a crossmatch catalog object lazily but did not execute the crossmatch.
 
 +++
 
 ### 5.2 Execute the query and load data
 
-Now we can run the crossmatch query we have been planning so far by using the `compute()` method of crossmatch catalog object, which will perform all the tasks and return the result as a DataFrame. lsdb utilizies [Dask](https://docs.dask.org/en/stable/) to parallelize the tasks on different partitions, so we need to create a Dask client to manage the resources (and track progress) for the scope of this computation:
+Now we can run the crossmatch query we have been planning so far by using the `compute()` method of the crossmatch catalog object, which will perform all the tasks and return the result as a DataFrame. lsdb utilizes [Dask](https://docs.dask.org/en/stable/) to parallelize the tasks on different partitions, so we need to create a Dask client to manage the resources (and track progress) for the scope of this computation:
 
 ```{code-cell} ipython3
 def get_nworkers(catalog):
@@ -436,7 +452,7 @@ Check the number of unique Euclid and ZTF sources in the crossmatched catalog:
 euclid_x_ztf_filtered_df.shape[0], euclid_x_ztf_filtered_df['object_id_euclid'].nunique(), euclid_x_ztf_filtered_df['oid_ztf'].nunique()
 ```
 
-This means there is one unique Euclid source for each row in the crossmatched catalog as expected (since we put Euclid on the left side of the crossmatch). But for ZTF, this is also true i.e. no ZTF object has multiple Euclid matches within our constraints.
+This means there is one unique Euclid source for each row in the crossmatched catalog as expected (since we put Euclid on the left side of the crossmatch). But for ZTF, this is also true, i.e., no ZTF object has multiple Euclid matches within our constraints.
 
 Check if there is any ZTF object that has observations in multiple filters:
 
@@ -449,7 +465,7 @@ multi_filter_oids
 multi_filter_oids[multi_filter_oids > 1].size
 ```
 
-No ZTF object has observations in multiple filters in this crossmatched catalog so we don't need any special handling for multi-filter objects.
+No ZTF object has observations in multiple filters in this crossmatched catalog, so we don't need any special handling for multi-filter objects.
 
 Now let's plot some variability metrics from ZTF against Euclid redshift to see if there are any trends. We will use hexbin plots to visualize the density of sources in each panel:
 
@@ -502,9 +518,9 @@ fig.suptitle("Euclid redshift vs ZTF variability metrics", y=1.04)
 plt.show()
 ```
 
-There's no strong variability trend for higher redshift galaxies (z > 1) as the distributions of mag RMS, MAD, and Chi-squared are fairly stable with redshift. This is likely because of the limited sensitivity of ZTF as there are clearly less number of good observations as redshift increases. 
+There's no strong variability trend for higher redshift galaxies (z > 1) as the distributions of mag RMS, MAD, and Chi-squared are fairly stable with redshift. This is likely because of the limited sensitivity of ZTF, as there are clearly fewer good observations as redshift increases.
 
-Despite of this, we can still select some high variability galaxy sources from low redshift (z < 1) range for further analysis. Let's focus only on Chi-squared (measure of significance) and RMS magnitude (measure of variability amplitude; similar to MAD) metrics:
+Despite this, we can still select some high-variability galaxy sources from the low redshift (z < 1) range for further analysis. Let's focus only on Chi-squared (measure of significance) and RMS magnitude (measure of variability amplitude; similar to MAD) metrics:
 
 ```{code-cell} ipython3
 euclid_x_ztf_filtered_df['chisq_ztf'].describe()
@@ -553,7 +569,7 @@ plt.xlim(0, 2.5)
 plt.show()
 ```
 
-Most of the variable galaxies histogram is concentrated in the low redshift (z < 1) range as expected from hexbin density plots above. Let's inspect top variable galaxies that we can use for plotting their light curves:
+Most of the variable galaxies histogram is concentrated in the low redshift (z < 1) range, as expected from the hexbin density plots above. Let's inspect the top variable galaxies that we can use for plotting their light curves:
 
 ```{code-cell} ipython3
 cols_of_interest = ["oid_ztf", "fid_ztf", "filtercode_ztf", "phz_phz_median_euclid", "magrms_ztf", "chisq_ztf"]
@@ -565,7 +581,7 @@ top_variable_galaxies[cols_of_interest]
 
 +++
 
-Let's open the ZTF light curves HATS catalog (note that we are using the same spatial filter as before and no column filters because default columns already contain light curve data that we need and no row filters because we will directly filter by object IDs):
+Let's open the ZTF light curves HATS catalog (note that we are using the same spatial filter as before and no column filters because the default columns already contain the light curve data we need, and no row filters because we will directly filter by object IDs):
 
 ```{code-cell} ipython3
 ztf_lc_catalog = lsdb.open_catalog(f"s3://{ztf_bucket}/{ztf_lc_hats_prefix}",
@@ -581,14 +597,14 @@ ztf_lc_idx_column = list(ztf_lc_catalog.hc_collection.all_indexes.keys())[0]
 ztf_lc_idx_column
 ```
 
-Let's just extract the object IDs of top variable galaxies we identified above:
+Let's just extract the object IDs of the top variable galaxies we identified above:
 
 ```{code-cell} ipython3
 ztf_oids = top_variable_galaxies['oid_ztf'].tolist()
 ztf_oids
 ```
 
-Now we can use these IDs to filter the ZTF light curves catalog by `id_search` method:
+Now we can use these IDs to filter the ZTF light curves catalog by the `id_search` method:
 
 ```{code-cell} ipython3
 ztf_lcs = ztf_lc_catalog.id_search(values={ztf_lc_idx_column: ztf_oids})
@@ -620,7 +636,7 @@ merged_ztf_lcs_df = merged_ztf_lcs_df.loc[ztf_oids]
 merged_ztf_lcs_df
 ```
 
-Now we can finally plot the light curves of these variable galaxy candidates. We need to filter out bad epochs using `catflags` column as explained in [ZTF DR23 explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) section 13.6. We will plot the light curves in separate panels for each object:
+Now we can finally plot the light curves of these variable galaxy candidates. We need to filter out bad epochs using the `catflags` column as explained in the [ZTF DR23 explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) section 13.6. We will plot the light curves in separate panels for each object:
 
 ```{code-cell} ipython3
 num_lcs = len(ztf_lcs_df)
@@ -652,8 +668,8 @@ plt.show()
 
 ## About this notebook
 
-Author: Jaladh Singhal, Troy Raen, and IRSA Data Science Team
+Author: Jaladh Singhal, Troy Raen, and the IRSA Data Science Team
 
-Updated: 2025-09-12
+Updated: 2025-09-15
 
-Contact: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+Contact: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or to report problems.
