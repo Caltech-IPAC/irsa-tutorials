@@ -55,5 +55,6 @@ project:
     - title: Special Topics
       children:
         - file: tutorials/cloud_access/cloud-access-intro.md
+        - file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
         - file: tutorials/firefly/SEDs_in_Firefly.md
         - file: tutorials/parallelize/Parallelize_Convolution.md
