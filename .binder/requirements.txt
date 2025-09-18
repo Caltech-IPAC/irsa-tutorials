@@ -12,7 +12,7 @@ pyarrow>=10.0.1
 hpgeom
 pandas>=1.5.2
 dask[distributed]
-lsdb>=0.5.6
+lsdb>=0.6.4
 psutil
 ray
 s3fs

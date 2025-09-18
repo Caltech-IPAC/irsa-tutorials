@@ -48,7 +48,7 @@ We will use lsdb to leverage HATS partitioning for performing fast spatial queri
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs lsdb>=0.5.6 pyarrow pandas numpy astropy dask matplotlib
+# !pip install s3fs "lsdb>=0.6.4" pyarrow pandas numpy astropy dask matplotlib
 ```
 
 ```{code-cell} ipython3
@@ -208,7 +208,8 @@ Using pyarrow parquet, we can [read the schema](https://arrow.apache.org/docs/py
 
 ```{code-cell} ipython3
 euclid_schema = pq.read_schema(
-    f"s3://{euclid_q1_bucket}/{euclid_q1_hats_prefix}/{euclid_q1_schema_path}"
+    f"s3://{euclid_q1_bucket}/{euclid_q1_hats_prefix}/{euclid_q1_schema_path}",
+    filesystem=s3
 )
 type(euclid_schema)
 ```
@@ -314,7 +315,8 @@ We can define column and row filters for the ZTF catalog based on its schema, si
 
 ```{code-cell} ipython3
 ztf_schema = pq.read_schema(
-    f"s3://{ztf_bucket}/{ztf_hats_prefix}/{ztf_schema_path}"
+    f"s3://{ztf_bucket}/{ztf_hats_prefix}/{ztf_schema_path}",
+    filesystem=s3
 )
 ztf_schema_df = pq_schema_to_df(ztf_schema)
 ztf_schema_df
