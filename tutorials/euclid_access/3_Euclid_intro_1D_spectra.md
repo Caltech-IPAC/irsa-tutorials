@@ -100,40 +100,26 @@ result = Irsa.query_tap(adql_object).to_table()
 Pull out the file name from the ``result`` table:
 
 ```{code-cell} ipython3
-file_uri = urllib.parse.urljoin(Irsa.tap_url, result['uri'][0])
-file_uri
+spectrum_path = urllib.parse.urljoin(Irsa.tap_url, result['path'][0])
+spectrum_path
 ```
 
 ## 3. Read in the spectrum for only our specific object
 
-Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).
+`spectrum_path` is a url that will return a VOTable containing the spectrum of our object.
 
 ```{code-cell} ipython3
-# hdul = fits.open(file_uri)
-# hdul.info()
-```
-
-Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object
-
-```{code-cell} ipython3
-with fits.open(file_uri) as hdul:
-    spectrum = QTable.read(hdul[result['hdu'][0]], format='fits')
-
-    spec_header = hdul[result['hdu'][0]].header
+spectrum = QTable.read(spectrum_path)
 ```
 
 ```{code-cell} ipython3
 spectrum
 ```
 
-```{code-cell} ipython3
-spec_header
-```
-
 ## 4. Plot the image of the extracted spectrum
 
 ```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
+As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
 ```
 
 ```{code-cell} ipython3
@@ -143,13 +129,9 @@ quantity_support()
 ```{note}
 The 1D combined spectra table contains 6 columns, below are a few highlights:
 
-- WAVELENGTH is in Angstroms by default
-- SIGNAL is the flux and should be multiplied by the FSCALE factor in the header
+- WAVELENGTH is in Angstroms by default.
+- SIGNAL is the flux. The scale factor is included in the units.
 - MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
-```
-
-```{code-cell} ipython3
-signal_scaled = spectrum['SIGNAL'] * spec_header['FSCALE']
 ```
 
 We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
@@ -165,19 +147,19 @@ We use the MASK column to create a boolean mask for values to ignore. We use the
 ```{code-cell} ipython3
 bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, signal_scaled), color='black', label='Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, signal_scaled), color='red', label='Do not use')
-plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']) * spec_header['FSCALE'], color='grey', label='Error')
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), color='black', label='Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
 
 plt.legend(loc='upper right')
-plt.ylim(-0.15E-16, 0.25E-16)
+plt.ylim(-0.15, 0.25)
 plt.title(f'Object ID {obj_id}')
 ```
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen
 
-**Updated**: 2025-03-31
+**Updated**: 2025-09-23
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
