@@ -277,10 +277,10 @@ spec_association_tbl
 If you picked a target other than what this notebook uses, it's possible that there is no spectrum associated for your target's object ID. In that case, `spec_association_tbl` will contain 0 rows.
 ```
 
-In above table, we can see that the `uri` column gives us location of spectra file on IBE. We can map it to S3 bucket key to retrieve spectra file from the cloud. This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. The `hdu` column gives us the extension number for our object. So let's extract both of these.
+In above table, we can see that the `path` column gives us a url that can be used to call the SpectrumDM service to get the spectrum of our object. We can map it to an S3 bucket key to retrieve a spectra file from the cloud. This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. The `hdu` column gives us the extension number for our object. So let's extract both of these.
 
 ```{code-cell} ipython3
-spec_fpath_key = spec_association_tbl['uri'][0].replace('ibe/data/euclid/', '')
+spec_fpath_key = spec_association_tbl['path'][0].replace('api/spectrumdm/convert/euclid/', '').split('?')[0]
 spec_fpath_key
 ```
 
@@ -295,6 +295,7 @@ Again, we use astropy's lazy-loading capability of FITS to only retrieve the spe
 with fits.open(f's3://{BUCKET_NAME}/{spec_fpath_key}', fsspec_kwargs={'anon': True}) as hdul:
     spec_hdu = hdul[object_hdu_idx]
     spec_tbl = Table.read(spec_hdu)
+    spec_header = spec_hdu.header
 ```
 
 ```{code-cell} ipython3
@@ -302,7 +303,8 @@ spec_tbl
 ```
 
 ```{code-cell} ipython3
-plt.plot(spec_tbl['WAVELENGTH'], spec_tbl['SIGNAL'])
+# The signal needs to be multiplied by the scale factor in the header.
+plt.plot(spec_tbl['WAVELENGTH'], spec_header['FSCALE'] * spec_tbl['SIGNAL'])
 plt.xlabel(spec_tbl['WAVELENGTH'].unit.to_string('latex_inline'))
 plt.ylabel(spec_tbl['SIGNAL'].unit.to_string('latex_inline'))
 
@@ -311,8 +313,8 @@ plt.title(f'Spectrum of Target: {target_name}\n(Euclid Object ID: {object_id})')
 
 ## About this Notebook
 
-**Author:** Jaladh Singhal (IRSA Developer) in conjunction with Vandana Desai, Brigitta Sipőcz, Tiffany Meshkat and the IPAC Science Platform team
+**Author:** Jaladh Singhal (IRSA Developer) in conjunction with Vandana Desai, Brigitta Sipőcz, Tiffany Meshkat, Troy Raen, and the IRSA Data Science Team
 
-**Updated:** 2025-03-17
+**Updated:** 2025-09-23
 
 **Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
