@@ -10,6 +10,8 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+execution:
+  timeout: 1600
 ---
 
 
@@ -79,8 +81,8 @@ result = service.run_async(adql)
 result
 ```
 
-The above query shows that there are 597,488,849 redshifts in this table. 
-Running ``count`` on an entire table is an expensive operation, therefore we ran it asynchronously to avoid any potential timeout issues. 
+The above query shows that there are 597,488,849 redshifts in this table.
+Running ``count`` on an entire table is an expensive operation, therefore we ran it asynchronously to avoid any potential timeout issues.
 To learn more about synchronous versus asynchronous PyVO queries please read the [relevant PyVO documentation](https://pyvo.readthedocs.io/en/latest/dal/index.html#synchronous-vs-asynchronous-query).
 
 +++
