@@ -58,9 +58,6 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```
 
 ```{code-cell} ipython3
-import re
-import urllib
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -209,7 +206,7 @@ result_table2 = Irsa.query_tap(adql_object).to_qtable()
 ### The following steps to read in the spectrum follows the 3_Euclid_intro_1D_spectra notebook.
 
 ```{code-cell} ipython3
-spectrum_path = urllib.parse.urljoin(Irsa.tap_url, result_table2['path'][0])
+spectrum_path = f"https://irsa.ipac.caltech.edu/{result_table2['path'][0]}"
 spectrum_path
 ```
 

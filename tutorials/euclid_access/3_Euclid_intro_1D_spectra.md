@@ -55,8 +55,6 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```
 
 ```{code-cell} ipython3
-import urllib
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -100,7 +98,7 @@ result = Irsa.query_tap(adql_object).to_table()
 Pull out the file name from the ``result`` table:
 
 ```{code-cell} ipython3
-spectrum_path = urllib.parse.urljoin(Irsa.tap_url, result['path'][0])
+spectrum_path = f"https://irsa.ipac.caltech.edu/{result['path'][0]}"
 spectrum_path
 ```
 
