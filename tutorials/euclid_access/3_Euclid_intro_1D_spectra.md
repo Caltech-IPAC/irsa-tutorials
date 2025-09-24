@@ -128,7 +128,7 @@ quantity_support()
 The 1D combined spectra table contains 6 columns, below are a few highlights:
 
 - WAVELENGTH is in Angstroms by default.
-- SIGNAL is the flux. The scale factor is included in the units.
+- SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
 - MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
 ```
 
