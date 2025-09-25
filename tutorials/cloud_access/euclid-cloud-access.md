@@ -277,7 +277,7 @@ spec_association_tbl
 If you picked a target other than what this notebook uses, it's possible that there is no spectrum associated for your target's object ID. In that case, `spec_association_tbl` will contain 0 rows.
 ```
 
-In above table, we can see that the `'path'` column gives us a url that can be used to call an IRSA service to get the spectrum of our object. We can map it to an S3 bucket key to retrieve a spectra file from the cloud. This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. The `'hdu'` column gives us the extension number for our object. So let's extract both of these.
+In above table, we can see that the `'path'` column gives us a url that can be used to call an IRSA service to get the spectrum of our object as SpectrumDM VOTable. We can map it to an S3 bucket key to retrieve a spectra file from the cloud. This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. The `'hdu'` column gives us the extension number for our object. So let's extract both of these.
 
 ```{code-cell} ipython3
 spec_fpath_key = spec_association_tbl['path'][0].replace('api/spectrumdm/convert/euclid/', '').split('?')[0]
