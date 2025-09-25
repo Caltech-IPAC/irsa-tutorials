@@ -11,7 +11,7 @@ kernelspec:
   language: python
   name: python3
 execution:
-  timeout: 1600
+  timeout: 2600
 ---
 
 
