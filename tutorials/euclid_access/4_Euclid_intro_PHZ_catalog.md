@@ -307,20 +307,18 @@ result_spectra
 Pull out the file name from the ``result_spectra`` table:
 
 ```{code-cell} ipython3
-file_uri = urllib.parse.urljoin(Irsa.tap_url, result_spectra['uri'][0])
-file_uri
+spectrum_path = f"https://irsa.ipac.caltech.edu/{result_spectra['path'][0]}"
+spectrum_path
 ```
 
 ```{code-cell} ipython3
-with fits.open(file_uri) as hdul:
-    spectrum = QTable.read(hdul[result_spectra['hdu'][0]], format='fits')
-    spectrum_header = hdul[result_spectra['hdu'][0]].header
+spectrum = QTable.read(spectrum_path)
 ```
 
 ### Now the data are read in, plot the spectrum
 
 ```{tip}
-As we use astropy.visualization’s quantity_support, matplotlib automatically picks up the axis units from the quantitites we plot.
+As we use astropy.visualization’s quantity_support, matplotlib automatically picks up the axis units from the quantities we plot.
 ```
 
 ```{code-cell} ipython3
@@ -418,8 +416,8 @@ fc.show_table(uploaded_table)
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen
 
-**Updated**: 2025-04-10
+**Updated**: 2025-09-24
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
