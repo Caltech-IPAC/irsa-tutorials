@@ -1,5 +1,2 @@
-sphinx
-# To pick up newest scroller and dark-mode features
-myst-nb>=1.3
-sphinx-book-theme
-sphinx-copybutton
+# We need JB2 here, the stable release is not yet available
+jupyter-book>=2.0.0b0
