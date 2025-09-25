@@ -8,14 +8,6 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - node-cache-v1
-
-      - restore_cache:
-          keys:
-            - pip-cache-{{ checksum "site_requirements.txt" }}
-
       - run:
           name: Install Node.js
           command: |
@@ -32,11 +24,6 @@ jobs:
           command: |
             python -m pip install --upgrade pip tox
 
-      - save_cache:
-          key: node-cache-v1
-          paths:
-            - node_modules
-
       - run:
           name: Build documentation
           no_output_timeout: 60m
@@ -48,10 +35,6 @@ jobs:
             export OMP_NUM_THREADS=1
             python -m tox -e py312-buildhtml
 
-      - save_cache:
-          key: pip-cache-{{ checksum "site_requirements.txt" }}
-          paths:
-            - ~/.cache/pip
 
       - store_artifacts:
           path: _build/html
