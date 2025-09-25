@@ -549,9 +549,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
@@ -576,32 +574,7 @@ If you have questions about it, please contact the <a class="reference external"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid.tileid_association_q1&#39;: &#39;Euclid Q1 TILEID to Observation ID Association Table&#39;,
- &#39;euclid.objectid_spectrafile_association_q1&#39;: &#39;Euclid Q1 Object ID to Spectral File Association Table&#39;,
- &#39;euclid.observation_euclid_q1&#39;: &#39;Euclid Q1 CAOM Observation Table&#39;,
- &#39;euclid.plane_euclid_q1&#39;: &#39;Euclid Q1 CAOM Plane Table&#39;,
- &#39;euclid.artifact_euclid_q1&#39;: &#39;Euclid Q1 CAOM Artifact Table&#39;,
- &#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;,
- &#39;euclid_q1_mer_morphology&#39;: &#39;Euclid Q1 MER Morphology&#39;,
- &#39;euclid_q1_mer_cutouts&#39;: &#39;Euclid Q1 MER Cutouts&#39;,
- &#39;euclid_q1_phz_photo_z&#39;: &#39;Euclid Q1 PHZ Photo-z Catalog&#39;,
- &#39;euclid_q1_phz_star_sed&#39;: &#39;Euclid Q1 PHZ Star SED Catalog&#39;,
- &#39;euclid_q1_phz_galaxy_sed&#39;: &#39;Euclid Q1 PHZ Galaxy SED Catalog&#39;,
- &#39;euclid_q1_phz_classification&#39;: &#39;Euclid Q1 PHZ Classification Catalog&#39;,
- &#39;euclid_q1_phz_qso_physical_parameters&#39;: &#39;Euclid Q1 PHZ QSO Physical Parameters Catalog&#39;,
- &#39;euclid_q1_phz_nir_physical_parameters&#39;: &#39;Euclid Q1 PHZ NIR Physical Parameters Catalog&#39;,
- &#39;euclid_q1_phz_star_template&#39;: &#39;Euclid Q1 PHZ Star Template Catalog&#39;,
- &#39;euclid_q1_spectro_zcatalog_spe_quality&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Quality&#39;,
- &#39;euclid_q1_spectro_zcatalog_spe_classification&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Classification&#39;,
- &#39;euclid_q1_spectro_zcatalog_spe_galaxy_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Galaxy Candidates&#39;,
- &#39;euclid_q1_spectro_zcatalog_spe_star_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - Star Candidates&#39;,
- &#39;euclid_q1_spectro_zcatalog_spe_qso_candidates&#39;: &#39;Euclid Q1 SPE Redshift Catalog - QSO Candidates&#39;,
- &#39;euclid_q1_spe_lines_line_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Spectral Lines&#39;,
- &#39;euclid_q1_spe_lines_continuum_features&#39;: &#39;Euclid Q1 SPE Lines Catalog - Continuum Features&#39;,
- &#39;euclid_q1_spe_lines_atomic_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Atomic Indices&#39;,
- &#39;euclid_q1_spe_lines_molecular_indices&#39;: &#39;Euclid Q1 SPE Lines Catalog - Molecular Indices&#39;,
- &#39;euclid_q1_spectro_model_catalog_spe_lines_catalog&#39;: &#39;Euclid Q1 SPE Models Catalog - Lines&#39;,
- &#39;euclid_q1_spectro_model_catalog_spe_star_models&#39;: &#39;Euclid Q1 SPE Star Models Catalog&#39;}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;euclid_q1_mer_catalogue&#39;: &#39;Euclid Q1 MER Catalog&#39;}
 </pre></div>
 </div>
 </div>
@@ -637,13 +610,13 @@ If you have questions about it, please contact the <a class="reference external"
 <p>Pull out the file name from the <code class="docutils literal notranslate"><span class="pre">result</span></code> table:</p>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_uri</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">Irsa</span><span class="o">.</span><span class="n">tap_url</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">file_uri</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://irsa.ipac.caltech.edu/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">spectrum_path</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/ibe/data/euclid/q1/SIR/102160608/EUC_SIR_W-COMBSPEC_102160608_2024-11-05T16:42:00.741819Z.fits&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://irsa.ipac.caltech.edu/api/spectrumdm/convert/euclid/q1/SIR/102160608/EUC_SIR_W-COMBSPEC_102160608_2024-11-05T16:42:00.741819Z.fits?dataset_id=euclid_combspec&amp;hdu=321&#39;
 </pre></div>
 </div>
 </div>
@@ -651,29 +624,21 @@ If you have questions about it, please contact the <a class="reference external"
 </section>
 <section id="read-in-the-spectrum-for-only-our-specific-object">
 <h2>3. Read in the spectrum for only our specific object<a class="headerlink" href="#read-in-the-spectrum-for-only-our-specific-object" title="Link to this heading">#</a></h2>
-<p>Currently IRSA has the spectra stored in very large files containing multiple (14220) extensions with spectra of many targets within one tile. You can choose to read in the big file below to see what it looks like (takes a few mins to load) or skip this step and just read in the specific extension we want for the 1D spectra (recommended).</p>
+<p><code class="docutils literal notranslate"><span class="pre">spectrum_path</span></code> is a url that will return a VOTable containing the spectrum of our object.</p>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hdul = fits.open(file_uri)</span>
-<span class="c1"># hdul.info()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Open the large FITS file without loading it entirely into memory, pulling out just the extension we want for the 1D spectra of our object</p>
-<div class="cell config_scroll_outputs docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdul</span><span class="p">:</span>
-    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hdul</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span>
-
-    <span class="n">spec_header</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;hdu&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">header</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">QTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">spectrum_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
-WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
-WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Unit &#39;Number&#39; not supported by the FITS standard.  If this is meant to be a custom unit, define it with &#39;u.def_unit&#39;. To have it recognized inside a file reader or other code, enable it with &#39;u.add_enabled_units&#39;. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: UnitsWarning: The unit &#39;Angstrom&#39; has been deprecated in the VOUnit standard. Suggested: 0.1nm. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;erg&#39; has been deprecated in the VOUnit standard. Suggested: cm**2.g.s**-2. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;Angstrom&#39; has been deprecated in the VOUnit standard. Suggested: 0.1nm. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;erg&#39; has been deprecated in the VOUnit standard. Suggested: cm**2.g.s**-2. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;Angstrom&#39; has been deprecated in the VOUnit standard. Suggested: 0.1nm. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;erg&#39; has been deprecated in the VOUnit standard. Suggested: cm**2.g.s**-2. [astropy.units.format.vounit]
+WARNING: UnitsWarning: The unit &#39;Angstrom&#39; has been deprecated in the VOUnit standard. Suggested: 0.1nm. [astropy.units.format.vounit]
 </pre></div>
 </div>
 </div>
@@ -686,82 +651,37 @@ WARNING: UnitsWarning: &#39;Number&#39; did not parse as fits unit: At col 0, Un
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><i>QTable length=531</i>
-<table id="table139687179468112" class="table-striped table-bordered table-condensed">
-<thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th></tr></thead>
-<thead><tr><th>Angstrom</th><th>erg / (Angstrom s cm2)</th><th>Number</th><th>Number</th><th>erg2 / (Angstrom2 s2 cm4)</th><th>Number</th></tr></thead>
-<thead><tr><th>float32</th><th>float32</th><th>float64</th><th>float32</th><th>float32</th><th>float64</th></tr></thead>
-<tr><td>11900.0</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>11913.400390625</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>11926.7998046875</td><td>0.0</td><td>1.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>11940.2001953125</td><td>-0.42825955152511597</td><td>64.0</td><td>0.924927830696106</td><td>0.05231768637895584</td><td>2.0</td></tr>
-<tr><td>11953.599609375</td><td>-0.019433781504631042</td><td>66.0</td><td>0.8561765551567078</td><td>0.010498150251805782</td><td>2.0</td></tr>
-<tr><td>11967.0</td><td>0.02915639616549015</td><td>64.0</td><td>0.8876305818557739</td><td>0.003435363294556737</td><td>4.0</td></tr>
-<tr><td>11980.400390625</td><td>0.08275385200977325</td><td>80.0</td><td>0.0</td><td>0.0017151220235973597</td><td>4.0</td></tr>
-<tr><td>11993.7998046875</td><td>0.018765779212117195</td><td>64.0</td><td>0.8546596765518188</td><td>0.0009618347976356745</td><td>4.0</td></tr>
-<tr><td>12007.2001953125</td><td>0.009108440019190311</td><td>64.0</td><td>0.8887824416160583</td><td>0.0005876092473044991</td><td>4.0</td></tr>
-<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-<tr><td>18894.80078125</td><td>0.004414212889969349</td><td>64.0</td><td>0.9155963659286499</td><td>0.0002704685612116009</td><td>4.0</td></tr>
-<tr><td>18908.19921875</td><td>-0.034835416823625565</td><td>64.0</td><td>0.738968014717102</td><td>0.0005062822601757944</td><td>3.0</td></tr>
-<tr><td>18921.599609375</td><td>0.002581549109891057</td><td>66.0</td><td>0.8868578672409058</td><td>0.0006160042248666286</td><td>4.0</td></tr>
-<tr><td>18935.0</td><td>-0.03595489263534546</td><td>66.0</td><td>0.9000127911567688</td><td>0.0009402198484167457</td><td>4.0</td></tr>
-<tr><td>18948.400390625</td><td>-0.0484054833650589</td><td>64.0</td><td>0.9134283065795898</td><td>0.001895991968922317</td><td>4.0</td></tr>
-<tr><td>18961.80078125</td><td>-0.12392819672822952</td><td>64.0</td><td>0.922426164150238</td><td>0.0031691163312643766</td><td>3.0</td></tr>
-<tr><td>18975.19921875</td><td>-0.08269069343805313</td><td>64.0</td><td>0.8407320976257324</td><td>0.005587479565292597</td><td>3.0</td></tr>
-<tr><td>18988.599609375</td><td>-0.14132308959960938</td><td>66.0</td><td>0.7666888236999512</td><td>0.0100048603489995</td><td>3.0</td></tr>
-<tr><td>19002.0</td><td>-0.33820343017578125</td><td>66.0</td><td>0.809532642364502</td><td>0.01680051162838936</td><td>4.0</td></tr>
+<table id="table140652789741264" class="table-striped table-bordered table-condensed">
+<thead><tr><th>WAVELENGTH</th><th>SIGNAL</th><th>MASK</th><th>QUALITY</th><th>VAR</th><th>NDITH</th><th>UNCERTAINTY</th></tr></thead>
+<thead><tr><th>Angstrom</th><th>1e-16 erg / (Angstrom s cm2)</th><th></th><th></th><th>1e-32 erg2 / (Angstrom2 s2 cm4)</th><th></th><th>1e-16 erg / (Angstrom s cm2)</th></tr></thead>
+<thead><tr><th>float32</th><th>float32</th><th>int32</th><th>float32</th><th>float32</th><th>int32</th><th>float32</th></tr></thead>
+<tr><td>11900.0</td><td>0.0</td><td>1</td><td>0.0</td><td>0.0</td><td>0</td><td>0.0</td></tr>
+<tr><td>11913.400390625</td><td>0.0</td><td>1</td><td>0.0</td><td>0.0</td><td>0</td><td>0.0</td></tr>
+<tr><td>11926.7998046875</td><td>0.0</td><td>1</td><td>0.0</td><td>0.0</td><td>0</td><td>0.0</td></tr>
+<tr><td>11940.2001953125</td><td>-0.42825955152511597</td><td>64</td><td>0.92492783</td><td>0.05231768637895584</td><td>2</td><td>0.22873060405254364</td></tr>
+<tr><td>11953.599609375</td><td>-0.019433781504631042</td><td>66</td><td>0.85617656</td><td>0.010498150251805782</td><td>2</td><td>0.10246048122644424</td></tr>
+<tr><td>11967.0</td><td>0.02915639616549015</td><td>64</td><td>0.8876306</td><td>0.003435363294556737</td><td>4</td><td>0.058611974120140076</td></tr>
+<tr><td>11980.400390625</td><td>0.08275385200977325</td><td>80</td><td>0.0</td><td>0.0017151220235973597</td><td>4</td><td>0.04141402989625931</td></tr>
+<tr><td>11993.7998046875</td><td>0.018765779212117195</td><td>64</td><td>0.8546597</td><td>0.0009618347976356745</td><td>4</td><td>0.03101346082985401</td></tr>
+<tr><td>12007.2001953125</td><td>0.009108440019190311</td><td>64</td><td>0.88878244</td><td>0.0005876092473044991</td><td>4</td><td>0.024240652099251747</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>18894.80078125</td><td>0.004414212889969349</td><td>64</td><td>0.91559637</td><td>0.0002704685612116009</td><td>4</td><td>0.016445929184556007</td></tr>
+<tr><td>18908.19921875</td><td>-0.034835416823625565</td><td>64</td><td>0.738968</td><td>0.0005062822601757944</td><td>3</td><td>0.022500716149806976</td></tr>
+<tr><td>18921.599609375</td><td>0.002581549109891057</td><td>66</td><td>0.88685787</td><td>0.0006160042248666286</td><td>4</td><td>0.024819431826472282</td></tr>
+<tr><td>18935.0</td><td>-0.03595489263534546</td><td>66</td><td>0.9000128</td><td>0.0009402198484167457</td><td>4</td><td>0.030663004145026207</td></tr>
+<tr><td>18948.400390625</td><td>-0.0484054833650589</td><td>64</td><td>0.9134283</td><td>0.001895991968922317</td><td>4</td><td>0.04354298859834671</td></tr>
+<tr><td>18961.80078125</td><td>-0.12392819672822952</td><td>64</td><td>0.92242616</td><td>0.0031691163312643766</td><td>3</td><td>0.05629490315914154</td></tr>
+<tr><td>18975.19921875</td><td>-0.08269069343805313</td><td>64</td><td>0.8407321</td><td>0.005587479565292597</td><td>3</td><td>0.07474944740533829</td></tr>
+<tr><td>18988.599609375</td><td>-0.14132308959960938</td><td>66</td><td>0.7666888</td><td>0.0100048603489995</td><td>3</td><td>0.10002429783344269</td></tr>
+<tr><td>19002.0</td><td>-0.33820343017578125</td><td>66</td><td>0.80953264</td><td>0.01680051162838936</td><td>4</td><td>0.12961678206920624</td></tr>
 </table></div></div></div>
-</div>
-<div class="cell config_scroll_outputs docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spec_header</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>XTENSION= &#39;BINTABLE&#39;           / binary table extension                         
-BITPIX  =                    8 / 8-bit bytes                                    
-NAXIS   =                    2 / 2-dimensional binary table                     
-NAXIS1  =                   22 / width of table in bytes                        
-NAXIS2  =                  531 / number of rows in table                        
-PCOUNT  =                    0 / size of special data area                      
-GCOUNT  =                    1 / one data group (required keyword)              
-TFIELDS =                    6 / number of fields in each row                   
-TTYPE1  = &#39;WAVELENGTH&#39;         / label for field   1                            
-TFORM1  = &#39;1E      &#39;           / data format of field: 4-byte REAL              
-TUNIT1  = &#39;Angstrom&#39;           / physical unit of field                         
-TTYPE2  = &#39;SIGNAL  &#39;           / label for field   2                            
-TFORM2  = &#39;1E      &#39;           / data format of field: 4-byte REAL              
-TUNIT2  = &#39;erg/s/cm2/Angstrom&#39; / physical unit of field                         
-EXTNAME = &#39;94_COMBINED1D_SIGNAL&#39; / name of this binary table extension          
-WMIN    =               11900. / [Angstrom] Minimum wavelength of the binning   
-BINWIDTH=                 13.4 / [Angstrom] Wavelength bin width                
-BINCOUNT=                  531 / Wavelength bin count                           
-TTYPE3  = &#39;MASK    &#39;           / label for field                                
-TFORM3  = &#39;1J      &#39;           / format of field                                
-TUNIT3  = &#39;Number  &#39;           / physical unit of field                         
-TTYPE4  = &#39;QUALITY &#39;           / label for field                                
-TFORM4  = &#39;1E      &#39;           / format of field                                
-TUNIT4  = &#39;Number  &#39;           / physical unit of field                         
-TTYPE5  = &#39;VAR     &#39;           / label for field                                
-TFORM5  = &#39;1E      &#39;           / format of field                                
-TUNIT5  = &#39;erg2/s2/cm4/Angstrom2&#39; / physical unit of field                      
-TTYPE6  = &#39;NDITH   &#39;           / label for field                                
-TFORM6  = &#39;1I      &#39;           / format of field                                
-TUNIT6  = &#39;Number  &#39;           / physical unit of field                         
-FSCALE  =              1.0E-16 / Scaling factor                                 
-EXPTIME =             2198.569 / Exposure time                                  
-LSF_SIG =             20.28061 / [Angstrom] Std dev of the Gaussian LSF model   
-EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_THUMB,OPT_
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="plot-the-image-of-the-extracted-spectrum">
 <h2>4. Plot the image of the extracted spectrum<a class="headerlink" href="#plot-the-image-of-the-extracted-spectrum" title="Link to this heading">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>As we use astropy.visualization’s <code class="docutils literal notranslate"><span class="pre">quantity_support</span></code>, matplotlib automatically picks up the axis units from the quantitites we plot.</p>
+<p>As we use astropy.visualization’s <code class="docutils literal notranslate"><span class="pre">quantity_support</span></code>, matplotlib automatically picks up the axis units from the quantities we plot.</p>
 </div>
 <div class="cell config_scroll_outputs docutils container">
 <div class="cell_input docutils container">
@@ -770,7 +690,7 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7f0b72112ad0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;astropy.visualization.units.quantity_support.&lt;locals&gt;.MplQuantityConverter at 0x7fec47719e90&gt;
 </pre></div>
 </div>
 </div>
@@ -779,17 +699,10 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <p class="admonition-title">Note</p>
 <p>The 1D combined spectra table contains 6 columns, below are a few highlights:</p>
 <ul class="simple">
-<li><p>WAVELENGTH is in Angstroms by default</p></li>
-<li><p>SIGNAL is the flux and should be multiplied by the FSCALE factor in the header</p></li>
+<li><p>WAVELENGTH is in Angstroms by default.</p></li>
+<li><p>SIGNAL is the flux. The values are scaled and the scaling factor is included in the column’s units. This value corresponds to the <code class="docutils literal notranslate"><span class="pre">'FSCALE'</span></code> entry in the HDU header of the original FITS file.</p></li>
 <li><p>MASK values can be used to determine which flux bins to discard. MASK = odd and MASK &gt;=64 means the flux bins not be used.</p></li>
 </ul>
-</div>
-<div class="cell config_scroll_outputs docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signal_scaled</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">spec_header</span><span class="p">[</span><span class="s1">&#39;FSCALE&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>We investigate the MASK column to see which flux bins are recommended to keep vs “Do Not Use”</p>
 <div class="cell config_scroll_outputs docutils container">
@@ -812,12 +725,12 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;MASK&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">signal_scaled</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spectrum&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="o">~</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">signal_scaled</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Do not use&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;VAR&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">spec_header</span><span class="p">[</span><span class="s1">&#39;FSCALE&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">micron</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="o">~</span><span class="n">bad_mask</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;SIGNAL&#39;</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Do not use&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;WAVELENGTH&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s1">&#39;VAR&#39;</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Error&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15E-16</span><span class="p">,</span> <span class="mf">0.25E-16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Object ID </span><span class="si">{</span><span class="n">obj_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -826,14 +739,14 @@ EXT_PROF= &#39;NONE    &#39;           / 1D extraction profile used (NONE,OPT_TH
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Object ID 2689918641685825137&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/c2668be81500979bcb5a5fc6c002f4d6d1d7aa53e67bc2990e6ccde0e3ff0dbf.png" src="../../_images/c2668be81500979bcb5a5fc6c002f4d6d1d7aa53e67bc2990e6ccde0e3ff0dbf.png" />
+<img alt="../../_images/401b555e8a3109af581e6b701a09c5c881df98149c34dfb25ab2a503ab6ac2aa.png" src="../../_images/401b555e8a3109af581e6b701a09c5c881df98149c34dfb25ab2a503ab6ac2aa.png" />
 </div>
 </div>
 </section>
 <section id="about-this-notebook">
 <h2>About this Notebook<a class="headerlink" href="#about-this-notebook" title="Link to this heading">#</a></h2>
-<p><strong>Author</strong>: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai</p>
-<p><strong>Updated</strong>: 2025-03-31</p>
+<p><strong>Author</strong>: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen</p>
+<p><strong>Updated</strong>: 2025-09-23</p>
 <p><strong>Contact:</strong> <a class="reference external" href="https://irsa.ipac.caltech.edu/docs/help_desk.html">the IRSA Helpdesk</a> with questions or reporting problems.</p>
 </section>
 </section>

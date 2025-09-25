@@ -58,9 +58,6 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```
 
 ```{code-cell} ipython3
-import re
-import urllib
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -159,7 +156,7 @@ We specify the following conditions on our search:
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 5
 - We want to detect H-alpha.
 - We choose in which tileID to search, usign the tileID from the first notebook.
-- Choose spectroscopic redshift (spe_z) beween 1.4 and 1.6 and spe_z_prob greater than 0.999
+- Choose spectroscopic redshift (spe_z) between 1.4 and 1.6 and spe_z_prob greater than 0.999
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
 - Join the lines and galaxy candidates tables on object_id and spe_rank
 
@@ -208,23 +205,19 @@ result_table2 = Irsa.query_tap(adql_object).to_qtable()
 
 ### The following steps to read in the spectrum follows the 3_Euclid_intro_1D_spectra notebook.
 
-This involves reading in the spectrum without readin in the full FITS file, just pulling the extension we want.
-
 ```{code-cell} ipython3
-file_uri = urllib.parse.urljoin(Irsa.tap_url, result_table2['uri'][0])
-file_uri
+spectrum_path = f"https://irsa.ipac.caltech.edu/{result_table2['path'][0]}"
+spectrum_path
 ```
 
 ```{code-cell} ipython3
-with fits.open(file_uri) as hdul:
-    spectrum = QTable.read(hdul[result_table2['hdu'][0]], format='fits')
-    spec_header = hdul[result_table2['hdu'][0]].header
+spectrum = QTable.read(spectrum_path)
 ```
 
 ### Now the data are read in, plot the spectrum with the H-alpha line labeled
 
 ```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantitites we plot.
+As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
 ```
 
 ```{code-cell} ipython3
@@ -248,8 +241,8 @@ plt.title(f'Object ID {obj_id}')
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen
 
-**Updated**: 2025-03-31
+**Updated**: 2025-09-23
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
