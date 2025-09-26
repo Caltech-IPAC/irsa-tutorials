@@ -1,0 +1,301 @@
+ra                              Right ascension, lensed
+dec                             Declination, lensed
+ra_true                         Right ascension, not lensed
+dec_true                        Declination, not lensed
+redshift                        Cosmological redshift with line-of-sight motion
+redshift_true                   Cosmological redshift
+mag_u_lsst                      Apparent magnitude, lensed, in 'u' with LSST
+mag_g_lsst                      Apparent magnitude, lensed, in 'g' with LSST
+mag_r_lsst                      Apparent magnitude, lensed, in 'r' with LSST
+mag_i_lsst                      Apparent magnitude, lensed, in 'i' with LSST
+mag_z_lsst                      Apparent magnitude, lensed, in 'z' with LSST
+mag_y_lsst                      Apparent magnitude, lensed, in 'y' with LSST
+mag_u_sdss                      Apparent magnitude, lensed, in 'u' with SDSS
+mag_g_sdss                      Apparent magnitude, lensed, in 'g' with SDSS
+mag_r_sdss                      Apparent magnitude, lensed, in 'r' with SDSS
+mag_i_sdss                      Apparent magnitude, lensed, in 'i' with SDSS
+mag_z_sdss                      Apparent magnitude, lensed, in 'z' with SDSS
+mag_true_u_lsst                 Apparent magnitude, not lensed, in 'u' with LSST
+mag_true_g_lsst                 Apparent magnitude, not lensed, in 'g' with LSST
+mag_true_r_lsst                 Apparent magnitude, not lensed, in 'r' with LSST
+mag_true_i_lsst                 Apparent magnitude, not lensed, in 'i' with LSST
+mag_true_z_lsst                 Apparent magnitude, not lensed, in 'z' with LSST
+mag_true_y_lsst                 Apparent magnitude, not lensed, in 'y' with LSST
+mag_true_u_sdss                 Apparent magnitude, not lensed, in 'u' with SDSS
+mag_true_g_sdss                 Apparent magnitude, not lensed, in 'g' with SDSS
+mag_true_r_sdss                 Apparent magnitude, not lensed, in 'r' with SDSS
+mag_true_i_sdss                 Apparent magnitude, not lensed, in 'i' with SDSS
+mag_true_z_sdss                 Apparent magnitude, not lensed, in 'z' with SDSS
+mag_true_u_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'u' with LSST
+mag_true_g_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'g' with LSST
+mag_true_r_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'r' with LSST
+mag_true_i_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'i' with LSST
+mag_true_z_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'z' with LSST
+mag_true_y_lsst_z0              Rest-frame absolute magnitude, not lensed, in 'y' with LSST
+mag_true_u_sdss_z0              Rest-frame absolute magnitude, not lensed, in 'u' with SDSS
+mag_true_g_sdss_z0              Rest-frame absolute magnitude, not lensed, in 'g' with SDSS
+mag_true_r_sdss_z0              Rest-frame absolute magnitude, not lensed, in 'r' with SDSS
+mag_true_i_sdss_z0              Rest-frame absolute magnitude, not lensed, in 'i' with SDSS
+mag_true_z_sdss_z0              Rest-frame absolute magnitude, not lensed, in 'z' with SDSS
+mag_u_lsst_no_ext               Apparent magnitude, lensed, in 'u' with LSST without dust extinction in the host galaxy
+mag_g_lsst_no_ext               Apparent magnitude, lensed, in 'g' with LSST without dust extinction in the host galaxy
+mag_r_lsst_no_ext               Apparent magnitude, lensed, in 'r' with LSST without dust extinction in the host galaxy
+mag_i_lsst_no_ext               Apparent magnitude, lensed, in 'i' with LSST without dust extinction in the host galaxy
+mag_z_lsst_no_ext               Apparent magnitude, lensed, in 'z' with LSST without dust extinction in the host galaxy
+mag_y_lsst_no_ext               Apparent magnitude, lensed, in 'y' with LSST without dust extinction in the host galaxy
+mag_u_sdss_no_ext               Apparent magnitude, lensed, in 'u' with SDSS without dust extinction in the host galaxy
+mag_g_sdss_no_ext               Apparent magnitude, lensed, in 'g' with SDSS without dust extinction in the host galaxy
+mag_r_sdss_no_ext               Apparent magnitude, lensed, in 'r' with SDSS without dust extinction in the host galaxy
+mag_i_sdss_no_ext               Apparent magnitude, lensed, in 'i' with SDSS without dust extinction in the host galaxy
+mag_z_sdss_no_ext               Apparent magnitude, lensed, in 'z' with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_no_ext          Apparent magnitude, not lensed, in 'u' with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_no_ext          Apparent magnitude, not lensed, in 'g' with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_no_ext          Apparent magnitude, not lensed, in 'r' with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_no_ext          Apparent magnitude, not lensed, in 'i' with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_no_ext          Apparent magnitude, not lensed, in 'z' with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_no_ext          Apparent magnitude, not lensed, in 'y' with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_no_ext          Apparent magnitude, not lensed, in 'u' with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_no_ext          Apparent magnitude, not lensed, in 'g' with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_no_ext          Apparent magnitude, not lensed, in 'r' with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_no_ext          Apparent magnitude, not lensed, in 'i' with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_no_ext          Apparent magnitude, not lensed, in 'z' with SDSS without dust extinction in the host galaxy
+mag_true_u_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'u' with LSST without dust extinction in the host galaxy
+mag_true_g_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'g' with LSST without dust extinction in the host galaxy
+mag_true_r_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'r' with LSST without dust extinction in the host galaxy
+mag_true_i_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'i' with LSST without dust extinction in the host galaxy
+mag_true_z_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'z' with LSST without dust extinction in the host galaxy
+mag_true_y_lsst_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'y' with LSST without dust extinction in the host galaxy
+mag_true_u_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'u' with SDSS without dust extinction in the host galaxy
+mag_true_g_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'g' with SDSS without dust extinction in the host galaxy
+mag_true_r_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'r' with SDSS without dust extinction in the host galaxy
+mag_true_i_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'i' with SDSS without dust extinction in the host galaxy
+mag_true_z_sdss_z0_no_ext       Rest-frame absolute magnitude, not lensed, in 'z' with SDSS without dust extinction in the host galaxy
+sersic_disk                     Sersic index of disk light profile
+sersic_bulge                    Sersic index of bulge light profile
+a_v                             Extinction in V-band, for galaxy light profile
+a_v_disk                        Extinction in V-band, for disk light profile
+a_v_bulge                       Extinction in V-band, for bulge light profile
+r_v                             Ratio of total to selective extinction in B and V bands, for galaxy light profile
+r_v_disk                        Ratio of total to selective extinction in B and V bands, for disk light profile
+r_v_bulge                       Ratio of total to selective extinction in B and V bands, for bulge light profile
+size_true                       Galaxy half-light radius (of major axis), not lensed
+size_minor_true                 Galaxy half-light radius (of minor axis), not lensed
+size_disk_true                  Disk half-light radius (of major axis), not lensed
+size_minor_disk_true            Disk half-light radius (of minor axis), not lensed
+size_bulge_true                 Bulge half-light radius (of major axis), not lensed
+size_minor_bulge_true           Bulge half-light radius (of minor axis), not lensed
+position_angle_true             Position angle (arctan(E2/E1)), for galaxy, not lensed
+ellipticity_true                Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for galaxy, not lensed, where q = size_minor_true/size_true
+ellipticity_1_true              Ellipticity component 1, for galaxy, not lensed
+ellipticity_2_true              Ellipticity component 2, for galaxy, not lensed
+ellipticity_disk_true           Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for disk, not lensed, where q = size_minor_disk_true/size_disk_true
+ellipticity_1_disk_true         Ellipticity component 1, for disk, not lensed
+ellipticity_2_disk_true         Ellipticity component 2, for disk, not lensed
+ellipticity_bulge_true          Ellipticity (= sqrt(E1^2+E2^2) = (1-q)/(1+q)), for bulge, not lensed, where q = size_minor_bulge_true/size_bulge_true
+ellipticity_1_bulge_true        Ellipticity component 1, for bulge, not lensed
+ellipticity_2_bulge_true        Ellipticity component 2, for bulge, not lensed
+shear_1                         Shear (gamma) component 1 in treecorr/GalSim convention
+shear_2                         Shear (gamma) component 2 in treecorr/GalSim convention
+shear_2_phosim                  Shear (gamma) component 2 in PhoSim convention ( = -shear_2 )
+shear_2_treecorr                Shear (gamma) component 2 in treecorr/GalSim convention ( = shear_2 )
+convergence                     Convergence (kappa)
+magnification                   Magnification
+galaxy_id                       Unique integer identifier
+halo_id                         Unique ID of the main halo that contains the galaxy
+halo_mass                       Halo mass of the main halo that contains the galaxy
+stellar_mass                    Total stellar mass of the galaxy
+stellar_mass_disk               Stellar mass of the disk component
+stellar_mass_bulge              Stellar mass of the bulge component
+bulge_to_total_ratio_i          bulge-to-total luminosity ratio in 'i'
+is_central                      1 if the galaxy is the central galaxy of the main halo, 0 otherwise.
+position_x                      3D position (x coordinate)
+position_y                      3D position (y coordinate)
+position_z                      3D position (z coordinate)
+velocity_x                      3D velocity (x component)
+velocity_y                      3D velocity (y component)
+velocity_z                      3D velocity (z component)
+sed_1000_246                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1000 to 1246 in Angstroms
+sed_1246_306                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1246 to 1552 in Angstroms
+sed_1552_381                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1552 to 1933 in Angstroms
+sed_1933_474                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 1933 to 2407 in Angstroms
+sed_2407_591                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2407 to 2998 in Angstroms
+sed_2998_186                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 2998 to 3184 in Angstroms
+sed_3184_197                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3184 to 3381 in Angstroms
+sed_3381_209                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3381 to 3590 in Angstroms
+sed_3590_222                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3590 to 3812 in Angstroms
+sed_3812_236                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 3812 to 4048 in Angstroms
+sed_4048_251                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4048 to 4299 in Angstroms
+sed_4299_266                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4299 to 4565 in Angstroms
+sed_4565_283                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4565 to 4848 in Angstroms
+sed_4848_300                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 4848 to 5148 in Angstroms
+sed_5148_319                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5148 to 5467 in Angstroms
+sed_5467_339                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5467 to 5806 in Angstroms
+sed_5806_360                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 5806 to 6166 in Angstroms
+sed_6166_382                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6166 to 6548 in Angstroms
+sed_6548_406                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6548 to 6954 in Angstroms
+sed_6954_431                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 6954 to 7385 in Angstroms
+sed_7385_458                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7385 to 7843 in Angstroms
+sed_7843_486                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 7843 to 8329 in Angstroms
+sed_8329_517                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8329 to 8846 in Angstroms
+sed_8846_549                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 8846 to 9395 in Angstroms
+sed_9395_583                    Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9395 to 9978 in Angstroms
+sed_9978_1489                   Integrated, rest-frame, AB luminosity for a narrow tophat filter from 9978 to 11467 in Angstroms
+sed_11467_1710                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 11467 to 13177 in Angstroms
+sed_13177_1966                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 13177 to 15143 in Angstroms
+sed_15143_2259                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 15143 to 17402 in Angstroms
+sed_17402_2596                  Integrated, rest-frame, AB luminosity for a narrow tophat filter from 17402 to 19998 in Angstroms
+sed_1000_246_disk               Same as sed_1000_246 but for disk
+sed_1246_306_disk               Same as sed_1246_306 but for disk
+sed_1552_381_disk               Same as sed_1552_381 but for disk
+sed_1933_474_disk               Same as sed_1933_474 but for disk
+sed_2407_591_disk               Same as sed_2407_591 but for disk
+sed_2998_186_disk               Same as sed_2998_186 but for disk
+sed_3184_197_disk               Same as sed_3184_197 but for disk
+sed_3381_209_disk               Same as sed_3381_209 but for disk
+sed_3590_222_disk               Same as sed_3590_222 but for disk
+sed_3812_236_disk               Same as sed_3812_236 but for disk
+sed_4048_251_disk               Same as sed_4048_251 but for disk
+sed_4299_266_disk               Same as sed_4299_266 but for disk
+sed_4565_283_disk               Same as sed_4565_283 but for disk
+sed_4848_300_disk               Same as sed_4848_300 but for disk
+sed_5148_319_disk               Same as sed_5148_319 but for disk
+sed_5467_339_disk               Same as sed_5467_339 but for disk
+sed_5806_360_disk               Same as sed_5806_360 but for disk
+sed_6166_382_disk               Same as sed_6166_382 but for disk
+sed_6548_406_disk               Same as sed_6548_406 but for disk
+sed_6954_431_disk               Same as sed_6954_431 but for disk
+sed_7385_458_disk               Same as sed_7385_458 but for disk
+sed_7843_486_disk               Same as sed_7843_486 but for disk
+sed_8329_517_disk               Same as sed_8329_517 but for disk
+sed_8846_549_disk               Same as sed_8846_549 but for disk
+sed_9395_583_disk               Same as sed_9395_583 but for disk
+sed_9978_1489_disk              Same as sed_9978_1489 but for disk
+sed_11467_1710_disk             Same as sed_11467_1710 but for disk
+sed_13177_1966_disk             Same as sed_13177_1966 but for disk
+sed_15143_2259_disk             Same as sed_15143_2259 but for disk
+sed_17402_2596_disk             Same as sed_17402_2596 but for disk
+sed_1000_246_bulge              Same as sed_1000_246 but for bulge
+sed_1246_306_bulge              Same as sed_1246_306 but for bulge
+sed_1552_381_bulge              Same as sed_1552_381 but for bulge
+sed_1933_474_bulge              Same as sed_1933_474 but for bulge
+sed_2407_591_bulge              Same as sed_2407_591 but for bulge
+sed_2998_186_bulge              Same as sed_2998_186 but for bulge
+sed_3184_197_bulge              Same as sed_3184_197 but for bulge
+sed_3381_209_bulge              Same as sed_3381_209 but for bulge
+sed_3590_222_bulge              Same as sed_3590_222 but for bulge
+sed_3812_236_bulge              Same as sed_3812_236 but for bulge
+sed_4048_251_bulge              Same as sed_4048_251 but for bulge
+sed_4299_266_bulge              Same as sed_4299_266 but for bulge
+sed_4565_283_bulge              Same as sed_4565_283 but for bulge
+sed_4848_300_bulge              Same as sed_4848_300 but for bulge
+sed_5148_319_bulge              Same as sed_5148_319 but for bulge
+sed_5467_339_bulge              Same as sed_5467_339 but for bulge
+sed_5806_360_bulge              Same as sed_5806_360 but for bulge
+sed_6166_382_bulge              Same as sed_6166_382 but for bulge
+sed_6548_406_bulge              Same as sed_6548_406 but for bulge
+sed_6954_431_bulge              Same as sed_6954_431 but for bulge
+sed_7385_458_bulge              Same as sed_7385_458 but for bulge
+sed_7843_486_bulge              Same as sed_7843_486 but for bulge
+sed_8329_517_bulge              Same as sed_8329_517 but for bulge
+sed_8846_549_bulge              Same as sed_8846_549 but for bulge
+sed_9395_583_bulge              Same as sed_9395_583 but for bulge
+sed_9978_1489_bulge             Same as sed_9978_1489 but for bulge
+sed_11467_1710_bulge            Same as sed_11467_1710 but for bulge
+sed_13177_1966_bulge            Same as sed_13177_1966 but for bulge
+sed_15143_2259_bulge            Same as sed_15143_2259 but for bulge
+sed_17402_2596_bulge            Same as sed_17402_2596 but for bulge
+sed_1000_246_no_ext             Same as sed_1000_246 but without dust extinction in the host galaxy
+sed_1246_306_no_ext             Same as sed_1246_306 but without dust extinction in the host galaxy
+sed_1552_381_no_ext             Same as sed_1552_381 but without dust extinction in the host galaxy
+sed_1933_474_no_ext             Same as sed_1933_474 but without dust extinction in the host galaxy
+sed_2407_591_no_ext             Same as sed_2407_591 but without dust extinction in the host galaxy
+sed_2998_186_no_ext             Same as sed_2998_186 but without dust extinction in the host galaxy
+sed_3184_197_no_ext             Same as sed_3184_197 but without dust extinction in the host galaxy
+sed_3381_209_no_ext             Same as sed_3381_209 but without dust extinction in the host galaxy
+sed_3590_222_no_ext             Same as sed_3590_222 but without dust extinction in the host galaxy
+sed_3812_236_no_ext             Same as sed_3812_236 but without dust extinction in the host galaxy
+sed_4048_251_no_ext             Same as sed_4048_251 but without dust extinction in the host galaxy
+sed_4299_266_no_ext             Same as sed_4299_266 but without dust extinction in the host galaxy
+sed_4565_283_no_ext             Same as sed_4565_283 but without dust extinction in the host galaxy
+sed_4848_300_no_ext             Same as sed_4848_300 but without dust extinction in the host galaxy
+sed_5148_319_no_ext             Same as sed_5148_319 but without dust extinction in the host galaxy
+sed_5467_339_no_ext             Same as sed_5467_339 but without dust extinction in the host galaxy
+sed_5806_360_no_ext             Same as sed_5806_360 but without dust extinction in the host galaxy
+sed_6166_382_no_ext             Same as sed_6166_382 but without dust extinction in the host galaxy
+sed_6548_406_no_ext             Same as sed_6548_406 but without dust extinction in the host galaxy
+sed_6954_431_no_ext             Same as sed_6954_431 but without dust extinction in the host galaxy
+sed_7385_458_no_ext             Same as sed_7385_458 but without dust extinction in the host galaxy
+sed_7843_486_no_ext             Same as sed_7843_486 but without dust extinction in the host galaxy
+sed_8329_517_no_ext             Same as sed_8329_517 but without dust extinction in the host galaxy
+sed_8846_549_no_ext             Same as sed_8846_549 but without dust extinction in the host galaxy
+sed_9395_583_no_ext             Same as sed_9395_583 but without dust extinction in the host galaxy
+sed_9978_1489_no_ext            Same as sed_9978_1489 but without dust extinction in the host galaxy
+sed_11467_1710_no_ext           Same as sed_11467_1710 but without dust extinction in the host galaxy
+sed_13177_1966_no_ext           Same as sed_13177_1966 but without dust extinction in the host galaxy
+sed_15143_2259_no_ext           Same as sed_15143_2259 but without dust extinction in the host galaxy
+sed_17402_2596_no_ext           Same as sed_17402_2596 but without dust extinction in the host galaxy
+sed_1000_246_disk_no_ext        Same as sed_1000_246_no_ext but for disk
+sed_1246_306_disk_no_ext        Same as sed_1246_306_no_ext but for disk
+sed_1552_381_disk_no_ext        Same as sed_1552_381_no_ext but for disk
+sed_1933_474_disk_no_ext        Same as sed_1933_474_no_ext but for disk
+sed_2407_591_disk_no_ext        Same as sed_2407_591_no_ext but for disk
+sed_2998_186_disk_no_ext        Same as sed_2998_186_no_ext but for disk
+sed_3184_197_disk_no_ext        Same as sed_3184_197_no_ext but for disk
+sed_3381_209_disk_no_ext        Same as sed_3381_209_no_ext but for disk
+sed_3590_222_disk_no_ext        Same as sed_3590_222_no_ext but for disk
+sed_3812_236_disk_no_ext        Same as sed_3812_236_no_ext but for disk
+sed_4048_251_disk_no_ext        Same as sed_4048_251_no_ext but for disk
+sed_4299_266_disk_no_ext        Same as sed_4299_266_no_ext but for disk
+sed_4565_283_disk_no_ext        Same as sed_4565_283_no_ext but for disk
+sed_4848_300_disk_no_ext        Same as sed_4848_300_no_ext but for disk
+sed_5148_319_disk_no_ext        Same as sed_5148_319_no_ext but for disk
+sed_5467_339_disk_no_ext        Same as sed_5467_339_no_ext but for disk
+sed_5806_360_disk_no_ext        Same as sed_5806_360_no_ext but for disk
+sed_6166_382_disk_no_ext        Same as sed_6166_382_no_ext but for disk
+sed_6548_406_disk_no_ext        Same as sed_6548_406_no_ext but for disk
+sed_6954_431_disk_no_ext        Same as sed_6954_431_no_ext but for disk
+sed_7385_458_disk_no_ext        Same as sed_7385_458_no_ext but for disk
+sed_7843_486_disk_no_ext        Same as sed_7843_486_no_ext but for disk
+sed_8329_517_disk_no_ext        Same as sed_8329_517_no_ext but for disk
+sed_8846_549_disk_no_ext        Same as sed_8846_549_no_ext but for disk
+sed_9395_583_disk_no_ext        Same as sed_9395_583_no_ext but for disk
+sed_1000_246_bulge_no_ext       Same as sed_1000_246_no_ext but for bulge
+sed_1246_306_bulge_no_ext       Same as sed_1246_306_no_ext but for bulge
+sed_1552_381_bulge_no_ext       Same as sed_1552_381_no_ext but for bulge
+sed_1933_474_bulge_no_ext       Same as sed_1933_474_no_ext but for bulge
+sed_2407_591_bulge_no_ext       Same as sed_2407_591_no_ext but for bulge
+sed_2998_186_bulge_no_ext       Same as sed_2998_186_no_ext but for bulge
+sed_3184_197_bulge_no_ext       Same as sed_3184_197_no_ext but for bulge
+sed_3381_209_bulge_no_ext       Same as sed_3381_209_no_ext but for bulge
+sed_3590_222_bulge_no_ext       Same as sed_3590_222_no_ext but for bulge
+sed_3812_236_bulge_no_ext       Same as sed_3812_236_no_ext but for bulge
+sed_4048_251_bulge_no_ext       Same as sed_4048_251_no_ext but for bulge
+sed_4299_266_bulge_no_ext       Same as sed_4299_266_no_ext but for bulge
+sed_4565_283_bulge_no_ext       Same as sed_4565_283_no_ext but for bulge
+sed_4848_300_bulge_no_ext       Same as sed_4848_300_no_ext but for bulge
+sed_5148_319_bulge_no_ext       Same as sed_5148_319_no_ext but for bulge
+sed_5467_339_bulge_no_ext       Same as sed_5467_339_no_ext but for bulge
+sed_5806_360_bulge_no_ext       Same as sed_5806_360_no_ext but for bulge
+sed_6166_382_bulge_no_ext       Same as sed_6166_382_no_ext but for bulge
+sed_6548_406_bulge_no_ext       Same as sed_6548_406_no_ext but for bulge
+sed_6954_431_bulge_no_ext       Same as sed_6954_431_no_ext but for bulge
+sed_7385_458_bulge_no_ext       Same as sed_7385_458_no_ext but for bulge
+sed_7843_486_bulge_no_ext       Same as sed_7843_486_no_ext but for bulge
+sed_8329_517_bulge_no_ext       Same as sed_8329_517_no_ext but for bulge
+sed_8846_549_bulge_no_ext       Same as sed_8846_549_no_ext but for bulge
+sed_9395_583_bulge_no_ext       Same as sed_9395_583_no_ext but for bulge
+sed_9978_1489_disk_no_ext       Same as sed_9978_1489_no_ext but for disk
+sed_11467_1710_disk_no_ext      Same as sed_11467_1710_no_ext but for disk
+sed_13177_1966_disk_no_ext      Same as sed_13177_1966_no_ext but for disk
+sed_15143_2259_disk_no_ext      Same as sed_15143_2259_no_ext but for disk
+sed_17402_2596_disk_no_ext      Same as sed_17402_2596_no_ext but for disk
+sed_9978_1489_bulge_no_ext      Same as sed_9978_1489_no_ext but for bulge
+sed_11467_1710_bulge_no_ext     Same as sed_11467_1710_no_ext but for bulge
+sed_13177_1966_bulge_no_ext     Same as sed_13177_1966_no_ext but for bulge
+sed_15143_2259_bulge_no_ext     Same as sed_15143_2259_no_ext but for bulge
+sed_17402_2596_bulge_no_ext     Same as sed_17402_2596_no_ext but for bulge
+cntr                            None
+x                               Unit sphere (x,y,z) position x value
+y                               Unit sphere (x,y,z) position y value
+z                               Unit sphere (x,y,z) position z value
+htm20                           HTM spatial (x,y,z) index key
