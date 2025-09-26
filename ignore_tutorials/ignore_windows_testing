@@ -1,0 +1,2 @@
+# The way the notebooks use the multiprocessing module is known to not work on non-Linux
+tutorials/parallelize/Parallelize_Convolution

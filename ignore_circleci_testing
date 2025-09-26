@@ -1,9 +1,0 @@
-# ignored for now as excluding execution for these is a combination that passes JB2 building on CircleCI.
-tutorials/parallelize/Parallelize_Convolution
-tutorials/roman_simulations/roman_hlss_number_density.md
-tutorials/cosmodc2/cosmoDC2_TAP_access.md
-tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
-tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
-tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
-tutorials/cloud_access/euclid-cloud-access.md
-tutorials/cloud_access/cloud-access-intro.md
