@@ -1,1 +1,1 @@
-import{b as a}from"/build/_shared/chunk-KXDZNNUH.js";import"/build/_shared/chunk-J6FHCSRC.js";import"/build/_shared/chunk-2NH4LW52.js";export{a as unified};
+import{b as a}from"/irsa-tutorials/build/_shared/chunk-KXDZNNUH.js";import"/irsa-tutorials/build/_shared/chunk-J6FHCSRC.js";import"/irsa-tutorials/build/_shared/chunk-2NH4LW52.js";export{a as unified};

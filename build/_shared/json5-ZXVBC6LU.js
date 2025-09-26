@@ -1,1 +1,1 @@
-import{a}from"/build/_shared/chunk-FQEDH26A.js";import"/build/_shared/chunk-R66E6AZX.js";import"/build/_shared/chunk-2NH4LW52.js";export default a();
+import{a}from"/irsa-tutorials/build/_shared/chunk-FQEDH26A.js";import"/irsa-tutorials/build/_shared/chunk-R66E6AZX.js";import"/irsa-tutorials/build/_shared/chunk-2NH4LW52.js";export default a();
