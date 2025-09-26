@@ -1,46 +1,46 @@
 version: 2.1
 
-jobs:
 
+jobs:
   build-docs:
     docker:
       - image: cimg/python:3.12
-
     steps:
-      - attach_workspace:
-          at: ~/
-
       - checkout
 
       - run:
-          name: Install CI dependencies
-          command: python -m pip install --upgrade tox
-
-      - restore_cache:
-          keys:
-              - jupyter_ch
+          name: Install Node.js
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+            sudo apt-get install -y nodejs
 
       - run:
-          name: Build HTML rendering of notebooks
-          no_output_timeout: 30m
+          name: Install mystmd
           command: |
+            npm install mystmd
+
+      - run:
+          name: Install Python dependencies
+          command: |
+            python -m pip install --upgrade pip tox
+
+      - run:
+          name: Build documentation
+          no_output_timeout: 60m
+          environment:
+            # Ensure this is same as store_artifacts path below
+            DOCS_PATH: _build/html
+          command: |
+            export BASE_URL="/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/0/$DOCS_PATH"
+            export OMP_NUM_THREADS=1
             python -m tox -e py312-buildhtml
 
-      - save_cache:
-          key: jupyter_ch
-          paths:
-            - _build/.jupyter_cache
 
       - store_artifacts:
           path: _build/html
 
-      - persist_to_workspace:
-          root: _build
-          paths:
-            - html
-
 workflows:
   version: 2
-  default:
+  build-and-docs:
     jobs:
       - build-docs

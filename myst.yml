@@ -1,0 +1,19 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: IRSA Tutorials
+  subject: IRSA Tutorials
+  description: IRSA Python Notebook tutorials to demostrate accessing data served by the NASA/IPAC Infrared Science Archive (IRSA)
+  keywords: [astronomy]
+  authors: [IRSA Scientists and Developers]
+  github: https://github.com/Caltech-IPAC/irsa-tutorials/
+  settings:
+    output_matplotlib_strings: remove
+extends:
+  - toc.yml
+site:
+  template: book-theme
+  options:
+    favicon: _static/irsa-favicon.ico
+    logo: _static/irsa_logo.png
+    outline_maxdepth: 1

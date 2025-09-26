@@ -1,0 +1,59 @@
+version: 1
+project:
+  toc:
+    - title: IRSA Tutorials
+      file: index.md
+    - title: SPHEREx
+      children:
+        - file: tutorials/spherex/spherex_intro.md
+    - title: Euclid
+      children:
+        - title: Euclid Early Release Observations
+          children:
+            - file: tutorials/euclid_access/Euclid_ERO.md
+        - title: Euclid Quick Release 1
+          children:
+            - file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
+            - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
+            - file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
+            - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
+            - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+            - file: tutorials/cloud_access/euclid-cloud-access.md
+    - title: WISE
+      children:
+        - title: AllWISE
+          children:
+            - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+            - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+        - title: NEOWISE
+          children:
+            - file: tutorials/firefly/NEOWISE_light_curve_demo.md
+            - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+            - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+    - title: Spitzer
+      children:
+        - file: tutorials/irsa-sia-examples/siav2_seip.md
+    - title: 2MASS
+      children:
+        - file: tutorials/irsa-sia-examples/sia_2mass_allsky.md
+    - title: COSMOS
+      children:
+        - file: tutorials/irsa-sia-examples/sia_cosmos.md
+    - title: Simulated Data
+      children:
+        - title: Roman HLSS Galaxy Mock Catalog
+          children:
+            - file: tutorials/roman_simulations/roman_hlss_number_density.md
+        - title: OpenUniverse 2024
+          children:
+            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+            - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+        - title: CosmoDC2
+          children:
+            - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+    - title: Special Topics
+      children:
+        - file: tutorials/cloud_access/cloud-access-intro.md
+        - file: tutorials/firefly/SEDs_in_Firefly.md
+        - file: tutorials/parallelize/Parallelize_Convolution.md
