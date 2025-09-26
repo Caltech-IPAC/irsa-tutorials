@@ -32,9 +32,7 @@ project:
             - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
-        - title: Spitzer Enhanced Imaging Products (SEIP)
-          children:
-            - file: tutorials/irsa-sia-examples/siav2_seip.md
+        - file: tutorials/irsa-sia-examples/siav2_seip.md
     - title: 2MASS
       children:
         - file: tutorials/irsa-sia-examples/sia_2mass_allsky.md

@@ -11,12 +11,12 @@ kernelspec:
   name: python3
 ---
 
-An executed version of this notebook can be seen on
-[IRSA's website](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
+# Make Light Curves from NEOWISE Single-exposure Source Table
 
 +++
 
-# Make Light Curves from NEOWISE Single-exposure Source Table
+An executed version of this notebook can be seen on
+[IRSA's website](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html).
 
 +++
 

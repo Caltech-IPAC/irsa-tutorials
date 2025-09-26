@@ -11,14 +11,15 @@ kernelspec:
   name: python3
 ---
 
+# Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet
+
++++
+
 An executed version of this notebook can be seen on
 [IRSA's website](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-strategies.html).
 
 +++
 
-# Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet
-
-+++
 
 This notebook discusses strategies for working with the Apache Parquet version of the
 [NEOWISE](https://irsa.ipac.caltech.edu/Missions/wise.html) Single-exposure Source Table
