@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Access IRSA HATS collections using lsdb
+# Access HATS Collections Using LSDB: Euclid Q1 and ZTF DR23
 
 +++
 
@@ -247,12 +247,8 @@ We can also filter the schema DataFrame by name, unit, type, etc., to identify c
 For example, let's explore the columns that are part of the PHZ (photometric redshift) catalog to identify photometric redshifts and source types:
 
 ```{code-cell} ipython3
-euclid_schema_df[euclid_schema_df["name"].str.startswith("phz_")] # phz_ prefix is for PHZ catalog columns in this merged catalog
-```
-
-```{code-cell} ipython3
 euclid_schema_df[
-    euclid_schema_df["name"].str.startswith("phz_")
+    euclid_schema_df["name"].str.startswith("phz_") # phz_ prefix is for PHZ catalog columns in this merged catalog
     & euclid_schema_df["type"].str.contains("int") # to see flag type columns
 ]
 ```
@@ -322,21 +318,13 @@ ztf_schema_df = pq_schema_to_df(ztf_schema)
 ztf_schema_df
 ```
 
-```{code-cell} ipython3
-ztf_schema_df[ztf_schema_df["unit"].str.contains("mag")] # to identify magnitude quantities
-```
-
-You can explore the schema further to identify other columns of interest.
+You can filter the schema further by units, type, etc. to identify other columns of interest.
 It's also useful to go through the [ZTF DR23 release notes](https://irsa.ipac.caltech.edu/data/ZTF/docs/releases/ztf_release_notes_latest) and [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) at IRSA for more details on column selections and caveats.
 
 For this tutorial, the following columns are most relevant to us:
 
 ```{code-cell} ipython3
 ztf_columns = ztf_schema_df["name"].tolist()[:6]
-ztf_columns
-```
-
-```{code-cell} ipython3
 ztf_columns.extend([
     'fid', 'filtercode', 
     'ngoodobsrel',  
@@ -436,7 +424,9 @@ with Client(n_workers=get_nworkers(euclid_x_ztf),
 euclid_x_ztf_df
 ```
 
-[Optional] Let's purify the crossmatched catalog by analyzing the distance between matched sources and removing the matches that don't meet a quality cut on percentile.
+### 5.3 [Optional] Filter the crossmatched catalog
+
+Let's purify the crossmatched catalog by analyzing the distance between matched sources and removing the matches that don't meet a quality cut on percentile.
 We also keep the matches that are outside this cutoff but are still within the same 19th order HEALPix tile.
 
 ```{code-cell} ipython3
@@ -467,7 +457,7 @@ Going forward, we will use this purified crossmatched catalog `euclid_x_ztf_filt
 
 +++
 
-### 5.3 Identify objects of interest from the crossmatch
+### 5.4 Identify objects of interest from the crossmatch
 
 +++
 
@@ -573,32 +563,8 @@ magrms_threshold
 variable_galaxies = euclid_x_ztf_filtered_df.query(
     f"chisq_ztf >= {chisq_threshold} & magrms_ztf >= {magrms_threshold}"
     ).sort_values("chisq_ztf", ascending=False) # sort by significant variability
-variable_galaxies
 ```
 
-```{code-cell} ipython3
-plt.figure(figsize=(10, 6))
-all_redshifts = euclid_x_ztf_filtered_df["phz_phz_median_euclid"]
-bins = np.histogram_bin_edges(all_redshifts, bins=100)
-
-plt.hist(all_redshifts, bins=bins, label='Galaxies', histtype='step', alpha=0.8)
-plt.hist(
-        variable_galaxies["phz_phz_median_euclid"],
-        bins=bins,
-        label=f'Variable Galaxies \nwith RMS mag > 95% ({magrms_threshold:.6f})\nand Chi-sq > 95% ({chisq_threshold:.6f})',
-        histtype='step',
-        alpha=0.8
-    )
-
-plt.xlabel("Euclid redshift")
-plt.ylabel("Galaxy Count")
-plt.legend()
-plt.yscale("log")
-plt.xlim(0, 2.5)
-plt.show()
-```
-
-Most of the variable galaxies histogram is concentrated in the low redshift (z < 1) range, as expected from the hexbin density plots above.
 Let's inspect the top variable galaxies that we can use for plotting their light curves:
 
 ```{code-cell} ipython3
@@ -645,7 +611,7 @@ ztf_lcs
 ```
 
 As earlier, this creates a lazy catalog object with the partition(s) that contains our IDs.
-We can load the light curves data into a DataFrame by using the `compute()` method: 
+We can load the light curves data into a DataFrame by using the `compute()` method:
 
 ```{code-cell} ipython3
 # Uncomment following if ztf_lcs contain more than 1 partition
