@@ -50,20 +50,17 @@ The following packages must be installed to run this notebook. Comment out the f
 ## 4. Imports
 
 ```{code-cell} ipython3
-import time
 import re
+import time
+
+import astropy.units as u
+import matplotlib.pyplot as plt
 import numpy as np
 import pyvo
-
-import astropy
-from astropy.io import fits
-from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
+from astropy.io import fits
 from astropy.table import Table
-import astropy.units as u
-
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+from astropy.wcs import WCS
 ```
 
 ## 5. Get SPHEREx Cutout

@@ -42,16 +42,17 @@ The following packages must be installed to run this notebook. Comment out the f
 ## 3. Import modules
 
 ```{code-cell} ipython3
+import concurrent
+import time
+
+import astropy.units as u
+import matplotlib.pyplot as plt
 import numpy as np
+import pyvo
+from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.table import Table
 from astropy.wcs import WCS
-import astropy.units as u
-from astropy.coordinates import SkyCoord
-import pyvo
-import time
-import concurrent
-import matplotlib.pyplot as plt
 
 # Suppress logging temporarily to prevent astropy
 # from repeatedly printing out warning notices related to alternate WCSs
