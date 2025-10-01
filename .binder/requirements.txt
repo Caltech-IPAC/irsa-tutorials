@@ -13,6 +13,7 @@ hpgeom
 pandas>=1.5.2
 dask[distributed]
 lsdb>=0.6.4
+universal_pathlib<0.3
 psutil
 ray
 s3fs
