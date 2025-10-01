@@ -19,7 +19,7 @@ kernelspec:
 
 By the end of this tutorial, you will learn how to:
 
-- Use the `lsdb` library to access IRSA HATS collections from the cloud.
+- Use the `lsdb` library to access IRSA HATS Collections from the cloud.
 - Define spatial, column, and row filters to read only a portion of large HATS catalogs.
 - Crossmatch catalogs using `lsdb` and visualize the results.
 - Perform index searches on HATS catalogs using `lsdb`.
@@ -36,7 +36,7 @@ For more details on HATS collections, partitioning, and schema organization, see
 This notebook demonstrates how to access and analyze HATS collections using the [lsdb](https://docs.lsdb.io/en/latest/index.html) Python library, which makes it convenient to work with these large datasets.
 We will explore the following IRSA HATS collections in this tutorial:
 
-- Euclid Q1: MER (multi-wavelength mosaics) final catalog, photometric redshift catalogs, and spectroscopic catalogs joined on MER Object ID.
+- Euclid Q1 Merged Objects: 14 Euclid Q1 tables, including MER (multi-wavelength mosaics) final catalog, photometric redshift catalogs, and spectroscopic catalogs joined on MER Object ID.
 - ZTF DR23 Objects Table: catalog of PSF-fit photometry detections extracted from ZTF reference images, including "collapsed-lightcurve" metrics.
 - ZTF DR23 Lightcurves: catalog of PSF-fit photometry detections extracted from single-exposure images at the locations of Objects Table detections.
 
@@ -48,7 +48,7 @@ We will use lsdb to leverage HATS partitioning for performing fast spatial queri
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs "lsdb>=0.6.4" pyarrow pandas numpy astropy dask matplotlib
+# !pip install s3fs "lsdb>=0.6.4" pyarrow pandas numpy astropy dask matplotlib "universal_pathlib<0.3"
 ```
 
 ```{code-cell} ipython3
@@ -142,7 +142,7 @@ Few things to note here:
 
 - This catalog is opened [lazily](https://docs.lsdb.io/en/latest/tutorials/lazy_operations.html), i.e., no data is read from the S3 bucket into memory yet.
 - Since we did not specify any columns to select from this very wide catalog, we get 7 default columns out of 1593 available columns!
-- We see the HEALPix order and pixels at which this catalog is partitioned.
+- We see some of the HEALPix orders and pixels at which this catalog is partitioned.
 
 Let's plot the sky coverage of this catalog:
 
@@ -150,7 +150,7 @@ Let's plot the sky coverage of this catalog:
 euclid_catalog.plot_pixels()
 ```
 
-Since HATS uses adaptive tile-based partitioning, we see higher order HealPix tiles in regions with higher source density and lower order tiles in regions with lower source density.
+Since HATS uses adaptive tile-based partitioning, we see higher order HEALPix tiles in regions with higher source density and lower order tiles in regions with lower source density.
 
 Now let's open the ZTF DR23 Objects catalog in a similar manner and view its sky coverage:
 
@@ -177,7 +177,7 @@ euclid_DF_N_center
 ```
 
 ```{code-cell} ipython3
-# euclid_DF_N_radius = 3 * u.deg  # ceil(sqrt(22.9 / pi)) approximate radius to cover almost entire DF-N
+# euclid_DF_N_radius = 3 * u.deg  # ceil(sqrt(22.9 / pi)) approximate radius to cover almost entire EDF-N
 euclid_DF_N_radius = 0.5 * u.deg  # smaller radius to reduce execution time for this tutorial
 euclid_DF_N_radius
 ```
