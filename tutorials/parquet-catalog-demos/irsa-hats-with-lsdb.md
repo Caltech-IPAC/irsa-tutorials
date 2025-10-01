@@ -586,13 +586,7 @@ As earlier, this creates a lazy catalog object with the partition(s) that contai
 We can load the light curves data into a DataFrame by using the `compute()` method:
 
 ```{code-cell} ipython3
-if ztf_lcs.npartitions > 1:
-    with Client(n_workers=ztf_lcs.npartitions + 1, threads_per_worker=2, memory_limit='auto') as client:
-        print(f"This may take more than a few minutes to complete. You can monitor progress in Dask dashboard at {client.dashboard_link}")
-        ztf_lcs_df = ztf_lcs.compute()
-else:
-    ztf_lcs_df = ztf_lcs.compute() # no need for Dask client since there's nothing to parallelize
-
+ztf_lcs_df = ztf_lcs.compute() # ID search runs out of memory if we try to parallelize it with Dask client
 ztf_lcs_df
 ```
 
