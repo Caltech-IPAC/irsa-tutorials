@@ -6,6 +6,8 @@ project:
     - title: SPHEREx
       children:
         - file: tutorials/spherex/spherex_intro.md
+        - file: tutorials/spherex/spherex_cutouts.md
+        - file: tutorials/spherex/spherex_psf.md
     - title: Euclid
       children:
         - title: Euclid Early Release Observations
