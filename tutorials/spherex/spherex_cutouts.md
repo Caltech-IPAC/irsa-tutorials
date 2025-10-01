@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
+(spherex-cutouts)=
 # Download a collection of SPHEREx Spectral Image cutouts as a multi-extension FITS file
 
 ## 1. Learning Goals
