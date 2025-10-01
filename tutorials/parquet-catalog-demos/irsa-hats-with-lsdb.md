@@ -96,25 +96,14 @@ s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}")
 ```
 
 In this collection, you can see collection properties, catalog, index table, and margin cache in order.
-Let's navigate to the HATS **catalog**:
-
-```{code-cell} ipython3
-s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}/euclid_q1_merged_objects-hats")
-```
-
-And then, in this catalog, let's list the contents of the **Parquet dataset** that follows the HEALPix-based partitioning scheme (and contains metadata):
-
-```{code-cell} ipython3
-s3.ls(f"{euclid_q1_bucket}/{euclid_q1_hats_prefix}/euclid_q1_merged_objects-hats/dataset")
-```
-
 You can explore more directories to see how this HATS collection follows the directory structure described in IRSA's documentation on [HATS partitioning and HATS Collections](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats).
 
-The Parquet file containing the schema for this dataset (with units, description, etc.) is stored in the `_common_metadata` directory.
+As per the documentation, the Parquet file containing the schema for this `euclid_q1_merged_objects-hats` catalog is stored in `dataset/_common_metadata` directory.
+You can find the catalog schema through other sources as well but we use the `_common_metadata` file here because it contains column metadata (units and descriptions) which the other schemas don't have.
 Let's save its path for later use:
 
 ```{code-cell} ipython3
-euclid_q1_schema_path = "euclid_q1_merged_objects-hats/dataset/_common_metadata"
+euclid_q1_schema_path = "euclid_q1_merged_objects-hats/dataset/_common_metadata" # euclid_q1_merged_objects-hats is the catalog name we identified above
 ```
 
 Similarly, we can list the contents of the ZTF DR23 Objects HATS collection and save the path to its schema file:
@@ -124,7 +113,7 @@ s3.ls(f"{ztf_bucket}/{ztf_hats_prefix}")
 ```
 
 ```{code-cell} ipython3
-ztf_schema_path = "ztf_dr23_objects-hats/dataset/_common_metadata"
+ztf_schema_path = "ztf_dr23_objects-hats/dataset/_common_metadata" # ztf_dr23_objects-hats is the catalog name we identified above
 ```
 
 ## 2. Open the HATS catalogs
@@ -231,16 +220,14 @@ def pq_schema_to_df(schema):
         ],
         columns=["name", "type", "unit", "description"]
     )
-```
 
-```{code-cell} ipython3
 euclid_schema_df = pq_schema_to_df(euclid_schema)
-euclid_schema_df
+len(euclid_schema_df)
 ```
 
 As we saw above, the Euclid HATS catalog contains 1594 columns in its schema!
 
-The columns at the beginning (such as "tileid", "objectid", "ra", "dec") define positions and IDs.
+The columns at the beginning of this schema (such as "tileid", "objectid", "ra", "dec") define positions and IDs.
 These can be useful for our **column filters** — the columns we want to SELECT when querying the catalog.
 
 We can also filter the schema DataFrame by name, unit, type, etc., to identify columns most relevant for our **row filters** — WHERE rows satisfy conditions on column values for our query.
@@ -268,13 +255,15 @@ For this tutorial, the following columns are most relevant to us:
 
 ```{code-cell} ipython3
 euclid_columns = euclid_schema_df['name'].iloc[:7].tolist() # the positional and ID columns
-euclid_columns
-```
-
-```{code-cell} ipython3
 euclid_columns.extend([
     'phz_phz_median', # median of the photometric redshift PDF
 ])
+```
+
+The selected columns with their metadata are:
+
+```{code-cell} ipython3
+euclid_schema_df[euclid_schema_df["name"].isin(euclid_columns)]
 ```
 
 ### 3.4 Define row filters
@@ -315,7 +304,6 @@ ztf_schema = pq.read_schema(
     filesystem=s3
 )
 ztf_schema_df = pq_schema_to_df(ztf_schema)
-ztf_schema_df
 ```
 
 You can filter the schema further by units, type, etc. to identify other columns of interest.
@@ -389,6 +377,10 @@ Note that the order of crossmatch matters: lsdb's algorithm takes each object in
 Since Euclid is denser than ZTF, we put it on the left side of the crossmatch to maximize the number of matches.
 For more details on the parameters, refer to the documentation linked.
 
+```{note}
+Since ZTF objects are defined per band, setting `n_neighbors=1` means this is only going to return data in one ZTF band for each Euclid object. This is done for simplicity of analysing the crossmatched results in subsequent sections but you can increase `n_neighbors` to get data in multiple ZTF bands.
+```
+
 ```{code-cell} ipython3
 euclid_x_ztf = euclid_cone.crossmatch(
     ztf_cone,
@@ -436,24 +428,6 @@ euclid_x_ztf_df.shape[0], euclid_x_ztf_df['object_id_euclid'].nunique(), euclid_
 
 This means there is one unique Euclid source for each row in the crossmatched catalog as expected (since we put Euclid on the left side of the crossmatch).
 But for ZTF, this is not true as some ZTF objects have multiple Euclid matches since ZTF has lower resolution than Euclid.
-Let's identify such cases:
-
-```{code-cell} ipython3
-many_euclid_x_one_ztf_df = euclid_x_ztf_df[
-    # more than one Euclid object matched to the same ZTF object
-    euclid_x_ztf_df.groupby('oid_ztf')['object_id_euclid'].transform('nunique') > 1 
-].sort_values('oid_ztf')
-many_euclid_x_one_ztf_df[['object_id_euclid', 'oid_ztf', 'filtercode_ztf', '_dist_arcsec']]
-```
-
-Let's also check if there is any ZTF object that has observations in multiple filters as it may warrant special handling:
-
-```{code-cell} ipython3
-multi_filter_oids = euclid_x_ztf_df.groupby('oid_ztf')['fid_ztf'].nunique()
-multi_filter_oids[multi_filter_oids > 1].size
-```
-
-No ZTF object has observations in multiple filters in this crossmatched catalog, so we don't need any special handling for multi-filter objects.
 
 Now let's plot some variability metrics from ZTF against Euclid redshift to see if there are any trends.
 We will use hexbin plots to visualize the density of sources in each panel:
@@ -479,9 +453,6 @@ for i, (col, ylabel) in enumerate(metrics):
 
     # clip y to robust range (1–99th percentile) for visibility
     y_lo, y_hi = np.nanpercentile(y, [1, 99])
-    # avoid zero-height range
-    if not np.isfinite(y_lo) or not np.isfinite(y_hi) or y_hi <= y_lo:
-        y_lo, y_hi = np.nanmin(y), np.nanmax(y)
 
     hb = ax.hexbin(
         z, y,
