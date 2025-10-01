@@ -197,7 +197,7 @@ results_table_serial["hdus"] = np.full(len(results_table_serial), None)
 
 t1 = time.time()
 for row in results_table_serial:
-    process_cutout(row, ra, dec, cache = True)
+    process_cutout(row, ra, dec, cache = False)
 print("Time to create cutouts in serial mode: {:2.2f} minutes.".format( (time.time()-t1)/60 ) )
 ```
 
@@ -224,7 +224,7 @@ results_table_parallel["hdus"] = np.full(len(results_table_parallel), None)
 
 t1 = time.time()
 with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-    futures = [executor.submit(process_cutout, row, ra, dec, True) for row in results_table_parallel]
+    futures = [executor.submit(process_cutout, row, ra, dec, False) for row in results_table_parallel]
     concurrent.futures.wait(futures)
 print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format( (time.time()-t1)/60 ) )
 ```
