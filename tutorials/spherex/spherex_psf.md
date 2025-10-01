@@ -1,15 +1,14 @@
 ---
 jupytext:
-  formats: md:myst
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.3
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 # Understanding and Extracting the PSF Extension in a SPHEREx Cutout
@@ -79,9 +78,9 @@ To learn more about how to access SPHEREx spectral images and how to download cu
 ```
 
 ```{code-cell} ipython3
-ra = 305.59875000000005*u.degree
-dec = 41.14888888888889*u.degree
-size = 0.01*u.degree
+ra = 305.59875000000005 * u.degree
+dec = 41.14888888888889 * u.degree
+size = 0.01 * u.degree
 ```
 
 Once we defined the coordinates of interest and the size of the cutout, we run a TAP query to gather all SPHEREx spectral images that cover the coordinates.
@@ -108,8 +107,8 @@ ORDER BY p.time_bounds_lower
 # Execute the query and return as an astropy Table.
 t1 = time.time()
 results = service.search(query)
-print("Time to do TAP query: {:2.2f} seconds.".format(time.time()-t1) )
-print("Number of images found: {}".format(len(results)) )
+print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
+print("Number of images found: {}".format(len(results)))
 ```
 
 For this example, we focus on the first one of the retrieved SPHEREx spectral images.
@@ -178,7 +177,7 @@ We do this by first determining the pixel (x,y) coordinates of our coordinates o
 
 ```{code-cell} ipython3
 wcs = WCS(cutout_header)
-xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra.to(u.degree), dec=dec.to(u.degree) ))
+xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra.to(u.degree), dec=dec.to(u.degree)))
 
 print(f"Pixel values of coordinates of interest on cutout image: x = {xpix_cutout}, y = {ypix_cutout}")
 ```
@@ -192,7 +191,7 @@ crpix2a = cutout_header["CRPIX2A"]
 xpix_orig = 1 + xpix_cutout - crpix1a
 ypix_orig = 1 + ypix_cutout - crpix2a
 
-print(f"Pixel values of coordinates of interest on parent SPHEREx image: x = {xpix_orig}, y = {ypix_orig}" )
+print(f"Pixel values of coordinates of interest on parent SPHEREx image: x = {xpix_orig}, y = {ypix_orig}")
 ```
 
 ## 8. Determine the PSF Corresponding to Coordinates of Interest
@@ -225,7 +224,7 @@ len(xctr) == len(yctr)
 Make a nice table so we can easily search for the distance between zone center and coordinates of interest.
 
 ```{code-cell} ipython3
-tab = Table(names=["zone_id" , "x" , "y"], dtype=[int,float,float])
+tab = Table(names=["zone_id" , "x" , "y"], dtype=[int, float, float])
 for zone_id in xctr.keys():
     tab.add_row([zone_id , xctr[zone_id] , yctr[zone_id]])
 ```
@@ -234,7 +233,7 @@ Once we have created this dictionary with zone pixel coordinates, we can simply 
 For this we first add the distance between zone center coordinates and coordinates of interest to the table
 
 ```{code-cell} ipython3
-tab["distance"] = np.sqrt( (tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2 )
+tab["distance"] = np.sqrt((tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2)
 ```
 
 Then we can sort the table and pick the closest zone to coordinates of interest.
@@ -255,8 +254,8 @@ Now that we know which zone corresponds to coordinates of interest, we can extra
 ```{code-cell} ipython3
 psf = psfcube[psf_cube_plane]
 
-fig = plt.figure(figsize=(5,5))
-ax1 = fig.add_subplot(1,1,1)
+fig = plt.figure(figsize=(5, 5))
+ax1 = fig.add_subplot(1, 1, 1)
 
 ax1.imshow(psf)
 

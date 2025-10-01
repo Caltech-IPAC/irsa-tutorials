@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -68,7 +68,7 @@ In this example, we are creating cutouts of the Pinwheel galaxy (M101) for the S
 ```{code-cell} ipython3
 # Choose a position.
 ra = 210.80227 * u.degree
-dec = 54.34895  * u.degree
+dec = 54.34895 * u.degree
 
 
 # Choose a cutout size.
@@ -109,8 +109,8 @@ ORDER BY p.time_bounds_lower
 # Execute the query and return as an astropy Table.
 t1 = time.time()
 results = service.search(query)
-print("Time to do TAP query: {:2.2f} seconds.".format(time.time()-t1) )
-print("Number of images found: {}".format(len(results)) )
+print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
+print("Number of images found: {}".format(len(results)))
 ```
 
 ## 6. Define a function that processes a list of SPHEREx Spectral Image Cutouts
@@ -159,7 +159,7 @@ def process_cutout(row, ra, dec, cache):
 
         # Collect the HDUs for this cutout and append the row's cutout_index to the EXTNAME.
         hdus = []
-        for hdu in hdulist[1:]: #skip the primary header
+        for hdu in hdulist[1:]:  # skip the primary header
             hdu.header["EXTNAME"] = f"{hdu.header['EXTNAME']}{row['cutout_index']}"
             hdus.append(hdu.copy())  # Copy so the data is available after the file is closed
         row["hdus"] = hdus
@@ -197,8 +197,8 @@ results_table_serial["hdus"] = np.full(len(results_table_serial), None)
 
 t1 = time.time()
 for row in results_table_serial:
-    process_cutout(row, ra, dec, cache = False)
-print("Time to create cutouts in serial mode: {:2.2f} minutes.".format( (time.time()-t1)/60 ) )
+    process_cutout(row, ra, dec, cache=False)
+print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 ```
 
 ### 7.2 Parallel Approach
@@ -226,7 +226,7 @@ t1 = time.time()
 with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
     futures = [executor.submit(process_cutout, row, ra, dec, False) for row in results_table_parallel]
     concurrent.futures.wait(futures)
-print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format( (time.time()-t1)/60 ) )
+print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 ```
 
 ## 8. Create a summary table HDU with renamed columns
@@ -281,7 +281,7 @@ summary_table = Table.read(output_filename , hdu=1)
 Let's also extract the first 10 images (or all of the extracted cutouts if less than 10).
 
 ```{code-cell} ipython3
-nbr_images = np.nanmin([10,len(summary_table)])
+nbr_images = np.nanmin([10, len(summary_table)])
 imgs = []
 with fits.open(output_filename) as hdul:
     for ii in range(nbr_images):
@@ -292,12 +292,12 @@ with fits.open(output_filename) as hdul:
 Plot the images with the wavelength corresponding to their central pixel.
 
 ```{code-cell} ipython3
-fig = plt.figure(figsize=(15,5))
-axs = [fig.add_subplot(2,5,ii+1) for ii in range(10)]
+fig = plt.figure(figsize=(15, 5))
+axs = [fig.add_subplot(2, 5, ii + 1) for ii in range(10)]
 
-for ii,img in enumerate(imgs):
+for ii, img in enumerate(imgs):
     axs[ii].imshow(imgs[ii], norm="log", origin="lower")
-    axs[ii].text(0.05,0.05, r"$\lambda_{\rm center} = %2.4g \,{\rm \mu m}$" % summary_table["central_wavelength"][ii],
+    axs[ii].text(0.05, 0.05, r"$\lambda_{\rm center} = %2.4g \,{\rm \mu m}$" % summary_table["central_wavelength"][ii],
                  va="bottom", ha="left", color="white", transform=axs[ii].transAxes)
 
 plt.show()
