@@ -424,60 +424,32 @@ with Client(n_workers=get_nworkers(euclid_x_ztf),
 euclid_x_ztf_df
 ```
 
-### 5.3 [Optional] Filter the crossmatched catalog
-
-Let's purify the crossmatched catalog by analyzing the distance between matched sources and removing the matches that don't meet a quality cut on percentile.
-We also keep the matches that are outside this cutoff but are still within the same 19th order HEALPix tile.
-
-```{code-cell} ipython3
-euclid_x_ztf_df['_dist_arcsec'].describe()
-```
-
-```{code-cell} ipython3
-euclid_x_ztf_filtered_df = euclid_x_ztf_df[
-    (euclid_x_ztf_df['_dist_arcsec'] < euclid_x_ztf_df['_dist_arcsec'].quantile(0.75)) # keep matches within 75th percentile
-    | (euclid_x_ztf_df['_healpix_19_euclid'] == euclid_x_ztf_df['_healpix_19_ztf']) # also include exact 19th order healpix matches
-].sort_values('_dist_arcsec')
-euclid_x_ztf_filtered_df
-```
-
-```{code-cell} ipython3
-bins = np.histogram_bin_edges(euclid_x_ztf_df['_dist_arcsec'], bins=100)
-plt.hist(euclid_x_ztf_df['_dist_arcsec'], bins=bins, alpha=0.8, label='All matches <=1"')
-plt.hist(euclid_x_ztf_filtered_df['_dist_arcsec'], bins=bins, alpha=0.8, label='Filtered matches')
-plt.axvline(euclid_x_ztf_df['_dist_arcsec'].quantile(0.75), color='black', linestyle='dashed', linewidth=1, label='75th percentile')
-plt.xlabel('Distance (arcsec)')
-plt.ylabel('Count')
-plt.title('Separation between Euclid and ZTF cross-matched sources')
-plt.legend()
-plt.show()
-```
-
-Going forward, we will use this purified crossmatched catalog `euclid_x_ztf_filtered_df` for analysis.
-
-+++
-
-### 5.4 Identify objects of interest from the crossmatch
+### 5.3 Identify objects of interest from the crossmatch
 
 +++
 
 Check the number of unique Euclid and ZTF sources in the crossmatched catalog:
 
 ```{code-cell} ipython3
-euclid_x_ztf_filtered_df.shape[0], euclid_x_ztf_filtered_df['object_id_euclid'].nunique(), euclid_x_ztf_filtered_df['oid_ztf'].nunique()
+euclid_x_ztf_df.shape[0], euclid_x_ztf_df['object_id_euclid'].nunique(), euclid_x_ztf_df['oid_ztf'].nunique()
 ```
 
 This means there is one unique Euclid source for each row in the crossmatched catalog as expected (since we put Euclid on the left side of the crossmatch).
-But for ZTF, this is also true, i.e., no ZTF object has multiple Euclid matches within our constraints.
-
-Check if there is any ZTF object that has observations in multiple filters:
+But for ZTF, this is not true as some ZTF objects have multiple Euclid matches since ZTF has lower resolution than Euclid.
+Let's identify such cases:
 
 ```{code-cell} ipython3
-multi_filter_oids = euclid_x_ztf_filtered_df.groupby('oid_ztf')['fid_ztf'].nunique()
-multi_filter_oids
+many_euclid_x_one_ztf_df = euclid_x_ztf_df[
+    # more than one Euclid object matched to the same ZTF object
+    euclid_x_ztf_df.groupby('oid_ztf')['object_id_euclid'].transform('nunique') > 1 
+].sort_values('oid_ztf')
+many_euclid_x_one_ztf_df[['object_id_euclid', 'oid_ztf', 'filtercode_ztf', '_dist_arcsec']]
 ```
 
+Let's also check if there is any ZTF object that has observations in multiple filters as it may warrant special handling:
+
 ```{code-cell} ipython3
+multi_filter_oids = euclid_x_ztf_df.groupby('oid_ztf')['fid_ztf'].nunique()
 multi_filter_oids[multi_filter_oids > 1].size
 ```
 
@@ -487,7 +459,7 @@ Now let's plot some variability metrics from ZTF against Euclid redshift to see 
 We will use hexbin plots to visualize the density of sources in each panel:
 
 ```{code-cell} ipython3
-z = euclid_x_ztf_filtered_df["phz_phz_median_euclid"].to_numpy() # x-axis
+z = euclid_x_ztf_df["phz_phz_median_euclid"].to_numpy() # x-axis
 metrics = [ # y-axes
     ("magrms_ztf",        "ZTF mag RMS"),
     ("chisq_ztf",         "ZTF χ²"),
@@ -503,7 +475,7 @@ gridsize = 48  # resolution: larger => finer grid
 
 for i, (col, ylabel) in enumerate(metrics):
     ax = axes[i]
-    y = euclid_x_ztf_filtered_df[col].to_numpy()
+    y = euclid_x_ztf_df[col].to_numpy()
 
     # clip y to robust range (1–99th percentile) for visibility
     y_lo, y_hi = np.nanpercentile(y, [1, 99])
@@ -542,25 +514,25 @@ Despite this, we can still select some high-variability galaxy sources from the 
 Let's focus only on Chi-squared (measure of significance) and RMS magnitude (measure of variability amplitude; similar to MAD) metrics:
 
 ```{code-cell} ipython3
-euclid_x_ztf_filtered_df['chisq_ztf'].describe()
+euclid_x_ztf_df['chisq_ztf'].describe()
 ```
 
 ```{code-cell} ipython3
-chisq_threshold = euclid_x_ztf_filtered_df['chisq_ztf'].quantile(0.95)
+chisq_threshold = euclid_x_ztf_df['chisq_ztf'].quantile(0.95)
 chisq_threshold
 ```
 
 ```{code-cell} ipython3
-euclid_x_ztf_filtered_df['magrms_ztf'].describe()
+euclid_x_ztf_df['magrms_ztf'].describe()
 ```
 
 ```{code-cell} ipython3
-magrms_threshold = euclid_x_ztf_filtered_df['magrms_ztf'].quantile(0.95)
+magrms_threshold = euclid_x_ztf_df['magrms_ztf'].quantile(0.95)
 magrms_threshold
 ```
 
 ```{code-cell} ipython3
-variable_galaxies = euclid_x_ztf_filtered_df.query(
+variable_galaxies = euclid_x_ztf_df.query(
     f"chisq_ztf >= {chisq_threshold} & magrms_ztf >= {magrms_threshold}"
     ).sort_values("chisq_ztf", ascending=False) # sort by significant variability
 ```
@@ -670,7 +642,7 @@ plt.show()
 
 ## About this notebook
 
-Author: Jaladh Singhal, Troy Raen, and the IRSA Data Science Team
+Author: Jaladh Singhal, Troy Raen, Jessica Krick, Brigitta Sipőcz, and the IRSA Data Science Team
 
 Updated: 2025-09-15
 
