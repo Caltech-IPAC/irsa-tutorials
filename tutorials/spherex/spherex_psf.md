@@ -41,10 +41,11 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 
 ## 3. Requirements
 
-The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.
+The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
-# pip install astropy numpy re pyvo time
+# Uncomment the next line to install dependencies if needed.
+# !pip install astropy numpy pyvo
 ```
 
 ## 4. Imports

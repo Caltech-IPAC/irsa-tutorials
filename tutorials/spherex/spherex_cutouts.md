@@ -33,9 +33,10 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
 ## 3. Requirements
-The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.
+The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
 # !pip install numpy astropy pyvo matplotlib
 ```
 
