@@ -19,7 +19,6 @@ kernelspec:
 - Retrieve cutouts for every entry in this list and package the cutouts as a new MEF.
 - Learn how to use parallel or serial processing to retrieve the cutouts
 
-
 ## 2. SPHEREx Overview
 
 SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025. During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields. SPHEREx data will be used to:
@@ -32,15 +31,14 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 
 More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
-## 3. Requirements
+## 3. Imports
+
 The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install numpy astropy pyvo matplotlib
 ```
-
-## 3. Import modules
 
 ```{code-cell} ipython3
 import concurrent
@@ -71,7 +69,6 @@ In this example, we are creating cutouts of the Pinwheel galaxy (M101) for the S
 # Choose a position.
 ra = 210.80227 * u.degree
 dec = 54.34895 * u.degree
-
 
 # Choose a cutout size.
 size = 0.1 * u.degree
@@ -235,6 +232,7 @@ print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.t
 
 In the following, we continue to use the output of the parallel mode.
 The following cell does the following:
+
 - Create a summary FITS table
 - Create the final FITS HDU including the summary table.
 
@@ -307,11 +305,11 @@ plt.show()
 
 ## Acknowledgements
 
-- [IPAC-IRSA](https://irsa.ipac.caltech.edu/)
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
 
-**Authors:** IPAC Science Platform Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick,
+**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick,
 Shoubaneh Hemmati
 
 **Updated:** 2025-09-10
@@ -325,7 +323,3 @@ a machine with 8GB RAM and 4 CPU.
 machine details for your notebook if it is expected to run longer or requires specific machines,
 e.g., on Fornax. Also, if querying archives, please include a statement like, "This runtime is
 heavily dependent on archive servers which means runtime will vary for users".)
-
-```{code-cell} ipython3
-
-```

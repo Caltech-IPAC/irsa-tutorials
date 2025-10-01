@@ -23,14 +23,12 @@ kernelspec:
 
 +++
 
-## SPHEREx Overview
+## 2. SPHEREx Overview
 
 SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025. During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields. SPHEREx data will be used to:
 
 * **constrain the physics of inflation** by measuring its imprints on the three-dimensional large-scale distribution of matter,
-
 * **trace the history of galactic light production** through a deep multi-band measurement of large-scale clustering,
-
 * **investigate the abundance and composition of water and biogenic ices** in the early phases of star and planetary disk formation.
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
@@ -39,7 +37,7 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 
 +++
 
-## 3. Requirements
+## 3. Imports
 
 The following packages must be installed to run this notebook.
 
@@ -47,8 +45,6 @@ The following packages must be installed to run this notebook.
 # Uncomment the next line to install dependencies if needed.
 # !pip install astropy numpy pyvo
 ```
-
-## 4. Imports
 
 ```{code-cell} ipython3
 import re
@@ -64,9 +60,7 @@ from astropy.table import Table
 from astropy.wcs import WCS
 ```
 
-## 5. Get SPHEREx Cutout
-
-
+## 4. Get SPHEREx Cutout
 
 We first obtain a SPHEREx cutout for a given coordinate of interest from IRSA archive. For this we define a coordinate and a size of the cutout. Both should be defined using `astropy` units.
 The goal is to obtain the cutout and then extract the PSF corresponding to the coordinates of interest.
@@ -116,10 +110,9 @@ spectral_image_url = results['uri'][0]
 print(spectral_image_url)
 ```
 
-## 6. Read in a SPHEREx Cutout
+## 5. Read in a SPHEREx Cutout
 
 Next, we use standard astropy tools to open the fits image and to read the different headers and data.
-
 
 ```{tip}
 As we do below, you can use `hdul.info()` to print the list of FITS layers of the downloaded cutout.
@@ -142,7 +135,6 @@ psfcube.shape
 ```
 
 The shape of the `psfcube` is (121,101,101). This corresponds to a grid of 11x11 PSFs across the image, each of them of the size 101x101 pixels.
-
 
 ```{note}
 Remember that the PSFs are oversampled by a factor of 10. This means that the actual size of the PSFs is about 10x10 SPHEREx pixels, which corresponds to about 60x60 arcseconds.
@@ -167,7 +159,7 @@ The goal of this tutorial now is to find the PSF corresponding to our input coor
 
 +++
 
-## 7. Determine the Pixel Location on the Parent SPHEREx Image
+## 6. Determine the Pixel Location on the Parent SPHEREx Image
 
 To identify the zone which covers the coordinates of interest, we first need to translate these coordinates to the pixel coordinates on the parent large SPHEREx image from which the cutout was created.
 
@@ -192,7 +184,7 @@ ypix_orig = 1 + ypix_cutout - crpix2a
 print(f"Pixel values of coordinates of interest on parent SPHEREx image: x = {xpix_orig}, y = {ypix_orig}")
 ```
 
-## 8. Determine the PSF Corresponding to Coordinates of Interest
+## 7. Determine the PSF Corresponding to Coordinates of Interest
 
 Since we now know the (x,y) pixel values of the coordinates of interest on the parent SPHEREx image, we can identify the PSF zone.
 In the following we first extract the zone pixel coordinates from the `XCTR_*` and `YCTR_*` keys in the PSF header.
@@ -245,7 +237,7 @@ distance_min = tab[0]["distance"]
 print(f"The PSF zone corresponding to coordinates of interest is {psf_cube_plane} with a distance of {distance_min} pixels")
 ```
 
-## 9. Extract and Show the PSF
+## 8. Extract and Show the PSF
 
 Now that we know which zone corresponds to coordinates of interest, we can extract it and plot it.
 
@@ -262,11 +254,11 @@ plt.show()
 
 ## Acknowledgements
 
-- [IPAC-IRSA](https://irsa.ipac.caltech.edu/)
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
 
-**Authors:** IPAC Data Science Team, including Vandana Desai, Andreas Faisst, Brigitta Sipőcz, Troy Raen
+**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Brigitta Sipőcz, Troy Raen
 
 **Updated:** 2025-09-25
 
