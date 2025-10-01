@@ -586,12 +586,13 @@ As earlier, this creates a lazy catalog object with the partition(s) that contai
 We can load the light curves data into a DataFrame by using the `compute()` method:
 
 ```{code-cell} ipython3
-# Uncomment following if ztf_lcs contain more than 1 partition
-# with Client(n_workers=ztf_lcs.npartitions + 1, threads_per_worker=2, memory_limit='auto') as client:
-#     print(f"This may take more than a few minutes to complete. You can monitor progress in Dask dashboard at {client.dashboard_link}")
-#     ztf_lcs_df = ztf_lcs.compute()
+if ztf_lcs.npartitions > 1:
+    with Client(n_workers=ztf_lcs.npartitions + 1, threads_per_worker=2, memory_limit='auto') as client:
+        print(f"This may take more than a few minutes to complete. You can monitor progress in Dask dashboard at {client.dashboard_link}")
+        ztf_lcs_df = ztf_lcs.compute()
+else:
+    ztf_lcs_df = ztf_lcs.compute() # no need for Dask client since there's nothing to parallelize
 
-ztf_lcs_df = ztf_lcs.compute() # no need for Dask client since there's nothing to parallelize
 ztf_lcs_df
 ```
 
@@ -613,31 +614,23 @@ We need to filter out bad epochs using the `catflags` column as explained in the
 Then, we will plot the light curves in separate panels for each object:
 
 ```{code-cell} ipython3
-num_lcs = len(ztf_lcs_df)
-fig, axes = plt.subplots(num_lcs, 1, figsize=(8, 3 * num_lcs), sharex=True)
-fig.suptitle('Lightcurves of Variable Galaxy Candidates')
-
-if num_lcs == 1:
-    axes = [axes]
-for ax, (_, row) in zip(axes, merged_ztf_lcs_df.iterrows()):
-    lc = row['lightcurve'].query("catflags == 0") # remove bad epochs
-    lc_label = (f'ZTF DR23 Object {row["objectid"]} in band {row["filtercode_ztf"][1]}\n'
+for _, row in merged_ztf_lcs_df.iterrows():
+    lc = row['lightcurve'].query("catflags == 0")  # remove bad epochs
+    lc_label = (f'Lightcurve of ZTF DR23 Object {row["objectid"]} in band {row["filtercode_ztf"][1]}\n'
                 f'z={row["phz_phz_median_euclid"]:.2f}, RMS mag={row["magrms_ztf"]:.3f}, Chi-sq={row["chisq_ztf"]:.3f}')
 
-    pts = ax.plot(lc['hmjd'], lc['mag'], 
-                  '.', markersize=4, label=lc_label, zorder=3)
-    ax.errorbar( # draw semi-transparent error bars without markers
+    plt.figure(figsize=(10, 4))
+    pts = plt.plot(lc['hmjd'], lc['mag'], '.', markersize=4, label=lc_label, zorder=3)
+    plt.errorbar(
         lc['hmjd'], lc['mag'], yerr=lc['magerr'],
         fmt='none', ecolor=pts[0].get_color(), elinewidth=0.8, capsize=0, alpha=0.3, zorder=2
     )
-
-    ax.set_ylabel('Magnitude')
-    ax.invert_yaxis()
-    ax.legend(loc='lower right')
-    
-axes[-1].set_xlabel('HMJD')
-plt.tight_layout()
-plt.show()
+    plt.ylabel('Magnitude')
+    plt.xlabel('HMJD')
+    plt.gca().invert_yaxis()
+    plt.title(lc_label, fontsize=10)
+    plt.tight_layout()
+    plt.show()
 ```
 
 ## About this notebook
