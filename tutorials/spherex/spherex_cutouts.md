@@ -145,10 +145,9 @@ def process_cutout(row, ra, dec, cache):
     '''
 
     with fits.open(row["uri"], cache=cache) as hdulist:
-        # There are three HDUs:
+        # There are seven HDUs:
         # 0 contains minimal metadata in the header and no data.
-        # 1 contains the image cutout (EXTNAME = "IMAGE").
-        # 2 contains wavelength information (EXTNAME = "WCS-WAVE").
+        # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, PSF, WCS-WAVE
         header = hdulist[1].header
 
         # Compute pixel coordinates corresponding to cutout position.
@@ -190,7 +189,7 @@ Approximately 5-7 minutes for 700 images of cutout size 0.01 degree on a typical
 ```{tip}
 The astropy `fits.open()` supports a caching argument.
 This can be passed through in the `process_cutout()` function.
-If cache=True is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
+If `cache=True` is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
 The downside is that the images are saved on the machine where this notebook is run (usually in `~/.astropy/cache/`).
 If many cutouts are created, this can sum up to a large cached data volume, in which case `cache=False` is preferred.
 
@@ -222,9 +221,11 @@ A good value for the maximum number of workers is between 7 and 12 for a machine
 ```{tip}
 The astropy `fits.open()` supports a caching argument.
 This can be passed through in the `process_cutout()` function.
-If cache=True is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
-The downside is that the images are saved on the machine where this notebook is run.
-If many cutouts are created, this can sum up to a large cached data volume, in which case cache=False is preferred.
+If `cache=True` is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
+The downside is that the images are saved on the machine where this notebook is run (usually in `~/.astropy/cache/`).
+If many cutouts are created, this can sum up to a large cached data volume, in which case `cache=False` is preferred.
+
+To learn more about the cache please read the [astropy cache management documentation](https://docs.astropy.org/en/stable/utils/data.html#cache-management).
 ```
 
 Again, before running the cutout processing we define some place holders.
@@ -325,12 +326,8 @@ plt.show()
 
 **Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick, Shoubaneh Hemmati
 
-**Updated:** 2025-09-10
+**Updated:** 2025-09-30
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on a machine with 8GB RAM and 4 CPU.
-(Note: This notebook doesn't take significant time to run, but please report actual numbers and
-machine details for your notebook if it is expected to run longer or requires specific machines,
-e.g., on Fornax. Also, if querying archives, please include a statement like, "This runtime is
-heavily dependent on archive servers which means runtime will vary for users".)
