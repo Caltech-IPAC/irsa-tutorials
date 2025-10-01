@@ -119,13 +119,6 @@ spectral_image_url = results['uri'][0]
 print(spectral_image_url)
 ```
 
-```{code-cell} ipython3
-#### REMOVE IN PUBLISHED VERSION #####
-spectral_image_url = spectral_image_url.replace("irsa","irsatest")
-print(spectral_image_url)
-######################################
-```
-
 ## 6. Read in a SPHEREx Cutout
 
 Next, we use standard astropy tools to open the fits image and to read the different headers and data.
