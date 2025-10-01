@@ -25,7 +25,9 @@ kernelspec:
 
 ## 2. SPHEREx Overview
 
-SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025. During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields. SPHEREx data will be used to:
+SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025.
+During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields.
+SPHEREx data will be used to:
 
 * **constrain the physics of inflation** by measuring its imprints on the three-dimensional large-scale distribution of matter,
 * **trace the history of galactic light production** through a deep multi-band measurement of large-scale clustering,
@@ -62,7 +64,9 @@ from astropy.wcs import WCS
 
 ## 4. Get SPHEREx Cutout
 
-We first obtain a SPHEREx cutout for a given coordinate of interest from IRSA archive. For this we define a coordinate and a size of the cutout. Both should be defined using `astropy` units.
+We first obtain a SPHEREx cutout for a given coordinate of interest from IRSA archive.
+For this we define a coordinate and a size of the cutout.
+Both should be defined using `astropy` units.
 The goal is to obtain the cutout and then extract the PSF corresponding to the coordinates of interest.
 
 ```{tip}
@@ -128,16 +132,19 @@ with fits.open(spectral_image_url) as hdul:
 ```
 
 The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
-We focus in this example on the extensions `IMAGE` and `PSF`. We have already loaded their data as well as their header.
+We focus in this example on the extensions `IMAGE` and `PSF`.
+We have already loaded their data as well as their header.
 
 ```{code-cell} ipython3
 psfcube.shape
 ```
 
-The shape of the `psfcube` is (121,101,101). This corresponds to a grid of 11x11 PSFs across the image, each of them of the size 101x101 pixels.
+The shape of the `psfcube` is (121,101,101).
+This corresponds to a grid of 11x11 PSFs across the image, each of them of the size 101x101 pixels.
 
 ```{note}
-Remember that the PSFs are oversampled by a factor of 10. This means that the actual size of the PSFs is about 10x10 SPHEREx pixels, which corresponds to about 60x60 arcseconds.
+Remember that the PSFs are oversampled by a factor of 10.
+This means that the actual size of the PSFs is about 10x10 SPHEREx pixels, which corresponds to about 60x60 arcseconds.
 ```
 
 +++
@@ -149,11 +156,13 @@ psf_header[22:40]
 ```
 
 We confirm that the oversampling factor (`OVERSAMP`) is 10.
-The PSFs are distributed in an even grid with 11x11 zones. Each of the 121 PSFs is responsible for one of these zones.
+The PSFs are distributed in an even grid with 11x11 zones.
+Each of the 121 PSFs is responsible for one of these zones.
 The PSF header therefore includes the center position of these zones as well as the width of the zones.
 These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...121.
 The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...121.
-The zones have equal widths and are arranged in an even grid. In principle, the zones can have any size, but this arrangement is enough to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
+The zones have equal widths and are arranged in an even grid.
+In principle, the zones can have any size, but this arrangement is enough to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
 
 The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
 
@@ -262,7 +271,6 @@ plt.show()
 
 **Updated:** 2025-09-25
 
-**Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
-or problems.
+**Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.

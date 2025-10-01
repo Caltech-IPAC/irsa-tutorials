@@ -17,11 +17,13 @@ kernelspec:
 
 - Perform a query for the list of SPHEREx Spectral Image Multi-Extension FITS files (MEFs) that overlap a given coordinate.
 - Retrieve cutouts for every entry in this list and package the cutouts as a new MEF.
-- Learn how to use parallel or serial processing to retrieve the cutouts
+- Learn how to use parallel or serial processing to retrieve the cutouts.
 
 ## 2. SPHEREx Overview
 
-SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025. During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields. SPHEREx data will be used to:
+SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025.
+During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields.
+SPHEREx data will be used to:
 
 * **constrain the physics of inflation** by measuring its imprints on the three-dimensional large-scale distribution of matter,
 * **trace the history of galactic light production** through a deep multi-band measurement of large-scale clustering,
@@ -83,7 +85,9 @@ output_filename = 'spherex_cutouts_mef.fits'
 ## 5. Query IRSA for a list of cutouts that satisfy the criteria specified above.
 
 Here we show how to use the `pyvo` TAP SQL query to retrieve all images that overlap with the position defined above.
-This query will retrieve a table of URLs that link to the MEF cutouts. Each row in the table corresponds to a single cutout and includes the data access URL and an observation timestamp. The results are sorted from oldest to newest.
+This query will retrieve a table of URLs that link to the MEF cutouts.
+Each row in the table corresponds to a single cutout and includes the data access URL and an observation timestamp.
+The results are sorted from oldest to newest.
 
 ```{code-cell} ipython3
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
@@ -115,6 +119,7 @@ print("Number of images found: {}".format(len(results)))
 ## 6. Define a function that processes a list of SPHEREx Spectral Image Cutouts
 
 This function takes in a row of the catalog that we created above and does the following:
+
 - It downloads the cutout
 - It computes the wavelength of the center pixel of the cutout (in micro-meters)
 - It combines the image HDUs into a new HDU and adds it to the table row.
@@ -166,8 +171,11 @@ def process_cutout(row, ra, dec, cache):
 
 ## 7. Download the Cutouts
 
-This process can take a while. If run in series, it can take about 5 minutes for 700 images on a typical laptop machine.
-Here, we therefore exploit two different methods. First we show the serial approach and next we show how to parallelize the methods. The later can be run on many CPUs and is therefore significantly faster.
+This process can take a while.
+If run in series, it can take about 5 minutes for 700 images on a typical laptop machine.
+Here, we therefore exploit two different methods.
+First we show the serial approach and next we show how to parallelize the methods.
+The latter can be run on many CPUs and is therefore significantly faster.
 
 ### 7.1 Serial Approach
 
@@ -175,7 +183,8 @@ First, we implement the serial approach -- a simple `for` loop.
 Before that, we turn the results into an astropy table and add some place holders that will be filled in by the `process_cutout()` function.
 
 ```{warning}
-Running the cell below may take a while for a large number of cutouts. Approximately 5-7 minutes for 700 images of cutout size 0.01 degree on a typical machine.
+Running the cell below may take a while for a large number of cutouts.
+Approximately 5-7 minutes for 700 images of cutout size 0.01 degree on a typical machine.
 ```
 
 ```{tip}
@@ -203,14 +212,19 @@ print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.tim
 ### 7.2 Parallel Approach
 
 Next, we implement parallel processing, which will make the cutout creation faster.
-The maximal number of workers can be limited by setting the `max_workers` argument. The choice of this value depends on the number of cores but also on the number of parallel calls that can be digested by the IRSA server.
+The maximal number of workers can be limited by setting the `max_workers` argument.
+The choice of this value depends on the number of cores but also on the number of parallel calls that can be digested by the IRSA server.
 
 ```{tip}
 A good value for the maximum number of workers is between 7 and 12 for a machine with 8 cores.
 ```
 
 ```{tip}
-The astropy `fits.open()` supports a caching argument. This can be passed through in the `process_cutout()` function. If cache=True is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!). The downside is that the images are saved on the machine where this notebook is run. If many cutouts are created, this can sum up to a large cached data volume, in which case cache=False is preferred.
+The astropy `fits.open()` supports a caching argument.
+This can be passed through in the `process_cutout()` function.
+If cache=True is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
+The downside is that the images are saved on the machine where this notebook is run.
+If many cutouts are created, this can sum up to a large cached data volume, in which case cache=False is preferred.
 ```
 
 Again, before running the cutout processing we define some place holders.
@@ -233,7 +247,7 @@ print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.t
 In the following, we continue to use the output of the parallel mode.
 The following cell does the following:
 
-- Create a summary FITS table
+- Create a summary FITS table.
 - Create the final FITS HDU including the summary table.
 
 ```{code-cell} ipython3
@@ -309,16 +323,13 @@ plt.show()
 
 ## About this notebook
 
-**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick,
-Shoubaneh Hemmati
+**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick, Shoubaneh Hemmati
 
 **Updated:** 2025-09-10
 
-**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
-or problems.
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
-**Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on
-a machine with 8GB RAM and 4 CPU.
+**Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on a machine with 8GB RAM and 4 CPU.
 (Note: This notebook doesn't take significant time to run, but please report actual numbers and
 machine details for your notebook if it is expected to run longer or requires specific machines,
 e.g., on Fornax. Also, if querying archives, please include a statement like, "This runtime is
