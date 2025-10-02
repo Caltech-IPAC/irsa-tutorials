@@ -579,23 +579,28 @@ We need to filter out bad epochs using the `catflags` column as explained in the
 Then, we will plot the light curves in separate panels for each object:
 
 ```{code-cell} ipython3
-for _, row in merged_ztf_lcs_df.iterrows():
-    lc = row['lightcurve'].query("catflags == 0")  # remove bad epochs
-    lc_label = (f'Lightcurve of ZTF DR23 Object {row["objectid"]} in band {row["filtercode_ztf"][1]}\n'
-                f'z={row["phz_phz_median_euclid"]:.2f}, RMS mag={row["magrms_ztf"]:.3f}, Chi-sq={row["chisq_ztf"]:.3f}')
+fig, axs = plt.subplots(len(merged_ztf_lcs_df), 1, figsize=(10, 4 * len(merged_ztf_lcs_df)), constrained_layout=True)
 
-    plt.figure(figsize=(10, 4))
-    pts = plt.plot(lc['hmjd'], lc['mag'], '.', markersize=4, label=lc_label, zorder=3)
-    plt.errorbar(
+if len(merged_ztf_lcs_df) == 1:
+    axs = [axs]
+
+for ax, (_, row) in zip(axs, merged_ztf_lcs_df.iterrows()):
+    lc = row['lightcurve'].query("catflags == 0")  # remove bad epochs
+    lc_label = (f'ZTF DR23 Object {row["objectid"]} in band {row["filtercode_ztf"][1]}\n'
+                f'(z={row["phz_phz_median_euclid"]:.2f}, RMS mag={row["magrms_ztf"]:.3f}, Chi-sq={row["chisq_ztf"]:.3f})')
+    pts = ax.plot(lc['hmjd'], lc['mag'], '.', markersize=4, label=lc_label, zorder=3)
+    ax.errorbar(
         lc['hmjd'], lc['mag'], yerr=lc['magerr'],
         fmt='none', ecolor=pts[0].get_color(), elinewidth=0.8, capsize=0, alpha=0.3, zorder=2
     )
-    plt.ylabel('Magnitude')
-    plt.xlabel('HMJD')
-    plt.gca().invert_yaxis()
-    plt.title(lc_label, fontsize=10)
-    plt.tight_layout()
-    plt.show()
+    ax.set_ylabel('Magnitude')
+    ax.set_xlabel('HMJD')
+    ax.invert_yaxis()
+    ax.set_title(lc_label, fontsize=10)
+
+fig.suptitle("Lightcurves of Variable Galaxy Candidates", fontsize=14, y=1.02)
+fig.set_constrained_layout_pads(h_pad=0.15)
+plt.show()
 ```
 
 ## About this notebook
