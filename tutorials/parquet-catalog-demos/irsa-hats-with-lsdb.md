@@ -600,8 +600,8 @@ for _, row in merged_ztf_lcs_df.iterrows():
 
 ## About this notebook
 
-Author: Jaladh Singhal, Troy Raen, Jessica Krick, Brigitta Sipőcz, and the IRSA Data Science Team
+Author: Jaladh Singhal, Troy Raen, Jessica Krick, Brigitta Sipőcz, Vandana Desai, and the IRSA Data Science Team
 
-Updated: 2025-09-15
+Updated: 2025-10-02
 
 Contact: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or to report problems.
