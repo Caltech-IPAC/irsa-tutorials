@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(spherex-intro)=
 # Introduction to SPHEREx Spectral Images
 
 +++
