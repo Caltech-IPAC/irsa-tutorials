@@ -48,7 +48,7 @@ We will use lsdb to leverage HATS partitioning for performing fast spatial queri
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs "lsdb>=0.6.4" pyarrow pandas numpy astropy dask matplotlib "universal_pathlib<0.3"
+# !pip install s3fs "lsdb>=0.6.6" pyarrow pandas numpy astropy dask matplotlib
 ```
 
 ```{code-cell} ipython3
