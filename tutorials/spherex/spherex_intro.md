@@ -93,12 +93,12 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
 There are currently three collections available:
 
-* `'spherex_qr'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr_cal'` -- Quick Release **Calibration files**
-* `'spherex_qr_deep'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
+* `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr2_cal'` -- Quick Release 2 **Calibration files**
+* `'spherex_qr2_deep'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr')
+results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
 ```
 
 Each row of the results of your query represents a different spectral image.
