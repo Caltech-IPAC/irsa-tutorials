@@ -91,7 +91,7 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-There are currently three collections available:
+There are currently three collections available for the second Quick Release:
 
 * `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
 * `'spherex_qr2_cal'` -- Quick Release 2 **Calibration files**
