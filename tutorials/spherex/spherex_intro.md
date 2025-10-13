@@ -169,7 +169,7 @@ fc.reinit_viewer()
 Visualize a spectral image MEF by sending its URL to the viewer.
 
 ```{code-cell} ipython3
-fc.show_fits(url=spectral_image_url,
+fc.show_fits_image(file_input=spectral_image_url,
              plot_id="spectral_image",
              Title="Spectral Image"
              )
@@ -261,7 +261,7 @@ Note: The previous line triggers an Astropy INFO printout,
 which implies that the SIP distortion coefficients from the main WCS are preserved in the alternative WCS.
 This is because the SIP convention, not formally part of the FITS standard,
 is ambiguous as to whether it is meant to apply to 'alternative' (lettered) WCSes in addition to the primary WCS.
-See [astropy/astropy#13105](https://github.com/astropy/astropy/issues/13105).)
+See [astropy/astropy#13105](https://github.com/astropy/astropy/issues/13105).
 
 The wavelength per pixel is a property of the detector-filter combination and is independent of optical distortion in the telescope,
 and is modeled accordingly in WCS 'W', so we turn the SIP distortion off for this WCS.
