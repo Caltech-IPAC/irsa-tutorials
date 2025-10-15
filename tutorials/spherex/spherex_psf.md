@@ -70,7 +70,7 @@ Both should be defined using `astropy` units.
 The goal is to obtain the cutout and then extract the PSF corresponding to the coordinates of interest.
 
 ```{tip}
-To learn more about how to access SPHEREx spectral images and how to download cutouts, we refer to the [SPHEREx Intro Tutorial](spherex-intro) and the [SPHEREx Cutouts Tutorial](spherex-cutouts).
+To learn more about how to access SPHEREx spectral images and how to download cutouts, we refer to the [SPHEREx Intro Tutorial](#spherex-intro) and the [SPHEREx Cutouts Tutorial](#spherex-cutouts).
 ```
 
 ```{code-cell} ipython3
