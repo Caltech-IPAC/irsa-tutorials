@@ -92,11 +92,11 @@ service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 # Sort by observation time.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.to(u.degree).value},{dec.to(u.degree).value}d&size={size.to(u.degree).value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
-WHERE 1 = CONTAINS(POINT('ICRS', {ra.to(u.degree).value}, {dec.to(u.degree).value}), p.poly)
+WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
 ORDER BY p.time_bounds_lower
 """
 
@@ -176,7 +176,7 @@ We do this by first determining the pixel (x,y) coordinates of our coordinates o
 
 ```{code-cell} ipython3
 wcs = WCS(cutout_header)
-xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra.to(u.degree), dec=dec.to(u.degree)))
+xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra, dec=dec))
 
 print(f"Pixel values of coordinates of interest on cutout image: x = {xpix_cutout}, y = {ypix_cutout}")
 ```

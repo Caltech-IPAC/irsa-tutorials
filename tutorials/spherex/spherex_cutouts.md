@@ -101,11 +101,11 @@ service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 # Sort by observation time.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.to(u.degree).value},{dec.to(u.degree).value}d&size={size.to(u.degree).value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
-WHERE 1 = CONTAINS(POINT('ICRS', {ra.to(u.degree).value}, {dec.to(u.degree).value}), p.poly)
+WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
         AND p.energy_bandpassname = '{bandpass}'
 ORDER BY p.time_bounds_lower
 """
