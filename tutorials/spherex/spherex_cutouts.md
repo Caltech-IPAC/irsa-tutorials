@@ -158,7 +158,7 @@ def process_cutout(row, ra, dec, cache):
         # Compute wavelength at cutout position.
         spectral_wcs = WCS(header, fobj=hdulist, key="W")
         spectral_wcs.sip = None
-        wavelength, bandpass = spectral_wcs.pixel_to_world(x, y)
+        wavelength, bandwidth = spectral_wcs.pixel_to_world(x, y)
         row["central_wavelength"] = wavelength.to(u.micrometer).value
 
         # Collect the HDUs for this cutout and append the row's cutout_index to the EXTNAME.

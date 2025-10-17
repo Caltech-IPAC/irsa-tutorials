@@ -220,7 +220,7 @@ The main WCS describes the astrometric registration of the image, including opti
 
 There are two alternative WCS systems:
 - WCSNAMEA describes zero-based pixel coordinates.
-- WCSNAMEW describes spectral coordinates 'Wavelength' and 'Bandpass'. This WCS contains a reference to the lookup table in the 'WCS-WAVE' extension.
+- WCSNAMEW describes spectral coordinates 'Wavelength' and 'Bandwidth'. This WCS contains a reference to the lookup table in the 'WCS-WAVE' extension.
 
 +++
 
@@ -273,9 +273,9 @@ spectral_wcs.sip = None
 
 ```{code-cell} ipython3
 # The standard Astropy methods for converting pixel coordinates to world coordinates can also be used to obtain spectral coordinates.
-# Take the pixel coordinates that we determined for the image center and resolve them to the wavelength and bandpass for that pixel
-wl, bp = spectral_wcs.pixel_to_world(x, y)
-wl, bp
+# Take the pixel coordinates that we determined for the image center and resolve them to the wavelength and bandwidth for that pixel
+wl, bw = spectral_wcs.pixel_to_world(x, y)
+wl, bw
 ```
 
 ### 8c. How does wavelength vary across the detector?
@@ -291,10 +291,10 @@ spectral_image_data = spectral_image.data
 # Use the spectral WCS to convert these pixel coordinates to spectral coordinates.
 spectral_coords = spectral_wcs.pixel_to_world(x, y)
 
-# Break out the two spectral coordinates (wavelength and bandpass) from the spectral coordinates, and print the results.
-wavelength, bandpass = spectral_coords
+# Break out the two spectral coordinates (wavelength and bandwidth) from the spectral coordinates, and print the results.
+wavelength, bandwidth = spectral_coords
 print("Wavelength: \n", wavelength)
-print("Bandpass: \n", bandpass)
+print("Bandwidth: \n", bandwidth)
 ```
 
 ```{code-cell} ipython3
