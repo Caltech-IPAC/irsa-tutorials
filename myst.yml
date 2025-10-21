@@ -7,6 +7,10 @@ project:
   keywords: [astronomy]
   authors: [IRSA Scientists and Developers]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
+  jupyter:
+    binder:
+      repo: https://github.com/Caltech-IPAC/irsa-tutorials/
+      url: https://mybinder.org
   settings:
     output_matplotlib_strings: remove
 extends:
