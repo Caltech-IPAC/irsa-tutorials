@@ -65,6 +65,7 @@ from astroquery.ipac.irsa import Irsa
 from firefly_client import FireflyClient
 ```
 
+(spherex-query-sia)=
 ## 5. Search for SPHEREx Spectral Image MEFs that overlap coordinates you are interested in
 
 +++
@@ -101,6 +102,12 @@ There are currently three collections available for the second Quick Release:
 ```{code-cell} ipython3
 results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
 ```
+
+:::{note}
+SPHEREx data are ingested on a weekly basis.
+Due to the nature of the ingestion process, availability via SIA will lag on the order of a day.
+To avoid this delay, users can access data through the browsable directories or the SPHEREx Data Explorer GUI (see [SPHEREx Data Access](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access)), or do a TAP query as shown in {ref}`spherex-query-tap`.
+:::
 
 Each row of the results of your query represents a different spectral image.
 Because SPHEREx data will be released on a weekly basis, the number of rows returned will change

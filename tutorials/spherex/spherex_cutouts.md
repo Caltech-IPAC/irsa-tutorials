@@ -83,6 +83,7 @@ bandpass = 'SPHEREx-D2'
 output_filename = 'spherex_cutouts_mef.fits'
 ```
 
+(spherex-query-tap)=
 ## 5. Query IRSA for a list of cutouts that satisfy the criteria specified above.
 
 Here we show how to use the `pyvo` TAP SQL query to retrieve all images that overlap with the position defined above.
@@ -116,6 +117,11 @@ results = service.search(query)
 print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
 ```
+
+:::{note}
+SPHEREx data are also available via SIA which can provide a simpler interface for many queries, as demonstrated in {ref}`spherex-query-sia`.
+An advantage of the method shown above is that it provides access to data immediately after ingestion (which occurs weekly) and is not subject to the same ~1 day delay as SIA.
+:::
 
 ## 6. Define a function that processes a list of SPHEREx Spectral Image Cutouts
 
