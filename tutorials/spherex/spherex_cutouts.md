@@ -44,7 +44,7 @@ The following packages must be installed to run this notebook.
 ```
 
 ```{code-cell} ipython3
-import concurrent
+import concurrent.futures
 import time
 
 import astropy.units as u
