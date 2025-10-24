@@ -70,7 +70,7 @@ Both should be defined using `astropy` units.
 The goal is to obtain the cutout and then extract the PSF corresponding to the coordinates of interest.
 
 ```{tip}
-To learn more about how to access SPHEREx spectral images and how to download cutouts, we refer to the [SPHEREx Intro Tutorial](spherex-intro) and the [SPHEREx Cutouts Tutorial](spherex-cutouts).
+To learn more about how to access SPHEREx spectral images and how to download cutouts, we refer to the [SPHEREx Intro Tutorial](#spherex-intro) and the [SPHEREx Cutouts Tutorial](#spherex-cutouts).
 ```
 
 ```{code-cell} ipython3
@@ -92,11 +92,11 @@ service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 # Sort by observation time.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.to(u.degree).value},{dec.to(u.degree).value}d&size={size.to(u.degree).value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
-WHERE 1 = CONTAINS(POINT('ICRS', {ra.to(u.degree).value}, {dec.to(u.degree).value}), p.poly)
+WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
 ORDER BY p.time_bounds_lower
 """
 
@@ -106,6 +106,11 @@ results = service.search(query)
 print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
 ```
+
+:::{note}
+SPHEREx data are also available via SIA which can provide a simpler interface for many queries, as demonstrated in {ref}`spherex-intro`.
+An advantage of the method shown above is that it provides access to data immediately after ingestion (which occurs weekly) and is not subject to the same ~1 day delay as SIA.
+:::
 
 For this example, we focus on the first one of the retrieved SPHEREx spectral images.
 
@@ -176,7 +181,7 @@ We do this by first determining the pixel (x,y) coordinates of our coordinates o
 
 ```{code-cell} ipython3
 wcs = WCS(cutout_header)
-xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra.to(u.degree), dec=dec.to(u.degree)))
+xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra, dec=dec))
 
 print(f"Pixel values of coordinates of interest on cutout image: x = {xpix_cutout}, y = {ypix_cutout}")
 ```
@@ -269,7 +274,7 @@ plt.show()
 
 **Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Brigitta Sipőcz, Troy Raen
 
-**Updated:** 2025-09-30
+**Updated:** 24 October 2025
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 

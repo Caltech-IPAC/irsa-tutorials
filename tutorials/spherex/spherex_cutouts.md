@@ -44,7 +44,7 @@ The following packages must be installed to run this notebook.
 ```
 
 ```{code-cell} ipython3
-import concurrent
+import concurrent.futures
 import time
 
 import astropy.units as u
@@ -101,11 +101,11 @@ service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 # Sort by observation time.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.to(u.degree).value},{dec.to(u.degree).value}d&size={size.to(u.degree).value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
-WHERE 1 = CONTAINS(POINT('ICRS', {ra.to(u.degree).value}, {dec.to(u.degree).value}), p.poly)
+WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
         AND p.energy_bandpassname = '{bandpass}'
 ORDER BY p.time_bounds_lower
 """
@@ -116,6 +116,11 @@ results = service.search(query)
 print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
 ```
+
+:::{note}
+SPHEREx data are also available via SIA which can provide a simpler interface for many queries, as demonstrated in {ref}`spherex-intro`.
+An advantage of the method shown above is that it provides access to data immediately after ingestion (which occurs weekly) and is not subject to the same ~1 day delay as SIA.
+:::
 
 ## 6. Define a function that processes a list of SPHEREx Spectral Image Cutouts
 
@@ -158,7 +163,7 @@ def process_cutout(row, ra, dec, cache):
         # Compute wavelength at cutout position.
         spectral_wcs = WCS(header, fobj=hdulist, key="W")
         spectral_wcs.sip = None
-        wavelength, bandpass = spectral_wcs.pixel_to_world(x, y)
+        wavelength, bandwidth = spectral_wcs.pixel_to_world(x, y)
         row["central_wavelength"] = wavelength.to(u.micrometer).value
 
         # Collect the HDUs for this cutout and append the row's cutout_index to the EXTNAME.
@@ -327,7 +332,7 @@ plt.show()
 
 **Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick, Shoubaneh Hemmati
 
-**Updated:** 2025-09-30
+**Updated:** 24 October 2025
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 

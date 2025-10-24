@@ -41,10 +41,11 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 +++
 
 ## 3. Requirements
-The following packages must be installed to run this notebook. Comment out the following lines if they are already installed.
+The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
-# pip install numpy matplotlib astropy astroquery firefly-client
+# Uncomment the next line to install dependencies if needed.
+# %pip install numpy matplotlib astropy astroquery firefly-client
 ```
 
 ## 4. Imports
@@ -91,15 +92,21 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-There are currently three collections available:
+There are currently three collections available for the second Quick Release:
 
-* `'spherex_qr'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr_cal'` -- Quick Release **Calibration files**
-* `'spherex_qr_deep'` -- Quick Release Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
+* `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr2_cal'` -- Quick Release 2 **Calibration files**
+* `'spherex_qr2_deep'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr')
+results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
 ```
+
+:::{note}
+SPHEREx data are ingested on a weekly basis.
+Due to the nature of the ingestion process, availability via SIA will lag on the order of a day.
+To avoid this delay, users can access data through the browsable directories or the SPHEREx Data Explorer GUI (see [SPHEREx Data Access](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access)), or do a TAP query as shown in {ref}`spherex-cutouts`.
+:::
 
 Each row of the results of your query represents a different spectral image.
 Because SPHEREx data will be released on a weekly basis, the number of rows returned will change
@@ -168,7 +175,7 @@ fc.reinit_viewer()
 Visualize a spectral image MEF by sending its URL to the viewer.
 
 ```{code-cell} ipython3
-fc.show_fits(url=spectral_image_url,
+fc.show_fits_image(file_input=spectral_image_url,
              plot_id="spectral_image",
              Title="Spectral Image"
              )
@@ -219,7 +226,7 @@ The main WCS describes the astrometric registration of the image, including opti
 
 There are two alternative WCS systems:
 - WCSNAMEA describes zero-based pixel coordinates.
-- WCSNAMEW describes spectral coordinates 'Wavelength' and 'Bandpass'. This WCS contains a reference to the lookup table in the 'WCS-WAVE' extension.
+- WCSNAMEW describes spectral coordinates 'Wavelength' and 'Bandwidth'. This WCS contains a reference to the lookup table in the 'WCS-WAVE' extension.
 
 +++
 
@@ -260,7 +267,7 @@ Note: The previous line triggers an Astropy INFO printout,
 which implies that the SIP distortion coefficients from the main WCS are preserved in the alternative WCS.
 This is because the SIP convention, not formally part of the FITS standard,
 is ambiguous as to whether it is meant to apply to 'alternative' (lettered) WCSes in addition to the primary WCS.
-See [astropy/astropy#13105](https://github.com/astropy/astropy/issues/13105).)
+See [astropy/astropy#13105](https://github.com/astropy/astropy/issues/13105).
 
 The wavelength per pixel is a property of the detector-filter combination and is independent of optical distortion in the telescope,
 and is modeled accordingly in WCS 'W', so we turn the SIP distortion off for this WCS.
@@ -272,9 +279,9 @@ spectral_wcs.sip = None
 
 ```{code-cell} ipython3
 # The standard Astropy methods for converting pixel coordinates to world coordinates can also be used to obtain spectral coordinates.
-# Take the pixel coordinates that we determined for the image center and resolve them to the wavelength and bandpass for that pixel
-wl, bp = spectral_wcs.pixel_to_world(x, y)
-wl, bp
+# Take the pixel coordinates that we determined for the image center and resolve them to the wavelength and bandwidth for that pixel
+wl, bw = spectral_wcs.pixel_to_world(x, y)
+wl, bw
 ```
 
 ### 8c. How does wavelength vary across the detector?
@@ -290,10 +297,10 @@ spectral_image_data = spectral_image.data
 # Use the spectral WCS to convert these pixel coordinates to spectral coordinates.
 spectral_coords = spectral_wcs.pixel_to_world(x, y)
 
-# Break out the two spectral coordinates (wavelength and bandpass) from the spectral coordinates, and print the results.
-wavelength, bandpass = spectral_coords
+# Break out the two spectral coordinates (wavelength and bandwidth) from the spectral coordinates, and print the results.
+wavelength, bandwidth = spectral_coords
 print("Wavelength: \n", wavelength)
-print("Bandpass: \n", bandpass)
+print("Bandwidth: \n", bandwidth)
 ```
 
 ```{code-cell} ipython3
@@ -436,6 +443,6 @@ Andreas Faisst, Shoubaneh Hemmati, Vandana Desai
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
 
-**Updated:** June 2025
+**Updated:** 24 October 2025
 
 **Runtime:** approximately 30 seconds
