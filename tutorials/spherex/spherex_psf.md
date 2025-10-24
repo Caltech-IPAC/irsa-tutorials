@@ -166,8 +166,8 @@ Each of the 121 PSFs is responsible for one of these zones.
 The PSF header therefore includes the center position of these zones as well as the width of the zones.
 These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...121.
 The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...121.
-The zones have equal widths and are arranged in an even grid.
-In principle, the zones can have any size, but this arrangement is enough to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
+The zones have approximately equal widths and are arranged in an even grid.
+The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
 
 The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
 
@@ -234,10 +234,10 @@ for zone_id in xctr.keys():
 ```
 
 Once we have created this dictionary with zone pixel coordinates, we can simply search for the closest zone center to the coordinates of interest.
-For this we first add the distance between zone center coordinates and coordinates of interest to the table
+For this we first add the distance between zone center coordinates and coordinates of interest to the table. (Note that the x,y coordinates of the PSF zone centers are in 1,1 convention, therefore we have to subtract 1 pixels.)
 
 ```{code-cell} ipython3
-tab["distance"] = np.sqrt((tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2)
+tab["distance"] = np.sqrt((tab["x"]-1 - xpix_orig)**2 + (tab["y"]-1 - ypix_orig)**2)
 ```
 
 Then we can sort the table and pick the closest zone to coordinates of interest.
@@ -256,7 +256,7 @@ print(f"The PSF zone corresponding to coordinates of interest is {psf_cube_plane
 Now that we know which zone corresponds to coordinates of interest, we can extract it and plot it.
 
 ```{code-cell} ipython3
-psf = psfcube[psf_cube_plane]
+psf = psfcube[psf_cube_plane-1]
 
 fig = plt.figure(figsize=(5, 5))
 ax1 = fig.add_subplot(1, 1, 1)
