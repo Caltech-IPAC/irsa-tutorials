@@ -107,6 +107,11 @@ print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
 ```
 
+:::{note}
+SPHEREx data are also available via SIA which can provide a simpler interface for many queries, as demonstrated in {ref}`spherex-intro`.
+An advantage of the method shown above is that it provides access to data immediately after ingestion (which occurs weekly) and is not subject to the same ~1 day delay as SIA.
+:::
+
 For this example, we focus on the first one of the retrieved SPHEREx spectral images.
 
 ```{code-cell} ipython3
