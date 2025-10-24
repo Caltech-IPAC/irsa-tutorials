@@ -251,7 +251,7 @@ print(f"The PSF zone corresponding to coordinates of interest is {psf_cube_plane
 Now that we know which zone corresponds to coordinates of interest, we can extract it and plot it.
 
 ```{code-cell} ipython3
-psf = psfcube[psf_cube_plane]
+psf = psfcube[psf_cube_plane-1]
 
 fig = plt.figure(figsize=(5, 5))
 ax1 = fig.add_subplot(1, 1, 1)
