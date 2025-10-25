@@ -1,2 +1,4 @@
 # Runs out of memory on GHA using the JB2 stack
 tutorials/parallelize/Parallelize_Convolution
+# Uses about 10G of memory which doesn't leave enough for other notebooks
+tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
