@@ -75,10 +75,11 @@ adql = f"SELECT count(redshift) FROM {tablename}"
 adql
 ```
 
+In order to use TAP with this ADQL string using pyvo, you can do the following:
+
 ```{code-cell} ipython3
-# In order to use TAP with this ADQL string using pyvo, you can do the following:
-result = service.run_async(adql)
-result
+# Uncomment the next line to run the query. Beware that it can take awhile.
+# service.run_async(adql)
 ```
 
 The above query shows that there are 597,488,849 redshifts in this table.
