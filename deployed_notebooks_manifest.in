@@ -1,7 +1,6 @@
 tutorials/cloud_access/cloud-access-intro.md
 tutorials/cloud_access/euclid-cloud-access.md
 tutorials/cosmodc2/cosmoDC2_TAP_access.md
-tutorials/euclid_access/.gitkeep
 tutorials/euclid_access/1_Euclid_intro_MER_images.md
 tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
 tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
