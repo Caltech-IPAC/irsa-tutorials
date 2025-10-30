@@ -36,7 +36,7 @@ SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 20
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR_v1.0.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
 +++
 

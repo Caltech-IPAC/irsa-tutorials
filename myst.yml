@@ -19,7 +19,6 @@ project:
        keys:
          # These link resolve in the browser but generates did not resolve and 403 for the build
          - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=SPITZER
-         - https://academic.oup.com/mnras/article/505/2/2954/6284767
 extends:
   - toc.yml
 site:
