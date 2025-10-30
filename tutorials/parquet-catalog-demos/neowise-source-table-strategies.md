@@ -110,9 +110,9 @@ A fully-worked example is shown in the light curve notebook linked below.
 
 ### 1.3 See also
 
-- [IRSA Cloud Access Intro](https://irsa.ipac.caltech.edu/docs/notebooks/cloud-access-intro.html)
-- [AllWISE Source Catalog Demo](https://irsa.ipac.caltech.edu/docs/notebooks/wise-allwise-catalog-demo.html)
-- [Make Light Curves from NEOWISE Single-exposure Source Table](https://irsa.ipac.caltech.edu/docs/notebooks/neowise-source-table-lightcurves.html)
+- [](#cloud-access-intro)
+- [](#allwise-source-catalog)
+- [](#neowise-lightcurves)
 
 +++
 

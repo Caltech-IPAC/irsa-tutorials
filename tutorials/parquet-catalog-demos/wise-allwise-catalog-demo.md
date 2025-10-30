@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
+(allwise-source-catalog)=
 # Analyzing cloud-hosted AllWISE Source Catalog in Parquet format
 
 +++
@@ -29,7 +30,7 @@ kernelspec:
 
 ## Introduction
 
-This notebook demonstrates access to the [HEALPix](https://ui.adsabs.harvard.edu/abs/2005ApJ...622..759G/abstract)-partitioned (order 5), [Apache Parquet](https://parquet.apache.org/) version of the [AllWISE Source Catalog](https://wise2.ipc.caltech.edu/docs/release/allwise/expsup/sec1_3.html#src_cat).
+This notebook demonstrates access to the [HEALPix](https://ui.adsabs.harvard.edu/abs/2005ApJ...622..759G/abstract)-partitioned (order 5), [Apache Parquet](https://parquet.apache.org/) version of the [AllWISE Source Catalog](https://wise2.ipac.caltech.edu/docs/release/allwise/expsup/sec1_3.html#src_cat).
 The catalog is available through the [AWS Open Data](https://aws.amazon.com/opendata) program, as part of the [NASA Open-Source Science Initiative](https://science.nasa.gov/open-science-overview).
 
 Parquet is convenient for large astronomical catalogs in part because the storage format supports efficient database-style queries on the files themselves, without having to load the catalog into a database (or into memory) first.
