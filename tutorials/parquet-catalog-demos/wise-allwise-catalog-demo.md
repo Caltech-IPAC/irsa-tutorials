@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-(allwise-source-catalog)=
+(allwise-source-catalog-parquet)=
 # Analyzing cloud-hosted AllWISE Source Catalog in Parquet format
 
 +++

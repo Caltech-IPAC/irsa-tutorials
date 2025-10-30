@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-(neowise-lightcurves)=
+(neowise-lightcurves-parquet)=
 # Make Light Curves from NEOWISE Single-exposure Source Table
 
 +++

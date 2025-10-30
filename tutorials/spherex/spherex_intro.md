@@ -330,7 +330,7 @@ Now let's take a look at some header keywords that provide information about how
 spectral_image_header['L2 N_*']
 ```
 
-There are 14 flags in total. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in Table 8 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR_v1.0.pdf).
+There are 14 flags in total. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in Table 8 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
 +++
 

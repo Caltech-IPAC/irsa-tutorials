@@ -111,8 +111,8 @@ A fully-worked example is shown in the light curve notebook linked below.
 ### 1.3 See also
 
 - [](#cloud-access-intro)
-- [](#allwise-source-catalog)
-- [](#neowise-lightcurves)
+- [](#allwise-source-catalog-parquet)
+- [](#neowise-lightcurves-parquet)
 
 +++
 
