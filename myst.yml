@@ -13,6 +13,12 @@ project:
       url: https://mybinder.org
   settings:
     output_matplotlib_strings: remove
+  error_rules:
+     - rule: link-resolves
+       severity: ignore
+       keys:
+         # These link resolve in the browser but generates did not resolve and 403 for the build
+         - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=SPITZER
 extends:
   - toc.yml
 site:

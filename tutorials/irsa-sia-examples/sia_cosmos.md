@@ -47,14 +47,14 @@ https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html
 
 ## Imports
 
-- *pyvo* for querying IRSA's COSMOS SIA service
-- *astropy.coordinates* for defining coordinates
-- *astropy.nddata* for creating an image cutout
-- *astropy.wcs* for interpreting the World Coordinate System header keywords of a fits file
-- *astropy.units* for attaching units to numbers passed to the SIA service
-- *matplotlib.pyplot* for plotting
-- *astropy.utils.data* for downloading files
-- *astropy.io* to manipulate FITS files
+- `pyvo` for querying IRSA's COSMOS SIA service
+- `astropy.coordinates` for defining coordinates
+- `astropy.nddata` for creating an image cutout
+- `astropy.wcs` for interpreting the World Coordinate System header keywords of a fits file
+- `astropy.units` for attaching units to numbers passed to the SIA service
+- `matplotlib.pyplot` for plotting
+- `astropy.utils.data` for downloading files
+- `astropy.io` to manipulate FITS files
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.

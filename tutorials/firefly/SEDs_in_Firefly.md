@@ -84,7 +84,7 @@ import pyvo
 
 +++
 
-From [Figure 10](https://iopscience.iop.org/article/10.3847/1538-3881/ace32f#ajace32ff10) of the referenced paper, pick the source in the upper right corner (J052736.37+344940.6):
+From [Figure 10](https://doi.org/10.3847/1538-3881/ace32f#ajace32ff10) of the referenced paper, pick the source in the upper right corner (J052736.37+344940.6):
 
 ```{code-cell} ipython3
 target = SkyCoord(ra="05h27m36.37s", dec="+34d49m40.6s")

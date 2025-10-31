@@ -37,9 +37,9 @@ For documentation on the firefly client visit https://caltech-ipac.github.io/fir
 
 ## Imports
 
-- *firefly_client FireflyClient* - Python API to Firefly for displaying tables, images and charts
-- *astropy.utils.data* for downloading the catalog data via TAP query
-- *urllib.parse* for converting regular query string to url-safe string
+- `firefly_client FireflyClient` - Python API to Firefly for displaying tables, images and charts
+- `astropy.utils.data` for downloading the catalog data via TAP query
+- `urllib.parse` for converting regular query string to url-safe string
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.

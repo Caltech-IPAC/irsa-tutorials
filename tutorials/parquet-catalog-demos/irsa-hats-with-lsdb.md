@@ -326,7 +326,7 @@ The rationale for selecting these columns is as follows:
 ztf_schema_df[ztf_schema_df.name.isin(ztf_columns)]
 ```
 
-For a quality cut, we apply the following filter on the number of good epochs (from [Coughlin et al. 2021](https://academic.oup.com/mnras/article/505/2/2954/6284767) section 2):
+For a quality cut, we apply the following filter on the number of good epochs (from {cite}`doi.org/10.1093/mnras/stab1502`) section 2):
 
 ```{code-cell} ipython3
 quality_filters = [
