@@ -60,6 +60,11 @@ from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.table import Table
 from astropy.wcs import WCS
+
+# The time it takes to read SPHEREx files can exceed
+# astropy's default timeout limit. Increase it.
+from astropy.utils.data import conf
+conf.remote_timeout = 120
 ```
 
 ## 4. Get SPHEREx Cutout
