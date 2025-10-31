@@ -63,6 +63,11 @@ from astropy.coordinates import SkyCoord
 from astroquery.ipac.irsa import Irsa
 
 from firefly_client import FireflyClient
+
+# The time it takes to read SPHEREx files can exceed
+# astropy's default timeout limit. Increase it.
+from astropy.utils.data import conf
+conf.remote_timeout = 120
 ```
 
 ## 5. Search for SPHEREx Spectral Image MEFs that overlap coordinates you are interested in

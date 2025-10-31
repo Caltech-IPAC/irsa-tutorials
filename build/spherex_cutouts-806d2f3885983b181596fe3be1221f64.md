@@ -60,6 +60,11 @@ from astropy.wcs import WCS
 # from repeatedly printing out warning notices related to alternate WCSs
 import logging
 logging.getLogger('astropy').setLevel(logging.ERROR)
+
+# The time it takes to read SPHEREx files can exceed
+# astropy's default timeout limit. Increase it.
+from astropy.utils.data import conf
+conf.remote_timeout = 120
 ```
 
 ## 4. Specify inputs and outputs
