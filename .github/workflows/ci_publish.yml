@@ -21,7 +21,7 @@ env:
 jobs:
 
   publish_html:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
     name: Publish HTML
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +46,7 @@ jobs:
           commit_message: ${{ github.event.head_commit.message }}
 
   deploy_notebooks:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
     name: Deploy deployed_notebook branch
     runs-on: ubuntu-latest
     needs: publish_html

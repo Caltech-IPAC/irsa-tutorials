@@ -2,6 +2,7 @@ name: Run CircleCI artifacts redirector for rendered HTML
 on: [status]
 jobs:
    circleci_artifacts_redirector_job:
+     if: ${{ github.repository == 'Caltech-IPAC/irsa-tutorials' }}
      runs-on: ubuntu-latest
      name: Run CircleCI artifacts redirector
      steps:

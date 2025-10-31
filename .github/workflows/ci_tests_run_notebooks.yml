@@ -18,7 +18,7 @@ concurrency:
 jobs:
   tests:
     # Do not run the test matrix on PRs affecting the rendering
-    if: ${{ !(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing') }}
+    if: ${{ !(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing') && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
 
     name: ${{ matrix.os }} ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -59,7 +59,7 @@ jobs:
   gha_buildhtml:
     # When label is used, we do run buildhtml on GHA to check if the publishing job will run or not.
     # Use in case when new content has run into troubles on CircleCI.
-    if: ${{ (github.event_name == 'pull_request') && contains(github.event.pull_request.labels.*.name, 'GHA buildhtml') }}
+    if: ${{ (github.event_name == 'pull_request') && contains(github.event.pull_request.labels.*.name, 'GHA buildhtml') && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
     name: Buildhtml testing
     runs-on: ubuntu-latest
     steps:
