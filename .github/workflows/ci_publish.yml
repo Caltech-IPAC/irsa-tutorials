@@ -27,6 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install mystmd
+        run: npm install mystmd
+
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
