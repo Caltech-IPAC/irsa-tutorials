@@ -27,8 +27,6 @@ Learning Goals:
 
 ## 1. Cloud basics
 
-### 1.1 Terminology
-
 AWS S3 is an [object store](https://en.wikipedia.org/wiki/Object_storage) where the fundamental entities are "buckets" and "objects".
 Buckets are containers for objects, and objects are blobs of data.
 Users may be more familiar with [filesystem](https://en.wikipedia.org/wiki/File_system) "files" and "directories".
@@ -43,7 +41,7 @@ The following S3 terms are also used in this notebook:
 
 +++
 
-### 1.2 General access
+### 1.1 General access
 
 Most of the common python methods used to read images and catalogs from a local disk can also be pointed at cloud storage buckets.
 This includes methods like Astropy `fits.open` and Pandas `read_parquet`.
