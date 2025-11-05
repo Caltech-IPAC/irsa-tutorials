@@ -70,6 +70,7 @@ This AllWISE catalog is stored in an [AWS S3](https://aws.amazon.com/s3/) cloud 
 To connect to an S3 bucket we just need to point the reader at S3 instead of the local filesystem.
 (Here, a "reader" is a python library that reads parquet files.)
 We'll use [pyarrow.fs.S3FileSystem](https://arrow.apache.org/docs/python/generated/pyarrow.fs.S3FileSystem.html) for this because it is recognized by every reader in examples below, and we're already using pyarrow.
+([s3fs](https://s3fs.readthedocs.io/en/latest/index.html) is another common option.)
 To access without credentials, we'll use the keyword argument `anonymous=True`.
 More information about accessing S3 buckets can be found at [](#cloud-access-intro).
 

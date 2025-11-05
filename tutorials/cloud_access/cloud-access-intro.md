@@ -50,7 +50,7 @@ The cloud connection is handled by a separate library, usually [s3fs](https://s3
 The IRSA buckets are public and access is free.
 Credentials are not required.
 However, most tools will look for credentials by default and raise an error when none are found.
-To avoid this, users can make an "anonymous" connection, usually with a keyword argument such as `anon=True`.
+To access without credentials, users can make an anonymous connection, usually with a keyword argument such as `anon=True`.
 This notebook demonstrates with the `s3fs`, `astropy`, and `pyarrow` libraries.
 
 +++
