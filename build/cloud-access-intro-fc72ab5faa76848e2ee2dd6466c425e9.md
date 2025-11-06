@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
+(cloud-access-intro)=
 # IRSA cloud access introduction
 
 This is the introductory tutorial demonstrating basic python access to the IRSA-curated images and catalogs available in AWS S3 cloud storage buckets.
@@ -26,8 +27,6 @@ Learning Goals:
 
 ## 1. Cloud basics
 
-### 1.1 Terminology
-
 AWS S3 is an [object store](https://en.wikipedia.org/wiki/Object_storage) where the fundamental entities are "buckets" and "objects".
 Buckets are containers for objects, and objects are blobs of data.
 Users may be more familiar with [filesystem](https://en.wikipedia.org/wiki/File_system) "files" and "directories".
@@ -42,7 +41,7 @@ The following S3 terms are also used in this notebook:
 
 +++
 
-### 1.2 General access
+### 1.1 General access
 
 Most of the common python methods used to read images and catalogs from a local disk can also be pointed at cloud storage buckets.
 This includes methods like Astropy `fits.open` and Pandas `read_parquet`.
@@ -50,7 +49,9 @@ The cloud connection is handled by a separate library, usually [s3fs](https://s3
 
 The IRSA buckets are public and access is free.
 Credentials are not required.
-Anonymous connections can be made, often by setting a keyword argument like `anon=True`.
+However, most tools will look for credentials by default and raise an error when none are found.
+To access without credentials, users can make an anonymous connection, usually with a keyword argument such as `anon=True`.
+This notebook demonstrates with the `s3fs`, `astropy`, and `pyarrow` libraries.
 
 +++
 

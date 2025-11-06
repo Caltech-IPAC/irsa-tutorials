@@ -12,6 +12,7 @@ kernelspec:
 skip_execution: true
 ---
 
+(neowise-lightcurves-parquet)=
 # Make Light Curves from NEOWISE Single-exposure Source Table
 
 +++

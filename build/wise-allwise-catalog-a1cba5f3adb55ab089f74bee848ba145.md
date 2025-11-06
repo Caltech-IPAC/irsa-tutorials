@@ -12,6 +12,7 @@ kernelspec:
 skip_execution: true
 ---
 
+(allwise-source-catalog-parquet)=
 # Analyzing cloud-hosted AllWISE Source Catalog in Parquet format
 
 +++
@@ -30,8 +31,9 @@ skip_execution: true
 
 ## Introduction
 
-This notebook demonstrates access to the [HEALPix](https://ui.adsabs.harvard.edu/abs/2005ApJ...622..759G/abstract)-partitioned (order 5), [Apache Parquet](https://parquet.apache.org/) version of the [AllWISE Source Catalog](https://wise2.ipc.caltech.edu/docs/release/allwise/expsup/sec1_3.html#src_cat).
-The catalog is available through the [AWS Open Data](https://aws.amazon.com/opendata) program, as part of the [NASA Open-Source Science Initiative](https://science.nasa.gov/open-science-overview).
+This notebook demonstrates access to the [HEALPix](https://ui.adsabs.harvard.edu/abs/2005ApJ...622..759G/abstract)-partitioned (order 5), [Apache Parquet](https://parquet.apache.org/) version of the [AllWISE Source Catalog](https://wise2.ipac.caltech.edu/docs/release/allwise/expsup/sec1_3.html#src_cat).
+The catalog is available through the [AWS Open Data](https://registry.opendata.aws/wise-allwise/) program, as part of the [NASA Open-Source Science Initiative](https://science.nasa.gov/open-science-overview).
+Access is free and no special permissions or credentials are required.
 
 Parquet is convenient for large astronomical catalogs in part because the storage format supports efficient database-style queries on the files themselves, without having to load the catalog into a database (or into memory) first.
 The AllWISE catalog is fairly large at 340 GB.
@@ -65,13 +67,13 @@ from pyarrow.fs import S3FileSystem
 
 +++
 
-This AllWISE catalog is stored in an [AWS S3](https://aws.amazon.com/s3/) bucket.
-To connect to an S3 bucket we just need to point the reader at S3 instead of the local filesystem, and pass in AWS credentials.
+This AllWISE catalog is stored in an [AWS S3](https://aws.amazon.com/s3/) cloud storage bucket.
+To connect to an S3 bucket we just need to point the reader at S3 instead of the local filesystem.
 (Here, a "reader" is a python library that reads parquet files.)
 We'll use [pyarrow.fs.S3FileSystem](https://arrow.apache.org/docs/python/generated/pyarrow.fs.S3FileSystem.html) for this because it is recognized by every reader in examples below, and we're already using pyarrow.
-[s3fs](https://s3fs.readthedocs.io/en/latest/index.html) is another common option.
-The call to `S3FileSystem` will look for AWS credentials in environment variables and/or the file ~/.aws/credentials.
-Credentials can also be passed as keyword arguments.
+([s3fs](https://s3fs.readthedocs.io/en/latest/index.html) is another common option.)
+To access without credentials, we'll use the keyword argument `anonymous=True`.
+More information about accessing S3 buckets can be found at [](#cloud-access-intro).
 
 ```{code-cell} ipython3
 bucket = "nasa-irsa-wise"
