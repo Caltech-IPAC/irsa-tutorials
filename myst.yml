@@ -13,6 +13,8 @@ project:
       url: https://mybinder.org
   settings:
     output_matplotlib_strings: remove
+  references:
+    spherex-archive-docs: https://caltech-ipac.github.io/spherex-archive-documentation
   error_rules:
      - rule: link-resolves
        severity: ignore

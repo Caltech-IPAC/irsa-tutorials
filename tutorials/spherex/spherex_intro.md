@@ -96,7 +96,7 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 
 +++
 
-The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
+The collections are documented at [](xref:spherex-archive-docs/spherex-data-access#application-program-interfaces-apis)
 There are currently three collections available for the second Quick Release:
 
 * `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
@@ -110,7 +110,7 @@ results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
 :::{note}
 SPHEREx data are ingested on a weekly basis.
 Due to the nature of the ingestion process, availability via SIA will lag on the order of a day.
-To avoid this delay, users can access data through the browsable directories or the SPHEREx Data Explorer GUI (see [SPHEREx Data Access](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access)), or do a TAP query as shown in {ref}`spherex-cutouts`.
+To avoid this delay, users can access data through the browsable directories or the SPHEREx Data Explorer GUI (see [](xref:spherex-archive-docs/spherex-data-access) ), or do a TAP query as shown in [](#spherex-cutouts).
 :::
 
 Each row of the results of your query represents a different spectral image.
