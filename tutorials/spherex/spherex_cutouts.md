@@ -229,16 +229,6 @@ The choice of this value depends on the number of cores but also on the number o
 A good value for the maximum number of workers is between 7 and 12 for a machine with 8 cores.
 ```
 
-```{tip}
-The astropy `fits.open()` supports a caching argument.
-This can be passed through in the `process_cutout()` function.
-If `cache=True` is set, the images are cached and the cutout creation is sped up next time the code is run (even if the Jupyter kernel is restarted!).
-The downside is that the images are saved on the machine where this notebook is run (usually in `~/.astropy/cache/`).
-If many cutouts are created, this can sum up to a large cached data volume, in which case `cache=False` is preferred.
-
-To learn more about the cache please read the [astropy cache management documentation](https://docs.astropy.org/en/stable/utils/data.html#cache-management).
-```
-
 Again, before running the cutout processing we define some place holders.
 
 ```{code-cell} ipython3
