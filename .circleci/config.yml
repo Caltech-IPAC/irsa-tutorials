@@ -43,4 +43,8 @@ workflows:
   version: 2
   build-and-docs:
     jobs:
-      - build-docs
+      - build-docs:
+          filters:
+            branches:
+              ignore:
+                - main
