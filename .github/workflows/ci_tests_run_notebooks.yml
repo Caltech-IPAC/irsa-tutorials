@@ -16,7 +16,7 @@ concurrency:
 jobs:
   tests:
     # Do not run the test matrix on PRs affecting the rendering
-    if: ${{ !(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing') && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
+    if: ${{ (!(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing')) && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
 
     name: ${{ matrix.os }} ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
