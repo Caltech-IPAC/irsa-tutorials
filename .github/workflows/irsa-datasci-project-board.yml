@@ -1,0 +1,68 @@
+name: Add Issues and PRs to IRSA DataSci Project Board
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.IRSA_DATASCI_PROJECT_BOARD_TOKEN }}
+      PROJECT_ID: PVT_kwDOAnxacs4BJ3uX  # IRSA DataSci project https://github.com/orgs/IPAC-SW/projects/5
+      # Status Field
+      STATUS_FIELD_ID: PVTSSF_lADOAnxacs4BJ3uXzg56BHQ
+      TRIAGE_STATUS_ID: f971fb55
+      IN_PROGRESS_STATUS_ID: 47fc9ee4
+      # Priority Field
+      PRIORITY_FIELD_ID: PVTSSF_lADOAnxacs4BJ3uXzg56BH0
+      NONE_PRIORITY_ID: fdb9609a
+      # Work Area Field
+      WORK_AREA_FIELD_ID: PVTSSF_lADOAnxacs4BJ3uXzg56BIE
+      CONTENT_WORK_AREA_ID: fef68271
+      INFRASTRUCTURE_WORK_AREA_ID: a94c6662
+
+    steps:
+      - name: Add to project
+        uses: actions/add-to-project@v1.0.2
+        id: add-to-project
+        with:
+          project-url: https://github.com/orgs/IPAC-SW/projects/5
+          github-token: ${{ secrets.IRSA_DATASCI_PROJECT_BOARD_TOKEN }}
+
+      # Set Status value based on event type
+      - name: Set Issue Status to 'Triage'
+        if: github.event_name == 'issues'
+        env:
+          ITEM_ID: ${{ steps.add-to-project.outputs.itemId }}
+        run: |
+          gh project item-edit --id $ITEM_ID --project-id $PROJECT_ID --field-id $STATUS_FIELD_ID --single-select-option-id $TRIAGE_STATUS_ID
+      - name: Set PR Status to 'In Progress'
+        if: github.event_name == 'pull_request'
+        env:
+          ITEM_ID: ${{ steps.add-to-project.outputs.itemId }}
+        run: |
+          gh project item-edit --id $ITEM_ID --project-id $PROJECT_ID --field-id $STATUS_FIELD_ID --single-select-option-id $IN_PROGRESS_STATUS_ID
+
+      # Set Priority value to 'None' for all items
+      - name: Set Priority to 'None'
+        env:
+          ITEM_ID: ${{ steps.add-to-project.outputs.itemId }}
+        run: |
+          gh project item-edit --id $ITEM_ID --project-id $PROJECT_ID --field-id $PRIORITY_FIELD_ID --single-select-option-id $NONE_PRIORITY_ID
+
+      # Set Work Area value based on label
+      - name: Set Work Area to 'Content' if item has 'content' label
+        if: contains((github.event.issue || github.event.pull_request).labels.*.name, 'content')
+        env:
+          ITEM_ID: ${{ steps.add-to-project.outputs.itemId }}
+        run: |
+          gh project item-edit --id $ITEM_ID --project-id $PROJECT_ID --field-id $WORK_AREA_FIELD_ID --single-select-option-id $CONTENT_WORK_AREA_ID
+      - name: Set Work Area to 'Infrastructure' if item has 'infrastructure' label
+        if: contains((github.event.issue || github.event.pull_request).labels.*.name, 'infrastructure')
+        env:
+          ITEM_ID: ${{ steps.add-to-project.outputs.itemId }}
+        run: |
+          gh project item-edit --id $ITEM_ID --project-id $PROJECT_ID --field-id $WORK_AREA_FIELD_ID --single-select-option-id $INFRASTRUCTURE_WORK_AREA_ID
