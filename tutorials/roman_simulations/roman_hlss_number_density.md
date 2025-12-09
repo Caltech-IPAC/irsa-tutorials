@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.15.2
+    jupytext_version: 1.18.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
+  display_name: python3
+  language: python
 ---
 
 # Number Density as a Function of Redshift
@@ -74,6 +74,10 @@ import requests
 - This is about 30G of data in total
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def download_file(file_url, save_path):
     """
     Downloads a file from a given URL and saves it to a specified local path.
@@ -103,6 +107,14 @@ def download_file(file_url, save_path):
     return save_path
 
 
+
+```
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def download_files_in_parallel(file_url_list, save_dir):
     """
     Downloads multiple files in parallel using a ThreadPoolExecutor.
@@ -129,7 +141,13 @@ def download_files_in_parallel(file_url_list, save_dir):
                 downloaded_files.append(file_path)
 
     return downloaded_files
+```
 
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def download_simulations(download_dir, download_all=True):
     """
     Download .hdf5 simulation files from the Roman Zhai2021 URL using the provided checksums.md5 file.
@@ -205,6 +223,10 @@ download_simulations(download_dir, download_all=False)
 ### 1.2 read files into a pandas dataframe so we can work with them
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def fetch_column_names():
     """
     Fetches column names from the Readme_small.txt file at the specified URL.
@@ -236,9 +258,13 @@ def fetch_column_names():
     else:
         print("No column names found in Readme_small.txt.")
         return []
+```
 
-
-
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
     """
     Read selected columns from an HDF5 file into a pandas DataFrame.
@@ -290,7 +316,13 @@ def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
     df = df.astype(conversion_map)
 
     return df
+```
 
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def assign_redshift_bins(df, z_min, z_max, dz=0.1):
     """
     Assign redshift bins to a DataFrame based on 'redshift_observed'.
@@ -413,6 +445,10 @@ Do the numbers we are getting and their distributions make sense?
 - plot the number of galaxies per square degree as a function of dec bin
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def get_bin_area(dec_edges, ra_width):
     """
     Calculate the area of each Dec bin in square degrees, given the RA width.
@@ -432,7 +468,13 @@ def get_bin_area(dec_edges, ra_width):
         areas.append(area)
 
     return np.array(areas)
-    
+```
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def calculate_counts_per_deg2(df):
     """
     Computes galaxy number counts per square degree by binning data in declination.
@@ -477,7 +519,13 @@ def calculate_counts_per_deg2(df):
     counts_per_deg2 = galaxy_counts / bin_areas
 
     return galaxy_counts, counts_per_deg2, dec_bins
+```
 
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_dec_bins(dec_bins, galaxy_counts):
     """
     Plots a histogram of galaxy counts across declination bins.
@@ -507,8 +555,13 @@ def plot_dec_bins(dec_bins, galaxy_counts):
     plt.grid(False)
     plt.show()
     plt.close()  # Explicitly close the plot
+```
 
-    
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_dec_bins_per_deg2(dec_bins, counts_per_deg2):
     """
     Plots a histogram of galaxy number density across declination bins.
@@ -554,6 +607,10 @@ Figure Caption: Both plots have Declination on their X-axis.  The top panel show
 This is a first pass at making a number density plot with just a single data file.  We divide the sample into 10 declination bins in order to do a jackknife sampling and obtain error bars for the plot. We choose to use constant dec bins instead of constant RA bins since area is function of cosine dec so we don't want to average over too much dec.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def jackknife_galaxy_count(df, grid_cells=10):
     """
     Calculate mean galaxy counts per square degree for each redshift bin, using jackknife resampling to estimate uncertainties.
@@ -624,8 +681,13 @@ def jackknife_galaxy_count(df, grid_cells=10):
         std_dev_counts.append(np.std(jackknife_means))
 
     return mean_counts, std_dev_counts
+```
 
-
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_centers):
     """
     Plot the galaxy counts per square degree as a function of redshift with jackknife error bars.
@@ -702,6 +764,10 @@ del df
 Originally this section attempted to use dask instead of pandas to hold the data and be able to do this work.  Dask is supposed to be able to do this sort of magic in the background with out of memory catalogs, but in reality, this does not seem to be possible, or at least not possible with a week or so of working on it.  Instead, we will read in the catalogs one at a time, store counts of mean and standard deviation per square degree and then move on to the next catalog.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def calculate_area(df):
     """
     Calculate the total survey area in square degrees based on DEC range and RA width.
@@ -729,6 +795,10 @@ def calculate_area(df):
 ```
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def galaxy_counts_per_hdf5_binned(
     df,
     z_bins,
@@ -793,7 +863,13 @@ def galaxy_counts_per_hdf5_binned(
         halpha_counts_per_deg2 = None
 
     return counts_per_deg2, halpha_counts_per_deg2
-  
+```
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     counts_summary, z_bin_centers, halpha_flux_thresholds, halpha_summary,
     ):
@@ -876,8 +952,13 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     # Display the plot
     plt.show()
     plt.close()
+```
 
-
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False):
     """
     Performs jackknife resampling over multiple HDF5 files to estimate uncertainties 
@@ -1028,6 +1109,10 @@ Figure Caption: Number Density plots color coded by Halpha flux.  Slight variati
 The uncertainties are plotted as error bars on the data points above.  There are no jackknife uncertainties if you are only using one file, so they will in that case not be visible on the plot.  This section is for the case where you are using more than one downloaded input file.  Here we explore and plot the jackknife uncertainties in a way that makes them visible.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_jackknife_fractional_uncertainty(z_bin_centers, counts, std_dev_counts):
     """
     Plots the fractional jackknife uncertainty (σ / N) as a function of redshift.
@@ -1083,7 +1168,3 @@ or problems.
 **Runtime:** As of the date above, running on the [Fornax Science Platform](https://pcos.gsfc.nasa.gov/Fornax/), this notebook takes about 9 minutes to run to completion on
 a machine with 8GB RAM and 4 CPU.
 This runtime inlcudes the notebook as is, using only one datafile out of 10.  Runtime will be greater than 30 min. longer if the code is allowed to download and work with all 10 datafiles.
-
-```{code-cell} ipython3
-
-```
