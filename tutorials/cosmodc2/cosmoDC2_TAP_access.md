@@ -14,18 +14,31 @@ execution:
   timeout: 2600
 ---
 
-# Querying CosmoDC2 Mock v1 catalogs
+# Querying the CosmoDC2 Mock v1 Catalogs
 
-This tutorial demonstrates how to access the CosmoDC2 Mock V1 catalogs. More information about these catalogs can be found here: https://irsa.ipac.caltech.edu/Missions/cosmodc2.html
+This tutorial demonstrates how to access and query the **CosmoDC2 Mock v1** catalogs using IRSA’s Table Access Protocol (TAP) service. Background information on the catalogs is available on the [IRSA CosmoDC2 page](https://irsa.ipac.caltech.edu/Missions/cosmodc2.html).
 
-These catalogs can be accessed through IRSA's Virtual Ovservatory Table Access Protocol (TAP) service. See https://www.ivoa.net/documents/TAP/ for details on the protocol. This service can be accessed through Python using the PyVO library.
+The catalogs are served through IRSA’s Virtual Observatory–standard **TAP** interface (see the [IVOA TAP specification](https://www.ivoa.net/documents/TAP/)), which you can access programmatically in Python via the **PyVO** library. TAP queries are written in the **Astronomical Data Query Language (ADQL)** — a SQL-like language designed for astronomical catalogs (see the [ADQL specification](https://www.ivoa.net/documents/latest/ADQL.html)).
 
-Tips:
-- This catalog is spatially indexed so searching on position will be the fastest searches.
-- If searching on position, make sure to search in the area that cosmoDC3 covers.
-  - CosmoDC2 covers an area of roughly: RA ≈ 0° to 60°, Dec ≈ –45° to 0°, but not exactly
-- run queries in a way that can be cancelled.  It is very easy to overload the TAP server
-  with multiple queries and not be able to cancel them if you just do a run_sync.
+If you are new to PyVO’s query modes, the documentation provides a helpful comparison between **synchronous** and **asynchronous** execution:  [PyVO: Synchronous vs. Asynchronous Queries](https://pyvo.readthedocs.io/en/latest/dal/index.html#synchronous-vs-asynchronous-query)
+
+
+## Tips for Working with CosmoDC2 via TAP
+
+- **Use indexed columns for fast queries.**
+  CosmoDC2 is indexed on the following fields:
+  `ra`, `dec`, `redshift`, `mag*_lsst`, `halo_mass`, `stellar_mass`
+  Queries involving these columns generally return much faster.
+
+- **Ensure your positional queries fall within the survey footprint.**
+  CosmoDC2 roughly covers:
+  - **RA:** 0° → 60°
+  - **Dec:** –45° → 0°
+  (Coverage is not perfectly rectangular, so some edges may be sparse.)
+
+- **Avoid overloading the TAP service.**
+  Prefer **asynchronous** queries (`submit_job` / `run`) so they can be monitored or cancelled.
+  Using `run_sync()` makes it easy to fire off queries that cannot be interrupted and may continue running on the server long after your client session stops.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -34,6 +47,10 @@ Tips:
 
 ```{code-cell} ipython3
 import pyvo as vo
+import numpy as np
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
+import time
 ```
 
 ```{code-cell} ipython3
@@ -123,21 +140,10 @@ def wait_for_job(job, timeout=60, poll_interval=5.0):
         # Timeout reached — cancel it
         if time.time() - start > timeout:
             print(f"Timeout reached ({timeout} s). Aborting TAP job...")
-            try:
-                job.abort()
-            except Exception as e:
-                print("Abort raised exception:", e)
+            job.abort()
             return False
 
         time.sleep(poll_interval)
-```
-
-```{code-cell} ipython3
-test_small = "SELECT TOP 1 * FROM tap_schema.tables"
-
-t0 = time.time()
-job = service.submit_job(test_small)
-print("Submit time:", time.time() - t0)
 ```
 
 ```{code-cell} ipython3
@@ -161,7 +167,15 @@ else:
 tA = time.time() - t_submit
 
 print("No-WHERE TOP1 query time:", tA, "seconds")
-print("Rows returned:", len(resA))
+```
+
+```{code-cell} ipython3
+test_adql_A = f"SELECT TOP 1 redshift FROM {tablename}"
+results = service.run_async(test_adql_A)
+```
+
+```{code-cell} ipython3
+results
 ```
 
 ```{code-cell} ipython3
@@ -170,8 +184,8 @@ test_adql_B = f"""
 SELECT TOP 1 redshift
 FROM {tablename}
 WHERE CONTAINS(
-    POINT('ICRS', RAMean, DecMean),
-    CIRCLE('ICRS', 30.0, -36.0, 0.2)
+    POINT('ICRS', ra, dec),
+    CIRCLE('ICRS', 54.2, -37.4, 0.05)
 ) = 1
 """
 
@@ -180,7 +194,7 @@ jobB = service.submit_job(test_adql_B)
 t0 = time.time()
 jobB.run()
 
-if wait_for_job(jobB, timeout=20):
+if wait_for_job(jobB, timeout=150):
     results = jobB.fetch_result()
     print("Rows:", len(results))
 else:
@@ -189,22 +203,10 @@ else:
 tB = time.time() - t0
 
 print("Cone-search TOP1 query time:", tB, "seconds")
-print("Rows returned:", len(resB))
 ```
 
 ```{code-cell} ipython3
-print(jobB.phase)
-```
-
-## How many rows are in the chosen table?
-
-With TAP, you can query catalogs with constraints specified in IVOA Astronomical Data Query Language (ADQL; https://www.ivoa.net/documents/latest/ADQL.html), which is based on SQL.
-
-```{code-cell} ipython3
-# For example, this snippet of ADQL counts the number of elements in
-# the redshift column of the table we chose.
-adql = f"SELECT count(redshift) FROM {tablename}"
-adql
+results
 ```
 
 In order to use TAP with this ADQL string using pyvo, you can do the following:
@@ -250,114 +252,124 @@ for col in columns:
     print(f'{f"{col.name}":30s}  {col.description}')
 ```
 
-## Spatial Search
+## Get a list of galaxies within a small area
 
-Since we found out above that cosmoDC2 a large catalog, we can start with a spatial search over a small area of 0.1 deg. The ADQL that is needed for the spatial constraint is shown below.  We then show how to make a redshift histogram of the sample generated.
-
-```{code-cell} ipython3
-adql = f"SELECT redshift FROM {tablename} WHERE CONTAINS(POINT('ICRS', RAMean, DecMean), CIRCLE('ICRS',54.218205903,-37.497959343,.1))=1"
-adql
-```
-
-Now we can use the previously-defined service to execute the query with the spatial contraint.
+Since we know that cosmoDC2 is a large catalog, we can start with a spatial search over a small square area. The ADQL that is needed for the spatial constraint is shown below.  We then show how to make a redshift histogram of the sample generated.
 
 ```{code-cell} ipython3
-cone_results = service.run_sync(adql)
+# Setup the query
+adql = f"""
+SELECT TOP 100 redshift
+FROM {tablename}
+WHERE CONTAINS(
+    POINT('ICRS', ra, dec),
+    CIRCLE('ICRS', 54.2, -37.4, 0.05)
+) = 1
+"""
+job = service.submit_job(adql)
+job.run()
+if wait_for_job(job, timeout=100):
+    spatial_results = job.fetch_result()
+    print("Rows:", len(results))
+else:
+    print("Job did NOT finish — cancelled or failed.")
 ```
 
 ```{code-cell} ipython3
-# Plot a histogram
-import numpy as np
-import matplotlib.mlab as mlab
-import matplotlib.pyplot as plt
-
-num_bins = 20
-# the histogram of the data
-n, bins, patches = plt.hist(cone_results['redshift'], num_bins,
-                            facecolor='blue', alpha = 0.5)
-plt.xlabel('Redshift')
-plt.ylabel('Number')
-plt.title('Redshift Histogram CosmoDC2 Mock Catalog V1 abridged')
+spatial_results
 ```
 
-We can easily see form this plot that the simulated galaxies go out to z = 3.
+```{code-cell} ipython3
+if spatial_results:
+    ]# Plot a histogram
+    num_bins = 20
+    # the histogram of the data
+    n, bins, patches = plt.hist(spatial_results['redshift'], num_bins,
+                                facecolor='blue', alpha = 0.5)
+    plt.xlabel('Redshift')
+    plt.ylabel('Number')
+    plt.title('Redshift Histogram CosmoDC2 Mock Catalog V1 abridged')
+```
+
+We can see form this plot that the simulated galaxies go out to z = 3.
 
 +++
 
-## Visualize galaxy colors at z ~ 2.0
+## Visualize galaxy colors: redshift search
 
-Now let's visualize the galaxy main sequence at z = 2.0. First, we'll do a narrow redshift cut with no spatial constraint.
-
-Let's do it as an asynchronous search since this might take awhile, too.
+First, we'll do a narrow redshift cut with no spatial constraint.  Then, from that redshift sample we will visualize the galaxy main sequence at z = 2.0.
 
 ```{code-cell} ipython3
-adql = f"SELECT TOP 5 redshift FROM {tablename}"
-results = service.run_sync(adql)
-```
-
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-result = service.run_sync("SELECT TOP 1 * FROM tap_schema.tables")
-```
-
-```{code-cell} ipython3
-result = service.run_sync("SELECT TOP 5 redshift FROM cosmodc2mockv1_heavy")
-```
-
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-jobs = service.get_jobs()
-jobs
-```
-
-```{code-cell} ipython3
-service = vo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
-
-#setup the query
+# Setup the query
 adql = f"""
 SELECT TOP 50000
-    Mag_true_r_sdss_z0,
-    Mag_true_g_sdss_z0,
+    Mag_r_LSST,
+    Mag_g_LSST,
     redshift
 FROM {tablename}
-WHERE CONTAINS(
-    POINT('ICRS', RAMean, DecMean),
-    CIRCLE('ICRS', 0.5, -43.0, 0.2)
-    ) = 1
+WHERE redshift > 1.95 and redshift < 2.05
 
 """
-#run the query
-results = service.run_sync(adql)
+# Run the query
+job = service.submit_job(adql)
+job.run()
+
+#if the job does not finish in a reasonable amount of time, cancel it
+if wait_for_job(job, timeout=1000):
+    redshift_results = job.fetch_result()
+    print("Rows:", len(results))
+else:
+    print("Job did NOT finish — cancelled or failed.")
 ```
 
 ```{code-cell} ipython3
-len(results['mag_true_r_sdss_z0'])
+redshift_results
 ```
 
 ```{code-cell} ipython3
-# Since this results in almost 4 million galaxies,
-# we will construct a 2D histogram rather than a scatter plot.
-plt.hist2d(results['mag_true_r_sdss_z0'], results['mag_true_g_sdss_z0']-results['mag_true_r_sdss_z0'],
-           bins=200, cmap='plasma', cmax=500)
+if redshift_results:
+    # Construct a 2D histogram of the galaxy colors
+    plt.hist2d(redshift_results['mag_r_lsst'], redshift_results['mag_g_lsst']-redshift_results['mag_r_lsst'],
+               bins=100, cmap='plasma', cmax=500)
 
-# Plot a colorbar with label.
-cb = plt.colorbar()
-cb.set_label('Number')
+    # Plot a colorbar with label.
+    cb = plt.colorbar()
+    cb.set_label('Number')
 
-# Add title and labels to plot.
-plt.xlabel('SDSS Mag r')
-plt.ylabel('SDSS rest-frame g-r color')
+    # Add title and labels to plot.
+    plt.xlabel('LSST Mag r')
+    plt.ylabel('LSST rest-frame g-r color')
 
-# Show the plot.
-plt.show()
+    # Show the plot.
+    plt.show()
 ```
+
++++ {"jp-MarkdownHeadingCollapsed": true}
+
+## Suggestions for further queries:
+TAP queries are extremely powerful and provide flexible ways to explore large catalogs like CosmoDC2, including spatial searches, photometric selections, cross-matching, and more. However, many valid ADQL queries can take minutes or longer to complete due to the size of the catalog, so we avoid running those directly in this tutorial. Instead, the examples here have so far focused on fast, lightweight queries that illustrate the key concepts without long wait times. If you are interested in exploring further, here are some additional query ideas that are scientifically useful but may take longer to run depending on server conditions.
+
+### How many redshifts are in the chosen table?
+`adql = f"SELECT count(redshift) FROM {tablename}"  #answer: 597,488,849 redshifts`
+
+### Retrieve only a subset of columns (recommended for speed)
+This use of "TOP 5000" just limits the number of rows returned. Remove it if you want all rows
+
+`adql = f"SELECT TOP 5000 ra, dec, redshift, stellar_mass FROM {tablename}"`
+
+### Cone search around a specific position
+This search is slower than the spatial search above because it uses "contains" which does not take advantage of position indexing.
+
+`adql = f""" SELECT TOP 50000 redshift FROM {tablename} WHERE CONTAINS(POINT('ICRS', RAMean, DecMean), CIRCLE('ICRS',54.2, -37.5,.1))=1`
+
++++
 
 ***
 
 ## About this notebook
 
-**Author:** Vandana Desai (IRSA Science Lead)
+**Author:** IRSA Data Science Team, including Vandana Desai, Jessica Krick, Troy Raen, Brigitta Sipőcz, Andreas Faisst, Jaladh Singhal
 
-**Updated:** 2024-07-24
+**Updated:** December 2025
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
