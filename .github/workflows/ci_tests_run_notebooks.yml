@@ -6,7 +6,7 @@ on:
     - main
   pull_request:
   schedule:
-    - cron: '0 5 * * 1'
+    - cron: '0 8 * * 1'
   workflow_dispatch:
 
 concurrency:
@@ -16,12 +16,15 @@ concurrency:
 jobs:
   tests:
     # Do not run the test matrix on PRs affecting the rendering
-    if: ${{ (!(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing')) && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
+    if: >-
+      (!(github.event_name == 'pull_request') || !contains(github.event.pull_request.labels.*.name, 'html rendering / skip testing')) &&
+      github.repository == 'Caltech-IPAC/irsa-tutorials'
 
     name: ${{ matrix.os }} ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         # Run all supported OS for one Python version, then add a few extra scenarios
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -57,7 +60,13 @@ jobs:
   gha_buildhtml:
     # When label is used, we do run buildhtml on GHA to check if the publishing job will run or not.
     # Use in case when new content has run into troubles on CircleCI.
-    if: ${{ (github.event_name == 'pull_request') && contains(github.event.pull_request.labels.*.name, 'GHA buildhtml') && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
+    # Note that we run this job once the tests job is done.
+    if: >-
+      ${{ !cancelled() }} &&
+      ((github.event_name == 'pull_request') && contains(github.event.pull_request.labels.*.name, 'GHA buildhtml') || (github.event_name == 'schedule')) &&
+      github.repository == 'Caltech-IPAC/irsa-tutorials'
+    needs: tests
+
     name: Buildhtml testing
     runs-on: ubuntu-latest
     steps:
