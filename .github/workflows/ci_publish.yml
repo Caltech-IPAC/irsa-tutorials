@@ -19,7 +19,11 @@ env:
 jobs:
 
   publish_html:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'Caltech-IPAC/irsa-tutorials'
+
     name: Publish HTML
     runs-on: ubuntu-latest
     steps:
