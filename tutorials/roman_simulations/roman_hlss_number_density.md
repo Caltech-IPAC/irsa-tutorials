@@ -94,6 +94,9 @@ def download_file(file_url, save_path):
     - requests.HTTPError: If the HTTP request returned an unsuccessful status code.
     - OSError: If there is an issue creating directories or writing the file.
     """
+    import os
+    import requests
+
     response = requests.get(file_url, stream=True)
     response.raise_for_status()  # Raise an HTTPError for bad responses (4xx, 5xx)
 
@@ -105,8 +108,6 @@ def download_file(file_url, save_path):
 
     print(f"Downloaded: {save_path}")
     return save_path
-
-
 
 ```
 
@@ -126,6 +127,9 @@ def download_files_in_parallel(file_url_list, save_dir):
     Returns:
     - list of str: List of paths where the files were successfully downloaded.
     """
+    import os
+    import concurrent.futures
+
     downloaded_files = []
     #set to a reasonable number for efficiency and scalability
     max_workers = min(len(file_url_list), os.cpu_count() * 5, 32)  
@@ -176,6 +180,9 @@ def download_simulations(download_dir, download_all=True):
     - Downloads are performed in parallel using a maximum of 4 workers.
     - Files that already exist locally are skipped.
     """
+    import os
+    import pandas as pd
+
     base_url = 'https://irsa.ipac.caltech.edu/data/theory/Roman/Zhai2021'
     checksum_url = f'{base_url}/checksums.md5'
 
@@ -284,6 +291,9 @@ def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
         A DataFrame containing the selected columns from the HDF5 file, 
         with specified columns cast to float32.
     """
+    import h5py
+    import pandas as pd
+
     # Map of column names to their corresponding index in the HDF5 dataset
     col_map = {
         "RA": 0,
@@ -347,6 +357,9 @@ def assign_redshift_bins(df, z_min, z_max, dz=0.1):
     z_bin_centers : list of float
         The central redshift value for each bin.
     """
+    import numpy as np
+    import pandas as pd
+
     z_bins = np.arange(z_min, z_max + dz, dz)
     df["z_bin"] = pd.cut(df["redshift_observed"], bins=z_bins, include_lowest=True, right=False)
     z_bin_centers = [np.mean([b.left, b.right]) for b in df["z_bin"].cat.categories]
@@ -460,6 +473,8 @@ def get_bin_area(dec_edges, ra_width):
     Returns:
     - areas: List of areas of the Dec bins in square degrees.
     """
+    import numpy as np
+
     dec_heights = np.diff(dec_edges)  # Heights of the Dec bins
     areas = []
     for i in range(len(dec_edges) - 1):
@@ -494,7 +509,9 @@ def calculate_counts_per_deg2(df):
     - dec_bins (np.ndarray): The edges of the declination bins.
 
     """
-    
+    import numpy as np
+    import pandas as pd
+
     # Compute RA edges based on the data
     ra_min = df['RA_shifted'].min()
     ra_max = df['RA_shifted'].max()
@@ -539,6 +556,8 @@ def plot_dec_bins(dec_bins, galaxy_counts):
     - galaxy_counts (np.ndarray): An array containing the number of galaxies in each declination bin.
 
      """
+    import matplotlib.pyplot as plt
+    
     # Calculate the width of each bin (assumes uniform bin sizes)
     bin_width = dec_bins[1] - dec_bins[0]  
     
@@ -576,7 +595,10 @@ def plot_dec_bins_per_deg2(dec_bins, counts_per_deg2):
     - counts_per_deg2 (np.ndarray): An array containing the number of galaxies per square degree 
       for each declination bin.
 
-    """    # Calculate the width of each bin (assumes uniform bin sizes)
+    """    
+    import matplotlib.pyplot as plt
+
+    # Calculate the width of each bin (assumes uniform bin sizes)
     bin_width = dec_bins[1] - dec_bins[0]  
     
     
@@ -626,6 +648,9 @@ def jackknife_galaxy_count(df, grid_cells=10):
     - std_dev_counts: List of jackknife uncertainties (standard deviations) for each redshift bin.
     - z_bin_centers: central values of the redshift bins
     """
+    import numpy as np
+    import pandas as pd
+
     original_galaxy_count = len(df)
     print(f"Original galaxy count: {original_galaxy_count}")
     
@@ -706,6 +731,9 @@ def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_
     - The plot is designed specifically for redshifts in the range of 1.0 to 3.0 and may need adjustments 
       for datasets with different redshift ranges.
     """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    
     # Ensure counts is a NumPy array
     if isinstance(counts, list):
         counts = np.array(counts)
@@ -778,6 +806,8 @@ def calculate_area(df):
     Returns:
     - area: Total survey area in square degrees.
     """
+    import numpy as np
+
     ra_min = df['RA_shifted'].min()
     ra_max = df['RA_shifted'].max()
     dec_min = df['DEC'].min()
@@ -821,6 +851,8 @@ def galaxy_counts_per_hdf5_binned(
     - counts_per_deg2 (numpy.ndarray): Array of galaxy counts per square degree for each redshift bin.
     - halpha_counts (numpy.ndarray): Counts for each Halpha bin (if `find_halpha_bins` is True).
     """
+    import numpy as np
+    
     # Default Halpha flux thresholds if not provided
     if find_halpha_bins and halpha_flux_thresholds is None:
         halpha_flux_thresholds = [0.5e-16, 0.7e-16, 0.9e-16, 1.1e-16, 1.3e-16, 1.5e-16, 1.7e-16, 1.9e-16]
@@ -895,6 +927,9 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     - The x-axis is limited to the redshift range [1, 3].
     - The function ensures proper memory management by explicitly closing the plot.
     """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    
     # Unpack counts_summary
     counts = counts_summary["sum_counts"]
     std_dev_counts = counts_summary["std_dev_counts"]
@@ -990,6 +1025,9 @@ def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False
     - The function saves `all_counts` to a NumPy file for debugging purposes.
     - If `find_halpha_bins` is False, `halpha_summary` is returned as `None` to indicate that Hα binning was not performed.
     """
+    import os
+    import numpy as np
+
     #fix these in case the above cells are not run
     ra_min1=330
     z_min = 1.0
@@ -1126,6 +1164,8 @@ def plot_jackknife_fractional_uncertainty(z_bin_centers, counts, std_dev_counts)
     std_dev_counts : array-like
         The jackknife standard deviation per redshift bin.
     """
+    import matplotlib.pyplot as plt
+
     fractional_uncertainty = std_dev_counts / counts
 
     plt.figure(figsize=(8, 5))
