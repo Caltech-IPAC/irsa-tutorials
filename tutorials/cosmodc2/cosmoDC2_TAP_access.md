@@ -18,7 +18,7 @@ execution:
 
 This tutorial demonstrates how to access and query the **CosmoDC2 Mock v1** catalogs using IRSA’s Table Access Protocol (TAP) service. Background information on the catalogs is available on the [IRSA CosmoDC2 page](https://irsa.ipac.caltech.edu/Missions/cosmodc2.html).
 
-The catalogs are served through IRSA’s Virtual Observatory–standard **TAP** interface (see the [IVOA TAP specification](https://www.ivoa.net/documents/TAP/)), which you can access programmatically in Python via the **PyVO** library. TAP queries are written in the **Astronomical Data Query Language (ADQL)** — a SQL-like language designed for astronomical catalogs (see the [ADQL specification](https://www.ivoa.net/documents/latest/ADQL.html)).
+The catalogs are served through IRSA’s Virtual Observatory–standard **TAP** [interface](https://irsa.ipac.caltech.edu/docs/program_interface/TAP.html), which you can access programmatically in Python via the **PyVO** library. TAP queries are written in the **Astronomical Data Query Language (ADQL)** — a SQL-like language designed for astronomical catalogs (see the [ADQL specification](https://www.ivoa.net/documents/latest/ADQL.html)).
 
 If you are new to PyVO’s query modes, the documentation provides a helpful comparison between **synchronous** and **asynchronous** execution:  [PyVO: Synchronous vs. Asynchronous Queries](https://pyvo.readthedocs.io/en/latest/dal/index.html#synchronous-vs-asynchronous-query)
 
@@ -39,7 +39,6 @@ If you are new to PyVO’s query modes, the documentation provides a helpful com
 - **Avoid overloading the TAP service.**
   Preferentially use **asynchronous** queries for long running queries to avoid timing out.  The whole system will slow down if a lot of people are using it for large queries, or if you decide to kick off many large queries at the same time.
 
-
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install numpy matplotlib pyvo
@@ -50,7 +49,6 @@ import pyvo as vo
 import numpy as np
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
-import time
 ```
 
 ```{code-cell} ipython3
@@ -143,15 +141,14 @@ print(len(cone_results))
 # Now that we have a list of galaxy redshifts in that region, we can
 # create a histogram of the redshifts to see what redshifts this survey includes.
 
-if cone_results:
-    # Plot a histogram
-    num_bins = 20
-    # the histogram of the data
-    n, bins, patches = plt.hist(cone_results['redshift'], num_bins,
-                                facecolor='blue', alpha = 0.5)
-    plt.xlabel('Redshift')
-    plt.ylabel('Number')
-    plt.title(f'Redshift Histogram {tablename}')
+# Plot a histogram
+num_bins = 20
+# the histogram of the data
+n, bins, patches = plt.hist(cone_results['redshift'], num_bins,
+                            facecolor='blue', alpha = 0.5)
+plt.xlabel('Redshift')
+plt.ylabel('Number')
+plt.title(f'Redshift Histogram {tablename}')
 ```
 
 We can see form this plot that the simulated galaxies go out to z = 3.
@@ -180,24 +177,18 @@ redshift_results
 ```
 
 ```{code-cell} ipython3
-if redshift_results:
-    # Construct a 2D histogram of the galaxy colors
-    plt.hist2d(redshift_results['mag_r_lsst'], redshift_results['color'],
-               bins=100, cmap='plasma', cmax=500)
+# Construct a 2D histogram of the galaxy colors
+plt.hist2d(redshift_results['mag_r_lsst'], redshift_results['color'],
+            bins=100, cmap='plasma', cmax=500)
 
-    # Plot a colorbar with label.
-    cb = plt.colorbar()
-    cb.set_label('Number')
+# Plot a colorbar with label.
+cb = plt.colorbar()
+cb.set_label('Number')
 
-    # Add title and labels to plot.
-    plt.xlabel('LSST Mag r')
-    plt.ylabel('LSST rest-frame g-r color')
-
-    # Show the plot.
-    plt.show()
+# Add title and labels to plot.
+plt.xlabel('LSST Mag r')
+plt.ylabel('LSST rest-frame g-r color')
 ```
-
-+++ {"jp-MarkdownHeadingCollapsed": true}
 
 ## 7. Suggestions for further queries:
 TAP queries are extremely powerful and provide flexible ways to explore large catalogs like CosmoDC2, including spatial searches, photometric selections, cross-matching, and more. However, many valid ADQL queries can take minutes or longer to complete due to the size of the catalog, so we avoid running those directly in this tutorial. Instead, the examples here have so far focused on fast, lightweight queries that illustrate the key concepts without long wait times. If you are interested in exploring further, here are some additional query ideas that are scientifically useful but may take longer to run depending on server conditions.
@@ -262,8 +253,4 @@ ORDER BY mag_r_lsst ASC
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
-**Runtime:** As of the date above, this notebook takes about 10 seconds to run to completion on a machine with 8GB RAM and 2 CPU.  Large variations in this runtime can be expected if the TAP server is busy with many queries at once.
-
-```{code-cell} ipython3
-
-```
+**Runtime:** As of the date above, this notebook takes about 2 minutes to run to completion on a machine with 8GB RAM and 2 CPU.  Large variations in this runtime can be expected if the TAP server is busy with many queries at once.
