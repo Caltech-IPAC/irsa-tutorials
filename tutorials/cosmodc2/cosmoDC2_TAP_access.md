@@ -191,17 +191,22 @@ plt.ylabel('LSST rest-frame g-r color')
 ```
 
 ## 7. Suggestions for further queries:
-TAP queries are extremely powerful and provide flexible ways to explore large catalogs like CosmoDC2, including spatial searches, photometric selections, cross-matching, and more. However, many valid ADQL queries can take minutes or longer to complete due to the size of the catalog, so we avoid running those directly in this tutorial. Instead, the examples here have so far focused on fast, lightweight queries that illustrate the key concepts without long wait times. If you are interested in exploring further, here are some additional query ideas that are scientifically useful but may take longer to run depending on server conditions.
+TAP queries are extremely powerful and provide flexible ways to explore large catalogs like CosmoDC2, including spatial searches, photometric selections, cross-matching, and more.
+However, many valid ADQL queries can take minutes or longer to complete due to the size of the catalog, so we avoid running those directly in this tutorial.
+Instead, the examples here have so far focused on fast, lightweight queries that illustrate the key concepts without long wait times.
+If you are interested in exploring further, here are some additional query ideas that are scientifically useful but may take longer to run depending on server conditions.
 
 ### Count the total number of redshifts in the chosen table
-answer for this table= 597,488,849 redshifts
-```
+The answer for the `'cosmodc2mockv1_heavy'` table is 597,488,849 redshifts.
+
+```sql
 adql = f"SELECT count(redshift) FROM {tablename}"
 ```
 
 ### Count galaxies in a sky region (cone search)
-Useful for: estimating source density, validating spatial footprint, testing spatial completeness
-```
+Generally useful for: estimating source density, validating spatial footprint, testing spatial completeness.
+
+```sql
 adql = f"""
 SELECT COUNT(*)
 FROM {tablename}
@@ -209,8 +214,10 @@ WHERE CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 54.2, -37.5, 0.2)) = 1
 """
 ```
 
-### Retrieve only a subset of columns (recommended for speed)
-This use of "TOP 5000" just limits the number of rows returned. Remove it if you want all rows
+### Retrieve only a subset of columns (recommended for speed) and rows
+This use of "TOP 5000" just limits the number of rows returned.
+Remove it if you want all rows, but keep in mind such a query can take a much longer time.
+
 ```sql
 adql = f"""
 SELECT TOP 5000
@@ -222,6 +229,7 @@ FROM {tablename}"""
 ```
 
 ### Explore the stellar–halo mass relation
+
 ```sql
 adql = f"""
 SELECT TOP 500000
@@ -232,7 +240,8 @@ WHERE halo_mass > 1e11"""
 ```
 
 ### Find the brightest galaxies at high redshift
-return the results in ascending (ASC) order by r band magnitude
+Return the results in ascending (ASC) order by r band magnitude.
+
 ```sql
 adql = f"""
 SELECT TOP 10000
@@ -249,7 +258,7 @@ ORDER BY mag_r_lsst ASC
 
 **Author:** IRSA Data Science Team, including Vandana Desai, Jessica Krick, Troy Raen, Brigitta Sipőcz, Andreas Faisst, Jaladh Singhal
 
-**Updated:** December 2025
+**Updated:** 2025-12-16
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
