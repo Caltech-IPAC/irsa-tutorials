@@ -48,7 +48,7 @@ We will use lsdb to leverage HATS partitioning for performing fast spatial queri
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs "lsdb>=0.6.6" pyarrow pandas numpy astropy dask matplotlib
+# !pip install s3fs "lsdb>=0.6.6,<0.8" pyarrow pandas numpy astropy dask matplotlib
 ```
 
 ```{code-cell} ipython3
@@ -175,8 +175,8 @@ Now, using lsdb, we define a cone [search object](https://docs.lsdb.io/en/latest
 
 ```{code-cell} ipython3
 spatial_filter = lsdb.ConeSearch(
-    ra=euclid_DF_N_center.ra.deg, 
-    dec=euclid_DF_N_center.dec.deg, 
+    ra=euclid_DF_N_center.ra.deg,
+    dec=euclid_DF_N_center.dec.deg,
     radius_arcsec=euclid_DF_N_radius.to(u.arcsec).value
 )
 ```
@@ -314,8 +314,8 @@ For this tutorial, the following columns are most relevant to us:
 ```{code-cell} ipython3
 ztf_columns = ztf_schema_df["name"].tolist()[:6]
 ztf_columns.extend([
-    'fid', 'filtercode', 
-    'ngoodobsrel',  
+    'fid', 'filtercode',
+    'ngoodobsrel',
     'chisq', 'magrms', 'meanmag', 'medianabsdev'
 ])
 ```
@@ -405,8 +405,8 @@ lsdb utilizes [Dask](https://docs.dask.org/en/stable/) to parallelize the tasks 
 def get_nworkers(catalog):
     return min(os.cpu_count(), catalog.npartitions + 1)
 
-with Client(n_workers=get_nworkers(euclid_x_ztf), 
-            threads_per_worker=2, 
+with Client(n_workers=get_nworkers(euclid_x_ztf),
+            threads_per_worker=2,
             memory_limit='auto') as client:
     print(f"This may take more than a few minutes to complete. You can monitor progress in Dask dashboard at {client.dashboard_link}")
     euclid_x_ztf_df = euclid_x_ztf.compute() # this will load the data into memory finally
@@ -444,7 +444,7 @@ metrics = [ # y-axes
 fig, axes = plt.subplots(2, 2, figsize=(10, 6), constrained_layout=True, sharex=True)
 axes = axes.ravel()
 
-xmin, xmax = 0, 2.5  
+xmin, xmax = 0, 2.5
 gridsize = 48  # resolution: larger => finer grid
 
 for i, (col, ylabel) in enumerate(metrics):
