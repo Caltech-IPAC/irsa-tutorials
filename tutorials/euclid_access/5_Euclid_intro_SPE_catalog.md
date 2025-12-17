@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.18.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
+  display_name: python3
+  language: python
 ---
 
 # Euclid Q1: SPE catalogs
@@ -54,7 +54,7 @@ We rely on ``astroquery`` features that have been recently added, so please make
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# !pip install matplotlib astropy 'astroquery>=0.4.10'
+# %pip install matplotlib astropy 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
@@ -66,9 +66,13 @@ from astropy.io import fits
 from astropy.table import QTable
 from astropy import units as u
 from astropy.utils.data import download_file
+from astropy.utils import data
 from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch, quantity_support
 
 from astroquery.ipac.irsa import Irsa
+
+# Increase Astropy’s default network timeout (in seconds) for remote name resolution and data access
+data.conf.remote_timeout = 30
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -182,7 +186,6 @@ adql_query = ("SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.fl
 
 # Use TAP with this ADQL string
 result_table = Irsa.query_tap(adql_query).to_table()
-
 ```
 
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
@@ -241,8 +244,10 @@ plt.title(f'Object ID {obj_id}')
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen, Jessica Krick
 
-**Updated**: 2025-09-23
+**Updated**: 2025-12-17
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+
+**Runtime:** As of the date above, this notebook takes about 90 seconds to run to completion on a machine with 8GB RAM and 4 CPU.
