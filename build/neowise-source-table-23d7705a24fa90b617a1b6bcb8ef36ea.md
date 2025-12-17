@@ -5,11 +5,12 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.16.1
+execute:
+  skip: true
 kernelspec:
   display_name: science_demo
   language: python
   name: python3
-skip_execution: true
 ---
 
 # Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet

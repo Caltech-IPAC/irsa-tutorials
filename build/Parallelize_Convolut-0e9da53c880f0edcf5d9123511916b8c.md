@@ -5,11 +5,12 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.16.2
+execute:
+  skip: true
 kernelspec:
   display_name: Python [conda env:clonenv]
   language: python
   name: python3
-skip_execution: true
 ---
 
 # Parallelizing image convolution
