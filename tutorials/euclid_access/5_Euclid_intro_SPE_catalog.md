@@ -72,7 +72,7 @@ from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStret
 from astroquery.ipac.irsa import Irsa
 
 # Increase Astropy’s default network timeout (in seconds) for remote name resolution and data access
-data.conf.remote_timeout = 30
+data.conf.remote_timeout = 60
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
