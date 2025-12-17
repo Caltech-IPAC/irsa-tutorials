@@ -10,8 +10,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-execution:
-  timeout: 2600
 ---
 
 # Querying the CosmoDC2 Mock v1 Catalogs
