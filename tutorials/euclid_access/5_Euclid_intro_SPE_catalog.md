@@ -1,4 +1,5 @@
 ---
+short_title: "VO: SPE Catalogs"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,8 @@ kernelspec:
   language: python
 ---
 
-# Euclid Q1: SPE catalogs
+(euclid-q1-vo-spe-catalogs)=
+# Euclid Q1: SPE Catalogs
 
 +++
 

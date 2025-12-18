@@ -1,4 +1,5 @@
 ---
+short_title: "VO: SIR 1D Spectra"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,8 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: 1D spectra
+(euclid-q1-vo-sir-1d-spectra)=
+# Euclid Q1: SIR 1D Spectra
 
 +++
 
@@ -86,7 +88,7 @@ table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
 obj_id = 2689918641685825137
 ```
 
-We will use TAP and an ASQL query to find the spectral data for our galaxy. (ADQL is the [IVOA Astronomical Data Query Language](https://www.ivoa.net/documents/latest/ADQL.html) and is based on SQL.)
+We will use TAP and an ADQL query to find the spectral data for our galaxy. (ADQL is the [IVOA Astronomical Data Query Language](https://www.ivoa.net/documents/latest/ADQL.html) and is based on SQL.)
 
 ```{code-cell} ipython3
 adql_object = f"SELECT * FROM {table_1dspectra} WHERE objectid = {obj_id}"

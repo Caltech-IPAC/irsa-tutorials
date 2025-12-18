@@ -1,4 +1,5 @@
 ---
+short_title: "Early Release Observations (ERO) - Star Clusters"
 jupytext:
   formats: md:myst
   text_representation:
@@ -12,6 +13,7 @@ kernelspec:
   name: python3
 ---
 
+(euclid-ero-star-clusters)=
 # Exploring Star Clusters in the Euclid ERO Data
 
 

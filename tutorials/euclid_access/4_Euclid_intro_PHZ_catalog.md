@@ -1,4 +1,5 @@
 ---
+short_title: "VO: PHZ Catalogs"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,8 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: PHZ catalogs
+(euclid-q1-vo-phz-catalogs)=
+# Euclid Q1: PHZ Catalogs
 
 +++
 

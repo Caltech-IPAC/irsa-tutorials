@@ -1,4 +1,5 @@
 ---
+short_title: "VO: MER Catalogs"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,8 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: MER catalogs
+(euclid-q1-vo-mer-catalogs)=
+# Euclid Q1: MER Catalogs
 
 +++
 
