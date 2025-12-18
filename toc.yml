@@ -8,10 +8,11 @@ project:
         - file: tutorials/spherex/spherex_intro.md
         - file: tutorials/spherex/spherex_cutouts.md
         - file: tutorials/spherex/spherex_psf.md
-    - file: tutorials/euclid_access/euclid.md
+    - title: Euclid
+      file: tutorials/euclid_access/euclid.md
       children:
         - file: tutorials/euclid_access/Euclid_ERO.md
-        - file: tutorials/euclid_access/euclid-q1.md
+        - title: Quick Release 1 (Q1)
           children:
             - pattern: tutorials/euclid_access/*_Euclid_intro_*.md
             - file: tutorials/cloud_access/euclid-cloud-access.md
