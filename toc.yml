@@ -8,18 +8,12 @@ project:
         - file: tutorials/spherex/spherex_intro.md
         - file: tutorials/spherex/spherex_cutouts.md
         - file: tutorials/spherex/spherex_psf.md
-    - title: Euclid
+    - file: tutorials/euclid_access/euclid.md
       children:
-        - title: Euclid Early Release Observations
+        - file: tutorials/euclid_access/Euclid_ERO.md
+        - file: tutorials/euclid_access/euclid-q1.md
           children:
-            - file: tutorials/euclid_access/Euclid_ERO.md
-        - title: Euclid Quick Release 1
-          children:
-            - file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
-            - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
-            - file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
-            - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
-            - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+            - pattern: tutorials/euclid_access/*_Euclid_intro_*.md
             - file: tutorials/cloud_access/euclid-cloud-access.md
     - title: WISE
       children:
