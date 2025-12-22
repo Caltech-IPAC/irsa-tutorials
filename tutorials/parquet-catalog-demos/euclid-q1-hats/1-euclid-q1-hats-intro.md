@@ -193,7 +193,7 @@ The tables are:
 
 Find all columns from these tables in the Parquet schema:
 
-```{code-cell}
+```{code-cell} python3
 phz_prefixes = ["phz_", "class_", "physparam_", "galaxysed_", "physparamqso_",
                 "starclass_", "starsed_", "physparamnir_"]
 phz_col_counts = {p: len([n for n in schema.names if n.startswith(p)]) for p in phz_prefixes}
@@ -375,6 +375,6 @@ highz_objects
 
 **Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
-**Updated:** 22 December 2025
+**Updated:** 2025-12-22
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)
