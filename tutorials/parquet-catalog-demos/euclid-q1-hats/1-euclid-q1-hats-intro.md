@@ -370,8 +370,8 @@ highz_objects
 
 ## About this notebook
 
-**Authors:** Troy Raen (Developer; Caltech/IPAC-IRSA) and the IRSA Data Science Team.
+**Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
-**Updated:** 17 December 2025
+**Updated:** 21 December 2025
 
-**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)
