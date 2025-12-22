@@ -1,5 +1,5 @@
 ---
-short_title: "VO: SPE Catalogs"
+short_title: "SPE Catalogs"
 jupytext:
   text_representation:
     extension: .md

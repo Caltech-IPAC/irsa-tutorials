@@ -1,5 +1,5 @@
 ---
-short_title: "VO: MER Mosaics"
+short_title: "MER Mosaics"
 jupytext:
   text_representation:
     extension: .md

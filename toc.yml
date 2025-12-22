@@ -11,11 +11,13 @@ project:
     - title: Euclid
       file: tutorials/euclid_access/euclid.md
       children:
+        - file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
+        - file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
+        - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
+        - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
+        - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+        - file: tutorials/cloud_access/euclid-cloud-access.md
         - file: tutorials/euclid_access/Euclid_ERO.md
-        - title: Quick Release 1 (Q1)
-          children:
-            - pattern: tutorials/euclid_access/*_Euclid_intro_*.md
-            - file: tutorials/cloud_access/euclid-cloud-access.md
     - title: WISE
       children:
         - title: AllWISE
