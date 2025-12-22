@@ -14,16 +14,16 @@
     <loc>http://localhost:3000/spherex-psf</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-ero</loc>
+    <loc>http://localhost:3000/euclid</loc>
   </url>
   <url>
     <loc>http://localhost:3000/euclid-intro-mer-images</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-mer-catalog</loc>
+    <loc>http://localhost:3000/euclid-intro-1d-spectra</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-1d-spectra</loc>
+    <loc>http://localhost:3000/euclid-intro-mer-catalog</loc>
   </url>
   <url>
     <loc>http://localhost:3000/euclid-intro-phz-catalog</loc>
@@ -32,7 +32,13 @@
     <loc>http://localhost:3000/euclid-intro-spe-catalog</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/euclid-q1-hats-intro</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/euclid-cloud-access</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/euclid-ero</loc>
   </url>
   <url>
     <loc>http://localhost:3000/sia-allwise-atlas</loc>

@@ -1,4 +1,5 @@
 ---
+short_title: "Cloud Access"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: cloud access
+# Euclid Q1: Cloud Access
 
 +++
 

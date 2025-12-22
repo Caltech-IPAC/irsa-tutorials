@@ -1,4 +1,5 @@
 ---
+short_title: "ERO Star Clusters"
 jupytext:
   formats: md:myst
   text_representation:
@@ -240,7 +241,6 @@ You will notice that `Cutout2D` can be applied to an URL. That way, it we do not
 ```
 
 ```{code-cell} ipython3
-%%time
 for ii,filt in tqdm(enumerate(filters)):
     products = summary_table[summary_table["filter"] == filt]["products"][0].split(";")
 

@@ -145,7 +145,6 @@ We'll choose pyarrow (the default).
 For filter options, see the `filters` arg description in [ParquetDataset](https://arrow.apache.org/docs/python/generated/pyarrow.parquet.ParquetDataset.html#pyarrow.parquet.ParquetDataset).
 
 ```{code-cell} ipython3
-%%time
 # expect this to take 40-90 seconds
 pandas_df = pd.read_parquet(
     parquet_root,
@@ -203,7 +202,6 @@ locus = pc.multiply(pc.scalar(0.5), w3w4)
 ```
 
 ```{code-cell} ipython3
-%%time
 # expect this to take 20-60 seconds.
 # notice this is generally faster than example 1 using pandas even though
 # this filter is much more complicated, highlighting the efficiency of this method.
@@ -281,7 +279,6 @@ corner_cone_pixels
 Find the 3 nearest neighbors of each corner:
 
 ```{code-cell} ipython3
-%%time
 # expect this to take 30-60 seconds
 idcol = "cntr"
 neighbor_ids = []  # store the allwise source id (cntr) of each neighbor
@@ -316,7 +313,6 @@ neighbor_ids
 Load all the data (all columns) for all nearest neighbors:
 
 ```{code-cell} ipython3
-%%time
 # expect this to take 15-25 seconds
 cone_pixels = [pixel for cone_pixels in corner_cone_pixels.values() for pixel in cone_pixels]
 neighbors_df = pyarrow_ds.to_table(

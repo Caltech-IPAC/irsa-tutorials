@@ -17,7 +17,7 @@ kernelspec:
 +++
 
 ## Learning Goals
-- learn how to use the mock simulations for Roman Space Telescope [Zhai et al. 2021](https://ui.adsabs.harvard.edu/abs/2021MNRAS.501.3490Z/abstract ) 
+- learn how to use the mock simulations for Roman Space Telescope [Zhai et al. 2021](https://ui.adsabs.harvard.edu/abs/2021MNRAS.501.3490Z/abstract )
 - modify code to reduce memory usage when using large catalogs
 - make a plot of number density of galaxies as a function of redshift (recreate figure 3 from [Wang et al., 2021](https://arxiv.org/pdf/2110.01829)).
 
@@ -35,7 +35,7 @@ Techniques employed for working with out of memory datasets:
 
 ### Input
 - None, the location of the simulated dataset is hardcoded for convenience
-  
+
 ### Output
 - plots of number of galaxies per square degree as a function of redshift
 - optional numpy file with the counts saved for ease of working with the information later
@@ -62,7 +62,7 @@ import requests
 %matplotlib inline
 ```
 
-## 1. Read in the mock catalogs from IRSA 
+## 1. Read in the mock catalogs from IRSA
 - figure out how to get the files from IRSA
 - pull down one of them for testing
 - convert to a pandas df for ease of use
@@ -132,13 +132,13 @@ def download_files_in_parallel(file_url_list, save_dir):
 
     downloaded_files = []
     #set to a reasonable number for efficiency and scalability
-    max_workers = min(len(file_url_list), os.cpu_count() * 5, 32)  
+    max_workers = min(len(file_url_list), os.cpu_count() * 5, 32)
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_url = {
-            executor.submit(download_file, url, os.path.join(save_dir, os.path.basename(url))): url 
+            executor.submit(download_file, url, os.path.join(save_dir, os.path.basename(url))): url
             for url in file_url_list
         }
-        
+
         for future in concurrent.futures.as_completed(future_to_url):
             file_path = future.result()
             if file_path:
@@ -163,7 +163,7 @@ def download_simulations(download_dir, download_all=True):
     Parameters
     ----------
     download_dir : str
-        Directory where the downloaded .hdf5 files will be stored. 
+        Directory where the downloaded .hdf5 files will be stored.
         The directory will be created if it does not already exist.
 
     download_all : bool, optional
@@ -217,7 +217,7 @@ def download_simulations(download_dir, download_all=True):
 
 ```{code-cell} ipython3
 # Set download_all to True to download all files, or False to download only the first file
-# only a single downloaded file is required to run the notebook in its entirety, 
+# only a single downloaded file is required to run the notebook in its entirety,
 # however section 4 will be more accuate with all 10 files
 
 # Downloading 10 files, each 3GB in size, may take between 1 and 30 minutes,
@@ -288,7 +288,7 @@ def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
     Returns
     -------
     pandas.DataFrame
-        A DataFrame containing the selected columns from the HDF5 file, 
+        A DataFrame containing the selected columns from the HDF5 file,
         with specified columns cast to float32.
     """
     import h5py
@@ -372,7 +372,7 @@ def assign_redshift_bins(df, z_min, z_max, dz=0.1):
 file_path = 'downloaded_hdf5_files/Roman_small_V2_0.hdf5'
 
 #out of consideration for the size of these files and the amount of memory required to work with them
-# we only keep the columns that we are going to use and convert some to 32bit instead of 64 where 
+# we only keep the columns that we are going to use and convert some to 32bit instead of 64 where
 # the higher precision is not necessary to the science
 columns_to_keep = ['RA', 'DEC', 'redshift_observed', 'flux_Halpha6563']
 columns_to_convert = ['redshift_observed', 'flux_Halpha6563']
@@ -390,11 +390,11 @@ z_max = 3.0
 dz = 0.1
 df, z_bins, z_bin_centers = assign_redshift_bins(df, z_min=z_min, z_max=z_max, dz=dz)
 
-#Shift RA values to continuous range for the entire DataFrame 
-#This is necessary because the current range goes over 360 which appears to the code 
-#as a non-contiguous section of the sky.  By shifting the RA values, we don't have the 
-#jump from RA = 360 to RA = 0.  
-    
+#Shift RA values to continuous range for the entire DataFrame
+#This is necessary because the current range goes over 360 which appears to the code
+#as a non-contiguous section of the sky.  By shifting the RA values, we don't have the
+#jump from RA = 360 to RA = 0.
+
 ra_min1=330
 df['RA_shifted'] = (df['RA'] - ra_min1) % 360  # Shift RA to continuous range
 ```
@@ -465,11 +465,11 @@ jupyter:
 def get_bin_area(dec_edges, ra_width):
     """
     Calculate the area of each Dec bin in square degrees, given the RA width.
-    
+
     Parameters:
     - dec_edges: The edges of the Dec bins (1D array).
     - ra_width: The width of the RA bins in degrees.
-    
+
     Returns:
     - areas: List of areas of the Dec bins in square degrees.
     """
@@ -494,10 +494,10 @@ def calculate_counts_per_deg2(df):
     """
     Computes galaxy number counts per square degree by binning data in declination.
 
-    This function shifts Right Ascension (RA) values into a continuous range, 
-    bins galaxies based on Declination (DEC), and calculates the number of galaxies 
-    per square degree for each declination bin. It assumes a fixed declination range 
-    and divides it into 10 equal bins. The function also computes bin areas to normalize 
+    This function shifts Right Ascension (RA) values into a continuous range,
+    bins galaxies based on Declination (DEC), and calculates the number of galaxies
+    per square degree for each declination bin. It assumes a fixed declination range
+    and divides it into 10 equal bins. The function also computes bin areas to normalize
     the galaxy counts.
 
     Parameters:
@@ -516,13 +516,13 @@ def calculate_counts_per_deg2(df):
     ra_min = df['RA_shifted'].min()
     ra_max = df['RA_shifted'].max()
     ra_edges = np.linspace(ra_min, ra_max, 10 + 1)
-    
+
     # Set up Declination bins for constant declination binning
     #manually fixing these here for this particular survey
     dec_min =  -20# df['DEC'].min()
     dec_max =  20# df['DEC'].max()
     dec_bins = np.linspace(dec_min, dec_max, 10 + 1)  # Create declination bins
-    
+
     # Calculate bin areas for constant declination bins
     ra_width = np.diff(ra_edges)[0]  # Width of RA bins (all bins assumed equal width)
     bin_areas = get_bin_area(dec_bins, ra_width)
@@ -547,8 +547,8 @@ def plot_dec_bins(dec_bins, galaxy_counts):
     """
     Plots a histogram of galaxy counts across declination bins.
 
-    This function visualizes the number of galaxies in different declination (DEC) bins 
-    using a bar plot. The y-axis is set to a logarithmic scale to enhance visibility of 
+    This function visualizes the number of galaxies in different declination (DEC) bins
+    using a bar plot. The y-axis is set to a logarithmic scale to enhance visibility of
     variations in galaxy counts. The function assumes uniform bin sizes.
 
     Parameters:
@@ -557,11 +557,11 @@ def plot_dec_bins(dec_bins, galaxy_counts):
 
      """
     import matplotlib.pyplot as plt
-    
+
     # Calculate the width of each bin (assumes uniform bin sizes)
-    bin_width = dec_bins[1] - dec_bins[0]  
-    
-    
+    bin_width = dec_bins[1] - dec_bins[0]
+
+
     # Plot the histogram for the DEC column with 10 bins
     plt.figure(figsize=(8, 6))
     plt.bar(dec_bins[:-1], galaxy_counts, width=bin_width, color='skyblue', edgecolor='black', align='edge')
@@ -585,23 +585,23 @@ def plot_dec_bins_per_deg2(dec_bins, counts_per_deg2):
     """
     Plots a histogram of galaxy number density across declination bins.
 
-    This function visualizes the number of galaxies per square degree as a function 
-    of declination using a bar plot. The y-axis is set to a logarithmic scale to 
-    improve visibility of variations in galaxy density. The function assumes uniform 
+    This function visualizes the number of galaxies per square degree as a function
+    of declination using a bar plot. The y-axis is set to a logarithmic scale to
+    improve visibility of variations in galaxy density. The function assumes uniform
     bin sizes.
 
     Parameters:
     - dec_bins (np.ndarray): An array containing the edges of the declination bins.
-    - counts_per_deg2 (np.ndarray): An array containing the number of galaxies per square degree 
+    - counts_per_deg2 (np.ndarray): An array containing the number of galaxies per square degree
       for each declination bin.
 
-    """    
+    """
     import matplotlib.pyplot as plt
 
     # Calculate the width of each bin (assumes uniform bin sizes)
-    bin_width = dec_bins[1] - dec_bins[0]  
-    
-    
+    bin_width = dec_bins[1] - dec_bins[0]
+
+
     # Plot the histogram for the DEC column with 10 bins
     plt.figure(figsize=(8, 6))
     plt.bar(dec_bins[:-1], counts_per_deg2, width=bin_width, color='skyblue', edgecolor='black', align='edge')
@@ -642,7 +642,7 @@ def jackknife_galaxy_count(df, grid_cells=10):
         The DataFrame containing galaxy data, including 'RA', 'DEC', and 'redshift_observed' columns.
     grid_cells : int, optional
         Number of bins to divide the declination range into for jackknife resampling (default: 10).
-    
+
     Returns:
     - mean_counts: List of mean galaxy counts per square degree for each redshift bin.
     - std_dev_counts: List of jackknife uncertainties (standard deviations) for each redshift bin.
@@ -653,30 +653,30 @@ def jackknife_galaxy_count(df, grid_cells=10):
 
     original_galaxy_count = len(df)
     print(f"Original galaxy count: {original_galaxy_count}")
-    
 
- 
+
+
     # compute RA edges based on the data
     #keeping this in here in case we make bins over RA in the future
     ra_min = df['RA_shifted'].min()
     ra_max = df['RA_shifted'].max()
     ra_edges = np.linspace(ra_min, ra_max, grid_cells + 1)
-    
+
     # Set up Declination bins for constant declination binning
     #manually fixing these here for this particular survey
     dec_min =  -20# df['DEC'].min()
     dec_max =  20# df['DEC'].max()
     dec_bins = np.linspace(dec_min, dec_max, grid_cells + 1)  # Create declination bins
-    
+
     # Calculate bin areas for constant declination bins
     ra_width = np.diff(ra_edges)[0]  # Width of RA bins (all bins assumed equal width)
     bin_areas = get_bin_area(dec_bins, ra_width)
 
-    # Initialize lists 
+    # Initialize lists
     mean_counts = []
     std_dev_counts = []
     sum_counts = []
-    
+
     # Loop over the redshift bins
     for z_bin in df['z_bin'].cat.categories:
         # Step 8: Select galaxies within the current redshift bin
@@ -720,24 +720,24 @@ def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_
     Parameters:
     - counts (numpy.ndarray): Array of galaxy counts per square degree for each redshift bin.
       Shape: (number of redshift bins,) or (1, number of redshift bins).
-    - std_dev_counts (numpy.ndarray): Array of jackknife standard deviations for each redshift bin, 
+    - std_dev_counts (numpy.ndarray): Array of jackknife standard deviations for each redshift bin,
       representing uncertainties. Shape: (number of redshift bins,).
-    - z_bin_centers (numpy.ndarray): Array of central values of the redshift bins. 
+    - z_bin_centers (numpy.ndarray): Array of central values of the redshift bins.
       Shape: (number of redshift bins,).
 
     Notes:
-    - The input arrays (`counts`, `std_dev_counts`, and `z_bin_centers`) must have the same length, 
+    - The input arrays (`counts`, `std_dev_counts`, and `z_bin_centers`) must have the same length,
       corresponding to the number of redshift bins.
-    - The plot is designed specifically for redshifts in the range of 1.0 to 3.0 and may need adjustments 
+    - The plot is designed specifically for redshifts in the range of 1.0 to 3.0 and may need adjustments
       for datasets with different redshift ranges.
     """
     import numpy as np
     import matplotlib.pyplot as plt
-    
+
     # Ensure counts is a NumPy array
     if isinstance(counts, list):
         counts = np.array(counts)
-    
+
     # Flatten counts if it has a shape of [1, N]
     if counts.ndim == 2 and counts.shape[0] == 1:
         counts = counts.flatten()
@@ -746,7 +746,7 @@ def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_
     plt.figure(figsize=(10, 6))
 
     # Plot with error bars (with jackknife standard deviation as error bars)
-    plt.errorbar(z_bin_centers, counts, yerr=std_dev_counts, fmt='o', color='blue', 
+    plt.errorbar(z_bin_centers, counts, yerr=std_dev_counts, fmt='o', color='blue',
                  ecolor='gray', elinewidth=2, capsize=3, label='Galaxy Counts per Square Degree (Jackknife)')
     plt.yscale('log')
 
@@ -766,9 +766,8 @@ def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_
 ```
 
 ```{code-cell} ipython3
-%%time
 #setup redshift binning here for consistency in the rest of the code
-#these match our dataset, so only change if you want to reduce the range 
+#these match our dataset, so only change if you want to reduce the range
 # or if you change the dataset
 
 z_min = 1.0
@@ -812,11 +811,11 @@ def calculate_area(df):
     ra_max = df['RA_shifted'].max()
     dec_min = df['DEC'].min()
     dec_max = df['DEC'].max()
-     
+
     # Step 4: Calculate area
-    ra_width = ra_max - ra_min 
+    ra_width = ra_max - ra_min
     dec_height = dec_max - dec_min
- 
+
     # Approximate area calculation
     dec_center = (dec_min + dec_max) / 2
     area = ra_width * dec_height * np.cos(np.radians(dec_center))
@@ -852,11 +851,11 @@ def galaxy_counts_per_hdf5_binned(
     - halpha_counts (numpy.ndarray): Counts for each Halpha bin (if `find_halpha_bins` is True).
     """
     import numpy as np
-    
+
     # Default Halpha flux thresholds if not provided
     if find_halpha_bins and halpha_flux_thresholds is None:
         halpha_flux_thresholds = [0.5e-16, 0.7e-16, 0.9e-16, 1.1e-16, 1.3e-16, 1.5e-16, 1.7e-16, 1.9e-16]
-        
+
     # Calculate survey area
     area = calculate_area(df)
 
@@ -908,7 +907,7 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     """
     Plots galaxy counts per square degree as a function of redshift with jackknife error bars.
 
-    This function visualizes the galaxy number density using binned redshift data. It includes 
+    This function visualizes the galaxy number density using binned redshift data. It includes
     jackknife-based uncertainty estimates and optionally plots counts for Hα flux-selected bins.
 
     Parameters:
@@ -929,7 +928,7 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     """
     import numpy as np
     import matplotlib.pyplot as plt
-    
+
     # Unpack counts_summary
     counts = counts_summary["sum_counts"]
     std_dev_counts = counts_summary["std_dev_counts"]
@@ -970,7 +969,7 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     # Adjust legend order if Hα lines were added
     if halpha_lines:
         handles, labels = plt.gca().get_legend_handles_labels()
-        new_order = [jackknife_line] + halpha_lines  
+        new_order = [jackknife_line] + halpha_lines
         plt.legend(new_order, [labels[handles.index(h)] for h in new_order])
     else:
         plt.legend()
@@ -978,12 +977,12 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     # Set log scale for y-axis and limit the x-axis
     plt.yscale("log")
     plt.xlim(1, 3.0)
-    
+
     # Add labels and title
     plt.xlabel("Redshift", fontsize=12)
     plt.ylabel("Galaxy Count per Square Degree", fontsize=12)
     plt.title("Number Density with Jackknife Error Bars", fontsize=14)
-    
+
     # Display the plot
     plt.show()
     plt.close()
@@ -996,8 +995,8 @@ jupyter:
 ---
 def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False):
     """
-    Performs jackknife resampling over multiple HDF5 files to estimate uncertainties 
-    in galaxy counts per square degree for each redshift bin. Optionally calculates 
+    Performs jackknife resampling over multiple HDF5 files to estimate uncertainties
+    in galaxy counts per square degree for each redshift bin. Optionally calculates
     counts for Hα flux-selected bins.
 
     Parameters:
@@ -1012,7 +1011,7 @@ def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False
         - 'std_dev_counts' (numpy.ndarray): Jackknife standard deviations for galaxy counts per square degree.
           Shape: (number of redshift bins,).
        Shape: (number of redshift bins,).
-    - halpha_summary (dict or None): A dictionary containing Hα bin statistics if `find_halpha_bins` is True, otherwise `None`. 
+    - halpha_summary (dict or None): A dictionary containing Hα bin statistics if `find_halpha_bins` is True, otherwise `None`.
       When present, the dictionary includes:
         - 'halpha_sum_counts' (numpy.ndarray): Summed counts for each Hα bin.
           Shape: (number of Hα bins, number of redshift bins).
@@ -1053,10 +1052,10 @@ def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False
             df, z_bins, z_bin_centers, find_halpha_bins=find_halpha_bins,
             halpha_flux_thresholds=halpha_flux_thresholds
         )
-        
-        counts_per_deg2, halpha_counts_per_deg2 = result 
+
+        counts_per_deg2, halpha_counts_per_deg2 = result
         all_counts.append(counts_per_deg2.flatten())  #make sure shape is correct
-        
+
         if find_halpha_bins:
             all_halpha_counts.append(halpha_counts_per_deg2)
 
@@ -1075,7 +1074,7 @@ def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False
     print("all_counts sample:", all_counts[:3])  # preview first 3 entries
     print("all_counts variance:", np.var(all_counts, axis=0))
     print("all_counts dtype:", all_counts.dtype)
-    
+
     if find_halpha_bins:
         all_halpha_counts = np.array(all_halpha_counts)
 
@@ -1111,16 +1110,15 @@ def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False
 ```
 
 ```{code-cell} ipython3
-%%time
 
-# This uses data downloaded in section 1 above.  
+# This uses data downloaded in section 1 above.
 # If you want to run this with more data, return to section 1 to get that downloaded.
 download_dir = 'downloaded_hdf5_files'
 # Get all HDF5 files from the directory
 file_paths = [os.path.join(download_dir, f) for f in os.listdir(download_dir) if f.endswith('.hdf5')]
 
 #out of consideration for the size of these files and the amount of memory required to work with them
-# we only keep the columns that we are going to use and convert some to 32bit instead of 64 where 
+# we only keep the columns that we are going to use and convert some to 32bit instead of 64 where
 # the higher precision is not necessary to the science
 columns_to_keep = ['RA', 'DEC', 'redshift_observed', 'flux_Halpha6563']
 columns_to_convert = ['redshift_observed', 'flux_Halpha6563']
@@ -1154,7 +1152,7 @@ jupyter:
 def plot_jackknife_fractional_uncertainty(z_bin_centers, counts, std_dev_counts):
     """
     Plots the fractional jackknife uncertainty (σ / N) as a function of redshift.
-    
+
     Parameters
     ----------
     z_bin_centers : array-like
