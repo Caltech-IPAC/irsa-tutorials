@@ -24,7 +24,9 @@ Data products include MERged mosaics of calibrated and stacked frames; combined 
 - [PHZ Catalogs](4_Euclid_intro_PHZ_catalog.md) — Join the PHZ and MER catalogs and do a box search for galaxies with quality redshifts, load a MER mosaic cutout of the box, and plot the cutout with the catalog results overlaid.
   Then plot the SIR spectrum of the brightest galaxy and look at a MER mosaic cutout of the galaxy in Firefly.
 - [SPE Catalogs](5_Euclid_intro_SPE_catalog.md) — Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
-- [Merged Objects HATS Catalog](../parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md) — Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
+- **Merged Objects HATS Catalog** — This product was created by IRSA and contains the Euclid MER, PHZ, and SPE catalogs in a single [HATS](https://hats.readthedocs.io/en/latest/) catalog.
+  - [Introduction](../parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md) — Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
+  - [Magnitudes](../parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md) — Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
 
 ## Special Topics
 
