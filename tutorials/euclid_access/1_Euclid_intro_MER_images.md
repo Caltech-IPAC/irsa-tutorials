@@ -1,4 +1,5 @@
 ---
+short_title: "MER Mosaics"
 jupytext:
   text_representation:
     extension: .md
@@ -11,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Euclid Q1: MER mosaics
+# Euclid Q1: MER Mosaics
 
 +++
 
