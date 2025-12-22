@@ -17,15 +17,15 @@ kernelspec:
 +++
 
 This tutorial is an introduction to the content and format of the Euclid Q1 Merged Objects HATS Catalog.
-Later tutorials in [this series](#euclid-q1-hats) will show how to load quality samples.
+Later tutorials in this series will show how to load quality samples.
 
 ## Learning Goals
 
 In this tutorial, we will:
 
-- List the Euclid Q1 tables that were joined to create the Merged Objects catalog, and the Euclid papers that describe how the data were produced.
+- Learn about the Euclid Merged Objects catalog that IRSA created by combining information from multiple Euclid Quick Release 1 catalogs
 - Find columns of interest.
-- Perform a basic spatial query in each of the Euclid Deep Fields using PyArrow.
+- Perform a basic spatial query in each of the Euclid Deep Fields using the Python library PyArrow.
 
 +++
 
@@ -35,9 +35,8 @@ The [Euclid Q1](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html)
 The data include several flux measurements per band, several redshift estimates, several morphology parameters, etc.
 Each was derived for different science goals using different algorithms or configurations.
 
-The Euclid Q1 Merged Objects HATS Catalog was produced by joining 14 of the original catalogs on object ID (column: `object_id`).
-Following the HATS framework, the data were then partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
-A visualization of the Euclid Q1 on-sky density and the HATS partitioning of this catalog can be seen on these [skymaps](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png).
+The Euclid Q1 Merged Objects HATS Catalog was produced by IRSA by joining 14 of the original catalogs on object ID (column: `object_id`).
+Following the Hierarchical Adaptive Tiling Scheme [HATS](https://hats.readthedocs.io/) framework, the data were then partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
 
 - Columns: 1,594
 - Rows: 29,953,430 (one per Euclid Q1 object)
@@ -63,7 +62,7 @@ import pyarrow.fs  # Simple S3 filesystem pointer
 import pyarrow.parquet  # Load the schema
 ```
 
-### 3. Load Parquet Metadata
+## 3. Load Parquet Metadata
 
 First we'll load the Parquet schema (column information) of the Merged Objects catalog so we can use it in later sections.
 The Parquet schema is accessible from a few locations, all of which include the column names and types.
@@ -94,13 +93,8 @@ print(f"{len(schema)} columns in the Euclid Q1 Merged Objects catalog")
 +++
 
 The Merged Objects catalog contains data from 14 Euclid Q1 tables, joined on the column `object_id`.
-The tables were produced by three Euclid processing functions: MER, PHZ, and SPE.
+The tables were produced by three Euclid processing functions: MER (multi-wavelength mosaics on common spatial and pixel scales), PHZ (photometric redshifts), and SPE (spectroscopy).
 The subsections below include the table names, links to reference papers, URLs to the original table schemas, and examples of how the column names were transformed for the Merged Objects catalog.
-
-<!-- See also:
-- MER [Photometry](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/merphotometrycookbook.html) and [Morphology](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/mermorphologycookbook.html) Cookbooks
-- [Frequently Asked Questions About Euclid Q1 data](https://euclid.caltech.edu/page/euclid-q1-data-faq) (hereafter, FAQ)
-- [Q1 Explanatory Supplement](https://euclid.esac.esa.int/dr/q1/expsup/) -->
 
 The original tables' column names are mostly in all caps.
 In the Merged Objects catalog and the catalogs available through IRSA's TAP service, all column names have been lower-cased.
@@ -336,7 +330,7 @@ external_flux_columns[:4]
 
 Euclid Q1 includes data from three Euclid Deep Fields: EDF-N (North), EDF-S (South), EDF-F (Fornax; also in the southern hemisphere).
 There is also a small amount of data from a fourth field: LDN1641 (Lynds' Dark Nebula 1641), which was observed for technical reasons during Euclid's verification phase and mostly ignored here.
-The fields are described in [Euclid Collaboration: Aussel et al., 2025](https://arxiv.org/pdf/2503.15302).
+The fields are described in [Euclid Collaboration: Aussel et al., 2025](https://arxiv.org/pdf/2503.15302) and can be seen on this [skymap](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png).
 
 The regions are well separated, so we can distinguish them using a simple cone search without having to be too picky about the radius.
 We can load data more efficiently using the HEALPix order 9 pixels that cover each area rather than using RA and Dec values directly.
