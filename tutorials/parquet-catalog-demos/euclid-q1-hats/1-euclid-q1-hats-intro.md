@@ -19,6 +19,8 @@ kernelspec:
 This tutorial is an introduction to the content and format of the Euclid Q1 Merged Objects HATS Catalog.
 Later tutorials in this series will show how to load quality samples.
 
++++
+
 ## Learning Goals
 
 In this tutorial, we will:
@@ -302,6 +304,7 @@ schema.field("mer_flux_y_2fwhm_aper")
 
 ```{code-cell}
 # The column metadata includes unit and description.
+# Parquet metadata is always stored as bytestrings, which are denoted by a leading 'b'.
 schema.field("mer_flux_y_2fwhm_aper").metadata
 ```
 
@@ -372,6 +375,6 @@ highz_objects
 
 **Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
-**Updated:** 21 December 2025
+**Updated:** 22 December 2025
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)
