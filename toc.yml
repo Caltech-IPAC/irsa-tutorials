@@ -16,6 +16,7 @@ project:
         - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
         - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
         - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+        - file: tutorials/parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md
         - file: tutorials/cloud_access/euclid-cloud-access.md
         - file: tutorials/euclid_access/Euclid_ERO.md
     - title: WISE
