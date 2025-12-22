@@ -1,6 +1,6 @@
-----
+---
 short_title: "Euclid"
-----
+---
 
 # Euclid Tutorial Notebooks
 
