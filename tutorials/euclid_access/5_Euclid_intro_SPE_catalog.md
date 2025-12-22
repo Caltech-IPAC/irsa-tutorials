@@ -12,7 +12,6 @@ kernelspec:
   language: python
 ---
 
-(euclid-q1-vo-spe-catalogs)=
 # Euclid Q1: SPE Catalogs
 
 +++

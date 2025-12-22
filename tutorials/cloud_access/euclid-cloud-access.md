@@ -12,7 +12,6 @@ kernelspec:
   name: python3
 ---
 
-(euclid-q1-cloud)=
 # Euclid Q1: Cloud Access
 
 +++

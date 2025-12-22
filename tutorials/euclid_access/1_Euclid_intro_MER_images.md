@@ -12,7 +12,6 @@ kernelspec:
   name: python3
 ---
 
-(euclid-q1-vo-mer-mosaics)=
 # Euclid Q1: MER Mosaics
 
 +++

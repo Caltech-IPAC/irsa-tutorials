@@ -12,7 +12,6 @@ kernelspec:
   name: python3
 ---
 
-(euclid-q1-vo-sir-1d-spectra)=
 # Euclid Q1: SIR 1D Spectra
 
 +++

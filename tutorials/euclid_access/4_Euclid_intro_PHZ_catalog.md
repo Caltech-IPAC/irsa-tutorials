@@ -12,7 +12,6 @@ kernelspec:
   name: python3
 ---
 
-(euclid-q1-vo-phz-catalogs)=
 # Euclid Q1: PHZ Catalogs
 
 +++

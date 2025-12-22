@@ -13,7 +13,6 @@ kernelspec:
   name: python3
 ---
 
-(euclid-ero-star-clusters)=
 # Exploring Star Clusters in the Euclid ERO Data
 
 
