@@ -1,11 +1,12 @@
 ---
-short_title: "Merged Objects HATS Catalog"
+short_title: Introduction
 jupytext:
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.18.1
+  root_level_metadata_filter: -short_title
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -18,6 +19,7 @@ kernelspec:
 
 This tutorial is an introduction to the content and format of the Euclid Q1 Merged Objects HATS Catalog.
 Later tutorials in this series will show how to load quality samples.
+See [Euclid Tutorial Notebooks: Catalogs](../../euclid_access/euclid.md#catalogs) for a list of tutorials in this series.
 
 +++
 
@@ -25,9 +27,9 @@ Later tutorials in this series will show how to load quality samples.
 
 In this tutorial, we will:
 
-- Learn about the Euclid Merged Objects catalog that IRSA created by combining information from multiple Euclid Quick Release 1 catalogs
+- Learn about the Euclid Merged Objects catalog that IRSA created by combining information from multiple Euclid Quick Release 1 (Q1) catalogs.
 - Find columns of interest.
-- Perform a basic spatial query in each of the Euclid Deep Fields using the Python library PyArrow.
+- Perform a basic query using the Python library PyArrow.
 
 +++
 
@@ -51,12 +53,12 @@ Access is free and no credentials are required.
 
 ## 2. Imports
 
-```{code-cell} python3
+```{code-cell} ipython3
 # # Uncomment the next line to install dependencies if needed.
 # %pip install hpgeom pandas pyarrow
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 import hpgeom  # Find HEALPix indexes from RA and Dec
 import pyarrow.compute as pc  # Filter the catalog
 import pyarrow.dataset  # Load the catalog
@@ -70,7 +72,7 @@ First we'll load the Parquet schema (column information) of the Merged Objects c
 The Parquet schema is accessible from a few locations, all of which include the column names and types.
 Here, we load it from the `_common_metadata` file because it also includes the column units and descriptions.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # AWS S3 paths.
 s3_bucket = "nasa-irsa-euclid-q1"
 dataset_prefix = "contributed/q1/merged_objects/hats/euclid_q1_merged_objects-hats/dataset"
@@ -82,7 +84,7 @@ schema_path = f"{dataset_path}/_common_metadata"
 s3 = pyarrow.fs.S3FileSystem(anonymous=True)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Load the Parquet schema.
 schema = pyarrow.parquet.read_schema(schema_path, filesystem=s3)
 
@@ -136,7 +138,7 @@ The tables are:
 
 Find all columns from these tables in the Parquet schema:
 
-```{code-cell} python3
+```{code-cell} ipython3
 mer_prefixes = ["mer_", "morph_", "cutouts_"]
 mer_col_counts = {p: len([n for n in schema.names if n.startswith(p)]) for p in mer_prefixes}
 
@@ -193,7 +195,7 @@ The tables are:
 
 Find all columns from these tables in the Parquet schema:
 
-```{code-cell} python3
+```{code-cell} ipython3
 phz_prefixes = ["phz_", "class_", "physparam_", "galaxysed_", "physparamqso_",
                 "starclass_", "starsed_", "physparamnir_"]
 phz_col_counts = {p: len([n for n in schema.names if n.startswith(p)]) for p in phz_prefixes}
@@ -240,7 +242,7 @@ The tables are:
 
 Find all columns from these tables in the Parquet schema:
 
-```{code-cell} python3
+```{code-cell} ipython3
 spe_prefixes = ["z_", "lines_", "models_"]
 spe_col_counts = {p: len([n for n in schema.names if n.startswith(p)]) for p in spe_prefixes}
 
@@ -272,7 +274,7 @@ They are useful for spatial queries, as demonstrated in the Euclid Deep Fields s
 
 The HEALPix, Euclid object ID, and Euclid tile ID columns appear first:
 
-```{code-cell} python3
+```{code-cell} ipython3
 schema.names[:5]
 ```
 
@@ -288,7 +290,7 @@ However, PyArrow automatically makes them available as regular columns when the 
 
 The HATS columns appear at the end:
 
-```{code-cell} python3
+```{code-cell} ipython3
 schema.names[-3:]
 ```
 
@@ -297,12 +299,12 @@ schema.names[-3:]
 The subsections above show how to find all columns from a given Euclid table as well as the additional columns.
 Here we show some additional techniques for finding columns.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Access the data type using the `field` method.
 schema.field("mer_flux_y_2fwhm_aper")
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # The column metadata includes unit and description.
 # Parquet metadata is always stored as bytestrings, which are denoted by a leading 'b'.
 schema.field("mer_flux_y_2fwhm_aper").metadata
@@ -311,7 +313,7 @@ schema.field("mer_flux_y_2fwhm_aper").metadata
 Euclid Q1 offers many flux measurements, both from Euclid detections and from external ground-based surveys.
 They are given in microjanskys, so all flux columns can be found by searching the metadata for this unit.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Find all flux columns.
 flux_columns = [field.name for field in schema if field.metadata[b"unit"] == b"uJy"]
 
@@ -321,7 +323,7 @@ flux_columns[:4]
 
 Columns associated with external surveys are identified by the inclusion of "ext" in the name.
 
-```{code-cell} python3
+```{code-cell} ipython3
 external_flux_columns = [name for name in flux_columns if "ext" in name]
 print(f"{len(external_flux_columns)} flux columns from external surveys. First four are:")
 external_flux_columns[:4]
@@ -339,7 +341,7 @@ The regions are well separated, so we can distinguish them using a simple cone s
 We can load data more efficiently using the HEALPix order 9 pixels that cover each area rather than using RA and Dec values directly.
 These will be used in later tutorials.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # EDF-N (Euclid Deep Field - North)
 ra, dec, radius = 269.733, 66.018, 4  # 20 sq deg
 edfn_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius, inclusive=True)
@@ -362,7 +364,7 @@ ldn_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius, i
 To demonstrate a basic query, we'll search for objects with a galaxy photometric redshift estimate of 6.0 (largest possible).
 Other tutorials in this series will show more complex queries and describe the redshifts and other data in more detail.
 
-```{code-cell} python3
+```{code-cell} ipython3
 dataset = pyarrow.dataset.dataset(dataset_path, partitioning="hive", filesystem=s3, schema=schema)
 
 highz_objects = dataset.to_table(
