@@ -35,6 +35,9 @@
     <loc>http://localhost:3000/euclid-q1-hats-intro</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/euclid-q1-hats-magnitudes</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/euclid-cloud-access</loc>
   </url>
   <url>
