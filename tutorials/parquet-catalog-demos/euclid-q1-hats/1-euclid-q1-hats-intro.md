@@ -334,7 +334,7 @@ external_flux_columns[:4]
 +++
 
 Euclid Q1 includes data from three Euclid Deep Fields: EDF-N (North), EDF-S (South), EDF-F (Fornax; also in the southern hemisphere).
-There is also a small amount of data from a fourth field: LDN1641 (Lynds' Dark Nebula 1641), which was observed for technical reasons during Euclid's verification phase and mostly ignored here.
+There is also a small amount of data from a fourth field: LDN1641 (Lynds' Dark Nebula 1641), which was observed for technical reasons during Euclid's verification phase.
 The fields are described in [Euclid Collaboration: Aussel et al., 2025](https://arxiv.org/pdf/2503.15302) and can be seen on this [skymap](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/q1/merged_objects/hats/euclid_q1_merged_objects-hats/skymap.png).
 
 The regions are well separated, so we can distinguish them using a simple cone search without having to be too picky about the radius.
@@ -362,7 +362,8 @@ ldn_k9_pixels = hpgeom.query_circle(hpgeom.order_to_nside(9), ra, dec, radius, i
 ## 6. Basic Query
 
 To demonstrate a basic query, we'll search for objects with a galaxy photometric redshift estimate of 6.0 (largest possible).
-Other tutorials in this series will show more complex queries and describe the redshifts and other data in more detail.
+Other tutorials in this series will show more complex queries, and describe the redshifts and other data in more detail.
+PyArrow dataset filters are described at [Filtering by Expressions](https://arrow.apache.org/docs/python/compute.html#filtering-by-expressions), and the list of available functions is at [Compute Functions](https://arrow.apache.org/docs/python/api/compute.html).
 
 ```{code-cell} ipython3
 dataset = pyarrow.dataset.dataset(dataset_path, partitioning="hive", filesystem=s3, schema=schema)
@@ -377,6 +378,6 @@ highz_objects
 
 **Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
-**Updated:** 2025-12-22
+**Updated:** 2025-12-23
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)

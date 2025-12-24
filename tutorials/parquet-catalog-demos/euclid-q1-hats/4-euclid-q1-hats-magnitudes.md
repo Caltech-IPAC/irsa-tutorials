@@ -107,7 +107,8 @@ PHZ_CLASS = "phz_phz_classification"
 ```
 
 We'll convert the catalog fluxes to magnitudes following the [MER Photometry Cookbook](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmq1/merdpd/merphotometrycookbook.html).
-For convenience, we'll have PyArrow do the conversion during the read operation and return only the magnitudes.
+PyArrow can do the conversion during the read operation and return only the magnitudes.
+To do this, we'll use the following function to define the magnitudes as `pyarrow.compute` (`pc`) functions, which are described at [Compute Functions](https://arrow.apache.org/docs/python/api/compute.html).
 
 ```{code-cell} ipython3
 def flux_to_magnitude(flux_col_name: str) -> pc.Expression:
@@ -151,7 +152,9 @@ def flux_to_magnitude(flux_col_name: str) -> pc.Expression:
 ```
 
 Define the columns we want to load.
-This needs to be a dictionary of PyArrow expressions (rather than a simple list of column names) because we're asking PyArrow to convert flux -> magnitude before returning the data.
+This needs to be a dictionary (rather than a simple list of column names) because we're asking PyArrow to compute the magnitudes dynamically from the catalog fluxes.
+The dictionary keys will be the column names in the resultant table.
+The values must be `pyarrow.compute` expressions (described above).
 
 ```{code-cell} ipython3
 I_MAG = "I (mag)"
@@ -215,6 +218,14 @@ Since the template-fit photometry is recommended for extended objects, we'll sep
 [Euclid Collaboration: Tucci et al., 2025](https://arxiv.org/pdf/2503.15306) defines point-like objects as having `MUMAX_MINUS_MAG < -2.5`.
 
 ```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 # Galaxy + any. Star + galaxy. QSO + galaxy.
 classes = {"Galaxy": (2, 3, 6, 7), "Star": (1, 3), "QSO": (4, 6)}
 class_colors = ["tab:green", "tab:blue", "tab:orange"]
@@ -252,6 +263,7 @@ for ax in axes[:, 0]:
 for axs, band in zip(axes.transpose(), bands):
     axs[0].set_title(band.split()[0])
     axs[-1].set_xlabel(band)
+plt.title("Magnitude Distributions by Object Type")
 plt.tight_layout()
 ```
 
@@ -282,11 +294,18 @@ This comparison reveals systematic offsets that depend on factors including morp
 This figure is inspired by Romelli Fig. 6 (top panel).
 
 ```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 # Only consider objects within these mag and mag difference limits.
 mag_limits, mag_diff_limits = (16, 24), (-1, 1)
 mag_limited_df = mags_df.loc[(mags_df[I_MAG] > mag_limits[0]) & (mags_df[I_MAG] < mag_limits[1])]
 
-fig, axes = plt.subplots(2, 3, figsize=(18, 9), sharey=True, sharex=True)
 bands = [
     ("Y templfit (mag)", "Y aperture (mag)"),
     ("J templfit (mag)", "J aperture (mag)"),
@@ -300,6 +319,7 @@ annotate_kwargs = dict(
 )
 
 # Plot
+fig, axes = plt.subplots(2, 3, figsize=(18, 9), sharey=True, sharex=True)
 for axs, (ref_band, aper_band) in zip(axes.transpose(), bands):
     # Extended objects, top row.
     ax = axs[0]
@@ -338,6 +358,7 @@ for i, ax in enumerate(axes.flatten()):
         ax.set_title("Point-like objects")
     if i > 2:
         ax.set_xlabel(I_MAG)
+plt.title("Magnitude Differences: Template-fit - Aperture")
 plt.tight_layout()
 ```
 
@@ -352,6 +373,6 @@ The offset is more pronounced for point-like objects (bottom row), likely due to
 
 **Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
-**Updated:** 2025-12-22
+**Updated:** 2025-12-23
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)
