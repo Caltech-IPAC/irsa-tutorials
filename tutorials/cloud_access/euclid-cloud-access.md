@@ -209,59 +209,150 @@ for idx, ax in enumerate(axes.flat):
 plt.tight_layout()
 ```
 
-## 6. Find the MER catalog for a given tile
-Let's navigate to MER catalog in the Euclid Q1 bucket:
+## 6. Efficiently retrieve target info from HATS catalog
+
+IRSA provides **merged catalogs** via cloud for efficient access of only the slice of the catalog that is relevant to the target coordinates. As per https://irsa.ipac.caltech.edu/cloud_access/, it's available at following prefix:
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/catalogs')
+hats_catalog_prefix = 'contributed/q1/merged_objects/hats'
+s3.ls(f'{BUCKET_NAME}/{hats_catalog_prefix}')
+```
+
+From the column schema (link to Euclid HATS notebook), we identify the columns we are interested in:
+
+```{code-cell} ipython3
+# _healpix_n columns will be needed for spatial filtering
+columns = ['_healpix_9', '_healpix_19', '_healpix_29', 'ra', 'dec', 'object_id', 'class_phz_classification']
+```
+
+### Find the MER object ID and classification for our object
+TODO: change classification to spectral column (SIR Combined Spectrum) when available
+
+```{code-cell} ipython3
+hats_catalog = lsdb.read_hats(f's3://{BUCKET_NAME}/{hats_catalog_prefix}', columns=columns)
+hats_catalog
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/catalogs/MER_FINAL_CATALOG')[:10] # ls only top 10 to limit the long output
+cone_radius = 5 * u.arcsec # to narrow it down just to the target
 ```
 
 ```{code-cell} ipython3
-mer_tile_id = 102160339 # from the image paths for the target we picked
-s3.ls(f'{BUCKET_NAME}/q1/catalogs/MER_FINAL_CATALOG/{mer_tile_id}')
+target_cone = hats_catalog.cone_search(
+    ra=coord.ra.deg, dec=coord.dec.deg,
+    radius_arcsec=cone_radius.value
+)
+target_cone
 ```
 
-As per "Browsable Directiories" section in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
-
-```{note}
-Once the catalogs are available as Parquet files in the cloud, we can efficiently do spatial filtering directly on the cloud-hosted file to identify object ID(s) for our target. But for the time being, we can use catalog VO services through astroquery to do the same.
+```{code-cell} ipython3
+target_cone_df = target_cone.compute()
+target_cone_df
 ```
+
+This takes forever, so let's use alternative approach:
+### Alt: pyarrow + hpgeom to find same info about our object
 
 +++
 
-## 7. Find the MER Object ID for our target
-First, list the Euclid catalogs provided by IRSA:
+Let's identify the HEALPix orders provided by the Q1 HATS catalog:
 
 ```{code-cell} ipython3
-catalogs = Irsa.list_catalogs(full=True, filter='euclid')
-catalogs
-```
-
-From this table, we can extract the MER catalog name. We also see several other interesting catalogs, let's also extract spectral file association catalog for retrieving spectra later.
-
-```{code-cell} ipython3
-euclid_mer_catalog = 'euclid_q1_mer_catalogue'
-euclid_spec_association_catalog = 'euclid.objectid_spectrafile_association_q1'
-```
-
-Now, we do a region search within a cone of 5 arcsec around our target to pinpoint its object ID in Euclid catalog:
-
-```{code-cell} ipython3
-search_radius = 5 * u.arcsec
-
-mer_catalog_tbl = Irsa.query_region(coordinates=coord, spatial='Cone',
-                                    catalog=euclid_mer_catalog, radius=search_radius)
-mer_catalog_tbl
+hats_orders = [9, 19, 29] # _healpix columns present in the schema
 ```
 
 ```{code-cell} ipython3
-object_id = int(mer_catalog_tbl['object_id'][0])
+import hpgeom
+```
+
+Let's also calculate the pixel numbers for these HEALPix orders for our target cone region:
+
+```{code-cell} ipython3
+npixels = {
+    k: hpgeom.query_circle(
+        nside=hpgeom.order_to_nside(k),
+        a=coord.ra.deg, b=coord.dec.deg,
+        radius=(cone_radius.to('deg')).value,
+        # inclusive checks for overlap, otherwise pixel center must be within the circle
+        inclusive=True if k!=29 else False
+    ) for k in hats_orders
+}
+
+npixels
+```
+
+Read the HATS catalog as a pyarrow parquet dataset:
+
+```{code-cell} ipython3
+import pyarrow.dataset as ds
+
+dataset = ds.dataset(f's3://{BUCKET_NAME}/{hats_catalog_prefix}/euclid_q1_merged_objects-hats/dataset', format='parquet', partitioning='hive')
+dataset
+```
+
+#### Partition filtering
+First, we need to create partition filters so that pyarrow can entirely skip reading the other partitions that does not contain our target cone region.
+
+The HATS catalog provides a mapping between `_healpix9` and the partitioning columns (`Norder`, `Npix`) to help us identify the partitions that contain our target cone region:
+
+```{code-cell} ipython3
+s3.ls(f'{BUCKET_NAME}/{hats_catalog_prefix}/euclid_q1_merged_objects-hats')
+```
+
+```{code-cell} ipython3
+import pandas as pd
+healpix9_partitions = pd.read_csv(f's3://{BUCKET_NAME}/{hats_catalog_prefix}/euclid_q1_merged_objects-hats/healpix9_to_partition.txt', storage_options={'anon': True})
+healpix9_partitions
+```
+
+```{code-cell} ipython3
+healpix9_partitions[healpix9_partitions['_healpix_9'].isin(npixels[9])]
+```
+
+```{code-cell} ipython3
+partition_filter = (ds.field('Norder') == 6) & (ds.field('Npix')==16045)
+partition_filter
+```
+
+#### Spatial filtering of rows in the identified partitions
+
++++
+
+Secondly, we can further filter the rows in the filtered partitions by using the HEALPix pixel numbers for our target cone region that we calculated above.
+
+Let's check the resolution of each HEALPix order so that we have a sense of which `_healpix` column to use for spatial filtering of rows:
+
+```{code-cell} ipython3
+for order in hats_orders:
+    order_resolution = hpgeom.nside_to_resolution(hpgeom.order_to_nside(order), units='arcseconds') * u.arcsec
+    print(f'HEALPix order {order}: Resolution (HEALPix pixel size): {order_resolution:.6f}')
+```
+
+Since Euclid's resolution is in 0.1-0.3 arcsec range and our target is spread over a few arcseconds, we can use the HEALPix order 19 (~0.4 arcsec) for spatial filtering of rows within a partition.
+
+```{code-cell} ipython3
+target_cone_filter = ds.field('_healpix_19').isin(npixels[19])
+target_cone_filter
+```
+
+#### Load the the filtered the HATS catalog
+
+Instead of loading the entire catalog, we can now load only the rows that are relevant to our target cone region by using the partition and target cone filters we defined above:
+
+```{code-cell} ipython3
+target_tbl = dataset.to_table(
+    columns=columns,
+    filter=(partition_filter & target_cone_filter),
+)
+target_tbl.to_pandas()
+```
+
+```{code-cell} ipython3
+object_id = int(target_tbl['object_id'][0])
 object_id
 ```
+
+TODO: folllowing will be removed once we have the spectral column in the catalog.
 
 ## 8. Find the spectrum of an object in the MER catalog
 Using the object ID(s) we extracted above, we can narrow down the spectral file association catalog to identify spectra file path(s). So we do the following TAP search:
