@@ -66,6 +66,9 @@ import pyarrow.compute as pc  # Filter dataset
 import pyarrow.dataset  # Load the dataset
 import pyarrow.fs  # Simple S3 filesystem pointer
 import pyarrow.parquet  # Load the schema
+
+# Increase font size in figures.
+plt.rcParams.update({"font.size": 14})
 ```
 
 ```{code-cell} ipython3
@@ -218,10 +221,6 @@ Since the template-fit photometry is recommended for extended objects, we'll sep
 [Euclid Collaboration: Tucci et al., 2025](https://arxiv.org/pdf/2503.15306) defines point-like objects as having `MUMAX_MINUS_MAG < -2.5`.
 
 ```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
 ---
 jupyter:
   source_hidden: true
@@ -250,20 +249,20 @@ for (class_name, class_ids), class_color in zip(classes.items(), class_colors):
     label = "+Galaxy" if class_name != "Galaxy" else "+any"
     # Of those objects, restrict to the ones that are point-like.
     classpt_df = class_df.loc[class_df[MUMAX_MINUS_MAG] < -2.5]
-    pt_label = f"{label} and point-like"
+    pt_label = f"{label} (point-like)"
     # Plot histograms for both sets of objects.
     for ax, band in zip(axs, bands):
         ax.hist(class_df[band], label=label, linestyle=":", **hist_kwargs)
         ax.hist(classpt_df[band], linestyle="-.", label=pt_label, **hist_kwargs)
 
 # Add axis labels, etc.
-for ax in axes[:, 0]:
+for ax, loc in zip(axes[:, 0], [2, 3, 2]):
+    ax.legend(loc=loc)
     ax.set_ylabel("Counts")
-    ax.legend(framealpha=0.2, loc=2)
 for axs, band in zip(axes.transpose(), bands):
     axs[0].set_title(band.split()[0])
     axs[-1].set_xlabel(band)
-plt.title("Magnitude Distributions by Object Type")
+fig.suptitle("Magnitude Distributions by Object Type")
 plt.tight_layout()
 ```
 
@@ -292,10 +291,6 @@ Now let's compare template-fit and aperture magnitudes by plotting their differe
 This comparison reveals systematic offsets that depend on factors including morphology (extended vs. point-like) and brightness.
 
 This figure is inspired by Romelli Fig. 6 (top panel).
-
-```{code-cell} ipython3
-
-```
 
 ```{code-cell} ipython3
 ---
@@ -358,7 +353,7 @@ for i, ax in enumerate(axes.flatten()):
         ax.set_title("Point-like objects")
     if i > 2:
         ax.set_xlabel(I_MAG)
-plt.title("Magnitude Differences: Template-fit - Aperture")
+fig.suptitle("Magnitude Offsets (Template fit - Aperture)")
 plt.tight_layout()
 ```
 
