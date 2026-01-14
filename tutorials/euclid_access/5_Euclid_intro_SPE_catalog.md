@@ -1,4 +1,5 @@
 ---
+short_title: "SPE Catalogs"
 jupytext:
   text_representation:
     extension: .md
@@ -223,7 +224,7 @@ obj_row
 euclid_ssa_collection = "euclid_DpdSirCombinedSpectra"
 
 # Use the object's MER coordinates from obj_row
-coord_obj = SkyCoord(obj_row["ra"], obj_row["dec"], unit=u.deg)
+coord_obj = SkyCoord(obj_row["ra"][0], obj_row["dec"][0], unit=u.deg)
 
 #complete the query
 ssa_result = Irsa.query_ssa(
