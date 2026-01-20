@@ -74,6 +74,24 @@ from astroquery.ipac.irsa import Irsa
 
 # Increase Astropy’s default network timeout (in seconds) for remote name resolution and data access
 data.conf.remote_timeout = 60
+
+#suppress warnings about deprecated units and cache
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    message="The unit 'Angstrom' has been deprecated",
+    category=u.UnitsWarning,
+)
+
+warnings.filterwarnings(
+    "ignore",
+    message="The unit 'erg' has been deprecated",
+    category=u.UnitsWarning,
+)
+warnings.filterwarnings(
+    "ignore",
+    message="XDG_CACHE_HOME is set",
+)
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
@@ -202,15 +220,27 @@ obj_row
 ### Pull the spectrum of this object
 
 ```{code-cell} ipython3
-adql_object = f"SELECT *  FROM {table_1dspectra}  WHERE objectid = {obj_id}"
+# Query SSA for the 1D spectrum near this object's sky position
+euclid_ssa_collection = "euclid_DpdSirCombinedSpectra"
 
-result_table2 = Irsa.query_tap(adql_object).to_qtable()
+# Use the object's MER coordinates from obj_row
+coord_obj = SkyCoord(obj_row["ra"][0], obj_row["dec"][0], unit=u.deg)
+
+#complete the query
+ssa_result = Irsa.query_ssa(
+    pos=coord_obj,
+    radius=2.0 * u.arcsec,
+    collection=euclid_ssa_collection,
+)
+
+ssa_result
 ```
 
 ### The following steps to read in the spectrum follows the 3_Euclid_intro_1D_spectra notebook.
 
 ```{code-cell} ipython3
-spectrum_path = f"https://irsa.ipac.caltech.edu/{result_table2['path'][0]}"
+# Read in the spectrum for this object from the SSA access URL
+spectrum_path = ssa_result["access_url"][0]
 spectrum_path
 ```
 
@@ -247,7 +277,7 @@ plt.title(f'Object ID {obj_id}')
 
 **Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen, Jessica Krick
 
-**Updated**: 2025-12-17
+**Updated**: 2026-01-13
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 

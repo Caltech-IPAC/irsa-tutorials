@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.18.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
+  display_name: python3
+  language: python
 ---
 
 # Euclid Q1: SIR 1D Spectra
@@ -22,9 +22,8 @@ kernelspec:
 
 By the end of this tutorial, you will:
 - Understand the basic characteristics of Euclid Q1 SIR 1D spectra.
-- What columns are available in the MER catalog.
-- How to query with ADQL in the MER catalog.
-- How to make a simple color-magnitude diagram with the data.
+- Examine the provided boolean masks
+- Make a simple plot of a Euclid spectrum.
 
 +++
 
@@ -62,44 +61,73 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from astropy.table import QTable
 from astropy import units as u
+from astropy.coordinates import SkyCoord
 from astropy.visualization import quantity_support
 
 from astroquery.ipac.irsa import Irsa
+
+#suppress warnings about deprecated units
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    message="The unit 'Angstrom' has been deprecated",
+    category=u.UnitsWarning,
+)
+
+warnings.filterwarnings(
+    "ignore",
+    message="The unit 'erg' has been deprecated",
+    category=u.UnitsWarning,
+)
 ```
 
 ## 1. Search for the spectrum of a specific galaxy
 
 First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.
 
-Search for all tables in IRSA labeled as "euclid".
+Search for spectra collections in IRSA.
 
 ```{code-cell} ipython3
-Irsa.list_catalogs(filter='euclid')
+Irsa.list_collections(servicetype="ssa")
 ```
 
 ```{code-cell} ipython3
-table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
+euclid_ssa_collection = 'euclid_DpdSirCombinedSpectra'
 ```
 
 ## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
 
 ```{code-cell} ipython3
-obj_id = 2689918641685825137
+coord = SkyCoord(
+    ra=269.7 * u.deg,
+    dec=66.0 * u.deg
+)
+
+search_radius = 5.0 * u.arcsec
 ```
 
-We will use TAP and an ADQL query to find the spectral data for our galaxy. (ADQL is the [IVOA Astronomical Data Query Language](https://www.ivoa.net/documents/latest/ADQL.html) and is based on SQL.)
+Query the IRSA SSA service for spectra near this position
 
 ```{code-cell} ipython3
-adql_object = f"SELECT * FROM {table_1dspectra} WHERE objectid = {obj_id}"
+ssa_result = Irsa.query_ssa(
+    pos=coord,
+    radius=search_radius,
+    collection=euclid_ssa_collection,
+)
 
-# Pull the data on this particular galaxy
-result = Irsa.query_tap(adql_object).to_table()
+#check whether any spectra were found
+len(ssa_result)
 ```
 
 Pull out the file name from the ``result`` table:
 
 ```{code-cell} ipython3
-spectrum_path = f"https://irsa.ipac.caltech.edu/{result['path'][0]}"
+# Extract the single SSA result row
+row = ssa_result[0]  #in case there is more than one spectra in the search radius
+
+
+# Each SSA row provides a direct URL to the spectrum file
+spectrum_path = row["access_url"]
 spectrum_path
 ```
 
@@ -152,13 +180,13 @@ plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='
 
 plt.legend(loc='upper right')
 plt.ylim(-0.15, 0.25)
-plt.title(f'Object ID {obj_id}')
+plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
 ## About this Notebook
 
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen
+**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen, Jessica Krick
 
-**Updated**: 2025-09-23
+**Updated**: 2026-01-13
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
