@@ -40,6 +40,7 @@ Explore the columns in the MER final catalog, query for stars, and create a colo
 Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
 ```
 
+```{div .grid-item-span-all-cols}
 ```{card}
 :link: 4_Euclid_intro_PHZ_catalog.md
 :header: **PHZ Catalogs**
