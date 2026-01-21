@@ -1,4 +1,4 @@
-name: Build and Publish HTML and deployed_notebooks
+name: Build and Publish HTML and update deploy_to_fornax
 
 on:
   push:
@@ -49,19 +49,19 @@ jobs:
 
   deploy_notebooks:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
-    name: Deploy deployed_notebook branch
+    name: Deploy deploy_to_fornax branch
     runs-on: ubuntu-latest
     needs: publish_html
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
 
-      - name: Deploy to deployed_notebooks branch
+      - name: Deploy to deploy_to_fornax branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           gith=$(git rev-parse HEAD)
-          git checkout --orphan deployed_notebooks
+          git checkout --orphan deploy_to_fornax
           git rm --cached -r .
-          git add --pathspec-from-file=deployed_notebooks_manifest.in --force
-          git commit -m "Deploy notebooks for commit ${gith}"
-          git push origin deployed_notebooks --force
+          git add --pathspec-from-file=deploy_to_fornax_manifest.in --force
+          git commit -m "Deploy for fornax for commit ${gith}"
+          git push origin deploy_to_fornax --force
