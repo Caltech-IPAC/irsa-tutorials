@@ -26,4 +26,5 @@ site:
   options:
     favicon: _static/irsa-favicon.ico
     logo: _static/irsa_logo.png
+    style: _static/custom.css
     outline_maxdepth: 1
