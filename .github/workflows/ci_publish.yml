@@ -64,6 +64,7 @@ jobs:
           git rm --cached -r .
           git add --pathspec-from-file=deploy_to_fornax_manifest.in --force
           git commit -m "Deploy for fornax for commit ${gith}"
+          # Do Fornax preferred renaming
           git mv tutorials irsa-tutorials
           git mv tutorial_requirements.txt irsa-tutorials/requirements-irsa-tutorials.txt
           git commit -m "Restructuring to help fornax deployment"
