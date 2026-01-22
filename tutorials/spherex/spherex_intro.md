@@ -1,4 +1,5 @@
 ---
+short_title: "Data Overview"
 jupytext:
   formats: md:myst
   text_representation:
@@ -12,7 +13,6 @@ kernelspec:
   name: python3
 ---
 
-(spherex-intro)=
 # Introduction to SPHEREx Spectral Images
 
 +++

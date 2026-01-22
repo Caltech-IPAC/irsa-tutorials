@@ -1,4 +1,5 @@
 ---
+short_title: "PSF Models"
 jupytext:
   text_representation:
     extension: .md
