@@ -25,3 +25,4 @@ tutorials/roman_simulations/roman_hlss_number_density.md
 tutorials/spherex/spherex_intro.md
 tutorials/spherex/spherex_cutouts.md
 tutorials/spherex/spherex_psf.md
+tutorial_requirements.txt
