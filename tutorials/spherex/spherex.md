@@ -9,9 +9,9 @@ Its science goals span cosmology, galaxy evolution, and the interstellar medium,
 
 SPHEREx IRSA data releases include weekly [Quick Release spectral image products](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-products/) (multi-extension FITS files containing calibrated near-infrared surface brightness, variance, flags, modeled backgrounds, PSFs, and wavelength WCS) along with ancillary calibration and metadata files such as gain matrices, dark current maps, solid angle pixel maps, and detailed spectral WCS products for each detector.
 
-- [Data Overview](https://caltech-ipac.github.io/irsa-tutorials/spherex-intro/) - Introduces available data including how to identify which files and formats are appropriate for different use cases.
+- [Data Overview](spherex_intro.md) - Introduces available data including how to identify which files and formats are appropriate for different use cases.
 
-- [Spectral Image Cutouts](https://caltech-ipac.github.io/irsa-tutorials/spherex-cutouts/) - Demonstrates how to generate and work with spatial and spectral cutouts.
+- [Spectral Image Cutouts](spherex-cutouts.md) - Demonstrates how to generate and work with spatial and spectral cutouts.
 
-- [PSF Models](https://caltech-ipac.github.io/irsa-tutorials/spherex-psf/) - Explains how SPHEREx point spread function (PSF) information is organized and accessed.
+- [PSF Models](spherex-psf.md) - Explains how SPHEREx point spread function (PSF) information is organized and accessed.
 
