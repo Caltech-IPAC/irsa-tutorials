@@ -11,12 +11,12 @@ After exhausting its cryogen, the mission was repurposed as NEOWISE in 2013 to d
 WISE and NEOWISE data are released publicly through the NASA/IPAC Infrared Science Archive (IRSA), including calibrated images, source catalogs, and single-exposure source tables that together enable multi-epoch photometry, light curves, and motion studies for a wide range of astrophysical and Solar System applications. 
 Successive NEOWISE data releases (with annual updates) provide users with increasingly deep coverage and time-domain information across the infrared sky.
 
-- [ALLWISE Images](sia_allwise_atlas.md) - Retrieves coadded AllWISE mid-infrared images via IRSA’s SIA service and make coordinate-based cutouts.
+- [ALLWISE Images](sia_allwise_atlas.md) - Retrieves coadded images and makes coordinate-based cutouts.
 
-- [ALLWISE Catalog](wise-allwise-catalog-demo.md) - Demonstrates querying, filtering, and working with the AllWISE Source Catalog to explore mid-infrared source properties.
+- [ALLWISE Catalog](wise-allwise-catalog-demo.md) - Explores mid-infrared source properties by querying, filtering, and working with the catalog.
 
-- [NEOWISE visualization](NEOWISE_light_curve_demo.md) - Visualizes and analyzes light curves of Solar System objects using NEOWISE data and Firefly.
+- [NEOWISE visualization](NEOWISE_light_curve_demo.md) - Visualizes and analyzes light curves of Solar System objects using Firefly.
 
-- [NEOWISE source table](neowise-source-table-strategies.md) - Outlines efficient strategies for accessing and handling large NEOWISE single-exposure source tables
+- [NEOWISE source table](neowise-source-table-strategies.md) - Outlines efficient strategies for accessing and handling large tables
 
-- [NEOWISE source table light curves](neowise-source-table-lightcurves.md) - Builds multi-epoch photometric light curves from NEOWISE single-exposure source table data for given target coordinates.
+- [NEOWISE source table light curves](neowise-source-table-lightcurves.md) - Builds multi-epoch photometric light curves for given coordinates.
