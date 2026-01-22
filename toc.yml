@@ -4,6 +4,7 @@ project:
     - title: IRSA Tutorials
       file: index.md
     - title: SPHEREx
+      file: tutorials/spherex/spherex.md
       children:
         - file: tutorials/spherex/spherex_intro.md
         - file: tutorials/spherex/spherex_cutouts.md
@@ -32,16 +33,13 @@ project:
         - title: ERO Star Clusters
           file: tutorials/euclid_access/Euclid_ERO.md
     - title: WISE
+      file: tutorials/wise.md
       children:
-        - title: AllWISE
-          children:
-            - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
-            - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
-        - title: NEOWISE
-          children:
-            - file: tutorials/firefly/NEOWISE_light_curve_demo.md
-            - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
-            - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+        - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+        - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+        - file: tutorials/firefly/NEOWISE_light_curve_demo.md
+        - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+        - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
         - file: tutorials/irsa-sia-examples/siav2_seip.md
@@ -52,19 +50,15 @@ project:
       children:
         - file: tutorials/irsa-sia-examples/sia_cosmos.md
     - title: Simulated Data
+      file: tutorials/simulated.md
       children:
-        - title: Roman HLSS Galaxy Mock Catalog
-          children:
-            - file: tutorials/roman_simulations/roman_hlss_number_density.md
-        - title: OpenUniverse 2024
-          children:
-            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
-            - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
-            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
-        - title: CosmoDC2
-          children:
-            - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
-    - title: Special Topics
+        - file: tutorials/roman_simulations/roman_hlss_number_density.md
+        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+        - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+        - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+    - title: Techniques & Tools
+      file: tutorials/techniques.md
       children:
         - file: tutorials/cloud_access/cloud-access-intro.md
         - file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
