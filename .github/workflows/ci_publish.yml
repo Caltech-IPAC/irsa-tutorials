@@ -68,4 +68,7 @@ jobs:
           git mv tutorials irsa-tutorials
           git mv tutorial_requirements.txt irsa-tutorials/requirements-irsa-tutorials.txt
           git commit -m "Restructuring to help fornax deployment"
+          old_category=''; number=1; for i in $(find irsa-tutorials -name "*md"); do category=$(basename $(dirname $i)); if [[ ${old_category} = ${category} ]]; then ((number++)); else number=1;fi;echo $i": Notebook" $category $number;old_category=$category;done > notebook_manifest_descriptions.txt
+          git add notebook_manifest_descriptions.txt
+          git commit -m "Adding notebook manifest with one liner descriptions"
           git push origin deploy_to_fornax --force
