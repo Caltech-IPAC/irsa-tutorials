@@ -1,5 +1,4 @@
 ---
-short_title: "PHZ Catalogs"
 jupytext:
   text_representation:
     extension: .md

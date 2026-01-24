@@ -1,5 +1,4 @@
 ---
-short_title: "ERO Star Clusters"
 jupytext:
   formats: md:myst
   text_representation:

@@ -1,5 +1,4 @@
 ---
-short_title: Magnitudes
 jupytext:
   text_representation:
     extension: .md

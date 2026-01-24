@@ -1,5 +1,4 @@
 ---
-short_title: "SIR 1D Spectra"
 jupytext:
   text_representation:
     extension: .md
