@@ -11,7 +11,7 @@ SPHEREx IRSA data releases include weekly [Quick Release spectral image products
 
 - [Data Overview](spherex_intro.md) - Introduces available data including how to identify which files and formats are appropriate for different use cases.
 
-- [Spectral Image Cutouts](spherex-cutouts.md) - Demonstrates how to generate and work with spatial and spectral cutouts.
+- [Spectral Image Cutouts](spherex_cutouts.md) - Demonstrates how to generate and work with spatial and spectral cutouts.
 
-- [PSF Models](spherex-psf.md) - Explains how SPHEREx point spread function (PSF) information is organized and accessed.
+- [PSF Models](spherex_psf.md) - Explains how SPHEREx point spread function (PSF) information is organized and accessed.
 
