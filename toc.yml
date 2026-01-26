@@ -6,8 +6,11 @@ project:
     - title: SPHEREx
       file: tutorials/spherex/spherex.md
       children:
+        - title: Data Overview
         - file: tutorials/spherex/spherex_intro.md
+        - title: Spectral Image Cutouts
         - file: tutorials/spherex/spherex_cutouts.md
+        - title: PSF Models
         - file: tutorials/spherex/spherex_psf.md
     - title: Euclid
       file: tutorials/euclid_access/euclid.md
