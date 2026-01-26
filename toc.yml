@@ -11,16 +11,26 @@ project:
     - title: Euclid
       file: tutorials/euclid_access/euclid.md
       children:
-        - file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
-        - file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
-        - file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
-        - file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
-        - file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+        - title: MER Mosaics
+          file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
+        - title: SIR 1D Spectra
+          file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
+        - title: MER Catalogs
+          file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
+        - title: PHZ Catalogs
+          file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
+        - title: SPE Catalogs
+          file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
         - title: Merged Objects HATS Catalog
           children:
-            - pattern: tutorials/parquet-catalog-demos/euclid-q1-hats/*-euclid-q1-hats-*.md
-        - file: tutorials/cloud_access/euclid-cloud-access.md
-        - file: tutorials/euclid_access/Euclid_ERO.md
+            - title: Introduction
+              file: tutorials/parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md
+            - title: Magnitudes
+              file: tutorials/parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md
+        - title: Cloud Access
+          file: tutorials/cloud_access/euclid-cloud-access.md
+        - title: ERO Star Clusters
+          file: tutorials/euclid_access/Euclid_ERO.md
     - title: WISE
       children:
         - title: AllWISE

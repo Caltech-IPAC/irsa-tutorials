@@ -1,5 +1,4 @@
 ---
-short_title: "MER Catalogs"
 jupytext:
   text_representation:
     extension: .md

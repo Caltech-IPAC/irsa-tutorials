@@ -1,2 +1,2 @@
-# We need JB2 here, the stable release is not yet available
-jupyter-book>=2.0.0b0
+# We need JB>=2.1.1 as we use multiple new features first shipped in myst-cli 1.8.0
+jupyter-book>=2.1.1

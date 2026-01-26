@@ -1,5 +1,4 @@
 ---
-short_title: "Cloud Access"
 jupytext:
   text_representation:
     extension: .md

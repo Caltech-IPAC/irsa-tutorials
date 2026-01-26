@@ -1,7 +1,3 @@
----
-short_title: "Euclid"
----
-
 # Euclid Tutorial Notebooks
 
 [Euclid](https://irsa.ipac.caltech.edu/Missions/euclid.html) launched in July 2023 with the primary science goals of better understanding the composition and evolution of the dark Universe.
