@@ -7,11 +7,11 @@ project:
       file: tutorials/spherex/spherex.md
       children:
         - title: Data Overview
-        - file: tutorials/spherex/spherex_intro.md
+          file: tutorials/spherex/spherex_intro.md
         - title: Spectral Image Cutouts
-        - file: tutorials/spherex/spherex_cutouts.md
+          file: tutorials/spherex/spherex_cutouts.md
         - title: PSF Models
-        - file: tutorials/spherex/spherex_psf.md
+          file: tutorials/spherex/spherex_psf.md
     - title: Euclid
       file: tutorials/euclid_access/euclid.md
       children:
@@ -39,15 +39,15 @@ project:
       file: tutorials/wise.md
       children:
         - title: ALLWISE Images
-        - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+          file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
         - title: ALLWISE Catalog
-        - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+          file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
         - title: NEOWISE visualization
-        - file: tutorials/firefly/NEOWISE_light_curve_demo.md
+          file: tutorials/firefly/NEOWISE_light_curve_demo.md
         - title: NEOWISE source table
-        - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+          file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
         - title: NEOWISE source table light curves
-        - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+          file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
         - file: tutorials/irsa-sia-examples/siav2_seip.md
@@ -61,23 +61,23 @@ project:
       file: tutorials/simulated.md
       children:
         - title: Roman HLSS Number Density
-        - file: tutorials/roman_simulations/roman_hlss_number_density.md
+          file: tutorials/roman_simulations/roman_hlss_number_density.md
         - title: OpenUniverse2024 Roman coadds
-        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
         - title: OpenUniverse2024 Visualization
-        - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+          file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
         - title: OpenUniverse2024 Time Domain
-        - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
         - title: CosmoDC2 Data Access
-        - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+          file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
     - title: Techniques & Tools
       file: tutorials/techniques.md
       children:
         - title: Cloud Access
-        - file: tutorials/cloud_access/cloud-access-intro.md
+          file: tutorials/cloud_access/cloud-access-intro.md
         - title: LSDB HATS
-        - file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
+          file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
         - title: SED visualization
-        - file: tutorials/firefly/SEDs_in_Firefly.md
+          file: tutorials/firefly/SEDs_in_Firefly.md
         - title: Parallelization
-        - file: tutorials/parallelize/Parallelize_Convolution.md
+          file: tutorials/parallelize/Parallelize_Convolution.md
