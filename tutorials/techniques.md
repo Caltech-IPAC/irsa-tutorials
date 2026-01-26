@@ -1,7 +1,3 @@
----
-short_title: "Techniques & Tools"
----
-
 # Techniques & Tools Tutorial Notebooks
 
 This section gathers tutorials that go beyond mission specific data access and analysis to explore broader methods, workflows, and utilities applicable across missions and datasets. 

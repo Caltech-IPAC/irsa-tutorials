@@ -1,7 +1,3 @@
----
-short_title: "Simulated Data"
----
-
 # Simulated Data Tutorial Notebooks
 
 IRSA hosts a diverse collection of simulated astronomical datasets spanning multiple missions and science domains; designed to support survey planning, algorithm development, and scientific exploration.

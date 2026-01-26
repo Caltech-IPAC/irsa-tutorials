@@ -1,7 +1,3 @@
----
-short_title: "WISE"
----
-
 # WISE Tutorial Notebooks
 
 The Wide-field Infrared Survey Explorer ([WISE](https://irsa.ipac.caltech.edu/Missions/wise.html)) is a NASA infrared space telescope launched in December 2009 that performed a sensitive all-sky survey at 3.4, 4.6, 12, and 22 µm, cataloging hundreds of millions of stars, galaxies, and Solar System objects and enabling discoveries of cool brown dwarfs and luminous infrared galaxies. 

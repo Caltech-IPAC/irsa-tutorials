@@ -1,7 +1,3 @@
----
-short_title: "SPHEREx"
----
-
 # Spherex Tutorial Notebooks
 SPHEREx (Spectro-Photometer for the History of the Universe, Epoch of Reionization, and Ices Explorer) is a NASA space mission designed to perform the first all-sky spectral survey in the near-infrared. 
 SPHEREx observes the sky from roughly 0.75–5.0 µm using a single instrument that provides low-resolution spectroscopy (R ≈ 40–150) in hundreds of spectral channels for every point on the sky. 
