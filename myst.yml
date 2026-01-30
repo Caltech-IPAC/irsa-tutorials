@@ -26,6 +26,7 @@ site:
   options:
     favicon: _static/irsa-favicon.ico
     logo: _static/irsa_logo.png
+    style: _static/custom.css
     outline_maxdepth: 1
     # Keep the footer links hidden at least until https://github.com/jupyter-book/mystmd/issues/2589 is resolved
     hide_footer_links: true
