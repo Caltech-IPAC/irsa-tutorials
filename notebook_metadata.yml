@@ -1,0 +1,87 @@
+- name: Cloud Access Intro
+  path: tutorials/cloud_access/cloud-access-intro.md
+  description: Learn how to access and work with data served by IRSA from AWS S3 cloud storage.
+- name: Euclid Cloud Access
+  path: tutorials/cloud_access/euclid-cloud-access.md
+  description: Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
+- name: CosmoDC2 Data Access
+  path: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+  description: Access, query, and visualize the catalog.
+- name: MER Mosaics
+  path: tutorials/euclid_access/1_Euclid_intro_MER_images.md
+  description: Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
+- name: SIR 1D Spectra
+  path: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
+  description: Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
+- name: MER Catalogs
+  path: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
+  description: Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
+- name: PHZ Catalogs
+  path: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
+  description: Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
+- name: SPE Catalogs
+  path: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+  description: Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
+- name: Early Release Observations (ERO) - Star Clusters
+  path: tutorials/euclid_access/Euclid_ERO.md
+  description: Create multi-wavelength ERO image cutouts of a globular cluster, extract sources, and measure photometry. Match Gaia sources with Euclid ERO catalogs, then visualize with Firefly.
+- name: NEOWISE Solar System Objects
+  path: tutorials/firefly/NEOWISE_light_curve_demo.md
+  description: Visualize and analyze light curves of Solar System objects using Firefly.
+- name: OpenUniverse2024 Visualization
+  path: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+  description: Use Firefly to get an overview of survey structure and visualize content.
+- name: SED Visualization
+  path: tutorials/firefly/SEDs_in_Firefly.md
+  description: Explore and interactively visualize SEDs using Firefly on multi-wavelength datasets.
+- name: 2MASS Images
+  path: tutorials/irsa-sia-examples/sia_2mass_allsky.md
+  description: Query IRSA's SIA service for an image from the 2MASS All-Sky Atlas images and create and display a cutout.
+- name: ALLWISE Images
+  path: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+  description: Retrieve coadded images and make coordinate-based cutouts.
+- name: COSMOS Images
+  path: tutorials/irsa-sia-examples/sia_cosmos.md
+  description: Query IRSA's SIA service for COSMOS images and create and display a cutout.
+- name: Spitzer SEIP
+  path: tutorials/irsa-sia-examples/siav2_seip.md
+  description: Query IRSA's SIA service for an IRAC mosaic and create and display a cutout.
+- name: OpenUniverse2024 Time Domain
+  path: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+  description: Access and analyze the time-domain survey.
+- name: OpenUniverse2024 Roman Coadds
+  path: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+  description: Access OpenUniverse2024 wide-area simulated survey data.
+- name: Parallelization
+  path: tutorials/parallelize/Parallelize_Convolution.md
+  description: Learn parallelization techniques to speed up operations on large astronomical images.
+- name: Introduction
+  path: tutorials/parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md
+  description: Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
+- name: Magnitudes
+  path: tutorials/parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md
+  description: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
+- name: HATS with LSDB
+  path: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
+  description: Use LSDB for user-friendly cross matching and querying of HATS Collections.
+- name: NEOWISE Light Curves
+  path: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+  description: Build multi-epoch photometric light curves for given coordinates.
+- name: NEOWISE Strategies
+  path: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+  description: Learn efficient strategies for accessing and handling this very large Parquet dataset.
+- name: AllWISE Source Catalog
+  path: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+  description: Explore mid-infrared source properties by querying, filtering, and working with the catalog.
+- name: Roman HLSS Number Density
+  path: tutorials/roman_simulations/roman_hlss_number_density.md
+  description: Query the catalog and derive galaxy number density.
+- name: Data Overview
+  path: tutorials/spherex/spherex_intro.md
+  description: Learn about available data including how to identify which files and formats are appropriate for different use cases.
+- name: Spectral Image Cutouts
+  path: tutorials/spherex/spherex_cutouts.md
+  description: Generate and work with spatial and spectral cutouts.
+- name: PSF Models
+  path: tutorials/spherex/spherex_psf.md
+  description: Learn how SPHEREx point spread function (PSF) information is organized and accessed.
