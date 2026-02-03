@@ -51,7 +51,7 @@ jobs:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Caltech-IPAC/irsa-tutorials' }}
     name: Deploy deploy_to_fornax branch
     runs-on: ubuntu-latest
-    #needs: publish_html
+    needs: publish_html
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
@@ -68,6 +68,7 @@ jobs:
           git mv tutorials irsa-tutorials
           git mv tutorial_requirements.txt irsa-tutorials/requirements-irsa-tutorials.txt
           git commit -m "Restructuring to help fornax deployment"
+          # This is somewhat hacky, but does the job for now.
           for i in $(grep .md deploy_to_fornax_manifest.in); do grep "file: ${i}" notebook_metadata.yml -A 1 | gawk -F : 'NR==1 {printf $2": "} NR!= 1 {print $2}' | cut -c 12-; done > notebook_manifest_descriptions.txt
           git add notebook_manifest_descriptions.txt
           git commit -m "Adding notebook manifest with one liner descriptions"
