@@ -18,6 +18,7 @@ tutorials/openuniversesims/openuniverse2024_roman_demodata_20000808_instances.cs
 tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
 tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
 tutorials/parallelize/Parallelize_Convolution.md
+tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
 tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
 tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
 tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
