@@ -1,13 +1,6 @@
 # ignore these as they run out of resources on CircleCI.
 # Note that the first 2 are excluded for all kinds of testing; while the parallelize causes issues for GHA JB2 builds and non linux testing, too.
 #
-#tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
-#tutorials/parquet-catalog-demos/neowise-source-table-strategies
-#tutorials/parallelize/Parallelize_Convolution
-#tutorials/roman_simulations/roman_hlss_number_density
-#tutorials/cosmodc2/cosmoDC2_TAP_access
-#tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
-#tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
-#tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
-#tutorials/cloud_access/euclid-cloud-access
-#tutorials/cloud_access/cloud-access-intro
+tutorials/roman_simulations/roman_hlss_number_density
+tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/cloud_access/euclid-cloud-access
