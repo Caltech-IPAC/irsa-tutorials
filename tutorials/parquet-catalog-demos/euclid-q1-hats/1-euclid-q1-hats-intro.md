@@ -17,7 +17,7 @@ kernelspec:
 
 This tutorial is an introduction to the content and format of the Euclid Q1 Merged Objects HATS Catalog.
 Later tutorials in this series will show how to load quality samples.
-See [Euclid Tutorial Notebooks: Catalogs](../../euclid_access/euclid.md#catalogs) for a list of tutorials in this series.
+See [Euclid Tutorial Notebooks](../../euclid_access/euclid.md) for a complete list of Euclid tutorials.
 
 +++
 
