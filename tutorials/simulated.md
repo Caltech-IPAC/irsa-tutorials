@@ -6,7 +6,7 @@ These tutorials are designed to help users get started with accessing, visualizi
 
 - [Roman HLSS Number Density](roman_simulations/roman_hlss_number_density.md) - Illustrates how to query the catalog and derive galaxy number density.
   
-- [OpenUniverse2024 Roman coadds](openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md) - Accesses OpenUniverse2024 wide-area simulated survey data.
+- [OpenUniverse2024 Roman Coadds](openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md) - Accesses OpenUniverse2024 wide-area simulated survey data.
 
 - [OpenUniverse2024 Visualization](firefly/OpenUniverse2024Preview_Firefly.md) - Uses Firefly to get an overview of survey structure and visualize content.
 
