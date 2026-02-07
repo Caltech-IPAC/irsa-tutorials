@@ -6,9 +6,9 @@ Its science goals span cosmology, galaxy evolution, and the interstellar medium,
 
 SPHEREx data releases include weekly [Quick Release spectral image products](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-products/) (multi-extension FITS files containing calibrated near-infrared surface brightness, variance, flags, modeled backgrounds, PSFs, and wavelength WCS) along with ancillary calibration and metadata files such as gain matrices, dark current maps, solid angle pixel maps, and detailed spectral WCS products for each detector.
 
-- [Data Overview](spherex_intro.md) - Introduces available data including how to identify which files and formats are appropriate for different use cases.
+- [Data Overview](spherex_intro.md) - Identify available data products and select the appropriate FITS extensions for different use cases.
 
-- [Spectral Image Cutouts](spherex_cutouts.md) - Demonstrates how to generate and work with spatial and spectral cutouts.
+- [Spectral Image Cutouts](spherex_cutouts.md) - Generate and work with spatial and spectral cutouts.
 
-- [PSF Models](spherex_psf.md) - Explains how SPHEREx point spread function (PSF) information is organized and accessed.
+- [PSF Models](spherex_psf.md) - Understand how SPHEREx point spread function (PSF) information is organized and accessed.
 

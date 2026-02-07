@@ -42,11 +42,11 @@ project:
           file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
         - title: ALLWISE Catalog
           file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
-        - title: NEOWISE visualization
+        - title: NEOWISE Firefly
           file: tutorials/firefly/NEOWISE_light_curve_demo.md
-        - title: NEOWISE source table
+        - title: NEOWISE Strategies
           file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
-        - title: NEOWISE source table light curves
+        - title: NEOWISE Light Curves
           file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
