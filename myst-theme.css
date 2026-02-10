@@ -1,1 +1,6 @@
-/* No Custom Stylesheet Provided */
+/* User Provided Stylesheet */
+
+html.light a.myst-card > .myst-card-header {
+    /* header of a link card in light mode */
+    background-color: #eff6ff; /* Tailwind blue-50, used by info admonition */
+}

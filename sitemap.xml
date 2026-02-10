@@ -5,6 +5,9 @@
     <loc>http://localhost:3000</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/spherex</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/spherex-intro</loc>
   </url>
   <url>
@@ -44,6 +47,9 @@
     <loc>http://localhost:3000/euclid-ero</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/wise</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/sia-allwise-atlas</loc>
   </url>
   <url>
@@ -68,6 +74,9 @@
     <loc>http://localhost:3000/sia-cosmos</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/simulated</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/roman-hlss-number-density</loc>
   </url>
   <url>
@@ -81,6 +90,9 @@
   </url>
   <url>
     <loc>http://localhost:3000/cosmodc2-tap-access</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/techniques</loc>
   </url>
   <url>
     <loc>http://localhost:3000/cloud-access-intro</loc>
