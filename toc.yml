@@ -4,10 +4,14 @@ project:
     - title: IRSA Tutorials
       file: index.md
     - title: SPHEREx
+      file: tutorials/spherex/spherex.md
       children:
-        - file: tutorials/spherex/spherex_intro.md
-        - file: tutorials/spherex/spherex_cutouts.md
-        - file: tutorials/spherex/spherex_psf.md
+        - title: Data Overview
+          file: tutorials/spherex/spherex_intro.md
+        - title: Spectral Image Cutouts
+          file: tutorials/spherex/spherex_cutouts.md
+        - title: PSF Models
+          file: tutorials/spherex/spherex_psf.md
     - title: Euclid
       file: tutorials/euclid_access/euclid.md
       children:
@@ -32,16 +36,18 @@ project:
         - title: ERO Star Clusters
           file: tutorials/euclid_access/Euclid_ERO.md
     - title: WISE
+      file: tutorials/wise.md
       children:
-        - title: AllWISE
-          children:
-            - file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
-            - file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
-        - title: NEOWISE
-          children:
-            - file: tutorials/firefly/NEOWISE_light_curve_demo.md
-            - file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
-            - file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+        - title: AllWISE Images
+          file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+        - title: AllWISE Catalog
+          file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+        - title: NEOWISE Firefly
+          file: tutorials/firefly/NEOWISE_light_curve_demo.md
+        - title: NEOWISE Strategies
+          file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+        - title: NEOWISE Light Curves
+          file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
         - file: tutorials/irsa-sia-examples/siav2_seip.md
@@ -52,21 +58,26 @@ project:
       children:
         - file: tutorials/irsa-sia-examples/sia_cosmos.md
     - title: Simulated Data
+      file: tutorials/simulated.md
       children:
-        - title: Roman HLSS Galaxy Mock Catalog
-          children:
-            - file: tutorials/roman_simulations/roman_hlss_number_density.md
-        - title: OpenUniverse 2024
-          children:
-            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
-            - file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
-            - file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
-        - title: CosmoDC2
-          children:
-            - file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
-    - title: Special Topics
+        - title: Roman HLSS Number Density
+          file: tutorials/roman_simulations/roman_hlss_number_density.md
+        - title: OpenUniverse2024 Roman coadds
+          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+        - title: OpenUniverse2024 Visualization
+          file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+        - title: OpenUniverse2024 Time Domain
+          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+        - title: CosmoDC2 Data Access
+          file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+    - title: Techniques & Tools
+      file: tutorials/techniques.md
       children:
-        - file: tutorials/cloud_access/cloud-access-intro.md
-        - file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
-        - file: tutorials/firefly/SEDs_in_Firefly.md
-        - file: tutorials/parallelize/Parallelize_Convolution.md
+        - title: Cloud Access
+          file: tutorials/cloud_access/cloud-access-intro.md
+        - title: LSDB HATS
+          file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
+        - title: SED visualization
+          file: tutorials/firefly/SEDs_in_Firefly.md
+        - title: Parallelization
+          file: tutorials/parallelize/Parallelize_Convolution.md
