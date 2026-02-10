@@ -7,9 +7,9 @@ After exhausting its cryogen, the mission was repurposed as NEOWISE in 2013 to d
 WISE and NEOWISE data are released publicly through the NASA/IPAC Infrared Science Archive (IRSA), including calibrated images, source catalogs, and single-exposure source tables that together enable multi-epoch photometry, light curves, and motion studies for a wide range of astrophysical and Solar System applications. 
 Successive NEOWISE data releases, issued with annual updates, provided users with increasingly deep coverage and time-domain information across the infrared sky.
 
-- [ALLWISE Images](irsa-sia-examples/sia_allwise_atlas.md) - Retrieve coadded images and make coordinate-based cutouts.
+- [AllWISE Images](irsa-sia-examples/sia_allwise_atlas.md) - Retrieve coadded images and make coordinate-based cutouts.
 
-- [ALLWISE Catalog](parquet-catalog-demos/wise-allwise-catalog-demo.md) - Querying, filter, and work with a HEALPix-partitioned Parquet catalog using the ALLWISE dataset.
+- [AllWISE Catalog](parquet-catalog-demos/wise-allwise-catalog-demo.md) - Querying, filter, and work with a HEALPix-partitioned Parquet catalog using the AllWISE dataset.
 
 - [NEOWISE Firefly](firefly/NEOWISE_light_curve_demo.md) - Visualize and analyze light curves of Solar System objects using Firefly.
 

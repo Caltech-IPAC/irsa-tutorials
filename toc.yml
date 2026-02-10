@@ -38,9 +38,9 @@ project:
     - title: WISE
       file: tutorials/wise.md
       children:
-        - title: ALLWISE Images
+        - title: AllWISE Images
           file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
-        - title: ALLWISE Catalog
+        - title: AllWISE Catalog
           file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
         - title: NEOWISE Firefly
           file: tutorials/firefly/NEOWISE_light_curve_demo.md
