@@ -244,7 +244,7 @@ euclid_schema_df[
 "phz_phz_median" gives us the median photometric redshift of sources, while "phz_phz_classification" can be used to filter the Euclid catalog to only galaxy-type sources.
 
 You can explore the schema DataFrame further to identify any other columns of interest.
-It is also useful to go through the description of Euclid Q1 data products and papers that contain different PHZ, MER, etc. catalog tables that are merged in this HATS catalog, which are linked in the [Euclid Q1 Merged Objects HATS Catalog: Introduction](euclid-q1-hats/1-euclid-q1-hats-intro.md).
+It is also useful to go through the description of Euclid Q1 data products and papers that contain different PHZ, MER, etc. catalog tables that are merged in this HATS catalog, which are linked in the [Euclid Q1 Merged Objects HATS Catalog: Introduction](../euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md).
 
 +++
 
