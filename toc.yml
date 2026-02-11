@@ -13,71 +13,71 @@ project:
         - title: PSF Models
           file: tutorials/spherex/spherex_psf.md
     - title: Euclid
-      file: tutorials/euclid_access/euclid.md
+      file: tutorials/euclid/euclid.md
       children:
         - title: MER Mosaics
-          file: tutorials/euclid_access/1_Euclid_intro_MER_images.md
+          file: tutorials/euclid/1_Euclid_intro_MER_images.md
         - title: SIR 1D Spectra
-          file: tutorials/euclid_access/3_Euclid_intro_1D_spectra.md
+          file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
         - title: MER Catalogs
-          file: tutorials/euclid_access/2_Euclid_intro_MER_catalog.md
+          file: tutorials/euclid/2_Euclid_intro_MER_catalog.md
         - title: PHZ Catalogs
-          file: tutorials/euclid_access/4_Euclid_intro_PHZ_catalog.md
+          file: tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
         - title: SPE Catalogs
-          file: tutorials/euclid_access/5_Euclid_intro_SPE_catalog.md
+          file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
         - title: Merged Objects HATS Catalog
           children:
             - title: Introduction
-              file: tutorials/parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md
+              file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
             - title: Magnitudes
-              file: tutorials/parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md
+              file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
         - title: Cloud Access
-          file: tutorials/cloud_access/euclid-cloud-access.md
+          file: tutorials/euclid/euclid-cloud-access.md
         - title: ERO Star Clusters
-          file: tutorials/euclid_access/Euclid_ERO.md
+          file: tutorials/euclid/Euclid_ERO.md
     - title: WISE
-      file: tutorials/wise.md
+      file: tutorials/wise/wise.md
       children:
         - title: AllWISE Images
-          file: tutorials/irsa-sia-examples/sia_allwise_atlas.md
+          file: tutorials/wise/sia_allwise_atlas.md
         - title: AllWISE Catalog
-          file: tutorials/parquet-catalog-demos/wise-allwise-catalog-demo.md
+          file: tutorials/wise/wise-allwise-catalog-demo.md
         - title: NEOWISE Firefly
-          file: tutorials/firefly/NEOWISE_light_curve_demo.md
+          file: tutorials/wise/NEOWISE_light_curve_demo.md
         - title: NEOWISE Strategies
-          file: tutorials/parquet-catalog-demos/neowise-source-table-strategies.md
+          file: tutorials/wise/neowise-source-table-strategies.md
         - title: NEOWISE Light Curves
-          file: tutorials/parquet-catalog-demos/neowise-source-table-lightcurves.md
+          file: tutorials/wise/neowise-source-table-lightcurves.md
     - title: Spitzer
       children:
-        - file: tutorials/irsa-sia-examples/siav2_seip.md
+        - file: tutorials/spitzer/siav2_seip.md
     - title: 2MASS
       children:
-        - file: tutorials/irsa-sia-examples/sia_2mass_allsky.md
+        - file: tutorials/2mass/sia_2mass_allsky.md
     - title: COSMOS
       children:
-        - file: tutorials/irsa-sia-examples/sia_cosmos.md
+        - file: tutorials/cosmos/sia_cosmos.md
     - title: Simulated Data
-      file: tutorials/simulated.md
+      file: tutorials/simulated-data/simulated.md
       children:
         - title: Roman HLSS Number Density
-          file: tutorials/roman_simulations/roman_hlss_number_density.md
+          file: tutorials/simulated-data/roman_hlss_number_density.md
         - title: OpenUniverse2024 Roman coadds
-          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey.md
+          file: tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey.md
         - title: OpenUniverse2024 Visualization
-          file: tutorials/firefly/OpenUniverse2024Preview_Firefly.md
+          file: tutorials/simulated-data/OpenUniverse2024Preview_Firefly.md
         - title: OpenUniverse2024 Time Domain
-          file: tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey.md
+          file: tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md
         - title: CosmoDC2 Data Access
-          file: tutorials/cosmodc2/cosmoDC2_TAP_access.md
+          file: tutorials/simulated-data/cosmoDC2_TAP_access.md
     - title: Techniques & Tools
-      file: tutorials/techniques.md
+      file: tutorials/techniques-and-tools/techniques.md
       children:
         - title: Cloud Access
-          file: tutorials/cloud_access/cloud-access-intro.md
+          file: tutorials/techniques-and-tools/cloud-access-intro.md
         - title: LSDB HATS
-          file: tutorials/parquet-catalog-demos/irsa-hats-with-lsdb.md
+          file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
         - title: SED visualization
-          file: tutorials/firefly/SEDs_in_Firefly.md
+          file: tutorials/techniques-and-tools/SEDs_in_Firefly.md
         - title: Parallelization
-          file: tutorials/parallelize/Parallelize_Convolution.md
+          file: tutorials/techniques-and-tools/Parallelize_Convolution.md
