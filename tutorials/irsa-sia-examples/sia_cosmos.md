@@ -24,7 +24,7 @@ This notebook tutorial demonstrates the process of querying IRSA's Simple Image 
 
 By the end of this tutorial, you will:
 
-* Learn how to search the NASA Astronomical Virtual Observatory Directory web portal for a service that provides access to IRSA's COSMOS images.
+* Learn how to access IRSA's COSMOS images via the Simple Image Access (SIA) service.
 * Use the Python pyvo package to identify which of IRSA's COSMOS images cover a specified coordinate.
 * Download one of the identified images.
 * Create and display a cutout of the downloaded image.
@@ -90,15 +90,17 @@ dec = 2.24875
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## Section 2 - Lookup and define a service for COSMOS images
+## Section 2 - Define a service for COSMOS images
 
 +++
 
-Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/
+IRSA provides Simple Image Access (SIA) services for various datasets. A list of available services and their access URLs can be found at:
 
-Limit by Publisher "NASA/IPAC Infrared Science Archive" and Capability Type "Simple Image Access Protocol" then search on "COSMOS"
+https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-Locate the SIA2 URL https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&
+The COSMOS images service URL is:
+
+https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&
 
 ```{code-cell} ipython3
 cosmos_service = vo.dal.SIAService("https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&")
