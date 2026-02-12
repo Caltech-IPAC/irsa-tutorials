@@ -101,11 +101,11 @@ IRSA provides Simple Image Access (SIA) services for various datasets. A list of
 
 https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-The SEIP images are accessed via a SIAv2 service. Unlike SIA v1 services, SEIP uses collection-based access and is accessed at:
+The SEIP images are accessed via a SIAv2 service with collection-based access, unlike SIA v1 services:
 
 https://irsa.ipac.caltech.edu/SIA?COLLECTION=spitzer_seip&
 
-Note: SEIP uses a SIAv2 interface with collection-based access. When using the registry to discover IRSA services, you can search for other Spitzer-related services using keywords.
+Note: When using the registry to discover IRSA services, you can search for other Spitzer-related services using keywords.
 
 +++
 
