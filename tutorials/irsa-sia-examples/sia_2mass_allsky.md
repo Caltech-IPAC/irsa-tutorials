@@ -98,9 +98,9 @@ IRSA provides Simple Image Access (SIA) services for various datasets. A list of
 
 https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-The 2MASS All-Sky Atlas images service has the IVOA identifier (IVOID): `ivo://irsa.ipac/2mass/images/asky-at`
+For programmatic discovery, the 2MASS All-Sky Atlas images service is registered with the IVOA identifier: `ivo://irsa.ipac/2mass/images/asky-at`
 
-The service URL is:
+The direct service access URL is:
 
 https://irsa.ipac.caltech.edu/cgi-bin/2MASS/IM/nph-im_sia?type=at&ds=asky&
 

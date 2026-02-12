@@ -99,9 +99,9 @@ IRSA provides Simple Image Access (SIA) services for various datasets. A list of
 
 https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-The AllWISE Atlas images service has the IVOA identifier (IVOID): `ivo://irsa.ipac/wise/images/allwise/l3a`
+For programmatic discovery, the AllWISE Atlas images service is registered with the IVOA identifier: `ivo://irsa.ipac/wise/images/allwise/l3a`
 
-The service URL is:
+The direct service access URL is:
 
 https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?
 

@@ -98,9 +98,9 @@ IRSA provides Simple Image Access (SIA) services for various datasets. A list of
 
 https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-The COSMOS images service has the IVOA identifier (IVOID): `ivo://irsa.ipac/cosmos/images`
+For programmatic discovery, the COSMOS images service is registered with the IVOA identifier: `ivo://irsa.ipac/cosmos/images`
 
-The service URL is:
+The direct service access URL is:
 
 https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&
 
