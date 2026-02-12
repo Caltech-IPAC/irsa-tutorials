@@ -14,6 +14,8 @@ project:
   settings:
     output_matplotlib_strings: remove
   error_rules:
+     - rule: reference-target-resolves
+       severity: error
      - rule: link-resolves
        severity: ignore
        keys:
