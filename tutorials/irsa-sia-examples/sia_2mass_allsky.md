@@ -128,7 +128,7 @@ If you want to discover IRSA SIA services programmatically using the IVOA regist
 #         print(f"Title: {service.res_title}")
 ```
 
-Note: Registry access may not always be available. When in doubt, refer to the IRSA documentation page linked above. The code above is commented out as it requires registry access.
+Note: Registry access may not always be available. When in doubt, refer to the IRSA documentation page linked above.
 
 ## Section 3 - Search the service
 
