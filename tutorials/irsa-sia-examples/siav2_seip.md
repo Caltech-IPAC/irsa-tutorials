@@ -101,6 +101,8 @@ IRSA provides Simple Image Access (SIA) services for various datasets. A list of
 
 https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
+The SEIP images service has the IVOA identifier (IVOID): `ivo://irsa.ipac/spitzer/images/fls`
+
 The SEIP images are accessed via a SIAv2 service at:
 
 https://irsa.ipac.caltech.edu/SIA?COLLECTION=spitzer_seip&
@@ -112,6 +114,28 @@ To work with PyVO, define this SIAv2 service and use the collection argument sep
 ```{code-cell} ipython3
 seip_service2= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
 ```
+
++++
+
+### Optional: Discovering services programmatically
+
+If you want to discover IRSA SIA services programmatically using the IVOA registry, you can use PyVO's registry search functionality when the registry is accessible:
+
+```python
+# Search for services by IVOID pattern
+services = vo.regsearch(ivoid='ivo://irsa.ipac/*', servicetype='sia')
+
+# Or search by keywords
+services = vo.regsearch(keywords=['Spitzer', 'SEIP'], servicetype='sia')
+
+# Filter results to find the specific service you need
+for service in services:
+    if 'spitzer' in service.ivoid.lower():
+        print(f"Service: {service.ivoid}")
+        print(f"Title: {service.res_title}")
+```
+
+Note: Registry access may not always be available. When in doubt, refer to the IRSA documentation page linked above.
 
 ## Section 3 - Search the service
 
