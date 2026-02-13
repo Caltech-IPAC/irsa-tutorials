@@ -27,7 +27,7 @@ This notebook tutorial demonstrates the process of querying IRSA's Simple Image 
 
 By the end of this tutorial, you will:
 
-* Learn how to search the NASA Astronomical Virtual Observatory Directory web portal for a service that provides access to IRSA's Spitzer Enhanced Imaging Products (SEIP) images.
+* Learn how to access IRSA's Spitzer Enhanced Imaging Products (SEIP) images via the Simple Image Access v2 (SIAv2) service.
 * Use the Python pyvo package to identify which of IRSA's SEIP images cover a specified coordinate.
 * Download one of the identified images.
 * Create and display a cutout of the downloaded image.
@@ -93,22 +93,24 @@ dec = 77.595559
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## Section 2 - Lookup and define a service for SEIP images
+## Section 2 - Define a service for SEIP images
 
 +++
 
-Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/
+IRSA provides Simple Image Access (SIA) services for various datasets. A list of available services and their access URLs can be found at:
 
-Search on "seip"
+https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-Locate the COLLECTION=spitzer_seip from the SIA2 URL https://irsa.ipac.caltech.edu/SIA?COLLECTION=spitzer_seip&
+The SEIP images service URL is:
+
+https://irsa.ipac.caltech.edu/SIA?COLLECTION=spitzer_seip&
 
 +++
 
-To work with PyVO, define this SIAv2 service and use the collection argument separately
+To work with PyVO, define this SIAv2 service and use the collection argument separately:
 
 ```{code-cell} ipython3
-seip_service2= vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
+seip_service2 = vo.dal.sia2.SIA2Service('https://irsa.ipac.caltech.edu/SIA')
 ```
 
 ## Section 3 - Search the service

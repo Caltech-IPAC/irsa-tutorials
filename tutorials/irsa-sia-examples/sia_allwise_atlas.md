@@ -25,7 +25,7 @@ This notebook tutorial demonstrates the process of querying IRSA's Simple Image 
 
 By the end of this tutorial, you will:
 
-* Learn how to search the NASA Astronomical Virtual Observatory Directory web portal for a service that provides access to IRSA's WISE AllWISE Atlas (L3a) coadded images.
+* Learn how to access IRSA's WISE AllWISE Atlas (L3a) coadded images via the Simple Image Access (SIA) service.
 * Use the Python pyvo package to identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
 * Download one of the identified images.
 * Create and display a cutout of the downloaded image.
@@ -91,15 +91,17 @@ dec = 77.595559
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## Section 2 - Lookup and define a service for AllWISE Atlas images
+## Section 2 - Define a service for AllWISE Atlas images
 
 +++
 
-Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/
+IRSA provides Simple Image Access (SIA) services for various datasets. A list of available services and their access URLs can be found at:
 
-Limit by Publisher "NASA/IPAC Infrared Science Archive" and Capability Type "Simple Image Access Protocol" then search on "AllWISE Atlas"
+https://irsa.ipac.caltech.edu/ibe/sia_v1.html
 
-Locate the SIA2 URL https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?
+The AllWISE Atlas images service URL is:
+
+https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?
 
 ```{code-cell} ipython3
 allwise_service = vo.dal.SIAService("https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?")
