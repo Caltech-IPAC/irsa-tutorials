@@ -99,7 +99,9 @@ pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 
 IRSA provides Simple Image Access (SIA) services for various datasets. A list of available services and their access URLs can be found at:
 
-https://irsa.ipac.caltech.edu/ibe/sia_v1.html
+https://irsa.ipac.caltech.edu/ibe/sia.html
+
+**Note on SIA versions:** IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. The IRSA website linked above provides information on which version each service uses and how to access them. This tutorial uses SIA v2 for SEIP images.
 
 The SEIP images service URL is:
 
