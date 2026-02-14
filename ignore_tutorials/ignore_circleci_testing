@@ -1,13 +1,13 @@
 # ignore these 10 now as excluding execution for these is a combination that passes JB2 building on CircleCI.
 # Note that the first 2 are excluded for all kinds of testing; while the parallelize causes issues for GHA JB2 builds and non linux testing, too.
 #
-tutorials/parquet-catalog-demos/neowise-source-table-lightcurves
-tutorials/parquet-catalog-demos/neowise-source-table-strategies
-tutorials/parallelize/Parallelize_Convolution
-tutorials/roman_simulations/roman_hlss_number_density
-tutorials/cosmodc2/cosmoDC2_TAP_access
-tutorials/openuniversesims/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/openuniversesims/openuniverse2024_roman_simulated_wideareasurvey
-tutorials/parquet-catalog-demos/wise-allwise-catalog-demo
-tutorials/cloud_access/euclid-cloud-access
-tutorials/cloud_access/cloud-access-intro
+tutorials/euclid/euclid-cloud-access
+tutorials/simulated-data/cosmoDC2_TAP_access
+tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey
+tutorials/simulated-data/roman_hlss_number_density
+tutorials/techniques-and-tools/cloud-access-intro
+tutorials/techniques-and-tools/Parallelize_Convolution
+tutorials/wise/neowise-source-table-lightcurves
+tutorials/wise/neowise-source-table-strategies
+tutorials/wise/wise-allwise-catalog-demo

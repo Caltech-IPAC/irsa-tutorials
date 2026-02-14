@@ -48,20 +48,20 @@ Join the SPE and MER catalogs and query for galaxies with H-alpha line detection
 ```
 
 ```{card}
-:link: ../parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md
-:header: [Merged Objects Catalog →](../parquet-catalog-demos/euclid-q1-hats/1-euclid-q1-hats-intro.md)
+:link: merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
+:header: [Merged Objects Catalog →](merged-objects-hats-catalog/1-euclid-q1-hats-intro.md)
 Introduction: Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
 ```
 
 ```{card}
-:link: ../parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md
-:header: [Merged Objects Catalog →](../parquet-catalog-demos/euclid-q1-hats/4-euclid-q1-hats-magnitudes.md)
+:link: merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+:header: [Merged Objects Catalog →](merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md)
 Magnitudes: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
 ```
 
 ```{card}
-:link: ../cloud_access/euclid-cloud-access.md
-:header: [Cloud Access →](../cloud_access/euclid-cloud-access.md)
+:link: euclid-cloud-access.md
+:header: [Cloud Access →](euclid-cloud-access.md)
 Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
 ```
 
