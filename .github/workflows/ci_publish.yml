@@ -40,6 +40,16 @@ jobs:
       - name: Execute notebooks while building HTMLs
         run: tox -e py312-buildhtml
 
+      - name: Zip up the entire directory to upload as an artifact
+        run: |
+            zip -r full-book.zip .
+
+      - name: Upload zipped full book artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: full-book
+          path: ./full-book.zip
+
       - name: Publish
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e  # v4.0.0
         with:
