@@ -41,11 +41,15 @@ jobs:
         run: tox -e py312-buildhtml
 
       - name: Zip up the entire directory to upload as an artifact
+        # Run this even if previous step fails, so we can preview the run output
+        if: always()
         run: |
             zip -r full-book.zip .
 
       - name: Upload zipped full book artifact
         uses: actions/upload-artifact@v6
+        # Run this even if previous step fails, so we can preview the run output
+        if: always()
         with:
           name: full-book
           path: ./full-book.zip
