@@ -44,7 +44,9 @@ jobs:
         # Run this even if previous step fails, so we can preview the run output
         if: always()
         run: |
-            zip -r full-book.zip .
+            # Zip up the full _build/* directory, so jupyterbook.pub can render them
+            # In the future, we should be able to ship just our notebooks + the execution outputs
+            zip -r full-book.zip _build/*
 
       - name: Upload zipped full book artifact
         uses: actions/upload-artifact@v6
