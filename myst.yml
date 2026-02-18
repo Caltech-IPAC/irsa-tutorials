@@ -7,6 +7,9 @@ project:
   keywords: [astronomy]
   authors: [IRSA Scientists and Developers]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
+  license:
+    id: BSD-3-Clause
+    url: https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/LICENSE
   jupyter:
     binder:
       repo: https://github.com/Caltech-IPAC/irsa-tutorials/
