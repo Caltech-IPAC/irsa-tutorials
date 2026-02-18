@@ -40,21 +40,13 @@ jobs:
       - name: Execute notebooks while building HTMLs
         run: tox -e py312-buildhtml
 
-      - name: Zip up the entire directory to upload as an artifact
-        # Run this even if previous step fails, so we can preview the run output
-        if: always()
-        run: |
-            # Zip up the full _build/* directory, so jupyterbook.pub can render them
-            # In the future, we should be able to ship just our notebooks + the execution outputs
-            zip -r full-book.zip _build/*
-
-      - name: Upload zipped full book artifact
+      - name: Upload full book artifact
         uses: actions/upload-artifact@v6
         # Run this even if previous step fails, so we can preview the run output
         if: always()
         with:
-          name: full-book
-          path: ./full-book.zip
+          name: full-built-book
+          path: ./_build
 
       - name: Publish
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e  # v4.0.0
