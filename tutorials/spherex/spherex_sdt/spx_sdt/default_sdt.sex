@@ -118,8 +118,7 @@ VERBOSE_TYPE     NORMAL         # can be QUIET, NORMAL or FULL
 HEADER_SUFFIX    .head          # Filename extension for additional headers
 WRITE_XML        N              # Write XML file (Y/N)?
 XML_NAME         sex.xml        # Filename for XML output
-XSL_URL          file:///home/gtorrini/miniconda3/envs/spxpipe_03-26-24/share/sextractor/sextractor.xsl  # Does this need to blanked?
-                                # Filename for XSL style-sheet
+XSL_URL          sex.xsl        # Filename for XSL style-sheet
 NTHREADS         1              # 1 single thread
 
 FITS_UNSIGNED    N              # Treat FITS integer values as unsigned (Y/N)?
