@@ -7,20 +7,20 @@ The notebook [](sdt_irsa.md) demonstrates how to use it.
 
 ### Directory Contents
 
-- `spx_sdt`: package including functions to run notebook
-  - SExtractor files
-    - `default.conv`: Convolution mask used as detection filter.
-    - `default.nnw`: Table of neural-network weights for star/galaxy separation.
-    - `default_sdt.sex`: SExtractor default config file. Specifies catalog, extraction, photometry, etc. options.
-    - `default_sdt.param`: SExtractor default parameters file. Specifies columns to include in output SExtractor catalog.
+- `sdt_irsa.md`: Demo notebook.
+- `conda-sdt_env.yml`: Conda environment definition file.
+- `spx_sdt/`: Python package, including functions and configuration files to extract and visualize sources.
   - Python modules
     - `aperture_photometry.py`: Functions adapted from Zafar Rustamkulov to perform aperture photometry.
     - `bokeh_viz.py`: Functions for dynamic `bokeh` visualizations.
     - `firefly_viz.py`: Functions for `Firefly` visualizations.
     - `source_extraction.py`: Functions to work with SExtractor.
     - `sdt_utils.py`: Miscellaneous utility functions for working with IRSA tables and SPHEREx image headers.
-- `conda-sdt_env.yml`: Conda environment definition file.
-- `sdt_irsa.ipynb`: Demo notebook.
+  - SExtractor files
+    - `default.conv`: Convolution mask used as detection filter.
+    - `default.nnw`: Table of neural-network weights for star/galaxy separation.
+    - `default_sdt.sex`: SExtractor default config file. Specifies catalog, extraction, photometry, etc. options.
+    - `default_sdt.param`: SExtractor default parameters file. Specifies columns to include in output SExtractor catalog.
 
 ## Setup
 
