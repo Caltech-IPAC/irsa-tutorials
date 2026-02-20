@@ -1,4 +1,4 @@
-# __Source Discovery Tool__
+# SPHEREx Source Discovery Tool
 
 ## Overview
 
@@ -24,7 +24,7 @@ The notebook [](sdt_irsa.md) demonstrates how to use it.
 
 ## Setup
 
-#### On local machine
+### On local machine
 
 All necessary packages and tools (SExtractor) are included in the `conda-sdt_env.yml` file.
 
@@ -48,7 +48,7 @@ jupyter-lab
 
 or select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
 
-#### On Fornax
+### On Fornax
 
 Installing the conda environment on the [Fornax NASA science platform](https://science.nasa.gov/astrophysics/programs/physics-of-the-cosmos/community/the-fornax-initiative/) needs slightly different steps. These can be reviewed in [this documentation](https://docs.fornax.sciencecloud.nasa.gov/compute-environments/#create-new-env).
 

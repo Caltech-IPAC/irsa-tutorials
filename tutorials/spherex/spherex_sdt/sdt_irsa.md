@@ -12,7 +12,7 @@ jupyter:
     name: std_conda
 ---
 
-# __SPHEREx Source Discovery Tool IRSA Demo__
+# SPHEREx Source Discovery Tool IRSA Demo
 
 The SPHEREx Source Discovery Tool is the Python package `spx_sdt` (included in this directory), which is used to discover and extract sources from SPHEREx Spectral Images and visualize their spectra.
 This notebook demonstrates how to use it.
@@ -28,7 +28,7 @@ This notebook demonstrates how to use it.
 * Select sources interactively and extract their SPHEREx spectra
 
 
-### 2. SPHEREx Overview
+## 2. SPHEREx Overview
 
 SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 2025.
 During its planned two-year mission, SPHEREx will obtain 0.75-5 micron spectroscopy over the entire sky, with deeper data in the SPHEREx Deep Fields.
@@ -140,7 +140,7 @@ conf.remote_timeout = 120
 output_notebook(resources=INLINE)
 ```
 
-## 5. Initialize ephemeral query parameters
+## 5. Initialize Ephemeral Query Parameters
 
 ```{attention}
 The query parameters below are valid as of **February 2026**, but will need to be updated as the mission proceeds.
@@ -163,7 +163,7 @@ sapm_s3 = [
 ]
 ```
 
-## 6. Search for SPHEREx spectral images
+## 6. Search for SPHEREx Spectral Images
 
 
 We search first search for all the available SPHEREx images around a given position on the sky.
@@ -245,7 +245,7 @@ print(results_by_detector.groups.keys)
 d4_result = results_by_detector.groups[3][0]  # first D4 image
 ```
 
-## 7. Load the data
+## 7. Load the Data
 
 Next, we download the two SPHEREx spectral images. We download them directly from the cloud.
 
@@ -291,7 +291,7 @@ If you want to download the SPHEREx spectral images from IPAC directly (not from
 ```
 
 
-## 8. Remove local background, create masks, and reproject
+## 8. Remove Local Background, Create Masks, and Reproject
 
 Before we can subtract the images, we have to do some preprocessing. This includes:
 - Converting from surface brightness to flux density units
@@ -407,7 +407,7 @@ plot3_info = {
 plot_overlap_trio(plot1_info, plot2_info, plot3_info, clip=True)
 ```
 
-## 9. Generate cutouts and subtracted color image
+## 9. Generate Cutouts and Subtracted Color Image
 
 
 For this example, we only use parts of the image. For this, we first generate cutouts of the D4 image as well as the reprojected D2 image.
@@ -473,7 +473,7 @@ subtracted_masked_info = {
 plot_subtracted_trio(d2_info, d4_info, subtracted_masked_info, clip=True)
 ```
 
-## 10. Run <code>SExtractor</code> on the subtracted color image
+## 10. Run <code>SExtractor</code> on the Subtracted Color Image
 
 A use case could be to search for red sources such as galaxies with an Active Galactic Nucleus (AGN), which are manifested by red mid-infrared colors. Such red sources can be identified on the subtracted image.
 
@@ -505,7 +505,7 @@ run_sextractor(os.path.realpath(cut_path2), sxt_config, sxt_params, d2_cat, sxt_
 run_sextractor(os.path.realpath(cut_path4), sxt_config, sxt_params, d4_cat, sxt_nnw, sxt_conv)
 ```
 
-## 11. Select sources interactively
+## 11. Select Sources Interactively
 
 In the following, we show two ways to visualize the extracted sources on the images and how to interactively select interesting sources. (Note that you can always select the source automatically in Python using, for example, `astropy` tables instead of doing it interactively.)
 
@@ -618,7 +618,7 @@ fc.show_table(file_input=tbl_stream,
               title='Table')
 ```
 
-## 12. Perform aperture photometry on selected sources
+## 12. Perform Aperture Photometry on Selected Sources
 
 Finally, we compute the SPHEREx spectra for selected sources. This includes downloading all the available SPHEREx spectral image cutouts for the sources and then measuring their photometry to generate a spectrum. For simplicity, we here perform aperture photometry but include background subtraction.
 
@@ -820,7 +820,3 @@ or problems.
 **Updated:** 18 February 2026
 
 **Runtime:** approximately 5 minutes
-
-```python
-
-```
