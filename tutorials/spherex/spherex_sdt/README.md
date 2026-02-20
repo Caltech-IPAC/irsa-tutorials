@@ -1,6 +1,12 @@
 # __Source Discovery Tool__
 
 ## Overview
+
+The SPHEREx Source Discovery Tool is the Python package `spx_sdt` (included in this directory), which is used to discover and extract sources from SPHEREx Spectral Images and visualize their spectra.
+The notebook [](sdt_irsa.md) demonstrates how to use it.
+
+### Directory Contents
+
 - `spx_sdt`: package including functions to run notebook
   - SExtractor files
     - `default.conv`: Convolution mask used as detection filter.

@@ -14,6 +14,8 @@ jupyter:
 
 # __SPHEREx Source Discovery Tool IRSA Demo__
 
+The SPHEREx Source Discovery Tool is the Python package `spx_sdt` (included in this directory), which is used to discover and extract sources from SPHEREx Spectral Images and visualize their spectra.
+This notebook demonstrates how to use it.
 
 ## 1. Learning Goals
 
