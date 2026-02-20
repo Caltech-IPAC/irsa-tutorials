@@ -11,7 +11,7 @@ kernelspec:
   language: python
 ---
 
-# Searching for AllWISE Atlas Images
+# Searching for AllWISE Images with SIA v2
 
 +++
 
@@ -32,7 +32,7 @@ The AllWISE program builds upon the work of the successful Wide-field Infrared S
 
 https://irsa.ipac.caltech.edu/Missions/wise.html
 
-The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for AllWISE images and catalogs. The AllWISE Atlas images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf) protocol. 
+The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for AllWISE images and catalogs. The AllWISE Atlas images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://www.ivoa.net/documents/SIA/) protocol. 
 
 
 ```{note}
@@ -131,7 +131,6 @@ Finally, we use the open-source astronomy data visualization software Firefly to
 # Or you can work with it in Python, as shown below.
 w3_mask = im_table['energy_bandpassname'] == 'W3'
 w3_table = im_table[w3_mask]
-
 ```
 
 ```{code-cell} ipython3
@@ -207,7 +206,6 @@ To see the Bibtex references for this, uncomment the below cell
 **WISE:**
 This publication makes use of data products from the Wide-field Infrared Survey Explorer, which is a joint project of the University of California, Los Angeles, and the Jet Propulsion Laboratory/California Institute of Technology, funded by the National Aeronautics and Space Administration."
 Digital Object Identifier (DOI): [10.26131/IRSA153](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA153)
-
 
 ```{code-cell} ipython3
 #import astropy
