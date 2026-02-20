@@ -57,13 +57,13 @@ To create a conda environment with the dependencies on your local machine use:
   conda env create --f conda-sdt_env.yml
   ```
 
-Then, make the environment available in the list of kernels for your Jupyter lab:
+Then, make the environment available in the list of kernels for your JupyterLab:
   ```
   conda activate sdt_env
   python -m ipykernel install --user --name=sdt_env
   ```
 
-To use the environment in your Jupyter Lab notebooks, either start Jupyter Lab in that environment by typing
+To use the environment in your Jupyter notebooks, either start JupyterLab in that environment by typing
 
 ```
 conda activate sdt_env
@@ -74,7 +74,7 @@ or select the environment `sdt_env` in your Jupyter Notebook using the dropdown 
 
 ### 3.2 On Fornax
 
-Installing the conda environment on the [Fornax NASA science platform](https://science.nasa.gov/astrophysics/programs/physics-of-the-cosmos/community/the-fornax-initiative/) needs slightly different steps. These can be reviewed in [this documentation](https://docs.fornax.sciencecloud.nasa.gov/compute-environments/#create-new-env).
+Installing the conda environment on the [NASA Fornax Science Console](https://science.nasa.gov/astrophysics/programs/physics-of-the-cosmos/community/the-fornax-initiative/) needs slightly different steps. These can be reviewed in the documentation [create a new environment](https://docs.fornax.sciencecloud.nasa.gov/compute-environments/#create-new-env).
 
 In order to install this specific conda environment on Fornax, the file name of the `yml` file specifically needs to be in the format `conda-*.yml`. The `yml` file distributed here is already provided in that format (`conda-sdt_env.yml`). Once this is set, open a new terminal (click on the large "+" button right under the "File" menu tab) and type to following command _inside_ the same directory where the `yml` file is located:
 
@@ -84,7 +84,7 @@ setup-conda-env --user
 
 Note that we use the `--user` option here, which will keep the environment available for subsequent Fornax sessions.
 
-To use the environment in your Jupyter Lab notebooks on Fornax, directly select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
+To use the environment in your Jupyter notebooks on Fornax, directly select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
 
 +++
 
