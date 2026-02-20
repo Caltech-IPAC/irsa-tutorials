@@ -1,15 +1,14 @@
 ---
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.19.1
-  kernelspec:
-    display_name: std_conda
-    language: python
-    name: std_conda
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.18.1
+kernelspec:
+  display_name: std_conda
+  language: python
+  name: std_conda
 ---
 
 # SPHEREx Source Discovery Tool IRSA Demo
@@ -27,6 +26,7 @@ This notebook demonstrates how to use it.
 
 * Select sources interactively and extract their SPHEREx spectra
 
++++
 
 ## 2. SPHEREx Overview
 
@@ -42,9 +42,11 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 
 More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
++++
 
 ## 3. Requirements
 
++++
 
 ### 3.1 On local machines
 
@@ -84,10 +86,11 @@ Note that we use the `--user` option here, which will keep the environment avail
 
 To use the environment in your Jupyter Lab notebooks on Fornax, directly select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
 
++++
 
 ## 4. Imports
 
-```python
+```{code-cell} ipython3
 # Standard library imports
 import concurrent.futures
 import copy
@@ -125,7 +128,7 @@ from spx_sdt.sdt_utils import (
 from spx_sdt.source_extraction import run_sextractor, get_sextractor_file
 ```
 
-```python
+```{code-cell} ipython3
 # Suppress logging temporarily to prevent astropy
 # from repeatedly printing out warning notices related to alternate WCSs
 import logging
@@ -147,7 +150,7 @@ The query parameters below are valid as of **February 2026**, but will need to b
 Specifically, the ephemeral query parameters _will_ change for future SPHEREx data releases.
 ```
 
-```python
+```{code-cell} ipython3
 # General
 data_release = "qr2"
 
@@ -165,12 +168,13 @@ sapm_s3 = [
 
 ## 6. Search for SPHEREx Spectral Images
 
++++
 
 We search first search for all the available SPHEREx images around a given position on the sky.
 
 Here, we choose the random position at R.A. = 150.7817877 degrees and Decl. = 3.3502204 degrees, which is close to the COSMOS field. We also choose a search radius of 50 arc-seconds.
 
-```python
+```{code-cell} ipython3
 coord = SkyCoord(150.7817877, 3.3502204, unit='deg')
 search_radius = 50 * u.arcsec
 ```
@@ -178,7 +182,7 @@ search_radius = 50 * u.arcsec
 We then search for the SPHEREx spectral images that overlap with the position in the search radius defined above.
 For this we use the [IRSA module in astroquery](https://astroquery.readthedocs.io/en/latest/ipac/irsa/irsa.html) and the Simple Image Access (SIA) API.
 
-```python
+```{code-cell} ipython3
 results = Irsa.query_sia(pos=(coord, search_radius), collection=sia_collection)
 results_summary(results)
 ```
@@ -194,7 +198,7 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 
 +++
 
-
++++
 
 Next, we set up the _Firefly_ client and use it to visualize one image with the search coordinates (and search radius) indicated.
 
@@ -212,7 +216,7 @@ If you open _Firefly_ in a new Jupyter Notebook tab, you can drag the _Firefly_ 
 
 Below, we give the two options to open _Firefly_.
 
-```python
+```{code-cell} ipython3
 # Set up Firefly client to open in a new browser tab
 #fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 
@@ -235,7 +239,7 @@ We can use two different methods to obtain the images:
 
 We show both methods below, the first one for the detector 2 spectral image and the second one for the detector 4 spectral image.
 
-```python
+```{code-cell} ipython3
 # Using a boolean mask
 d2_result = results[results['energy_bandpassname'] == 'SPHEREx-D2'][0]  # first D2 image
 
@@ -251,7 +255,7 @@ Next, we download the two SPHEREx spectral images. We download them directly fro
 
 For this, we first define a handy function to obtain the S3 cloud path.
 
-```python
+```{code-cell} ipython3
 # Function to access data from cloud
 def get_s3_fpath(cloud_access):
     cloud_info = json.loads(cloud_access) # converts str to dict
@@ -262,7 +266,7 @@ def get_s3_fpath(cloud_access):
 
 Next we download the images.
 
-```python
+```{code-cell} ipython3
 # HDUs for D2 image
 s3_fpath_d2 = get_s3_fpath(d2_result['cloud_access'])
 with fits.open(f's3://{s3_fpath_d2}', fsspec_kwargs={"anon": True}) as hdul2:
@@ -290,6 +294,7 @@ If you want to download the SPHEREx spectral images from IPAC directly (not from
 
 ```
 
++++
 
 ## 8. Remove Local Background, Create Masks, and Reproject
 
@@ -307,8 +312,7 @@ You can find more calibration products for the SPHEREx spectral images on the S3
 
 ```
 
-
-```python
+```{code-cell} ipython3
 s3_fpath_sapm2 = sapm_s3[1] # list idx 1 is value for D2 path
 with fits.open(f's3://{s3_fpath_sapm2}', fsspec_kwargs={"anon": True}) as hdul_sapm2:
     sapm_data2 = hdul_sapm2["IMAGE"].data
@@ -322,7 +326,7 @@ with fits.open(f"s3://{s3_fpath_sapm4}", fsspec_kwargs={"anon": True}) as hdul_s
 
 After downloading the solid angle pixel map calibration products for each detector, we convert the images from brightness (MJy/sr) to spectral flux density ($\mu$Jy) and update the corresponding units in the headers of the imates.
 
-```python
+```{code-cell} ipython3
 print(f"Spectral image BUNIT: {img_hdr2['BUNIT']}")
 print(f"Solid angle pixel map BUNIT: {sapm_hdr2['BUNIT']}")
 
@@ -345,7 +349,7 @@ Next, we remove the background from both images. We estimate the background usin
 before feeding it to `sep`.
 ```
 
-```python
+```{code-cell} ipython3
 bkg2 = sep.Background(img_data2.astype(img_data2.dtype.newbyteorder("=")), bw=64, bh=64, fw=11, fh=11)
 img_data2 = img_data2 - bkg2
 
@@ -359,7 +363,7 @@ Note that we ignore the `OVERFLOW` flag, which is coincident with the `SUR_ERROR
 We therefore choose these as good pixels and flag the other ones.
 For simplicity, we set the bad pixels to `np.nan`.
 
-```python
+```{code-cell} ipython3
 mask2 = np.zeros(flags_data2.shape) * np.nan
 mask2[(flags_data2 == 2097152) | (flags_data2 == 2) | (flags_data2 == 0)] = 1
 
@@ -374,7 +378,7 @@ Finally, we reproject the images and masks to the same pixel grid. We reproject 
 - Due to the bilinear method applied in `reproject_interp`, single-pixel NaNs get conservatively extended into multi-pixel NaN regions.
 ```
 
-```python
+```{code-cell} ipython3
 img_data2_reproj, footprint = reproject_exact(input_data=(img_data2, img_hdr2), output_projection=img_hdr4)
 footprint[footprint == 0] = np.nan  # Set zero values to NaN
 mask2_reproj, _ = reproject_interp(input_data=(mask2, img_hdr2), output_projection=img_hdr4)
@@ -386,7 +390,7 @@ We use _bokeh_ to visualize the two detector images as well as the reprojected D
 The initial bokeh plot has a ~20 second rendering penalty due to static asset loading. Subsequent bokeh plots should take less time to display.
 ```
 
-```python
+```{code-cell} ipython3
 # Plot data
 plot1_info = {
     "img_data": img_data4,
@@ -409,15 +413,17 @@ plot_overlap_trio(plot1_info, plot2_info, plot3_info, clip=True)
 
 ## 9. Generate Cutouts and Subtracted Color Image
 
++++
 
 For this example, we only use parts of the image. For this, we first generate cutouts of the D4 image as well as the reprojected D2 image.
 
++++
 
 Next, we subtract the images. For keeping track of the wavelength and file names, we create two handy dictionaries.
 
 Finally, we use _bokeh_ to show interactive representation of the two images as well as the subtracted image _inside_ this Jupyter Notebook.
 
-```python
+```{code-cell} ipython3
 # Set up data directory and cutout paths
 data_dir = './data/'
 if not os.path.exists(data_dir):
@@ -443,7 +449,7 @@ cut4_hdu.writeto(cut_path4, overwrite=True)
 cut4_mask = Cutout2D(mask4, position=coord, size=(150, 150), wcs=WCS(img_hdu4.header))
 ```
 
-```python
+```{code-cell} ipython3
 d2_range = get_lambda_range(d2_result)
 d2_info = {
     "img_data": cut2.data,
@@ -479,7 +485,7 @@ A use case could be to search for red sources such as galaxies with an Active Ga
 
 In the following, we run [<code>SExtractor</code>](https://sextractor.readthedocs.io/en/latest/Introduction.html) on all the images (reprojected D2, D4, and subtracted image) to identify sources. Before that, however, we have to save the subtracted image to disk (note that the D2 and D4 cutouts are already saved to disk).
 
-```python
+```{code-cell} ipython3
 # Save subtracted image to fits file for source extraction
 subtracted_cut_path = os.path.join(data_dir , f"subtracted_{get_exp_id(img_hdu2)}_{get_exp_id(img_hdu4)}.fits")
 sub_hdu = copy.deepcopy(cut2_hdu)  # make copy to avoid modifying original
@@ -490,7 +496,7 @@ sub_hdu.writeto(subtracted_cut_path, overwrite=True)
 Now, we run <code>SExtractor</code>. This software needs a few parameter files such as a configuration and parameter files as well as some others (for example a convolution filter). These files are provided in the `spx_sdt` directory. For <code>SExtractor</code> to find them, we have to give it absolute path names to these files. We use `os.path.realpath()` in the following to translate relative paths to absolute paths.
 Finally, we run <code>SExtractor</code> on the last lines.
 
-```python
+```{code-cell} ipython3
 sxt_config = get_sextractor_file("default_sdt.sex", package="spx_sdt")
 sxt_params = get_sextractor_file("default_sdt.param", package="spx_sdt")
 sxt_nnw = get_sextractor_file("default.nnw", package="spx_sdt")
@@ -511,7 +517,7 @@ In the following, we show two ways to visualize the extracted sources on the ima
 
 First, we read in the <code>SExtractor</code> catalog. Note that we want to change `ALPHA_J2000` and `DELTA_J2000` to the more universal `ra` and `dec` column names. This is especially important for Firefly to be able to read the table out of the box and mark the source in the table on the images.
 
-```python
+```{code-cell} ipython3
 extracted = Table.read(subtracted_cat , format="ascii")
 extracted.rename_column("ALPHA_J2000", "ra")
 extracted.rename_column("DELTA_J2000", "dec")
@@ -526,13 +532,13 @@ First, we demonstrate how we can use _bokeh_ to create an interactive dashboard 
 Currently, _bokeh_ tables cannot be displayed in Fornax. Therefore the example below will not work. The user is encouraged to use _Firefly_, which use is demonstrated in Section 10.2 below.
 ```
 
-```python
+```{code-cell} ipython3
 plot_apertures(subtracted_cut_path, source_tab=extracted, label="Extracted Sources", clip=True)
 ```
 
 Alternatively, the sources can be easily selected in Python itself by defining a selection function.
 
-```python
+```{code-cell} ipython3
 # Create custom selection function
 def select_sources(sxt_tab):
     """Selects the 25 brightest sources from the SExtractor-generated catalog.
@@ -563,7 +569,7 @@ plot_apertures(subtracted_cut_path, source_tab=selected, label="25 Brightest Sou
 Alternatively to _bokeh_, we can use the _Firefly_ application to show the image including the data table. First we reinitiate _Firefly_, which will again open a new tab called "Firefly Viewer".
 As mentioned above, we give again two options for initiating _Firefly_; in a new browser tab or a new JupterLab tab.
 
-```python
+```{code-cell} ipython3
 # Set up Firefly client in browser tab
 #fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 
@@ -590,8 +596,7 @@ You can align and lock the images by their WCS by adding
 
 ```
 
-
-```python
+```{code-cell} ipython3
 # Load images
 fc.show_fits_image(
         file_input=cut_path2,
@@ -626,7 +631,7 @@ Finally, we compute the SPHEREx spectra for selected sources. This includes down
 
 Here we select one source to proceed (multiple sources can be measured by looping over the code below). Note that we here directly give it the unique source ID that we defined in the catalog column `NUMBER`.
 
-```python
+```{code-cell} ipython3
 selected_ids = [65]
 matched_stars = extracted[extracted['NUMBER'] == selected_ids[0]]["NUMBER", "ra", "dec"].to_pandas()
 ```
@@ -636,7 +641,7 @@ We then set up the TAP service as well as the cutout size to run a query for all
 Note that the following procedure follows the one shown in the SPHEREx [Image Cutout tutorial notebook](https://caltech-ipac.github.io/irsa-tutorials/spherex-cutouts/).
 ```
 
-```python
+```{code-cell} ipython3
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
 # so that we can query SPHEREx metadata tables.
 service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
@@ -667,7 +672,7 @@ print("Number of images found: {}".format(len(tap_results)))
 
 We then define a handy function that downloads the images.
 
-```python
+```{code-cell} ipython3
 def process_cutout(row, ra, dec, cache, retries=3, delay=5):
     '''
     Downloads the cutouts given in a row of the table including all SPHEREx images overlapping with a position.
@@ -720,7 +725,7 @@ def process_cutout(row, ra, dec, cache, retries=3, delay=5):
 
 We add some placeholders and other information to the table so we can keep track of things.
 
-```python
+```{code-cell} ipython3
 # Add columns to hold relevant cutout information
 results_table = tap_results.to_table()
 results_table["cutout_index"] = range(1, len(results_table) + 1)
@@ -735,7 +740,7 @@ Finally, we can run the download of the cutouts in parallel via the function cre
 The cell below can take a couple of minutes to run depending on the number of observations available at a given sky coordinate position.
 ```
 
-```python
+```{code-cell} ipython3
 # Process cutouts in parallel
 t1 = time.time()
 n_timeouts = 0
@@ -765,8 +770,7 @@ print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.tim
 Having obtained the cutouts, we can now perform aperture photometry on the cutouts and measure the fluxes as a function of wavelength.
 See `spx_sdt/aperture_photometry.py` for more information on the functions used below.
 
-
-```python
+```{code-cell} ipython3
 phot_path = os.path.realpath( "./data/ap_phot_sources.pkl" ) # this is where the photometry results are saved.
 aperture_radii = [3.0, 4.0, 5.0]  # aperture radii in pixels
 matched_stars = matched_stars.reset_index(drop=True)
@@ -777,7 +781,7 @@ build_phot_table(results_table, matched_stars, aperture_radii, phot_path, sapm_s
 
 Load the photometry file we just created.
 
-```python
+```{code-cell} ipython3
 if os.path.exists(phot_path):
     with open(phot_path, 'rb') as f:
         all_stars_band_phot = pickle.load(f)
@@ -785,7 +789,7 @@ if os.path.exists(phot_path):
 
 Apply flagging to the extracted 1D-Spectrum.
 
-```python
+```{code-cell} ipython3
 # Define bad photometry flags
 bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'PHANTOM', 'REFERENCE', 'NONFUNC', 'DICHROIC',
              'MISSING_DATA', 'HOT', 'COLD', 'FULLSAMPLE', 'PHANMISS', 'NONLINEAR', 'PERSIST', 'OUTLIER']
@@ -797,7 +801,7 @@ wvl, bdw, abmags, abmag_errs, flx, var, n_bad = \
 
 Finally visualize the spectrum using _bokeh_ in flux and magnitudes!
 
-```python
+```{code-cell} ipython3
 plot_spectrum(wvl, bdw, flx, var, abmags, abmag_errs, n_bad, type="flux",
               source_id=all_stars_band_phot['NUMBER'][targ], ap_size=3.0)
 plot_spectrum(wvl, bdw, flx, var, abmags, abmag_errs, n_bad, type="magnitude",
