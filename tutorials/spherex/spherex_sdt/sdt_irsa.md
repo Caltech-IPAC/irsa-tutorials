@@ -810,13 +810,16 @@ plot_spectrum(wvl, bdw, flx, var, abmags, abmag_errs, n_bad, type="magnitude",
 
 ## Acknowledgements
 
-- [IPAC-IRSA](https://irsa.ipac.caltech.edu/)
+- The Source Discovery Tool aperture photometry functions are adapted from code by Zafar Rustamkulov.
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 This work has made use of the NASA/IPAC Infrared Science Archive, which is funded by the National Aeronautics and Space Administration and operated by the California Institute of Technology. We acknowledge support from the SPHEREx project under a contract from the NASA/Goddard Space Flight Center to the California Institute of Technology. This research was partly carried out at the California Institute of Technology under a contract with the National Aeronautics and Space Administration (80GSFC18C0011).  The DOI for SPHEREx QR2 data is 10.26131/IRSA629 (https://doi.org/10.26131/IRSA629).
 
++++
 
-## About this notebook
-**Authors:** IRSA Data Science Team, including Gabriela Torrini, Andreas Faisst, Troy Raen, Jaladh Singhal, Vandana Desai, Brigitta Sipőcz, Jessica Krick, Shoubaneh Hemmati
+## About this Notebook
+
+**Authors:** Gabriela Torrini, Andreas Faisst, and the SPHEREx Science Data Center (SSDC); Troy Raen, Brigitta Sipőcz, and Jaladh Singhal
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
