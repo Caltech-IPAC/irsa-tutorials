@@ -6,9 +6,9 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.18.1
 kernelspec:
-  display_name: std_conda
+  display_name: Python 3 (ipykernel)
   language: python
-  name: std_conda
+  name: python3
 ---
 
 # SPHEREx Source Discovery Tool IRSA Demo
