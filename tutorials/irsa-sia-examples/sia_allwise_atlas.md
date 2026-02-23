@@ -144,8 +144,11 @@ hdulist.info()
 ```
 
 ```{code-cell} ipython3
-# Open a Firefly viewer in a tab within jupyterlab.
-fc = FireflyClient.make_lab_client()
+# Uncomment when opening a Firefly viewer in a tab within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
+
+# Uncomment when opening Firefly viewer in contexts other than the above 
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 
 # Visualize an image by sending its URL to the viewer.
 fc.show_fits_image(file_input=image_url,
