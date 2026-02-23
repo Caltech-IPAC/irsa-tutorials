@@ -2,3 +2,5 @@
 tutorials/techniques-and-tools/Parallelize_Convolution
 # Uses about 10G of memory which doesn't leave enough for other notebooks
 tutorials/wise/wise-allwise-catalog-demo
+# Requires source extractor, which requires a conda install
+tutorials/spherex/spherex_sdt/sdt_irsa.md
