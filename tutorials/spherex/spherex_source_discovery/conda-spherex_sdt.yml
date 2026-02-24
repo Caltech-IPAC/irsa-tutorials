@@ -1,7 +1,6 @@
 name: spherex_sdt
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - astromatic-source-extractor
   - astropy
@@ -21,4 +20,3 @@ dependencies:
   - tqdm
   - pip:
     - firefly-client
-    - pyvo
