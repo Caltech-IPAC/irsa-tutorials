@@ -9,6 +9,8 @@ from firefly_client import FireflyClient
 # Local application/library specific imports
 from spherex_source_discovery_tool.sdt_utils import get_filename
 
+__all__ = ["preview_query"]
+
 
 def preview_query(fc: FireflyClient, access_url: str, coord: SkyCoord, search_radius: Quantity):
     """Preview the results of an SDT query in Firefly.

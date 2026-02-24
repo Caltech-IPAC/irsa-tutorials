@@ -23,6 +23,9 @@ import numpy as np
 
 # Local application/library specific imports
 
+__all__ = ["xyz_hover", "copy_selected_button", "plot_preview", "plot_apertures",
+    "plot_spectrum", "plot_subtracted_trio", "plot_overlap_trio"]
+
 
 def xyz_hover(renderers: list[glyphs.Image], z_units: str) -> HoverTool:
     """Creates a hover tool to display the x, y position and z value in an

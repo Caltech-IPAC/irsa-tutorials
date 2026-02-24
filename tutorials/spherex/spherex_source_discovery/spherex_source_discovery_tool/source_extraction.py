@@ -6,6 +6,8 @@ from pathlib import Path
 from subprocess import run, CalledProcessError
 import importlib.resources as resources
 
+__all__ = ["run_sextractor", "get_sextractor_file"]
+
 
 def run_sextractor(cut_filepath: str, sxt_config: str, sxt_params: str, sxt_cat_path: str, sxt_nnw: str,
                    sxt_conv: str):
