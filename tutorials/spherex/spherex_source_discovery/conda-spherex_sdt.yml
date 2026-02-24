@@ -1,0 +1,22 @@
+name: spherex_sdt
+channels:
+  - conda-forge
+dependencies:
+  - astromatic-source-extractor
+  - astropy
+  - astroquery
+  - bokeh
+  - ipykernel
+  - ipywidgets
+  - matplotlib
+  - numpy
+  - pandas
+  - photutils
+  - pip
+  - regions
+  - reproject
+  - scipy
+  - sep
+  - tqdm
+  - pip:
+    - firefly-client
