@@ -17,6 +17,9 @@
     <loc>http://localhost:3000/spherex-psf</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/spherex-source-discovery-tool-demo</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/euclid</loc>
   </url>
   <url>
