@@ -54,7 +54,7 @@ All necessary packages and tools (e.g., <code>SExtractor</code>) are listed in t
 
 To create a conda environment with the dependencies on your local machine use:
   ```
-  conda env create --f conda-spherex_sdt.yml
+  conda env create --file conda-spherex_sdt.yml
   ```
 
 Then, make the environment available in the list of kernels for your JupyterLab:
