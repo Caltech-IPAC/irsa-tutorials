@@ -13,7 +13,7 @@ kernelspec:
 
 # SPHEREx Source Discovery Tool IRSA Demo
 
-The SPHEREx Source Discovery Tool is the Python package `spx_sdt` (included in this directory), which is used to discover and extract sources from SPHEREx Spectral Images and visualize their spectra.
+The SPHEREx Source Discovery Tool is the Python package `spherex_source_discovery_tool` (included in this directory), which is used to discover and extract sources from SPHEREx Spectral Images and visualize their spectra.
 This notebook demonstrates how to use it.
 
 ## 1. Learning Goals
@@ -50,33 +50,33 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 
 ### 3.1 On local machines
 
-All necessary packages and tools (e.g., <code>SExtractor</code>) are included in the `conda-sdt_env.yml` file.
+All necessary packages and tools (e.g., <code>SExtractor</code>) are listed in the `conda-spherex_sdt.yml` file.
 
 To create a conda environment with the dependencies on your local machine use:
   ```
-  conda env create --f conda-sdt_env.yml
+  conda env create --f conda-spherex_sdt.yml
   ```
 
 Then, make the environment available in the list of kernels for your JupyterLab:
   ```
-  conda activate sdt_env
-  python -m ipykernel install --user --name=sdt_env
+  conda activate spherex_sdt
+  python -m ipykernel install --user --name=spherex_sdt
   ```
 
 To use the environment in your Jupyter notebooks, either start JupyterLab in that environment by typing
 
 ```
-conda activate sdt_env
+conda activate spherex_sdt
 jupyter-lab
 ```
 
-or select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
+or select the environment `spherex_sdt` in your Jupyter Notebook using the dropdown on the upper left.
 
 ### 3.2 On Fornax
 
 Installing the conda environment on the [NASA Fornax Science Console](https://science.nasa.gov/astrophysics/programs/physics-of-the-cosmos/community/the-fornax-initiative/) needs slightly different steps. These can be reviewed in the documentation [create a new environment](https://docs.fornax.sciencecloud.nasa.gov/compute-environments/#create-new-env).
 
-In order to install this specific conda environment on Fornax, the file name of the `yml` file specifically needs to be in the format `conda-*.yml`. The `yml` file distributed here is already provided in that format (`conda-sdt_env.yml`). Once this is set, open a new terminal (click on the large "+" button right under the "File" menu tab) and type to following command _inside_ the same directory where the `yml` file is located:
+In order to install this specific conda environment on Fornax, the file name of the `yml` file specifically needs to be in the format `conda-*.yml`. The `yml` file distributed here is already provided in that format (`conda-spherex_sdt.yml`). Once this is set, open a new terminal (click on the large "+" button right under the "File" menu tab) and type to following command _inside_ the same directory where the `yml` file is located:
 
 ```
 setup-conda-env --user
@@ -84,7 +84,7 @@ setup-conda-env --user
 
 Note that we use the `--user` option here, which will keep the environment available for subsequent Fornax sessions.
 
-To use the environment in your Jupyter notebooks on Fornax, directly select the environment `sdt_env` in your Jupyter Notebook using the dropdown on the upper left.
+To use the environment in your Jupyter notebooks on Fornax, directly select the environment `spherex_sdt` in your Jupyter Notebook using the dropdown on the upper left.
 
 +++
 
@@ -119,13 +119,13 @@ from firefly_client import FireflyClient
 from reproject import reproject_exact, reproject_interp
 
 # Local application imports
-from spx_sdt.aperture_photometry import build_phot_table, grab_star
-from spx_sdt.bokeh_viz import (
+from spherex_source_discovery_tool.aperture_photometry import build_phot_table, grab_star
+from spherex_source_discovery_tool.bokeh_viz import (
     plot_apertures, plot_spectrum, plot_subtracted_trio, plot_overlap_trio)
-from spx_sdt.firefly_viz import preview_query
-from spx_sdt.sdt_utils import (
+from spherex_source_discovery_tool.firefly_viz import preview_query
+from spherex_source_discovery_tool.sdt_utils import (
     format_extracted, get_filename, get_exp_id, get_obs_id, results_summary, get_lambda_range)
-from spx_sdt.source_extraction import run_sextractor, get_sextractor_file
+from spherex_source_discovery_tool.source_extraction import run_sextractor, get_sextractor_file
 ```
 
 ```{code-cell} ipython3
@@ -384,7 +384,7 @@ footprint[footprint == 0] = np.nan  # Set zero values to NaN
 mask2_reproj, _ = reproject_interp(input_data=(mask2, img_hdr2), output_projection=img_hdr4)
 ```
 
-We use _bokeh_ to visualize the two detector images as well as the reprojected D4 image. See the file `spx_sdt/bokeh_viz.py` for more information on the used function `plot_overlap_trio()` to learn how to use _bokeh_.
+We use _bokeh_ to visualize the two detector images as well as the reprojected D4 image. See the file `spherex_source_discovery_tool/bokeh_viz.py` for more information on the used function `plot_overlap_trio()` to learn how to use _bokeh_.
 
 ```{warning}
 The initial bokeh plot has a ~20 second rendering penalty due to static asset loading. Subsequent bokeh plots should take less time to display.
@@ -493,14 +493,14 @@ sub_hdu.data = subtracted_info["img_data"]
 sub_hdu.writeto(subtracted_cut_path, overwrite=True)
 ```
 
-Now, we run <code>SExtractor</code>. This software needs a few parameter files such as a configuration and parameter files as well as some others (for example a convolution filter). These files are provided in the `spx_sdt` directory. For <code>SExtractor</code> to find them, we have to give it absolute path names to these files. We use `os.path.realpath()` in the following to translate relative paths to absolute paths.
+Now, we run <code>SExtractor</code>. This software needs a few parameter files such as a configuration and parameter files as well as some others (for example a convolution filter). These files are provided in the `spherex_source_discovery_tool` directory. For <code>SExtractor</code> to find them, we have to give it absolute path names to these files. We use `os.path.realpath()` in the following to translate relative paths to absolute paths.
 Finally, we run <code>SExtractor</code> on the last lines.
 
 ```{code-cell} ipython3
-sxt_config = get_sextractor_file("default_sdt.sex", package="spx_sdt")
-sxt_params = get_sextractor_file("default_sdt.param", package="spx_sdt")
-sxt_nnw = get_sextractor_file("default.nnw", package="spx_sdt")
-sxt_conv = get_sextractor_file("default.conv", package="spx_sdt")
+sxt_config = get_sextractor_file("default_sdt.sex", package="spherex_source_discovery_tool")
+sxt_params = get_sextractor_file("default_sdt.param", package="spherex_source_discovery_tool")
+sxt_nnw = get_sextractor_file("default.nnw", package="spherex_source_discovery_tool")
+sxt_conv = get_sextractor_file("default.conv", package="spherex_source_discovery_tool")
 
 subtracted_cat = os.path.realpath( os.path.join(data_dir , f"subtracted_{get_exp_id(img_hdu2)}_{get_exp_id(img_hdu4)}.cat")) # need to use absolute path here!
 d2_cat = os.path.realpath( os.path.join(data_dir , f"{get_exp_id(img_hdu2)}.cat") ) # need to use absolute path here!
@@ -768,7 +768,7 @@ print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.tim
 ### 12.2 Obtain spectrum
 
 Having obtained the cutouts, we can now perform aperture photometry on the cutouts and measure the fluxes as a function of wavelength.
-See `spx_sdt/aperture_photometry.py` for more information on the functions used below.
+See `spherex_source_discovery_tool/aperture_photometry.py` for more information on the functions used below.
 
 ```{code-cell} ipython3
 phot_path = os.path.realpath( "./data/ap_phot_sources.pkl" ) # this is where the photometry results are saved.

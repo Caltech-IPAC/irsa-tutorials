@@ -19,7 +19,7 @@ from scipy.interpolate import RegularGridInterpolator
 from tqdm import tqdm
 
 # Local
-from spx_sdt.sdt_utils import get_exp_id
+from spherex_source_discovery_tool.sdt_utils import get_exp_id
 
 
 # Constants 

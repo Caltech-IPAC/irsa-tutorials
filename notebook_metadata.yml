@@ -77,7 +77,7 @@
   file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
   description: Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
 - title: Source Discovery Tool
-  file: tutorials/spherex/spherex_sdt/sdt_irsa.md
+  file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
   description: Discover, extract, and visualize sources from SPHEREx Spectral Images.
 - title: Spectral Image Cutouts
   file: tutorials/spherex/spherex_cutouts.md

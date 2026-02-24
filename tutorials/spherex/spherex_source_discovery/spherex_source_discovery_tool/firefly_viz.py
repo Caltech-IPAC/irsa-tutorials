@@ -7,7 +7,7 @@ from astropy.units import Quantity
 from firefly_client import FireflyClient
 
 # Local application/library specific imports
-from spx_sdt.sdt_utils import get_filename
+from spherex_source_discovery_tool.sdt_utils import get_filename
 
 
 def preview_query(fc: FireflyClient, access_url: str, coord: SkyCoord, search_radius: Quantity):

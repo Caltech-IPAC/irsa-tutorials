@@ -43,7 +43,7 @@ def run_sextractor(cut_filepath: str, sxt_config: str, sxt_params: str, sxt_cat_
         print(e.stderr)
 
 
-def get_sextractor_file(rel_filename: str, package: str = "spx_sdt") -> Path:
+def get_sextractor_file(rel_filename: str, package: str = "spherex_source_discovery_tool") -> Path:
     """Returns path to package file.
 
     Parameters
@@ -51,7 +51,7 @@ def get_sextractor_file(rel_filename: str, package: str = "spx_sdt") -> Path:
     rel_filename : `str`
         The filename.
     package : `str`, optional
-        The package to look in, by default "spx_sdt".
+        The package to look in, by default "spherex_source_discovery_tool".
 
     Returns
     -------

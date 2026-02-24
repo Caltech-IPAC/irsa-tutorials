@@ -13,7 +13,7 @@ project:
         - title: PSF Models
           file: tutorials/spherex/spherex_psf.md
         - title: Source Discovery Tool
-          file: tutorials/spherex/spherex_sdt/sdt_irsa.md
+          file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
     - title: Euclid
       file: tutorials/euclid/euclid.md
       children:

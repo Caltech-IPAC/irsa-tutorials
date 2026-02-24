@@ -1,4 +1,4 @@
-name: sdt_env
+name: spherex_sdt
 channels:
   - conda-forge
   - defaults

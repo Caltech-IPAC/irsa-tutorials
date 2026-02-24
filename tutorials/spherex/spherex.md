@@ -12,4 +12,4 @@ SPHEREx data releases include weekly [Quick Release spectral image products](htt
 
 - [PSF Models](spherex_psf.md) - Understand how SPHEREx point spread function (PSF) information is organized and accessed.
 
-- [Source Discovery Tool](spherex_sdt/sdt_irsa.md) - Discover, extract, and visualize sources from SPHEREx Spectral Images.
+- [Source Discovery Tool](spherex_source_discovery/spherex_source_discovery_tool_demo.md) - Discover, extract, and visualize sources from SPHEREx Spectral Images.
