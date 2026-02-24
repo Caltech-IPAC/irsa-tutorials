@@ -11,7 +11,7 @@ kernelspec:
   language: python
 ---
 
-# Searching for AllWISE Images with SIA v2
+# Searching for 2MASS Images with SIA v1
 
 +++
 
@@ -19,8 +19,8 @@ kernelspec:
 
 By the end of this tutorial, you will:
 
-* Learn how to access IRSA's WISE AllWISE Atlas (L3a) coadded images via the Simple Image Access (SIA) service.
-* identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
+* Learn how to access IRSA's 2MASS All-Sky Atlas images. via the Simple Image Access (SIA) service.
+* Use Python to identify which of IRSA's 2MASS All-Sky Atlas images cover a specified coordinate.
 * Visualize one of the identified images using Forefly.
 * Create and display a cutout of the downloaded image.
 
@@ -28,28 +28,27 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-The AllWISE program builds upon the work of the successful Wide-field Infrared Survey Explorer mission [(WISE; Wright et al. 2010)](http://adsabs.harvard.edu/abs/2010AJ....140.1868W) by combining data from the WISE cryogenic and NEOWISE [(Mainzer et al. 2011 ApJ, 731, 53)](http://adsabs.harvard.edu/abs/2011ApJ...731...53M) post-cryogenic survey phases to form the a comprehensive view of the full mid-infrared sky. The AllWISE Images Atlas is comprised of 18,240 4-band calibrated 1.56°x1.56° FITS images, depth-of-coverage and noise maps, and image metadata produced by coadding nearly 7.9 million Single-exposure images from all survey phases. For more information about the WISE mission, see:
+The Two Micron All Sky Survey (2MASS) project uniformly scanned the entire sky in three near-infrared bands to detect and characterize point sources brighter than about 1 mJy in each band, with signal-to-noise ratio (SNR) greater than 10. More information about 2MASS can be found at:
 
-https://irsa.ipac.caltech.edu/Missions/wise.html
+https://irsa.ipac.caltech.edu/Missions/2mass.html
 
-The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for AllWISE images and catalogs. The AllWISE Atlas images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://www.ivoa.net/documents/SIA/) protocol. 
-
+The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for 2MASS images and catalogs. The 2MASS images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf) protocol. IRSA's 2MASS SIA service is registered in the NASA Astronomical Virtual Observatory (NAVO) [Directory](https://vao.stsci.edu). 
 
 ```{note}
-IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. This IRSA [website](https://irsa.ipac.caltech.edu/ibe/sia.html) provides information on which version each service uses and how to access them. Further information on how to access IRSA data with different techniques is available [here](https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html). This tutorial uses SIA v2 for AllWISE Atlas images.
+IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. This IRSA [website](https://irsa.ipac.caltech.edu/ibe/sia.html) provides information on which version each service uses and how to access them. Further information on how to access IRSA data with different techniques is available [here](https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html). This tutorial uses SIA v1 for 2MASS allsky images.
 ```
 
 +++
 
 ## Imports
+- `astropy.table` for reading SIA CSV responses
+- `re` for robust band-name matching in metadata
 - `astropy.coordinates` for defining coordinates
 - `astropy.nddata` for creating an image cutout
 - `astropy.wcs` for interpreting the World Coordinate System header keywords of a fits file
-- `astropy.units` for attaching units to numbers passed to the SIA service
 - `matplotlib.pyplot` for plotting
+- `astropy.utils.data` for downloading files
 - `astropy.io` to manipulate FITS files
-- `firefly_client` for visuzlizing images
-- `astroquery.ipac.irsa` for IRSA data access
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -57,14 +56,16 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 ```
 
 ```{code-cell} ipython3
+from astropy.table import Table
+import re
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
-import astropy.units as u
 import matplotlib.pyplot as plt
+from astropy.utils.data import download_file
 from astropy.io import fits
+import astropy.units as u
 from firefly_client import FireflyClient
-from astroquery.ipac.irsa import Irsa
 ```
 
 ## 1. Define the target
@@ -79,30 +80,37 @@ dec = 77.595559
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## 2. Discover AllWISE Atlas images
+## 2. Discover 2MASS All-Sky Atlas images
 
 +++
 
-IRSA provides Simple Image Access (SIA) services for various datasets. A list of available datasets and their access URLs can be found [here](https://irsa.ipac.caltech.edu/ibe/sia.html).
-This tutorial uses SIA v2 for AllWISE Atlas images.
-To search for other datasets on SIA v2, try changing the filter string. 
-Or remove the filter keyword altogether to get a full list of available SIA v2 datasets at IRSA.
+IRSA provides Simple Image Access (SIA) services for various datasets. A list of available datasets and their access URLs can be found [here](https://irsa.ipac.caltech.edu/ibe/sia_v1.html).
+This tutorial uses SIA v1 for 2MASS allsky images.
+
+The URL for IRSA SIA v1 queries takes the form of:
+
+https://irsa/ipac.caltech.edu/ibe/sia/{mission}/{data-set}/{table-name}?{query-constraints}
+
+From the linked table we can see that:
+- mission is "twomass"
+- data-set is "allsky"
+- table-name is "allsky"
+
+To use the below code to examine images from other v1 datasets, substitute their values from the table into the url below.
 
 ```{code-cell} ipython3
-#first we need to know the name of the dataset on the IRSA system
-names = Irsa.list_collections(filter="allwise")
-names
-
-# We see from the resulting table that the dataset collection we are interested in is called "wise_allwise"
+# first we need to know the name of the dataset on the IRSA system
+# Also choose a size of image to return (note this is in degrees)
+base = "https://irsa.ipac.caltech.edu/ibe/sia/twomass/allsky/allsky"
+url = f"{base}?POS={ra},{dec}&SIZE=0.01,0.01&RESPONSEFORMAT=CSV"
 ```
 
 ## 3. Search for images
-Which images in the IRSA allwise dataset include our target of interest?
+Which images in the IRSA 2MASS dataset include our target of interest?
 
 ```{code-cell} ipython3
 #get a table of all images within 1 arcsecond of our target position
-dataset_name = names['collection'][0]  #name of our favorite dataset = "wise_allwise"
-im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection=dataset_name)
+im_table = Table.read(url, format="ascii.csv")
 ```
 
 ```{code-cell} ipython3
@@ -117,26 +125,36 @@ im_table.colnames
 
 ```{code-cell} ipython3
 # Let's look at the values in one of the columns
-im_table['energy_bandpassname']
+im_table['sia_url']
 ```
 
 ## 4.Locate and visualize an image of interest
 
-We start by filtering the image results for the W3 band images.  
-Then look at the header of one of the resulting W3 band images of our target star.
-Finally, we use the open-source astronomy data visualization software Firefly to display the fits image in a new tab.
+We start by filtering the image results for the H band images.  
+Then look at the header of one of the resulting H band images of our target star.
+Finally, we create an interactive FITS display of the H image by using [Firefly](https://caltech-ipac.github.io/firefly_client/index.html), an open-source interactive visualization tool for astronomical data.
+To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.
 
 ```{code-cell} ipython3
 # You can put the URL from the column "access_url" into a browser to download the file. 
 # Or you can work with it in Python, as shown below.
-w3_mask = im_table['energy_bandpassname'] == 'W3'
-w3_table = im_table[w3_mask]
+
+# Filter to H-band by parsing the column `sia_title`
+#    Titles look like: "2MASS All-Sky Data Release H-Band Atlas Image: ..."
+titles = im_table["sia_title"].astype(str)
+
+# Robust match: look for " H-Band " or "H Band" variants (case-insensitive)
+is_h = [bool(re.search(r"\bH[-\s]?Band\b", s, flags=re.IGNORECASE)) for s in titles]
+
+im_table_h = im_table[is_h]
+print(f"H-band rows: {len(im_table_h)}")
 ```
 
 ```{code-cell} ipython3
 # Lets look at the access_url of the first one:
-image_url = w3_table['access_url'][0]
-image_url
+row = im_table_h[0]
+image_url = row["sia_url"]
+print("URL:",image_url)
 
 #Use Astropy to examine the header of the URL from the previous step.
 hdulist = fits.open(image_url)
@@ -144,8 +162,11 @@ hdulist.info()
 ```
 
 ```{code-cell} ipython3
-# Open a Firefly viewer in a tab within jupyterlab.
+# Uncomment when opening a Firefly viewer in a tab within Jupyter Lab with jupyter_firefly_extensions installed
 fc = FireflyClient.make_lab_client()
+
+# Uncomment when opening Firefly viewer in contexts other than the above 
+#fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 
 # Visualize an image by sending its URL to the viewer.
 fc.show_fits_image(file_input=image_url,
@@ -200,17 +221,11 @@ This runtime is dependent on archive servers which means runtime will vary for u
 **Astropy:**
 To see the Bibtex references for this, uncomment the below cell
 
-**Astroquery:**
-To see the Bibtex references for this, uncomment the below cell
-
-**WISE:**
-This publication makes use of data products from the Wide-field Infrared Survey Explorer, which is a joint project of the University of California, Los Angeles, and the Jet Propulsion Laboratory/California Institute of Technology, funded by the National Aeronautics and Space Administration."
-Digital Object Identifier (DOI): [10.26131/IRSA153](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA153)
+**2MASS:**
+This publication makes use of data products from the Two Micron All Sky Survey, which is a joint project of the University of Massachusetts and the Infrared Processing and Analysis Center/California Institute of Technology, funded by the National Aeronautics and Space Administration and the National Science Foundation."
 
 ```{code-cell} ipython3
 #import astropy
-#import astroquery
 
 #astropy.__citation__
-#astroquery.__citation__
 ```
