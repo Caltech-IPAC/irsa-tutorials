@@ -53,7 +53,7 @@ project:
         - file: tutorials/spitzer/siav2_seip.md
     - title: 2MASS
       children:
-        - file: tutorials/2mass/sia_2mass_allsky.md
+        - file: tutorials/2mass/sia_v1_2mass_allsky.md
     - title: COSMOS
       children:
         - file: tutorials/cosmos/sia_cosmos.md
