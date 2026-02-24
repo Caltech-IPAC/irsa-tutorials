@@ -36,7 +36,7 @@ The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) a
 
 ```{note}
 IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. This IRSA [website](https://irsa.ipac.caltech.edu/ibe/sia.html) provides information on which version each service uses and how to access them. Further information on how to access IRSA data with different techniques is available [here](https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html). This tutorial uses SIA v1 for 2MASS allsky images.
-```
+This SIA v1 service is based on an older set of SIA protocols and is limited to the WISE/NEOWISE, 2MASS, and PTF datasets. It allows for only position-based searches to a single table. The IRSA SIA v1 search service has been superseded by the SIA v2 service for all other datasets.```
 
 +++
 
