@@ -8,7 +8,6 @@ dependencies:
   - bokeh
   - ipykernel
   - ipywidgets
-  - matplotlib
   - numpy
   - pandas
   - photutils
