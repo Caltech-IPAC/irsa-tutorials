@@ -10,6 +10,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Jessica Krick
+  - name: IPAC Science Platform Team
 ---
 
 # Number Density as a Function of Redshift
@@ -1196,7 +1199,6 @@ Figure Caption:  The fractional uncertainty is the standard deviation from jackk
 +++
 
 ## About this notebook
-**Authors**: Jessica Krick in conjunction with the IPAC Science Platform Team
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.

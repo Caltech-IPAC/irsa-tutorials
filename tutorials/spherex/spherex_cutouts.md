@@ -9,6 +9,14 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: IRSA Data Science Team
+  - name: Vandana Desai
+  - name: Andreas Faisst
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Jessica Krick
+  - name: Shoubaneh Hemmati
 ---
 
 (spherex-cutouts)=
@@ -334,8 +342,6 @@ plt.show()
 - [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
-
-**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Troy Raen, Brigitta Sipőcz, Jessica Krick, Shoubaneh Hemmati
 
 **Updated:** 24 October 2025
 

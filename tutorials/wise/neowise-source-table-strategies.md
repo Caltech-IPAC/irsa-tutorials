@@ -9,6 +9,9 @@ kernelspec:
   display_name: science_demo
   language: python
   name: python3
+authors:
+  - name: Troy Raen
+  - name: IPAC Science Platform team
 ---
 
 # Strategies to Efficiently Work with NEOWISE Single-exposure Source Table in Parquet
@@ -562,8 +565,6 @@ per_part.sort_values("numrows").iloc[len(per_part.index) // 2]
 ***
 
 ## About this notebook
-
-**Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
 **Updated:** 2025-03-07
 

@@ -9,6 +9,13 @@ kernelspec:
   display_name: irsa-tutorials
   language: python
   name: python3
+authors:
+  - name: Jaladh Singhal
+  - name: Troy Raen
+  - name: Jessica Krick
+  - name: Brigitta Sipőcz
+  - name: Vandana Desai
+  - name: IRSA Data Science Team
 ---
 
 (hats-collections-lsdb-intro)=
@@ -605,8 +612,6 @@ plt.show()
 ```
 
 ## About this notebook
-
-Author: Jaladh Singhal, Troy Raen, Jessica Krick, Brigitta Sipőcz, Vandana Desai, and the IRSA Data Science Team
 
 Updated: 2025-10-02
 

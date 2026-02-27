@@ -9,6 +9,11 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Troy Raen
+  - name: David Shupe
+  - name: Jessica Krick
+  - name: IPAC Science Platform team
 ---
 
 (allwise-source-catalog-parquet)=
@@ -362,8 +367,6 @@ schema.names
 ***
 
 ## About this notebook
-
-**Author:** Troy Raen (IRSA Developer) in conjunction with David Shupe, Jessica Krick and the IPAC Science Platform team
 
 **Updated:** 2023-07-27
 

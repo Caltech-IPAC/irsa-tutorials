@@ -9,6 +9,12 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: IRSA Data Science Team
+  - name: Vandana Desai
+  - name: Andreas Faisst
+  - name: Brigitta Sipőcz
+  - name: Troy Raen
 ---
 
 # Understanding and Extracting the PSF Extension in a SPHEREx Cutout
@@ -292,8 +298,6 @@ To use this PSF for forward modeling or fitting, you must:
 - [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
-
-**Authors:** IRSA Data Science Team, including Vandana Desai, Andreas Faisst, Brigitta Sipőcz, Troy Raen
 
 **Updated:** 24 October 2025
 

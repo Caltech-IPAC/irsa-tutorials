@@ -9,6 +9,19 @@ kernelspec:
   name: python3
   display_name: python3
   language: python
+authors:
+  - name: Tiffany Meshkat
+  - name: Anahita Alavi
+  - name: Anastasia Laity
+  - name: Andreas Faisst
+  - name: Brigitta Sipőcz
+  - name: Dan Masters
+  - name: Harry Teplitz
+  - name: Jaladh Singhal
+  - name: Shoubaneh Hemmati
+  - name: Vandana Desai
+  - name: Troy Raen
+  - name: Jessica Krick
 ---
 
 # Euclid Q1: SIR 1D Spectra
@@ -183,8 +196,6 @@ plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.de
 ```
 
 ## About this Notebook
-
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen, Jessica Krick
 
 **Updated**: 2026-01-13
 

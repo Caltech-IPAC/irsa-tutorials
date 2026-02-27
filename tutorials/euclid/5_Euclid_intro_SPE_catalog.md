@@ -9,6 +9,19 @@ kernelspec:
   name: python3
   display_name: python3
   language: python
+authors:
+  - name: Tiffany Meshkat
+  - name: Anahita Alavi
+  - name: Anastasia Laity
+  - name: Andreas Faisst
+  - name: Brigitta Sipőcz
+  - name: Dan Masters
+  - name: Harry Teplitz
+  - name: Jaladh Singhal
+  - name: Shoubaneh Hemmati
+  - name: Vandana Desai
+  - name: Troy Raen
+  - name: Jessica Krick
 ---
 
 # Euclid Q1: SPE Catalogs
@@ -273,8 +286,6 @@ plt.title(f'Object ID {obj_id}')
 ```
 
 ## About this Notebook
-
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai, Troy Raen, Jessica Krick
 
 **Updated**: 2026-01-13
 

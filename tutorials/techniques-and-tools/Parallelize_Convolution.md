@@ -9,6 +9,10 @@ kernelspec:
   display_name: Python [conda env:clonenv]
   language: python
   name: python3
+authors:
+  - name: David Shupe
+  - name: Jessica Krick
+  - name: IRSA Science Platform team at IPAC
 ---
 
 # Parallelizing image convolution
@@ -224,8 +228,6 @@ client.close()
 ***
 
 ## About this notebook
-
-**Author:** David Shupe in conjunction with Jessica Krick and the IRSA Science Platform team at IPAC.
 
 **Updated:** 2024-09-24
 

@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: David Shupe
+  - name: IRSA Science Team
 ---
 
 # Searching for Spitzer Enhanced Imaging Products
@@ -182,8 +185,6 @@ Search the SEIP Source List using IRSA [Gator service](https://irsa.ipac.caltech
 ## About this notebook
 
 +++
-
-**Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
 **Updated:** 2022-02-14
 
