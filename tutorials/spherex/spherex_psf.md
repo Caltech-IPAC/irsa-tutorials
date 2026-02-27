@@ -55,8 +55,10 @@ The following packages must be installed to run this notebook.
 ```
 
 ```{code-cell} ipython3
+import http.client
 import re
 import time
+import urllib.error
 
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -139,12 +141,21 @@ As we do below, you can use `hdul.info()` to print the list of FITS layers of th
 ```
 
 ```{code-cell} ipython3
-with fits.open(spectral_image_url) as hdul:
-    hdul.info()
-    cutout_header = hdul['IMAGE'].header
-    psf_header = hdul['PSF'].header
-    cutout = hdul['IMAGE'].data
-    psfcube = hdul['PSF'].data
+# Max number of times to retry transient read errors.
+max_retries = 3
+for attempt in range(max_retries):
+    try:
+        with fits.open(spectral_image_url) as hdul:
+            hdul.info()
+            cutout_header = hdul['IMAGE'].header
+            psf_header = hdul['PSF'].header
+            cutout = hdul['IMAGE'].data
+            psfcube = hdul['PSF'].data
+        break
+    except (urllib.error.HTTPError, http.client.IncompleteRead):
+        if attempt == max_retries - 1:
+            raise
+        time.sleep(10 * (attempt + 1))
 ```
 
 The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
@@ -279,11 +290,11 @@ plt.show()
 
 ## 9. Using the SPHEREx PSF in Forward Modeling (e.g., Tractor)
 
-The PSF returned by this notebook is oversampled relative to the native SPHEREx detector pixel grid. 
+The PSF returned by this notebook is oversampled relative to the native SPHEREx detector pixel grid.
 This is intentional: the PSF is evaluated on a fine sub-pixel grid so that it can represent different intra-pixel source positions accurately.
 
-Tools such as Tractor do not expect an oversampled PSF directly. 
-Instead, they require a PSF that is pixel-integrated at the native detector resolution and evaluated at the correct sub-pixel phase of the source. 
+Tools such as Tractor do not expect an oversampled PSF directly.
+Instead, they require a PSF that is pixel-integrated at the native detector resolution and evaluated at the correct sub-pixel phase of the source.
 If you pass the oversampled PSF directly into Tractor without resampling, the effective PSF width and normalization will be incorrect, which can lead to systematic differences relative to the SPHEREx Spectrophotometry Tool.
 
 To use this PSF for forward modeling or fitting, you must:
