@@ -9,6 +9,13 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Gabriela Torrini
+  - name: Andreas Faisst
+  - name: SPHEREx Science Data Center (SSDC)
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Jaladh Singhal
 ---
 
 # SPHEREx Source Discovery Tool IRSA Demo
@@ -818,8 +825,6 @@ This work has made use of the NASA/IPAC Infrared Science Archive, which is funde
 +++
 
 ## About this Notebook
-
-**Authors:** Gabriela Torrini, Andreas Faisst, and the SPHEREx Science Data Center (SSDC); Troy Raen, Brigitta Sipőcz, and Jaladh Singhal
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
