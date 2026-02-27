@@ -53,7 +53,9 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 import concurrent.futures
+import http.client
 import time
+import urllib.error
 
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -187,6 +189,35 @@ def process_cutout(row, ra, dec, cache):
         row["hdus"] = hdus
 ```
 
+We provide a small convenience wrapper around `process_cutout` that is used in the rest of this notebook.
+It catches transient read errors and simply skips those cutouts, which is sufficient for this demonstration.
+For science use cases, users may instead want to implement their own retry logic or error handling strategy.
+
+```{code-cell} ipython3
+def process_cutout_with_error_handling(row, ra, dec, cache):
+    '''
+    Call `process_cutout` while catching transient read errors.
+
+    Parameters:
+    ===========
+
+    row : astropy.table row
+        Row of a table that will be changed in place by this function. The table
+        is created by the SQL TAP query.
+    ra,dec : coordinates (astropy units)
+        Ra and Dec coordinates (same as used for the TAP query) with attached astropy units
+    cache : bool
+        If set to `True`, the output of cached and the cutout processing will run faster next time.
+        Turn this feature off by setting `cache = False`.
+    '''
+    try:
+        process_cutout(row, ra, dec, cache=cache)
+        # IncompleteRead: https://github.com/Caltech-IPAC/irsa-tutorials/issues/165#issuecomment-3821504954
+    except (urllib.error.HTTPError, http.client.IncompleteRead):
+        # Transient read errors. Skip this cutout.
+        row["hdus"] = None
+```
+
 ## 7. Download the Cutouts
 
 This process can take a while.
@@ -223,8 +254,11 @@ results_table_serial["hdus"] = np.full(len(results_table_serial), None)
 
 t1 = time.time()
 for row in results_table_serial:
-    process_cutout(row, ra, dec, cache=False)
+    process_cutout_with_error_handling(row, ra, dec, cache=False)
 print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
+
+# Drop rows that failed to download.
+results_table_serial = results_table_serial[[r["hdus"] is not None for r in results_table_serial]]
 ```
 
 ### 7.2 Parallel Approach
@@ -257,9 +291,13 @@ results_table_parallel["hdus"] = np.full(len(results_table_parallel), None)
 
 t1 = time.time()
 with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-    futures = [executor.submit(process_cutout, row, ra, dec, False) for row in results_table_parallel]
+    futures = [executor.submit(process_cutout_with_error_handling, row, ra, dec, False)
+               for row in results_table_parallel]
     concurrent.futures.wait(futures)
 print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
+
+# Drop rows that failed to download.
+results_table_parallel = results_table_parallel[[r["hdus"] is not None for r in results_table_parallel]]
 ```
 
 ## 8. Create a summary table HDU with renamed columns
