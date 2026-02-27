@@ -62,7 +62,7 @@ from matplotlib import pyplot as plt
 from pyarrow.fs import S3FileSystem
 ```
 
-## Setup catalog paths and query filters
+## 1. Setup catalog paths and query filters
 
 +++
 
@@ -131,11 +131,11 @@ cone_pixels = hp.query_circle(
 print(f"cone_pixels contains {len(cone_pixels)} of a possible {hp.nside_to_npixel(nside)} pixels")
 ```
 
-## Example 1:  Pandas with basic filters (magnitude limit and ra/dec polygon)
+## 2. Pandas with basic filters (magnitude limit and ra/dec polygon)
 
 +++
 
-Load using [pandas.read_parquet](https://pandas.pydata.org/docs/reference/api/pandas.read_parquet.html).
+Example 1: Load using [pandas.read_parquet](https://pandas.pydata.org/docs/reference/api/pandas.read_parquet.html).
 Filter for magnitudes above our w1mpro limit and a sky-area limited to the ra/dec polygon.
 
 Pandas actually uses either pyarrow or fastparquet to interact with parquet files.
@@ -171,11 +171,11 @@ pandas_df.describe()
 del pandas_df
 ```
 
-## Example 2:  Pyarrow with advanced filters (color-color cuts for AGN)
+## 3. Pyarrow with advanced filters (color-color cuts for AGN)
 
 +++
 
-Load using [pyarrow.dataset.parquet_dataset](https://arrow.apache.org/docs/python/generated/pyarrow.dataset.parquet_dataset.html) and convert to pandas.
+Example 2: Load using [pyarrow.dataset.parquet_dataset](https://arrow.apache.org/docs/python/generated/pyarrow.dataset.parquet_dataset.html) and convert to pandas.
 Useful for:
 
 1. advanced filters that combine, compare, and/or create new columns. (this example)
@@ -251,10 +251,11 @@ del pyarrow_ds
 del pyarrow_df
 ```
 
-## Example 3:  Nearest-neighbor search (using pyarrow and astropy)
+## 4. Nearest-neighbor search (using pyarrow and astropy)
 
 +++
 
+Example 3: Spatial search using Astropy.
 Nearest-neighbor searches and cone searches generally use the on-sky separation distance to determine the matches.
 It would be cumbersome to construct the new column and filter on it using the methods shown above because the separation distance is a fairly complicated function of ra and dec.
 However, we can get pretty fast results by filtering down to the HEALPix pixels that cover the region, loading all the data in those partitions, and then using astropy to compute the separations and find the matches.
@@ -326,7 +327,7 @@ del pyarrow_ds
 del neighbors_df
 ```
 
-## Schema Access
+## 5. Schema Access
 
 +++
 

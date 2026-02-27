@@ -452,7 +452,7 @@ else:
     print("There are no NaN values in the DataFrame.")
 ```
 
-## 2.0 Make some helpful histograms
+## 2. Make some helpful histograms
 Do the numbers we are getting and their distributions make sense?
 - plot of the number of galaxies as a function of dec bin
 - plot the number of galaxies per square degree as a function of dec bin
@@ -625,7 +625,7 @@ Figure Caption: Both plots have Declination on their X-axis.  The top panel show
 
 +++
 
-## 3.0 Make Number density plot
+## 3. Make Number density plot
 This is a first pass at making a number density plot with just a single data file.  We divide the sample into 10 declination bins in order to do a jackknife sampling and obtain error bars for the plot. We choose to use constant dec bins instead of constant RA bins since area is function of cosine dec so we don't want to average over too much dec.
 
 ```{code-cell} ipython3
@@ -787,7 +787,7 @@ Figure Caption: Number density plot.  Note that the jackknife error bars are dis
 del df
 ```
 
-## 4.0 Expand to out-of-memory sized catalogs
+## 4. Expand to out-of-memory sized catalogs
 Originally this section attempted to use dask instead of pandas to hold the data and be able to do this work.  Dask is supposed to be able to do this sort of magic in the background with out of memory catalogs, but in reality, this does not seem to be possible, or at least not possible with a week or so of working on it.  Instead, we will read in the catalogs one at a time, store counts of mean and standard deviation per square degree and then move on to the next catalog.
 
 ```{code-cell} ipython3

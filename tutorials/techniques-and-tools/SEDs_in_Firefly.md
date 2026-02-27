@@ -80,7 +80,7 @@ import numpy as np
 import pyvo
 ```
 
-## Choose Target as Example
+## 1. Choose Target as Example
 
 +++
 
@@ -90,7 +90,7 @@ From [Figure 10](https://doi.org/10.3847/1538-3881/ace32f#ajace32ff10) of the re
 target = SkyCoord(ra="05h27m36.37s", dec="+34d49m40.6s")
 ```
 
-## Get Photometry from IRSA
+## 2. Get Photometry from IRSA
 
 +++
 
@@ -507,7 +507,7 @@ Note: After more columns are added in the conversion to spectral energy density,
 # Pan-STARRS, UKIDSS?
 ```
 
-## Convert Magnitudes to Energy Densities
+## 3. Convert Magnitudes to Energy Densities
 
 +++
 
@@ -545,7 +545,7 @@ Run the following cell to view the full photometry table and its values for each
 phot_tbl
 ```
 
-## Upload to Firefly
+## 4. Upload to Firefly
 
 +++
 
@@ -610,7 +610,7 @@ Display the SED plot in Firefly:
 fc.show_chart(layout=layout_s, data=trace_data)
 ```
 
-## Retrieve and Display Images
+## 5. Retrieve and Display Images
 
 +++
 

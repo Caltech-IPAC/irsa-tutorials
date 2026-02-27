@@ -86,7 +86,7 @@ from reproject import reproject_interp
 from io import BytesIO
 ```
 
-## Learn where the OpenUniverse2024 data are hosted in the cloud.
+## 1. Learn where the OpenUniverse2024 data are hosted in the cloud
 
 The OpenUniverse2024 data preview is hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon's Simple Storage Service (s3) buckets, and you need to know some information about those buckets. The OpenUniverse2024 data preview contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.
 
@@ -100,7 +100,7 @@ RUBIN_PREFIX = "openuniverse2024/rubin/preview"
 RUBIN_COADD_PATH = f"{RUBIN_PREFIX}/u/descdm/preview_data_step3_2877_19_w_2024_12/20240403T150003Z/deepCoadd_calexp/2877/19"
 ```
 
-## Roman Coadds
+## 2. Roman Coadds
 
 The Nancy Grace Roman Space Telescope will carry out a wide-area survey (WAS) in the near infrared. The OpenUniverse2024 data preview includes coadded mosaics of simulated WAS data, created with the IMCOM algorithm (Rowe et al. 2011). Bands include F184, H158, J129, K213, Y106. In this section, we define some functions that make it convenient to retrieve a given cloud-hosted simulated Roman coadd based on position and filter.
 
@@ -237,7 +237,7 @@ plt.imshow(coadd_roman['data'], origin='lower',
 plt.plot(*coord_arr_idx, 'r+', markersize=15)
 ```
 
-## Rubin Coadds
+## 3. Rubin Coadds
 
 The OpenUniverse2024 data preview includes coadded mosaics in the following filters: u, g, r, i, z, y. In this section, we define some functions that make it convenient to retrieve a given cloud-hosted simulated Roman coadd based on position and filter.
 
@@ -327,7 +327,7 @@ coadd_s3_fpath_rubin = get_rubin_coadd_fpath(filter_rubin)
 https_url(coadd_s3_fpath_rubin)
 ```
 
-## Compare simulated Roman and Rubin cutouts for a selected position
+## 4. Compare simulated Roman and Rubin cutouts for a selected position
 
 +++
 
@@ -366,7 +366,7 @@ fig.suptitle(f"Cutouts at ({coord.ra}, {coord.dec}) with {cutout_size} size", fo
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 ```
 
-## Use Firefly to interactively identify a blended source
+## 5. Use Firefly to interactively identify a blended source
 
 Clearly, the simulated Roman coadd has higher spatial resolution than the Rubin simulated coadd. Let's try to locate blended objects to compare in the simulated Rubin and Roman images. We will use Firefly's interactive visualization to make this task easier.
 
@@ -452,7 +452,7 @@ point_region = f'icrs;point {coords_of_interest.ra.value}d {coords_of_interest.d
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 ```
 
-## Plot cutouts of the identified blended source
+## 6. Plot cutouts of the identified blended source
 
 ```{code-cell} ipython3
 coadd_roman = get_roman_coadd(coords_of_interest, filter_roman)
@@ -501,7 +501,7 @@ plt.tight_layout(rect=[0, 0, 1, 0.97])
 # plt.savefig("plot.pdf", bbox_inches='tight', pad_inches=0.2)
 ```
 
-## Use Firefly to visualize the OpenUniverse2024 data preview catalogs
+## 7. Use Firefly to visualize the OpenUniverse2024 data preview catalogs
 Let's inspect the properties of sources in the Rubin coadd image. For this we will use the input truth files present in S3 bucket.
 
 The OpenUniverse2024 data preview includes the input truth files that were used to create the simulated images. These files are in Parquet and HDF5 format, and include information about the properties of galaxies, stars, and transients.
@@ -614,7 +614,7 @@ point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 ```
 
-## Plot 3-color Roman coadd containing your region of interest
+## 8. Plot 3-color Roman coadd containing your region of interest
 Let's inspect WCS of Roman coadd first
 
 ```{code-cell} ipython3

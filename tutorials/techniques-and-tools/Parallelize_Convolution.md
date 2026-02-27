@@ -60,7 +60,7 @@ import scipy.signal
 import ray
 ```
 
-## Find the cpus available
+## 1. Find the cpus available
 
 Find and print the number of cpus
 (taken from https://towardsdatascience.com/10x-faster-parallel-python-without-python-multiprocessing-e5017c93cce1)
@@ -70,7 +70,7 @@ num_cpus = psutil.cpu_count(logical=True)
 print(num_cpus)
 ```
 
-## Process serially using a conventional loop
+## 2. Process serially using a conventional loop
 
 +++
 
@@ -98,7 +98,7 @@ print("(scaled) conventional duration for {:d} iterations = {:.1f} seconds"
       .format(num_cpus*num_iter, duration_conv*num_cpus))
 ```
 
-## Process in parallel using Ray
+## 3. Process in parallel using Ray
 
 +++
 
@@ -137,7 +137,7 @@ print("Ray duration = {:.1f}, speedup = {:.2f}"
 ray.shutdown()
 ```
 
-## Process in parallel using multiprocessing
+## 4. Process in parallel using multiprocessing
 
 +++
 
@@ -176,7 +176,7 @@ print("Multiprocessing duration = {:.1f}, speedup = {:.2f}"
       .format(duration_mp, duration_conv*num_cpus / duration_mp))
 ```
 
-## Process using Dask
+## 5. Process using Dask
 
 +++
 
@@ -212,7 +212,7 @@ print("Dask duration = {:.1f}, speedup = {:.2f}"
 client.close()
 ```
 
-## Conclusions
+## 6. Conclusions
 
 +++
 

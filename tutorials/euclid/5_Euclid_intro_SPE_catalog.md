@@ -172,7 +172,7 @@ Irsa.list_columns(catalog=table_1dspectra, full=True)
 columns_info
 ```
 
-## Find some objects with spectra in our tileID
+## 3. Find some objects with spectra in our tileID
 
 We specify the following conditions on our search:
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 5

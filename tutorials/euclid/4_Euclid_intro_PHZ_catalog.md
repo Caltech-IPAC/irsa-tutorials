@@ -186,10 +186,10 @@ Search based on ``tileID``:
 
 ```{code-cell} ipython3
 ######################## User defined section ############################
-## How large do you want the image cutout to be?
+# Set the image cutout size
 im_cutout= 5 * u.arcmin
 
-## What is the center of the cutout?
+# Set the center of the cutout
 ra_cutout = 267.8
 dec_cutout =  66
 
@@ -215,7 +215,7 @@ adql = ("SELECT DISTINCT mer.object_id, mer.ra, mer.dec, "
         "AND phz.phz_median BETWEEN 1.4 AND 1.6")
 
 
-## Use TAP with this ADQL string
+# Use TAP with this ADQL string
 result_galaxies = Irsa.query_tap(adql).to_table()
 result_galaxies[:5]
 ```
@@ -235,13 +235,13 @@ Once the bug is fixed, we plan to update the code in this notebook and simplify 
 Due to the large field of view of the MER mosaic, let's cut out a smaller section (5'x5') of the MER mosaic to inspect the image.
 
 ```{code-cell} ipython3
-## Use fsspec to interact with the fits file without downloading the full file
+# Use fsspec to interact with the fits file without downloading the full file
 hdu = fits.open(filename, use_fsspec=True)
 
-## Store the header
+# Store the header
 header = hdu[0].header
 
-## Read in the cutout of the image that you want
+# Read in the cutout of the image that you want
 cutout_image = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(header))
 ```
 
@@ -275,7 +275,7 @@ plt.scatter(result_galaxies['ra'], result_galaxies['dec'], s=36, facecolors='non
 _ = plt.title('Galaxies between z = 1.4 and 1.6')
 ```
 
-## 5. Pull the spectra on the top brightest source based on object ID
+## 5. Pull spectra for one of the brightest sources by object ID
 
 ```{code-cell} ipython3
 result_galaxies.sort(keys='flux_h_unif', reverse=True)
@@ -299,7 +299,7 @@ We will use TAP and an ASQL query to find the spectral data for this particular 
 ```{code-cell} ipython3
 adql_object = f"SELECT * FROM {table_1dspectra} WHERE objectid = {obj_id}"
 
-## Pull the data on this particular galaxy
+# Pull the data on this particular galaxy
 result_spectra = Irsa.query_tap(adql_object).to_table()
 result_spectra
 ```
@@ -340,7 +340,7 @@ result_galaxies[index]
 ```
 
 ```{code-cell} ipython3
-## How large do you want the image cutout to be?
+# Set the image cutout size for the selected galaxy
 size_galaxy_cutout = 2.0 * u.arcsec
 ```
 
@@ -369,7 +369,7 @@ ax.imshow(cutout_galaxy.data, cmap='gray', origin='lower',
           norm=ImageNormalize(cutout_galaxy.data, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
 ```
 
-## 6. Load the image on Firefly to be able to interact with the data directly
+## 6. Load the image in Firefly for interactive exploration
 
 +++
 

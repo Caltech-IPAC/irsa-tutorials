@@ -226,20 +226,20 @@ science_images['filters'][science_images['filters']== 'VIS_VIS'] = "VIS"
 science_images['filters']
 ```
 
-## The image above is very large, so let's cut out a smaller image to inspect these data.
+## 4. Define cutout parameters for a smaller region of interest
 
 ```{code-cell} ipython3
 ######################## User defined section ############################
-## How large do you want the image cutout to be?
+# Set the image cutout size
 im_cutout = 1.0 * u.arcmin
 
-## What is the center of the cutout?
-## For now choosing a random location on the image
-## because the star itself is saturated
+# Set the cutout center coordinates
+# For now choose a random location on the image
+# because the star itself is saturated
 ra = 273.8667
 dec =  64.525
 
-## Bright star position
+# Bright star position
 # ra = 273.474451
 # dec = 64.397273
 
@@ -247,37 +247,37 @@ coords_cutout = SkyCoord(ra, dec, unit='deg', frame='icrs')
 
 ##########################################################################
 
-## Iterate through each filter
+# Iterate through each filter
 
 cutout_list = []
 
 for url in urls:
-    ## Use fsspec to interact with the fits file without downloading the full file
+    # Use fsspec to interact with the fits file without downloading the full file
     hdu = fits.open(url, use_fsspec=True)
     print(f"Opened {url}")
 
-    ## Store the header
+    # Store the header
     header = hdu[0].header
 
-    ## Read in the cutout of the image that you want
+    # Read in the cutout of the image that you want
     cutout_data = Cutout2D(hdu[0].section, position=coords_cutout, size=im_cutout, wcs=WCS(hdu[0].header))
 
-    ## Close the file
+    # Close the file
     # hdu.close()
 
-    ## Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size
+    # Define a new fits file based on this smaller cutout, with accurate WCS based on the cutout size
     new_hdu = fits.PrimaryHDU(data=cutout_data.data, header=header)
     new_hdu.header.update(cutout_data.wcs.to_header())
 
-    ## Append the cutout to the list
+    # Append the cutout to the list
     cutout_list.append(new_hdu)
 
-## Combine all cutouts into a single HDUList and display information
+# Combine all cutouts into a single HDUList and display information
 final_hdulist = fits.HDUList(cutout_list)
 final_hdulist.info()
 ```
 
-## 3. Visualize multiwavelength Euclid Q1 MER cutouts
+## 5. Visualize multiwavelength Euclid Q1 MER cutouts
 
 We need to determine the number of images for the grid layout, and then plot each cutout.
 
@@ -297,7 +297,7 @@ for idx, (ax, filt) in enumerate(zip(axes, science_images['filters'])):
     ax.set_ylabel('Dec')
     ax.text(0.05, 0.05, filt, color='white', fontsize=14, transform=ax.transAxes, va='bottom', ha='left')
 
-## Remove empty subplots if any
+# Remove empty subplots if any
 for ax in axes[num_images:]:
     fig.delaxes(ax)
 
@@ -305,7 +305,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-## 4. Use the Python package sep to identify and measure sources in the Euclid Q1 MER cutouts
+## 6. Identify and measure sources in Euclid Q1 MER cutouts with sep
 
 First we list all the filters so you can choose which cutout you want to extract sources on. We will choose VIS.
 
@@ -354,13 +354,13 @@ data_sub = img2 - bkg
 ```{code-cell} ipython3
 ######################## User defined section ############################
 
-## Sigma threshold to consider this a detection above the global RMS
+# Sigma threshold to consider this a detection above the global RMS
 threshold= 3
 
-## Minimum number of pixels required for an object. Default is 5.
+# Minimum number of pixels required for an object. Default is 5.
 minarea_0=2
 
-## Minimum contrast ratio used for object deblending. Default is 0.005. To entirely disable deblending, set to 1.0.
+# Minimum contrast ratio used for object deblending. Default is 0.005. To entirely disable deblending, set to 1.0.
 deblend_cont_0= 0.005
 
 flux_threshold= 0.01
@@ -372,7 +372,7 @@ sources_thr = sources[sources['flux'] > flux_threshold]
 print("Found", len(sources_thr), "objects above flux threshold")
 ```
 
-## Lets have a look at the objects that were detected with sep in the cutout
+## 7. Review detected sources on the VIS cutout
 
 
 We plot the VIS cutout with the sources detected overplotted with a red ellipse
@@ -382,7 +382,7 @@ fig, ax = plt.subplots()
 m, s = np.mean(data_sub), np.std(data_sub)
 im = ax.imshow(data_sub, cmap='gray', origin='lower', norm=ImageNormalize(img2, interval=ZScaleInterval(), stretch=SquaredStretch()))
 
-## Plot an ellipse for each object detected with sep
+# Plot an ellipse for each object detected with sep
 
 for i in range(len(sources_thr)):
     e = Ellipse(xy=(sources_thr['x'][i], sources_thr['y'][i]),
