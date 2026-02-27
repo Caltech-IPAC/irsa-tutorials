@@ -9,6 +9,9 @@ kernelspec:
   display_name: science_demo
   language: python
   name: python3
+authors:
+  - name: Troy Raen
+  - name: IPAC Science Platform team
 ---
 
 (neowise-lightcurves-parquet)=
@@ -465,8 +468,6 @@ This has to do with differences in what does / does not get copied into the chil
 ***
 
 ## About this notebook
-
-**Author:** Troy Raen (IRSA Developer) and the IPAC Science Platform team
 
 **Updated:** 2025-03-07
 

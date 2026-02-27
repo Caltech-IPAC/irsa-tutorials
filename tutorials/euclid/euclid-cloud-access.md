@@ -9,6 +9,13 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Jaladh Singhal
+  - name: Vandana Desai
+  - name: Brigitta Sipőcz
+  - name: Tiffany Meshkat
+  - name: Troy Raen
+  - name: IRSA Data Science Team
 ---
 
 # Euclid Q1: Cloud Access
@@ -312,8 +319,6 @@ plt.title(f'Spectrum of Target: {target_name}\n(Euclid Object ID: {object_id})')
 ```
 
 ## About this Notebook
-
-**Author:** Jaladh Singhal (IRSA Developer) in conjunction with Vandana Desai, Brigitta Sipőcz, Tiffany Meshkat, Troy Raen, and the IRSA Data Science Team
 
 **Updated:** 2025-09-23
 

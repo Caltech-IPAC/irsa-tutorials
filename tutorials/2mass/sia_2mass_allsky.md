@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: David Shupe
+  - name: IRSA Science Team
 ---
 
 # Searching for 2MASS All-Sky Atlas Images
@@ -177,8 +180,6 @@ Repeat the steps above to retrieve a cutout from the AllWISE Atlas images
 ## About this notebook
 
 +++
-
-**Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
 **Updated:** 2023-02-16
 

@@ -9,6 +9,10 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Jaladh Singhal
+  - name: Vandana Desai
+  - name: IRSA Team
 ---
 
 # Using Firefly to Explore OpenUniverse2024 Data Preview Simulated Roman and Rubin Images
@@ -722,8 +726,6 @@ fc.set_stretch(plot_id=coadd_ff_id_roman_3color, stype='sigma', algorithm='squar
 ***
 
 ## About This Notebook
-
-**Author:** Jaladh Singhal and Vandana Desai in conjunction with the IRSA Team
 
 **Updated:** 2024-12-19
 

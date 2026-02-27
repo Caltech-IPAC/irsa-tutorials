@@ -9,6 +9,16 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Troy Raen
+  - name: Vandana Desai
+  - name: Andreas Faisst
+  - name: Shoubaneh Hemmati
+  - name: Jaladh Singhal
+  - name: Brigitta Sipőcz
+  - name: Jessica Krick
+  - name: IRSA Data Science Team
+  - name: Euclid NASA Science Center at IPAC (ENSCI)
 ---
 
 # Euclid Q1 Merged Objects HATS Catalog: Magnitudes
@@ -363,8 +373,6 @@ The offset is more pronounced for point-like objects (bottom row), likely due to
 +++
 
 ## About this notebook
-
-**Authors:** Troy Raen, Vandana Desai, Andreas Faisst, Shoubaneh Hemmati, Jaladh Singhal, Brigitta Sipőcz, Jessica Krick, the IRSA Data Science Team, and the Euclid NASA Science Center at IPAC (ENSCI).
 
 **Updated:** 2025-12-23
 

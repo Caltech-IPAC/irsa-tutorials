@@ -10,6 +10,15 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: IPAC Science Platform Team
+  - name: Jessica Krick
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Jaladh Singhal
+  - name: Andreas Faisst
+  - name: Shoubaneh Hemmati
+  - name: Vandana Desai
 ---
 
 (spherex-intro)=
@@ -441,9 +450,6 @@ print("Dimensions of VALUES array:",  wavelengths.shape)
 +++
 
 ## About this notebook
-
-**Authors:** IPAC Science Platform Team, including Jessica Krick, Troy Raen, Brigitta Sipőcz, Jaladh Singhal,
-Andreas Faisst, Shoubaneh Hemmati, Vandana Desai
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.

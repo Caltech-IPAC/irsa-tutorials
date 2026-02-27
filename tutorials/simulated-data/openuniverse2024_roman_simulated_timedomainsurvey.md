@@ -9,6 +9,8 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Lauren Aldoroty
 ---
 
 # Analyzing cloud-hosted simulated Roman Time Domain Survey images
@@ -296,8 +298,6 @@ animate_stamps(stamps, savepath, labels=mjd)
 ***
 
 ## About this notebook
-
-**Author:** Lauren Aldoroty (laurenaldoroty@gmail.com) with minor subsequent modifications to match repository style
 
 **Updated:** 2024-06-10
 

@@ -9,6 +9,10 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: David Shupe
+  - name: Joyce Kim
+  - name: IRSA Science Team
 ---
 
 # Using Firefly visualization tools in Python to vet SEDs
@@ -700,8 +704,6 @@ Note that zooming or panning one image will do the same in the other images as w
 ## About This Notebook
 
 +++
-
-**Author:** David Shupe (IRSA Scientist) and Joyce Kim (IRSA Scientist) in conjunction with the IRSA Science Team
 
 **Updated:** 2024-12-19
 

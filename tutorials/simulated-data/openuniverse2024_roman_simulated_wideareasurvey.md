@@ -9,6 +9,9 @@ kernelspec:
   display_name: science_demo
   language: python
   name: python3
+authors:
+  - name: Vandana Desai
+  - name: IPAC Science Platform team
 ---
 
 # Analyzing cloud-hosted simulated Roman coadded images
@@ -165,8 +168,6 @@ FIDELITY, SIGMA, INWTSUM, EFFCOVER = maps of U_alpha/C, S_alpha, sum_i T_{alpha 
 ***
 
 ## About this notebook
-
-**Author:** Vandana Desai (Science Lead, IRSA) in conjunction with the IPAC Science Platform team
 
 **Updated:** 2024-06-10
 

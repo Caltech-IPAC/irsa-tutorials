@@ -9,6 +9,17 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Tiffany Meshkat
+  - name: Anahita Alavi
+  - name: Anastasia Laity
+  - name: Andreas Faisst
+  - name: Brigitta Sipőcz
+  - name: Dan Masters
+  - name: Harry Teplitz
+  - name: Jaladh Singhal
+  - name: Shoubaneh Hemmati
+  - name: Vandana Desai
 ---
 
 # Euclid Q1: MER Catalogs
@@ -158,8 +169,6 @@ plt.title('10k Stars in MER catalog -- IRSA')
 ```
 
 ## About this Notebook
-
-**Author**: Tiffany Meshkat, Anahita Alavi, Anastasia Laity, Andreas Faisst, Brigitta Sipőcz, Dan Masters, Harry Teplitz, Jaladh Singhal, Shoubaneh Hemmati, Vandana Desai
 
 **Updated**: 2025-04-09
 

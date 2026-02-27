@@ -9,6 +9,11 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Jessica Krick
+  - name: IPAC Science Platform team
 ---
 
 (cloud-access-intro)=
@@ -343,8 +348,6 @@ results_df.plot.hexbin("W2-W3", "W1-W2", norm=colors.LogNorm(vmin=1, vmax=500))
 ***
 
 ## About this notebook
-
-**Author:** Troy Raen (IRSA Developer) in conjunction with Brigitta Sipőcz, Jessica Krick and the IPAC Science Platform team
 
 **Updated:** 2024-07-29
 

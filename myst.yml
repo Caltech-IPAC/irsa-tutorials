@@ -5,7 +5,6 @@ project:
   subject: IRSA Tutorials
   description: IRSA Python Notebook tutorials to demostrate accessing data served by the NASA/IPAC Infrared Science Archive (IRSA)
   keywords: [astronomy]
-  authors: [IRSA Scientists and Developers]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
   license:
     id: BSD-3-Clause

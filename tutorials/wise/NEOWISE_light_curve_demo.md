@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Eric Bratton II
+  - name: IRSA Science Team
 ---
 
 # Using Firefly visualization tools to understand the light curves of Solar System objects
@@ -146,8 +149,6 @@ Firefly allows you to visualize data for specific targets. In conjuction with As
 ## About This Notebook
 
 +++
-
-**Author:** Eric Bratton II (IRSA Scientist) in conjunction with the IRSA Science Team
 
 **Updated:** 2024-12-19
 

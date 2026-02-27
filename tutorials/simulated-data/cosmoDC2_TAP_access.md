@@ -10,6 +10,14 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: IRSA Data Science Team
+  - name: Vandana Desai
+  - name: Jessica Krick
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Andreas Faisst
+  - name: Jaladh Singhal
 ---
 
 # Querying the CosmoDC2 Mock v1 Catalogs
@@ -253,8 +261,6 @@ ORDER BY mag_r_lsst ASC
 +++
 
 ## About this notebook
-
-**Author:** IRSA Data Science Team, including Vandana Desai, Jessica Krick, Troy Raen, Brigitta Sipőcz, Andreas Faisst, Jaladh Singhal
 
 **Updated:** 2025-12-16
 

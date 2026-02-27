@@ -10,6 +10,8 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Andreas Faisst
 ---
 
 # Exploring Star Clusters in the Euclid ERO Data
@@ -678,8 +680,6 @@ Now, check out the `Firefly` GUI. You can zoom the images, click on sources, fil
 ***
 
 ## About this Notebook
-
-**Author**: Andreas Faisst (IPAC Scientist)
 
 **Updated**: 2025-03-17
 

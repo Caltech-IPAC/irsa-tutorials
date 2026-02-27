@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: David Shupe
+  - name: IRSA Science Team
 ---
 
 # Searching for contributed COSMOS images
@@ -178,8 +181,6 @@ ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', f
 ## About this notebook
 
 +++
-
-**Author:** David Shupe, IRSA Scientist, and the IRSA Science Team
 
 **Updated:** 2022-02-14
 
