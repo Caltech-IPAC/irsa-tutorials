@@ -51,6 +51,10 @@ The following packages must be installed to run this notebook.
 ## 4. Imports
 
 ```{code-cell} ipython3
+import http.client
+import time
+import urllib.error
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -146,7 +150,16 @@ You can put this URL into a browser to download the file. Or you can work with i
 Use Astropy to examine the header of the URL from the previous step.
 
 ```{code-cell} ipython3
-hdulist = fits.open(spectral_image_url)
+Max number of times to retry HTTP errors.
+max_retries = 3
+for attempt in range(max_retries):
+    try:
+        hdulist = fits.open(spectral_image_url)
+        break
+    except (urllib.error.HTTPError, http.client.IncompleteRead):
+        if attempt == max_retries - 1:
+            raise
+        time.sleep(10 * (attempt + 1))
 hdulist.info()
 ```
 
