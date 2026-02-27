@@ -1,0 +1,30 @@
+2mass/sia_2mass_allsky.md:  Query IRSA's SIA service for an image from the 2MASS All-Sky Atlas images and create and display a cutout.
+cosmos/sia_cosmos.md:  Query IRSA's SIA service for COSMOS images and create and display a cutout.
+euclid/1_Euclid_intro_MER_images.md:  Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
+euclid/2_Euclid_intro_MER_catalog.md:  Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
+euclid/3_Euclid_intro_1D_spectra.md:  Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
+euclid/4_Euclid_intro_PHZ_catalog.md:  Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
+euclid/5_Euclid_intro_SPE_catalog.md:  Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
+euclid/Euclid_ERO.md:  Create multi-wavelength ERO image cutouts of a globular cluster, extract sources, and measure photometry. Match Gaia sources with Euclid ERO catalogs, then visualize with Firefly.
+euclid/euclid-cloud-access.md:  Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
+euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md:  Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
+euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md:  Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
+simulated-data/OpenUniverse2024Preview_Firefly.md:  Use Firefly to get an overview of survey structure and visualize content.
+simulated-data/cosmoDC2_TAP_access.md:  Access, query, and visualize the catalog.
+simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md:  Access and analyze the time-domain survey.
+simulated-data/openuniverse2024_roman_simulated_wideareasurvey.md:  Access OpenUniverse2024 wide-area simulated survey data.
+simulated-data/roman_hlss_number_density.md:  Query the catalog and derive galaxy number density.
+spherex/spherex_cutouts.md:  Generate and work with spatial and spectral cutouts.
+spherex/spherex_intro.md:  Learn about available data including how to identify which files and formats are appropriate for different use cases.
+spherex/spherex_psf.md:  Learn how SPHEREx point spread function (PSF) information is organized and accessed.
+spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md:  Discover, extract, and visualize sources from SPHEREx Spectral Images.
+spitzer/siav2_seip.md:  Query IRSA's SIA service for an IRAC mosaic and create and display a cutout.
+techniques-and-tools/cloud-access-intro.md:  Learn how to access and work with data served by IRSA from AWS S3 cloud storage.
+techniques-and-tools/Parallelize_Convolution.md:  Learn parallelization techniques to speed up operations on large astronomical images.
+techniques-and-tools/irsa-hats-with-lsdb.md:  Use LSDB for user-friendly cross matching and querying of HATS Collections.
+techniques-and-tools/SEDs_in_Firefly.md:  Explore and interactively visualize SEDs using Firefly on multi-wavelength datasets.
+wise/NEOWISE_light_curve_demo.md:  Visualize and analyze light curves of Solar System objects using Firefly.
+wise/neowise-source-table-lightcurves.md:  Build multi-epoch photometric light curves for given coordinates.
+wise/neowise-source-table-strategies.md:  Learn efficient strategies for accessing and handling this very large Parquet dataset.
+wise/sia_allwise_atlas.md:  Retrieve coadded images and make coordinate-based cutouts.
+wise/wise-allwise-catalog-demo.md:  Explore mid-infrared source properties by querying, filtering, and working with the catalog.
