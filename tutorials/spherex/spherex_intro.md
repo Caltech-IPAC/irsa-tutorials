@@ -156,19 +156,26 @@ You can put this URL into a browser to download the file. Or you can work with i
 
 +++
 
-Use Astropy to examine the header of the URL from the previous step.
+First, use Astropy to load the data using the URL from the previous step.
+Transient read errors occur sometimes, so we'll catch those and retry a few times.
 
 ```{code-cell} ipython3
-Max number of times to retry HTTP errors.
+# Max number of times to retry HTTP errors.
 max_retries = 3
 for attempt in range(max_retries):
     try:
+        # Load the data.
         hdulist = fits.open(spectral_image_url)
         break
     except (urllib.error.HTTPError, http.client.IncompleteRead):
         if attempt == max_retries - 1:
             raise
         time.sleep(10 * (attempt + 1))
+```
+
+Examine the header.
+
+```{code-cell} ipython3
 hdulist.info()
 ```
 

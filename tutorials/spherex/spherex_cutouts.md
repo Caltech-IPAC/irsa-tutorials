@@ -212,7 +212,6 @@ def process_cutout_with_error_handling(row, ra, dec, cache):
     '''
     try:
         process_cutout(row, ra, dec, cache=cache)
-        # IncompleteRead: https://github.com/Caltech-IPAC/irsa-tutorials/issues/165#issuecomment-3821504954
     except (urllib.error.HTTPError, http.client.IncompleteRead):
         # Transient read errors. Skip this cutout.
         row["hdus"] = None
