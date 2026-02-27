@@ -86,7 +86,7 @@ from reproject import reproject_interp
 from io import BytesIO
 ```
 
-## 1. Learn where the OpenUniverse2024 data are hosted in the cloud.
+## 1. Learn where the OpenUniverse2024 data are hosted in the cloud
 
 The OpenUniverse2024 data preview is hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon's Simple Storage Service (s3) buckets, and you need to know some information about those buckets. The OpenUniverse2024 data preview contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.
 
