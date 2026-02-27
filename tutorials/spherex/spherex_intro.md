@@ -150,7 +150,7 @@ You can put this URL into a browser to download the file. Or you can work with i
 Use Astropy to examine the header of the URL from the previous step.
 
 ```{code-cell} ipython3
-Max number of times to retry HTTP errors.
+# Max number of times to retry HTTP errors.
 max_retries = 3
 for attempt in range(max_retries):
     try:

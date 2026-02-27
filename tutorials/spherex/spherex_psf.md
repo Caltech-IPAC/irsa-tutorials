@@ -135,7 +135,7 @@ As we do below, you can use `hdul.info()` to print the list of FITS layers of th
 ```
 
 ```{code-cell} ipython3
-Max number of times to retry transient read errors.
+# Max number of times to retry transient read errors.
 max_retries = 3
 for attempt in range(max_retries):
     try:
@@ -284,11 +284,11 @@ plt.show()
 
 ## 9. Using the SPHEREx PSF in Forward Modeling (e.g., Tractor)
 
-The PSF returned by this notebook is oversampled relative to the native SPHEREx detector pixel grid. 
+The PSF returned by this notebook is oversampled relative to the native SPHEREx detector pixel grid.
 This is intentional: the PSF is evaluated on a fine sub-pixel grid so that it can represent different intra-pixel source positions accurately.
 
-Tools such as Tractor do not expect an oversampled PSF directly. 
-Instead, they require a PSF that is pixel-integrated at the native detector resolution and evaluated at the correct sub-pixel phase of the source. 
+Tools such as Tractor do not expect an oversampled PSF directly.
+Instead, they require a PSF that is pixel-integrated at the native detector resolution and evaluated at the correct sub-pixel phase of the source.
 If you pass the oversampled PSF directly into Tractor without resampling, the effective PSF width and normalization will be incorrect, which can lead to systematic differences relative to the SPHEREx Spectrophotometry Tool.
 
 To use this PSF for forward modeling or fitting, you must:
