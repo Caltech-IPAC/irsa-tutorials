@@ -41,7 +41,7 @@ jobs:
         run: tox -e py312-buildhtml
 
       - name: Upload full book artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         # Run this even if previous step fails, so we can preview the run output
         if: always()
         with:
