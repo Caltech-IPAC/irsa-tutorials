@@ -124,7 +124,8 @@ im_table['energy_bandpassname']
 
 We start by filtering the image results for the W3 band images.  
 Then look at the header of one of the resulting W3 band images of our target star.
-Finally, we use the open-source astronomy data visualization software Firefly to display the fits image in a new tab.
+Finally, we create an interactive FITS display of the W3 image(s) by [using Firefly](https://caltech-ipac.github.io/firefly_client/index.html), an open-source interactive visualization tool for astronomical data. 
+To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.```
 
 ```{code-cell} ipython3
 # You can put the URL from the column "access_url" into a browser to download the file. 
