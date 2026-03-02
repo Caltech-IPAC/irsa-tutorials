@@ -64,7 +64,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-%pip install matplotlib astropy jupyter_firefly_extensions
+# %pip install matplotlib astropy jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
