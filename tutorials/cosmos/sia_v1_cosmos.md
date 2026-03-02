@@ -4,14 +4,20 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
+  display_name: python3
+  language: python
 authors:
-  - name: David Shupe
-  - name: IRSA Science Team
+  - name: IRSA Data Science Team
+  - name: Troy Raen
+  - name: Brigitta Sipőcz
+  - name: Jessica Krick
+  - name: Andreas Faisst
+  - name: Jaladh Singhal
+  - name: Vandana Desai
+  - name: Dave Shupe
 ---
 
 # Searching for contributed COSMOS images
@@ -19,7 +25,6 @@ authors:
 +++
 
 This notebook tutorial demonstrates the process of querying IRSA's Simple Image Access (SIA) service for the COSMOS images, making a cutout image (thumbnail), and displaying the cutout.
-
 
 +++
 
@@ -40,11 +45,12 @@ The COSMOS Archive serves data taken for the Cosmic Evolution Survey with HST (C
 
 https://irsa.ipac.caltech.edu/Missions/cosmos.html
 
-The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is one of the archives for COSMOS images and catalogs. The COSMOS images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf) protocol. IRSA's SEIP SIA service is registered in the NASA Astronomical Virtual Observatory (NAVO) [Directory](https://vao.stsci.edu). Based on the registered information, the Python package [pyvo](https://pyvo.readthedocs.io) can be used to query the SIA service for a list of images that meet specified criteria, and standard Python libraries can be used to download and manipulate the images.
-Other datasets at IRSA are available through other SIA services:
+The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is one of the [archives](https://irsa.ipac.caltech.edu/Missions/cosmos.html) for COSMOS images and catalogs. The COSMOS images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf) protocol.
 
-https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html
-
+```{note}
+IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. This IRSA [website](https://irsa.ipac.caltech.edu/ibe/sia.html) provides information on which version each service uses and how to access them. Further information on how to access IRSA data with different techniques is available [here](https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html). This tutorial uses SIA v1 for COSMOS images.
+This SIA v1 service is based on an older set of SIA protocols and is limited to the COSMOS, WISE, 2MASS, and PTF datasets. It allows for only position-based searches to a single table. The IRSA SIA v1 search service has been superseded by the SIA v2 service for datasets other than COSMOS and PTF.
+```
 
 +++
 
@@ -61,31 +67,23 @@ https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install matplotlib astropy pyvo
+!pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
 import pyvo as vo
+import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
-import astropy.units as u
 import matplotlib.pyplot as plt
-from astropy.utils.data import download_file
 from astropy.io import fits
+import astropy.units as u
+from firefly_client import FireflyClient
 ```
 
-## Section 1 - Setup
-
-+++
-
-Set images to display in the notebook
-
-```{code-cell} ipython3
-%matplotlib inline
-```
-
-Define coordinates of a bright source
+## 1. Define the target
+Define coordinates of a bright star
 
 ```{code-cell} ipython3
 ra = 149.99986
@@ -93,109 +91,135 @@ dec = 2.24875
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## Section 2 - Lookup and define a service for COSMOS images
-
-+++
-
-Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/
-
-Limit by Publisher "NASA/IPAC Infrared Science Archive" and Capability Type "Simple Image Access Protocol" then search on "COSMOS"
-
-Locate the SIA2 URL https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&
+## 2. Discover COSMOS images
 
 ```{code-cell} ipython3
 cosmos_service = vo.dal.SIAService("https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&")
 ```
 
-## Section 3 - Search the service
-
-+++
-
-Search for images covering within 1 arcsecond of the star
+## 3. Search for images
+Which images in the COSMOS dataset include our target of interest?
 
 ```{code-cell} ipython3
-im_table = cosmos_service.search(pos=pos, size=1.0*u.arcsec)
-```
-
-Inspect the table of images that is returned
-
-```{code-cell} ipython3
-im_table
+# Get a table of all images that cover this position
+# This service actually returns a cutout of whatever size you choose
+im_table = cosmos_service.search(pos=pos, size=150*u.arcsec)
 ```
 
 ```{code-cell} ipython3
-im_table.to_table().colnames
-```
-
-View the first ten entries of the table
-
-```{code-cell} ipython3
+# Inspect the top of the table that is returned
 im_table.to_table()[:10]
 ```
 
-## Section 4 - Locate and download an image of interest
+```{code-cell} ipython3
+# Look at a list of the column names included in this table
+im_table.to_table().colnames
+```
+
+```{code-cell} ipython3
+# Let's look at the unique values in one of the columns
+print(np.unique(im_table['band_name']))
+```
+
+##
 
 +++
 
-Locate the first image in the band_name of i+
+## 4.Locate and visualize an image of interest
+
+We start by filtering the image results for the first IRAC1 band images.
+Then look at the header of one of the resulting image of our target star.
+Finally, we create an interactive FITS display of the IRAC1 image by using [Firefly](https://caltech-ipac.github.io/firefly_client/index.html), an open-source interactive visualization tool for astronomical data.
+To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.
 
 ```{code-cell} ipython3
-for i in range(len(im_table)):
-    if im_table[i]['band_name'] == 'i+':
-        break
-print(im_table[i].getdataurl())
-```
+# You can put the URL from the column "sia_url" into a browser to download the file.
+# Or you can work with it in Python, as shown below.
 
-Download the image
+im_table_astropy = im_table.to_table()
 
-```{code-cell} ipython3
-fname = download_file(im_table[i].getdataurl(), cache=True)
-image1 = fits.open(fname)
-```
-
-## Section 5 - Extract a cutout and plot it
-
-```{code-cell} ipython3
-wcs = WCS(image1[0].header)
-```
-
-Make a cutout centered on the position
-
-```{code-cell} ipython3
-cutout = Cutout2D(image1[0].data, pos, (60, 60), wcs=wcs)
-wcs = cutout.wcs
+irac1_rows = im_table_astropy[
+    im_table_astropy['band_name'] == 'IRAC1'
+]
 ```
 
 ```{code-cell} ipython3
-fig = plt.figure()
+# Lets look at the data access url in the column named 'sia_url'.
+# We will focus on the first image for now.
+image_url = irac1_rows[0]['sia_url']
+print(image_url)
+```
 
-ax = fig.add_subplot(1, 1, 1, projection=wcs)
-ax.imshow(cutout.data, cmap='gray_r', origin='lower')
-ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', facecolor='none')
+```{code-cell} ipython3
+#Use Astropy to examine the header of the URL from the previous step.
+hdulist = fits.open(image_url)
+hdulist.info()
+```
+
+```{code-cell} ipython3
+# Uncomment when opening a Firefly viewer in a tab within Jupyter Lab with jupyter_firefly_extensions installed
+#fc = FireflyClient.make_lab_client()
+
+# Uncomment when opening Firefly viewer in contexts other than the above
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+
+# Visualize an image by sending its URL to the viewer.
+fc.show_fits_image(file_input=image_url,
+             plot_id="image",
+             Title="Image"
+             )
+
+#Try use the interactive tools in the viewer to explore the data.
+```
+
+## 5. Extract a cutout and plot it
+If you want to see just a cutout of a certain region around the target, we do that below using astropy's Cutout2D.
+
+```{code-cell} ipython3
+data = hdulist[0].data
+wcs = WCS(hdulist[0].header)
+
+# make 0.5' x 0.5' cutout
+cutout = Cutout2D(data, position=pos, size=0.5 * u.arcmin, wcs=wcs)
+
+# display
+plt.figure()
+plt.imshow(cutout.data, origin='lower')
+plt.colorbar()
 ```
 
 ***
 
 +++
 
-## About this notebook
+## Acknowledgements
+
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 +++
 
-**Updated:** 2022-02-14
 
-**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+## About this notebook
+
+**Updated:** 2 March 2026
+
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
+
+**Runtime:** As of the date above, this notebook takes about 20 seconds to run to completion on a machine with 8GB RAM and 4 CPU.
+This runtime is dependent on archive servers which means runtime will vary for users.
 
 +++
 
 ## Citations
 
-+++
+**Astropy:**
+To see the Bibtex references for this, uncomment the below cell
 
-If you use `astropy` for published research, please cite the authors. Follow these links for more information about citing `astropy`:
-
-* [Citing `astropy`](https://www.astropy.org/acknowledging.html)
-
-+++
-
+**COSMOS:**
 If you use COSMOS ACS imaging data in published research,  please cite the dataset Digital Object Identifier (DOI): [10.26131/IRSA178](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA178).
+
+```{code-cell} ipython3
+#import astropy
+
+#astropy.__citation__
+```
