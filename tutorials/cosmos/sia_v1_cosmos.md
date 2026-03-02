@@ -41,7 +41,7 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-The COSMOS Archive serves data taken for the Cosmic Evolution Survey with HST (COSMOS) project, using IRSA's general search service, Atlas. COSMOS is an HST Treasury Project to survey a 2 square degree equatorial field with the ACS camera. For more information about COSMOS, see:
+The COSMOS Archive at IRSA serves data taken for the Cosmic Evolution Survey with HST (COSMOS) project. COSMOS is an HST Treasury Project to survey a 2 square degree equatorial field with the ACS camera. For more information about COSMOS, see:
 
 https://irsa.ipac.caltech.edu/Missions/cosmos.html
 
@@ -56,30 +56,32 @@ This SIA v1 service is based on an older set of SIA protocols and is limited to 
 
 ## Imports
 
-- `pyvo` for querying IRSA's COSMOS SIA service
+- `pyvo` for discovering and querying IRSA's COSMOS SIA service
+- `numpy` for working with tables
 - `astropy.coordinates` for defining coordinates
 - `astropy.nddata` for creating an image cutout
 - `astropy.wcs` for interpreting the World Coordinate System header keywords of a fits file
 - `astropy.units` for attaching units to numbers passed to the SIA service
 - `matplotlib.pyplot` for plotting
-- `astropy.utils.data` for downloading files
 - `astropy.io` to manipulate FITS files
+- `firefly_client` for visualizing data
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-!pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
+# !pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
-import pyvo as vo
+from pyvo import regsearch
 import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
+import astropy.units as u
 import matplotlib.pyplot as plt
 from astropy.io import fits
-import astropy.units as u
 from firefly_client import FireflyClient
+from astropy.visualization import simple_norm
 ```
 
 ## 1. Define the target
@@ -94,38 +96,53 @@ pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ## 2. Discover COSMOS images
 
 ```{code-cell} ipython3
-cosmos_service = vo.dal.SIAService("https://irsa.ipac.caltech.edu/cgi-bin/Atlas/nph-atlas?mission=COSMOS&hdr_location=%5CCOSMOSDataPath%5C&collection_desc=Cosmic+Evolution+Survey+with+HST+%28COSMOS%29&SIAP_ACTIVE=1&")
+# Search the Virtual Observatory Registry for image services at IRSA associated with the COSMOS survey.
+image_services = regsearch(
+    servicetype='sia1',
+    keywords=['cosmos', 'irsa']
+)
+
+# Make sure we got what we were looking for
+for i, r in enumerate(image_services):
+    print(f"{i:2d}  {r.short_name:20s}  {r.res_title}")
+
+# Turn the result into a usable image access service
+resource = image_services[0] 
+cosmos_service = resource.get_service("sia1")
 ```
 
 ## 3. Search for images
 Which images in the COSMOS dataset include our target of interest?
 
 ```{code-cell} ipython3
-# Get a table of all images that cover this position
-# This service actually returns a cutout of whatever size you choose
-im_table = cosmos_service.search(pos=pos, size=150*u.arcsec)
+# Get a table of all images that cover this position.
+# Choose the size of the returned image. 
+im_results = cosmos_service.search(pos=pos, size=150*u.arcsec)
+
+# Convert the PyVO result to an Astropy Table
+im_table = im_results.to_table()
 ```
 
 ```{code-cell} ipython3
 # Inspect the top of the table that is returned
-im_table.to_table()[:10]
+im_table[:10]
 ```
 
 ```{code-cell} ipython3
 # Look at a list of the column names included in this table
-im_table.to_table().colnames
+im_table.colnames
 ```
 
 ```{code-cell} ipython3
 # Let's look at the unique values in one of the columns
-print(np.unique(im_table['band_name']))
+print(np.unique(im_results['band_name']))
 ```
 
 ##
 
 +++
 
-## 4.Locate and visualize an image of interest
+## 4. Locate and visualize an image of interest
 
 We start by filtering the image results for the first IRAC1 band images.
 Then look at the header of one of the resulting image of our target star.
@@ -136,24 +153,24 @@ To understand how to open the Firefly viewer in a new tab from your Python noteb
 # You can put the URL from the column "sia_url" into a browser to download the file.
 # Or you can work with it in Python, as shown below.
 
-im_table_astropy = im_table.to_table()
-
-irac1_rows = im_table_astropy[
-    im_table_astropy['band_name'] == 'IRAC1'
-]
+irac1_rows = im_table[im_table['band_name'] == 'IRAC1']
 ```
 
 ```{code-cell} ipython3
-# Lets look at the data access url in the column named 'sia_url'.
+# Let's look at the data access url in the column named 'sia_url'.
 # We will focus on the first image for now.
 image_url = irac1_rows[0]['sia_url']
 print(image_url)
 ```
 
 ```{code-cell} ipython3
-#Use Astropy to examine the header of the URL from the previous step.
-hdulist = fits.open(image_url)
-hdulist.info()
+# Use Astropy to examine the header of the URL from the previous step,
+# and grab the data and wcs from the header.
+with fits.open(image_url, memmap=False) as hdul:
+    hdul.info()           
+    data = hdul[0].data
+    wcs = WCS(hdul[0].header)
+    
 ```
 
 ```{code-cell} ipython3
@@ -169,23 +186,27 @@ fc.show_fits_image(file_input=image_url,
              Title="Image"
              )
 
-#Try use the interactive tools in the viewer to explore the data.
+#Try using the interactive tools in the viewer to explore the data.
 ```
 
 ## 5. Extract a cutout and plot it
 If you want to see just a cutout of a certain region around the target, we do that below using astropy's Cutout2D.
 
 ```{code-cell} ipython3
-data = hdulist[0].data
-wcs = WCS(hdulist[0].header)
 
 # make 0.5' x 0.5' cutout
 cutout = Cutout2D(data, position=pos, size=0.5 * u.arcmin, wcs=wcs)
 
+#add quick normalization/stretch
+norm = simple_norm(cutout.data, stretch="sqrt", percent=99)
+
 # display
 plt.figure()
-plt.imshow(cutout.data, origin='lower')
-plt.colorbar()
+plt.imshow(cutout.data, origin='lower', norm = norm)
+plt.colorbar(label="Image value")
+plt.title("COSMOS IRAC1 (quicklook)")
+plt.xlabel("Pixel X")
+plt.ylabel("Pixel Y")
 ```
 
 ***
