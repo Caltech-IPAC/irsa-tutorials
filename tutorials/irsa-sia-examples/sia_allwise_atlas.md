@@ -42,6 +42,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 +++
 
 ## Imports
+- `numpy` for working with tables
 - `astropy.coordinates` for defining coordinates
 - `astropy.nddata` for creating an image cutout
 - `astropy.wcs` for interpreting the World Coordinate System header keywords of a fits file
@@ -50,6 +51,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 - `astropy.io` to manipulate FITS files
 - `firefly_client` for visuzlizing images
 - `astroquery.ipac.irsa` for IRSA data access
+- `astropy.visualization` for color stretch display
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -57,6 +59,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 ```
 
 ```{code-cell} ipython3
+import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
@@ -65,6 +68,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from firefly_client import FireflyClient
 from astroquery.ipac.irsa import Irsa
+from astropy.visualization import simple_norm
 ```
 
 ## 1. Define the target
@@ -116,8 +120,8 @@ im_table.colnames
 ```
 
 ```{code-cell} ipython3
-# Let's look at the values in one of the columns
-im_table['energy_bandpassname']
+# Let's look at the unique values in one of the columns
+print(np.unique(im_table['energy_bandpassname']))
 ```
 
 ## 4.Locate and visualize an image of interest
@@ -139,9 +143,12 @@ w3_table = im_table[w3_mask]
 image_url = w3_table['access_url'][0]
 image_url
 
-#Use Astropy to examine the header of the URL from the previous step.
-hdulist = fits.open(image_url)
-hdulist.info()
+# Use Astropy to examine the header of the URL from the previous step,
+# and grab the data and wcs from the header.
+with fits.open(image_url, memmap=False) as hdul:
+    hdul.info()           
+    data = hdul[0].data
+    wcs = WCS(hdul[0].header)
 ```
 
 ```{code-cell} ipython3
@@ -164,16 +171,18 @@ fc.show_fits_image(file_input=image_url,
 If you want to see just a cutout of a certain region around the target, we do that below using astropy's Cutout2D.
 
 ```{code-cell} ipython3
-data = hdulist[0].data
-wcs = WCS(hdulist[0].header)
-
 # make 1' x 1' cutout
 cutout = Cutout2D(data, position=pos, size=1 * u.arcmin, wcs=wcs)
 
+#add quick normalization/stretch
+norm = simple_norm(cutout.data, stretch="sqrt", percent=99)
+
 # display
-plt.figure()
-plt.imshow(cutout.data, origin='lower')
-plt.colorbar()
+plt.imshow(cutout.data, origin='lower', norm = norm)
+plt.colorbar(label="Image value")
+plt.title("ALLWISE W3 (quicklook)")
+plt.xlabel("Pixel X")
+plt.ylabel("Pixel Y")
 ```
 
 ***
@@ -190,7 +199,7 @@ plt.colorbar()
 
 **Authors:** IRSA Data Science Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Jaladh Singhal, Vandana Desai, Dave Shupe
 
-**Updated:** 19 February 2026
+**Updated:** 2 March 2026
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
