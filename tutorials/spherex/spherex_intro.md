@@ -167,7 +167,7 @@ for attempt in range(max_retries):
         # Load the data.
         hdulist = fits.open(spectral_image_url)
         break
-    except (urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
         if attempt == max_retries - 1:
             raise
         time.sleep(10 * (attempt + 1))

@@ -153,7 +153,7 @@ for attempt in range(max_retries):
             cutout = hdul['IMAGE'].data
             psfcube = hdul['PSF'].data
         break
-    except (urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
         if attempt == max_retries - 1:
             raise
         time.sleep(10 * (attempt + 1))

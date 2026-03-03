@@ -212,7 +212,7 @@ def process_cutout_with_error_handling(row, ra, dec, cache):
     '''
     try:
         process_cutout(row, ra, dec, cache=cache)
-    except (urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
         # Transient read errors. Skip this cutout.
         row["hdus"] = None
 ```
