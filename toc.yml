@@ -50,15 +50,9 @@ project:
           file: tutorials/wise/neowise-source-table-strategies.md
         - title: NEOWISE Light Curves
           file: tutorials/wise/neowise-source-table-lightcurves.md
-    - title: Spitzer
-      children:
-        - file: tutorials/spitzer/siav2_seip.md
-    - title: 2MASS
-      children:
-        - file: tutorials/2mass/sia_2mass_allsky.md
     - title: COSMOS
       children:
-        - file: tutorials/cosmos/sia_cosmos.md
+        - file: tutorials/cosmos/sia_v1_cosmos.md
     - title: Simulated Data
       file: tutorials/simulated-data/simulated.md
       children:
