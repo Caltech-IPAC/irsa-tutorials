@@ -96,9 +96,9 @@ pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ## 2. Discover COSMOS images
 
 ```{code-cell} ipython3
-# Search the Virtual Observatory Registry for image services at IRSA associated with the COSMOS survey.
+# Search the Virtual Observatory Registry for SIAv1 image services at IRSA associated with the COSMOS survey.
 image_services = regsearch(
-    servicetype='sia1',
+    servicetype='sia',
     keywords=['cosmos', 'irsa']
 )
 
@@ -107,8 +107,8 @@ for i, r in enumerate(image_services):
     print(f"{i:2d}  {r.short_name:20s}  {r.res_title}")
 
 # Turn the result into a usable image access service
-resource = image_services[0] 
-cosmos_service = resource.get_service("sia1")
+resource = image_services[0]
+cosmos_service = resource.get_service("sia")
 ```
 
 ## 3. Search for images
@@ -116,7 +116,7 @@ Which images in the COSMOS dataset include our target of interest?
 
 ```{code-cell} ipython3
 # Get a table of all images that cover this position.
-# Choose the size of the returned image. 
+# Choose the size of the returned image.
 im_results = cosmos_service.search(pos=pos, size=150*u.arcsec)
 
 # Convert the PyVO result to an Astropy Table
@@ -167,10 +167,10 @@ print(image_url)
 # Use Astropy to examine the header of the URL from the previous step,
 # and grab the data and wcs from the header.
 with fits.open(image_url, memmap=False) as hdul:
-    hdul.info()           
+    hdul.info()
     data = hdul[0].data
     wcs = WCS(hdul[0].header)
-    
+
 ```
 
 ```{code-cell} ipython3
