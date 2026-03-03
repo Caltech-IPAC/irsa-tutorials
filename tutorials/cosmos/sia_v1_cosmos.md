@@ -2,7 +2,7 @@
 authors:
 - name: IRSA Data Science Team
 - name: Troy Raen
-- name: "Brigitta Sip\u0151cz"
+- name: "Brigitta Sipőcz"
 - name: Jessica Krick
 - name: Andreas Faisst
 - name: Jaladh Singhal
@@ -67,7 +67,7 @@ This SIA v1 service is based on an older set of SIA protocols and is limited to 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-!pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
+# !pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
