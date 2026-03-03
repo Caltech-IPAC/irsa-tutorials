@@ -68,13 +68,7 @@
     <loc>http://localhost:3000/neowise-source-table-lightcurves</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/siav2-seip</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/sia-2mass-allsky</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/sia-cosmos</loc>
+    <loc>http://localhost:3000/sia-v1-cosmos</loc>
   </url>
   <url>
     <loc>http://localhost:3000/simulated</loc>
