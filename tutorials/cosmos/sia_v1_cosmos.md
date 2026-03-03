@@ -1,4 +1,13 @@
 ---
+authors:
+- name: IRSA Data Science Team
+- name: Troy Raen
+- name: "Brigitta Sip\u0151cz"
+- name: Jessica Krick
+- name: Andreas Faisst
+- name: Jaladh Singhal
+- name: Vandana Desai
+- name: Dave Shupe
 jupytext:
   text_representation:
     extension: .md
@@ -9,15 +18,6 @@ kernelspec:
   name: python3
   display_name: python3
   language: python
-authors:
-  - name: IRSA Data Science Team
-  - name: Troy Raen
-  - name: Brigitta Sipőcz
-  - name: Jessica Krick
-  - name: Andreas Faisst
-  - name: Jaladh Singhal
-  - name: Vandana Desai
-  - name: Dave Shupe
 ---
 
 # Searching for contributed COSMOS images
@@ -37,7 +37,6 @@ By the end of this tutorial, you will:
 * Download one of the identified images.
 * Create and display a cutout of the downloaded image.
 
-+++ {"jp-MarkdownHeadingCollapsed": true}
 
 ## Introduction
 
@@ -68,12 +67,13 @@ This SIA v1 service is based on an older set of SIA protocols and is limited to 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
+!pip -q install matplotlib astropy pyvo jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
 from pyvo import regsearch
 import numpy as np
+import astropy
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
@@ -193,7 +193,6 @@ fc.show_fits_image(file_input=image_url,
 If you want to see just a cutout of a certain region around the target, we do that below using astropy's Cutout2D.
 
 ```{code-cell} ipython3
-
 # make 0.5' x 0.5' cutout
 cutout = Cutout2D(data, position=pos, size=0.5 * u.arcmin, wcs=wcs)
 
@@ -219,7 +218,6 @@ plt.ylabel("Pixel Y")
 
 +++
 
-
 ## About this notebook
 
 **Updated:** 2 March 2026
@@ -233,14 +231,8 @@ This runtime is dependent on archive servers which means runtime will vary for u
 
 ## Citations
 
-**Astropy:**
-To see the Bibtex references for this, uncomment the below cell
-
 **COSMOS:**
 If you use COSMOS ACS imaging data in published research,  please cite the dataset Digital Object Identifier (DOI): [10.26131/IRSA178](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA178).
 
-```{code-cell} ipython3
-#import astropy
-
-#astropy.__citation__
-```
+**Astropy:**
+This work made use of [Astropy](http://www.astropy.org) a community-developed core Python package and an ecosystem of tools and resources for astronomy (Astropy Collaboration et al., 2013, Astropy Collaboration et al., 2018, Astropy Collaboration et al.,2022}.
