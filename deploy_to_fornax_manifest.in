@@ -1,5 +1,4 @@
-tutorials/2mass/sia_2mass_allsky.md
-tutorials/cosmos/sia_cosmos.md
+tutorials/cosmos/sia_v1_cosmos.md
 tutorials/euclid/1_Euclid_intro_MER_images.md
 tutorials/euclid/2_Euclid_intro_MER_catalog.md
 tutorials/euclid/3_Euclid_intro_1D_spectra.md
@@ -31,7 +30,6 @@ tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/default
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/firefly_viz.py
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/sdt_utils.py
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/source_extraction.py
-tutorials/spitzer/siav2_seip.md
 tutorials/techniques-and-tools/cloud-access-intro.md
 tutorials/techniques-and-tools/Parallelize_Convolution.md
 tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
