@@ -2,7 +2,7 @@
 authors:
 - name: IRSA Data Science Team
 - name: Troy Raen
-- name: "Brigitta Sip\u0151cz"
+- name: "Brigitta Sipőcz"
 - name: Jessica Krick
 - name: Andreas Faisst
 - name: Jaladh Singhal
