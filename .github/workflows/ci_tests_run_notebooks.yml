@@ -48,6 +48,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Validating manifest
+        if:  ${{ matrix.os == 'ubuntu-latest' }}
         run: bash -c 'missing=false; for file in $(cat deploy_to_fornax_manifest.in); do if [ ! -f $file ]; then echo "Inconsistent" $file; missing=true; fi; done; if $missing; then exit 1; fi'
 
       - name: Install dependencies
