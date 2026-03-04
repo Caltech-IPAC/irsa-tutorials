@@ -1,36 +1,36 @@
 ---
+authors:
+- name: IRSA Data Science Team
+- name: Troy Raen
+- name: "Brigitta Sipőcz"
+- name: Jessica Krick
+- name: Andreas Faisst
+- name: Jaladh Singhal
+- name: Vandana Desai
+- name: Dave Shupe
 jupytext:
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.2
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
-authors:
-  - name: David Shupe
-  - name: IRSA Science Team
+  display_name: python3
+  language: python
 ---
 
-# Searching for AllWISE Atlas Images
+# Searching for AllWISE Images with SIA v2
 
 +++
-
-This notebook tutorial demonstrates the process of querying IRSA's Simple Image Access (SIA) service for AllWISE Atlas images, making a cutout image (thumbnail), and displaying the cutout.
-
-+++
-
-
 
 ## Learning Goals
 
 By the end of this tutorial, you will:
 
-* Learn how to search the NASA Astronomical Virtual Observatory Directory web portal for a service that provides access to IRSA's WISE AllWISE Atlas (L3a) coadded images.
-* Use the Python pyvo package to identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
-* Download one of the identified images.
+* Learn how to access IRSA's WISE AllWISE Atlas (L3a) coadded images via the Simple Image Access (SIA) service.
+* Identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
+* Visualize one of the identified images using Firefly.
 * Create and display a cutout of the downloaded image.
 
 +++
@@ -41,50 +41,48 @@ The AllWISE program builds upon the work of the successful Wide-field Infrared S
 
 https://irsa.ipac.caltech.edu/Missions/wise.html
 
-The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for AllWISE images and catalogs. The AllWISE Atlas images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://wiki.ivoa.net/internal/IVOA/SiaInterface/SIA-V2-Analysis.pdf) protocol. IRSA's AllWISE SIA service is registered in the NASA Astronomical Virtual Observatory (NAVO) [Directory](https://vao.stsci.edu). Based on the registered information, the Python package [pyvo](https://pyvo.readthedocs.io) can be used to query the SEIP SIA service for a list of images that meet specified criteria, and standard Python libraries can be used to download and manipulate the images.
-Other datasets at IRSA are available through other SIA services:
+The [NASA/IPAC Infrared Science Archive (IRSA)](https://irsa.ipac.caltech.edu) at Caltech is the archive for AllWISE images and catalogs. The AllWISE Atlas images that are the subject of this tutorial are made accessible via the [International Virtual Observatory Alliance (IVOA)](https://ivoa.net) [Simple Image Access (SIA)](https://www.ivoa.net/documents/SIA/) protocol.
 
-https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html
 
+```{note}
+IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the specific dataset. This IRSA [website](https://irsa.ipac.caltech.edu/ibe/sia.html) provides information on which version each service uses and how to access them. Further information on how to access IRSA data with different techniques is available [here](https://irsa.ipac.caltech.edu/docs/program_interface/api_images.html). This tutorial uses SIA v2 for AllWISE Atlas images.
+```
 
 +++
 
 ## Imports
-
-- `pyvo` for querying IRSA's AllWISE Atlas SIA service
+- `numpy` for working with tables
 - `astropy.coordinates` for defining coordinates
 - `astropy.nddata` for creating an image cutout
 - `astropy.wcs` for interpreting the World Coordinate System header keywords of a fits file
 - `astropy.units` for attaching units to numbers passed to the SIA service
 - `matplotlib.pyplot` for plotting
-- `astropy.utils.data` for downloading files
 - `astropy.io` to manipulate FITS files
+- `firefly_client` for visualizing images
+- `astroquery.ipac.irsa` for IRSA data access
+- `astropy.visualization` for color stretch display
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install matplotlib astropy pyvo
+# %pip install matplotlib astropy astroquery jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
-import pyvo as vo
+import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.nddata import Cutout2D
 from astropy.wcs import WCS
 import astropy.units as u
 import matplotlib.pyplot as plt
-from astropy.utils.data import download_file
 from astropy.io import fits
+from firefly_client import FireflyClient
+from astroquery.ipac.irsa import Irsa
+from astropy.visualization import simple_norm
 ```
 
-## Section 1 - Setup
+## 1. Define the target
 
 +++
-
-Set images to display in the notebook
-
-```{code-cell} ipython3
-%matplotlib inline
-```
 
 Define coordinates of a bright star
 
@@ -94,119 +92,147 @@ dec = 77.595559
 pos = SkyCoord(ra=ra, dec=dec, unit='deg')
 ```
 
-## Section 2 - Lookup and define a service for AllWISE Atlas images
+## 2. Discover AllWISE Atlas images
 
 +++
 
-Start at STScI VAO Registry at https://vao.stsci.edu/keyword-search/
+IRSA provides Simple Image Access (SIA) services for various datasets. A list of available datasets and their access URLs can be found [here](https://irsa.ipac.caltech.edu/ibe/sia.html).
+This tutorial uses SIA v2 for AllWISE Atlas images.
+To search for other datasets on SIA v2, try changing the filter string.
+Or remove the filter keyword altogether to get a full list of available SIA v2 datasets at IRSA.
 
-Limit by Publisher "NASA/IPAC Infrared Science Archive" and Capability Type "Simple Image Access Protocol" then search on "AllWISE Atlas"
-
-Locate the SIA2 URL https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?
+First we need to know the name of the dataset on the IRSA system.
 
 ```{code-cell} ipython3
-allwise_service = vo.dal.SIAService("https://irsa.ipac.caltech.edu/ibe/sia/wise/allwise/p3am_cdd?")
+names = Irsa.list_collections(filter="allwise")
+names
 ```
 
-## Section 3 - Search the service
+We see from the resulting table that the dataset collection we are interested in is called "wise_allwise".
+Use this collection name in query below.
 
 +++
 
-Search for images covering within 1 arcsecond of the star
+## 3. Search for images
+Which images in the IRSA allwise dataset include our target of interest?
+
+Get a table of all images within 1 arcsecond of our target position.
 
 ```{code-cell} ipython3
-im_table = allwise_service.search(pos=pos, size=1.0*u.arcsec)
+im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection='wise_allwise')
 ```
 
-Inspect the table that is returned
+Inspect the table that is returned.
 
 ```{code-cell} ipython3
 im_table
 ```
 
+Look at a list of the column names included in this table.
+
 ```{code-cell} ipython3
-im_table.to_table().colnames
+im_table.colnames
 ```
 
+Look at the unique values in one of the columns.
+
 ```{code-cell} ipython3
-im_table.to_table()['sia_bp_id']
+print(np.unique(im_table['energy_bandpassname']))
 ```
 
-## Section 4 - Locate and download an image of interest
+## 4.Locate and visualize an image of interest
 
-+++
+We start by filtering the image results for the W3 band images.
+Then look at the header of one of the resulting W3 band images of our target star.
+Finally, we create an interactive FITS display of the W3 image(s) by [using Firefly](https://caltech-ipac.github.io/firefly_client/index.html), an open-source interactive visualization tool for astronomical data.
+To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.
 
-Let's search the image results for the W3 band image.
+You can put the URL from the column "access_url" into a browser to download the file.
+Or you can work with it in Python, as shown below.
 
 ```{code-cell} ipython3
-for i in range(len(im_table)):
-    if im_table[i]['sia_bp_id'] == 'W3':
-        break
-print(im_table[i].getdataurl())
+w3_mask = im_table['energy_bandpassname'] == 'W3'
+w3_table = im_table[w3_mask]
 ```
 
-Download the image and open it in Astropy
+Lets look at the access_url of the first one.
+Then use Astropy to examine the header of the URL from the previous step,
+and grab the data and wcs from the header.
 
 ```{code-cell} ipython3
-fname = download_file(im_table[i].getdataurl(), cache=True)
-image1 = fits.open(fname)
+image_url = w3_table['access_url'][0]
+image_url
+
+with fits.open(image_url, memmap=False) as hdul:
+    hdul.info()
+    data = hdul[0].data
+    wcs = WCS(hdul[0].header)
 ```
 
-## Section 5 - Extract a cutout and plot it
+Visualize an image by sending its URL to the Firefly viewer. 
+Try using the interactive tools in the viewer to explore the data.
 
 ```{code-cell} ipython3
-wcs = WCS(image1[0].header)
+# Uncomment when opening a Firefly viewer in a tab within Jupyter Lab with jupyter_firefly_extensions installed
+# fc = FireflyClient.make_lab_client()
+
+# Uncomment when opening Firefly viewer in contexts other than the above
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+
+# Visualize an image by sending its URL to the viewer.
+fc.show_fits_image(file_input=image_url,
+             plot_id="image",
+             Title="Image"
+             )
 ```
 
-```{code-cell} ipython3
-cutout = Cutout2D(image1[0].data, pos, (60, 60), wcs=wcs)
-wcs = cutout.wcs
-```
+## 5. Extract a cutout and plot it
+If you want to see just a cutout of a certain region around the target, we do that below using astropy's Cutout2D.
 
 ```{code-cell} ipython3
-fig = plt.figure()
+# make 1' x 1' cutout
+cutout = Cutout2D(data, position=pos, size=1 * u.arcmin, wcs=wcs)
 
-ax = fig.add_subplot(1, 1, 1, projection=wcs)
-ax.imshow(cutout.data, cmap='gray_r', origin='lower',
-          vmax = 1000)
-ax.scatter(ra, dec, transform=ax.get_transform('fk5'), s=500, edgecolor='red', facecolor='none')
-```
+#add quick normalization/stretch
+norm = simple_norm(cutout.data, stretch="sqrt", percent=99)
 
-```{code-cell} ipython3
-
+# display
+plt.imshow(cutout.data, origin='lower', norm = norm)
+plt.colorbar(label="Image value")
+plt.title("ALLWISE W3 (quicklook)")
+plt.xlabel("Pixel X")
+plt.ylabel("Pixel Y")
 ```
 
 ***
 
 +++
 
-## About this notebook
+## Acknowledgements
+
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 +++
 
-**Updated:** 2022-02-14
+## About this notebook
 
-**Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+**Updated:** 2 March 2026
 
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
+
+**Runtime:** As of the date above, this notebook takes about 20 seconds to run to completion on a machine with 8GB RAM and 4 CPU.
+This runtime is dependent on archive servers which means runtime will vary for users.
 
 +++
 
 ## Citations
 
-+++
+**Astropy:**
+This work made use of [Astropy](http://www.astropy.org) a community-developed core Python package and an ecosystem of tools and resources for astronomy (Astropy Collaboration et al., 2013, Astropy Collaboration et al., 2018, Astropy Collaboration et al.,2022).
 
-If you use `astropy` for published research, please cite the authors. Follow these links for more information about citing `astropy`:
+**Astroquery:**
+This work made use of [Astroquery](https://astroquery.readthedocs.io/en/latest/) a set of tools for querying astronomical web forms and databases (Ginsburg, Sipőcz, Brasseur et al 2019.).
 
-* [Citing `astropy`](https://www.astropy.org/acknowledging.html)
-
-+++
-
-Please include the following in any published material that makes use of the WISE data products:
-
-"This publication makes use of data products from the Wide-field Infrared Survey Explorer, which is a joint project of the University of California, Los Angeles, and the Jet Propulsion Laboratory/California Institute of Technology, funded by the National Aeronautics and Space Administration."
-
-Please also cite the dataset Digital Object Identifier (DOI): [10.26131/IRSA153](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA153)
-
-```{code-cell} ipython3
-
-```
+**WISE:**
+This publication makes use of data products from the Wide-field Infrared Survey Explorer, which is a joint project of the University of California, Los Angeles, and the Jet Propulsion Laboratory/California Institute of Technology, funded by the National Aeronautics and Space Administration."
+Digital Object Identifier (DOI): [10.26131/IRSA153](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA153)
