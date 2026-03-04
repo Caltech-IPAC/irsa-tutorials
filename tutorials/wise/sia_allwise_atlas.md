@@ -64,7 +64,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# %pip install matplotlib astropy jupyter_firefly_extensions
+# %pip install matplotlib astropy astroquery jupyter_firefly_extensions
 ```
 
 ```{code-cell} ipython3
@@ -114,8 +114,7 @@ Which images in the IRSA allwise dataset include our target of interest?
 
 ```{code-cell} ipython3
 #get a table of all images within 1 arcsecond of our target position
-dataset_name = names['collection'][0]  #name of our favorite dataset = "wise_allwise"
-im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection=dataset_name)
+im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection='wise_allwise')
 ```
 
 ```{code-cell} ipython3
