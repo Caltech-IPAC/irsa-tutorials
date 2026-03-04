@@ -99,7 +99,7 @@ import matplotlib as mpl
 Next, we define some parameters for `Matplotlib` plotting.
 
 ```{code-cell} ipython3
-## Plotting stuff
+# Plotting stuff
 mpl.rcParams['font.size'] = 14
 mpl.rcParams['axes.labelpad'] = 7
 mpl.rcParams['xtick.major.pad'] = 7
@@ -125,7 +125,7 @@ mpl.rcParams['hatch.linewidth'] = 1
 def_cols = plt.rcParams['axes.prop_cycle'].by_key()['color']
 ```
 
-## Setting up the Environment
+## 1. Setting up the Environment
 
 Next, we set up the environment. This includes
 * setting up an output data directory (will be created if it does not exist)
@@ -150,7 +150,7 @@ cutout_size = 1.5 * u.arcmin # cutout size
 coord = SkyCoord.from_name('NGC 6397')
 ```
 
-## Search Euclid ERO Images
+## 2. Search Euclid ERO Images
 
 Now, we search for the Euclid ERO images using the `astroquery` package.
 Note that the Euclid ERO images are no in the cloud currently, but we access them directly from IRSA using IRSA's *Simple Image Access* (SIA) methods.
@@ -229,7 +229,7 @@ Let's check out the summary table that we have created. We see that we have all 
 summary_table
 ```
 
-## Create Cutout Images
+## 3. Create Cutout Images
 
 Now that we have a list of data products, we can create the cutouts. This is important as the full Euclid ERO images would be too large to run extraction and photometry software on them (they would simply fail due to memory issues).
 
@@ -267,7 +267,7 @@ for ii,filt in tqdm(enumerate(filters)):
                 hdu.header["FILTER"] = filt.upper()
                 hdulcutout.append(hdu)
 
-## Save the HDUL cube:
+# Save the HDUL cube:
 hdulcutout.writeto("./data/euclid_images_test.fits", overwrite=True)
 ```
 
@@ -296,7 +296,7 @@ for ii,filt in enumerate(filters):
 plt.show()
 ```
 
-## Extract Sources and Measure their Photometry on the VIS Image
+## 4. Extract Sources and Measure their Photometry on the VIS Image
 
 Now that we have the images in memory (and on disk - but we do not need them, yet), we can measure the fluxes of the individual stars.
 Our simple photometry pipeline has different parts:
@@ -310,7 +310,7 @@ Our simple photometry pipeline has different parts:
 We start by extracting the sources using `sep`. We first isolate the data that we want to look at (the VIS image only).
 
 ```{code-cell} ipython3
-## Get Data (this will be replaced later)
+# Get Data (this will be replaced later)
 img = hdulcutout["VIS_SCIENCE"].data
 hdr = hdulcutout["VIS_SCIENCE"].header
 img[img == 0] = np.nan
@@ -380,7 +380,7 @@ resimage = psfphot.make_residual_image(data = img-median, psf_shape = (9, 9))
 We now want to add the best-fit coordinates (R.A. and Decl.) to the VIS photometry catalog. For this, we have to convert the image coordinates into sky coordinates using the WCS information. We will need these coordinates because we want to use them as positional priors for the photometry measurement on the NISP images.
 
 ```{code-cell} ipython3
-## Add coordinates to catalog
+# Add coordinates to catalog
 wcs1 = WCS(hdr) # VIS
 radec = wcs1.all_pix2world(phot["x_fit"],phot["y_fit"],0)
 phot["ra_fit"] = radec[0]
@@ -426,7 +426,7 @@ ax1.set_yscale('log')
 plt.show()
 ```
 
-## Measure the Photometry on the NISP Images
+## 5. Measure the Photometry on the NISP Images
 
 We now have the photometry and the position of sources on the VIS image. We can now proceed with similar steps on the NISP images. Because the NISP PSF and pixel scale are larger that those of the VIS images, we utilize the advantage of position prior-based forced photometry.
 For this, we use the positions of the VIS measurements and perform PSF fitting on the NISP image using these priors.
@@ -510,7 +510,7 @@ ax2.plot(phot2["x_fit"], phot2["y_fit"] , "o", markersize=8 , markeredgecolor="r
 plt.show()
 ```
 
-## Load Gaia Catalog
+## 6. Load Gaia Catalog
 
 We now load the Gaia sources at the location of the globular clusters. The goal is to compare the photometry of Gaia to the one derived above for the Euclid VIS and NISP images. This is scientifically useful, for example we can compute the colors of the stars in the Gaia optical bands and the Euclid near-IR bands.
 To search for Gaia sources, we use `astroquery` again.
@@ -565,7 +565,7 @@ ax2.set_title("NISP")
 plt.show()
 ```
 
-## Match the Gaia Catalog to the VIS and NISP Catalogs
+## 7. Match the Gaia Catalog to the VIS and NISP Catalogs
 
 Now, we match the Gaia source positions to the extracted sources in the VIS and NISP images.
 
@@ -630,7 +630,7 @@ ax1.set_ylabel("I$_E$ [mag]")
 plt.show()
 ```
 
-## Visualization with Firefly
+## 8. Visualization with Firefly
 
 At the end of this Notebook, we demonstrate how we can visualize the images and catalogs created above in `Firefly`.
 
