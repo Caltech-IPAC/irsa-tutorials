@@ -1,4 +1,13 @@
 ---
+authors:
+- name: IRSA Data Science Team
+- name: Troy Raen
+- name: "Brigitta Sip\u0151cz"
+- name: Jessica Krick
+- name: Andreas Faisst
+- name: Jaladh Singhal
+- name: Vandana Desai
+- name: Dave Shupe
 jupytext:
   text_representation:
     extension: .md
@@ -9,15 +18,6 @@ kernelspec:
   name: python3
   display_name: python3
   language: python
-authors:
-  - name: IRSA Data Science Team
-  - name: Troy Raen
-  - name: Brigitta Sipőcz
-  - name: Jessica Krick
-  - name: Andreas Faisst
-  - name: Jaladh Singhal
-  - name: Vandana Desai
-  - name: Dave Shupe
 ---
 
 # Searching for AllWISE Images with SIA v2
@@ -29,8 +29,8 @@ authors:
 By the end of this tutorial, you will:
 
 * Learn how to access IRSA's WISE AllWISE Atlas (L3a) coadded images via the Simple Image Access (SIA) service.
-* identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
-* Visualize one of the identified images using Forefly.
+* Identify which of IRSA's AllWISE Atlas images cover a specified coordinate.
+* Visualize one of the identified images using Firefly.
 * Create and display a cutout of the downloaded image.
 
 +++
@@ -58,7 +58,7 @@ IRSA supports both SIA v1 and SIA v2 protocols. The version used depends on the 
 - `astropy.units` for attaching units to numbers passed to the SIA service
 - `matplotlib.pyplot` for plotting
 - `astropy.io` to manipulate FITS files
-- `firefly_client` for visuzlizing images
+- `firefly_client` for visualizing images
 - `astroquery.ipac.irsa` for IRSA data access
 - `astropy.visualization` for color stretch display
 
@@ -101,34 +101,42 @@ This tutorial uses SIA v2 for AllWISE Atlas images.
 To search for other datasets on SIA v2, try changing the filter string.
 Or remove the filter keyword altogether to get a full list of available SIA v2 datasets at IRSA.
 
+First we need to know the name of the dataset on the IRSA system.
+
 ```{code-cell} ipython3
-#first we need to know the name of the dataset on the IRSA system
 names = Irsa.list_collections(filter="allwise")
 names
-
-# We see from the resulting table that the dataset collection we are interested in is called "wise_allwise"
 ```
+
+We see from the resulting table that the dataset collection we are interested in is called "wise_allwise".
+Use this collection name in query below.
+
++++
 
 ## 3. Search for images
 Which images in the IRSA allwise dataset include our target of interest?
 
+Get a table of all images within 1 arcsecond of our target position.
+
 ```{code-cell} ipython3
-#get a table of all images within 1 arcsecond of our target position
 im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection='wise_allwise')
 ```
 
+Inspect the table that is returned.
+
 ```{code-cell} ipython3
-# Inspect the table that is returned
 im_table
 ```
 
+Look at a list of the column names included in this table.
+
 ```{code-cell} ipython3
-# Look at a list of the column names included in this table
 im_table.colnames
 ```
 
+Look at the unique values in one of the columns.
+
 ```{code-cell} ipython3
-# Let's look at the unique values in one of the columns
 print(np.unique(im_table['energy_bandpassname']))
 ```
 
@@ -137,27 +145,32 @@ print(np.unique(im_table['energy_bandpassname']))
 We start by filtering the image results for the W3 band images.
 Then look at the header of one of the resulting W3 band images of our target star.
 Finally, we create an interactive FITS display of the W3 image(s) by [using Firefly](https://caltech-ipac.github.io/firefly_client/index.html), an open-source interactive visualization tool for astronomical data.
-To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.```
+To understand how to open the Firefly viewer in a new tab from your Python notebook, refer to [this documentation](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) on how to initialize FireflyClient.
+
+You can put the URL from the column "access_url" into a browser to download the file.
+Or you can work with it in Python, as shown below.
 
 ```{code-cell} ipython3
-# You can put the URL from the column "access_url" into a browser to download the file.
-# Or you can work with it in Python, as shown below.
 w3_mask = im_table['energy_bandpassname'] == 'W3'
 w3_table = im_table[w3_mask]
 ```
 
+Lets look at the access_url of the first one.
+Then use Astropy to examine the header of the URL from the previous step,
+and grab the data and wcs from the header.
+
 ```{code-cell} ipython3
-# Lets look at the access_url of the first one:
 image_url = w3_table['access_url'][0]
 image_url
 
-# Use Astropy to examine the header of the URL from the previous step,
-# and grab the data and wcs from the header.
 with fits.open(image_url, memmap=False) as hdul:
     hdul.info()
     data = hdul[0].data
     wcs = WCS(hdul[0].header)
 ```
+
+Visualize an image by sending its URL to the Firefly viewer. 
+Try using the interactive tools in the viewer to explore the data.
 
 ```{code-cell} ipython3
 # Uncomment when opening a Firefly viewer in a tab within Jupyter Lab with jupyter_firefly_extensions installed
@@ -171,8 +184,6 @@ fc.show_fits_image(file_input=image_url,
              plot_id="image",
              Title="Image"
              )
-
-#Try use the interactive tools in the viewer to explore the data.
 ```
 
 ## 5. Extract a cutout and plot it
@@ -203,7 +214,6 @@ plt.ylabel("Pixel Y")
 
 +++
 
-
 ## About this notebook
 
 **Updated:** 2 March 2026
@@ -218,19 +228,11 @@ This runtime is dependent on archive servers which means runtime will vary for u
 ## Citations
 
 **Astropy:**
-To see the Bibtex references for this, uncomment the below cell
+This work made use of [Astropy](http://www.astropy.org) a community-developed core Python package and an ecosystem of tools and resources for astronomy (Astropy Collaboration et al., 2013, Astropy Collaboration et al., 2018, Astropy Collaboration et al.,2022).
 
 **Astroquery:**
-To see the Bibtex references for this, uncomment the below cell
+This work made use of [Astroquery](https://astroquery.readthedocs.io/en/latest/) a set of tools for querying astronomical web forms and databases (Ginsburg, Sipőcz, Brasseur et al 2019.).
 
 **WISE:**
 This publication makes use of data products from the Wide-field Infrared Survey Explorer, which is a joint project of the University of California, Los Angeles, and the Jet Propulsion Laboratory/California Institute of Technology, funded by the National Aeronautics and Space Administration."
 Digital Object Identifier (DOI): [10.26131/IRSA153](https://www.ipac.caltech.edu/doi/irsa/10.26131/IRSA153)
-
-```{code-cell} ipython3
-#import astropy
-#import astroquery
-
-#astropy.__citation__
-#astroquery.__citation__
-```
