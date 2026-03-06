@@ -60,6 +60,10 @@ The following packages must be installed to run this notebook.
 ## 4. Imports
 
 ```{code-cell} ipython3
+import http.client
+import time
+import urllib.error
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -152,10 +156,26 @@ You can put this URL into a browser to download the file. Or you can work with i
 
 +++
 
-Use Astropy to examine the header of the URL from the previous step.
+First, use Astropy to load the data using the URL from the previous step.
+Transient read errors occur sometimes, so we'll catch those and retry a few times.
 
 ```{code-cell} ipython3
-hdulist = fits.open(spectral_image_url)
+# Max number of times to retry HTTP errors.
+max_retries = 3
+for attempt in range(max_retries):
+    try:
+        # Load the data.
+        hdulist = fits.open(spectral_image_url)
+        break
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
+        if attempt == max_retries - 1:
+            raise
+        time.sleep(10 * (attempt + 1))
+```
+
+Examine the header.
+
+```{code-cell} ipython3
 hdulist.info()
 ```
 
@@ -454,6 +474,6 @@ print("Dimensions of VALUES array:",  wavelengths.shape)
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
 
-**Updated:** 24 October 2025
+**Updated:** 5 March 2026
 
 **Runtime:** approximately 30 seconds
