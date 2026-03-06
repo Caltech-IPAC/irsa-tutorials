@@ -257,7 +257,7 @@ for row in results_table_serial:
 print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 
 # Drop rows that failed to download.
-results_table_serial = results_table_serial[result_table_serial["hdus"] != None]
+results_table_serial = results_table_serial[results_table_serial["hdus"] != None]
 ```
 
 ### 7.2 Parallel Approach
