@@ -384,7 +384,7 @@ plt.show()
 
 ## About this notebook
 
-**Updated:** 24 October 2025
+**Updated:** 5 March 2026
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
