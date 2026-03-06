@@ -257,6 +257,8 @@ for row in results_table_serial:
 print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 
 # Drop rows that failed to download.
+failed_cutouts_serial = results_table_serial[results_table_serial["hdus"] == None]
+print("Failed to get the following cutouts:\n", failed_cutouts_serial["uri"])
 results_table_serial = results_table_serial[results_table_serial["hdus"] != None]
 ```
 
@@ -296,6 +298,8 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
 print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 
 # Drop rows that failed to download.
+failed_cutouts_parallel = results_table_parallel[results_table_parallel["hdus"] == None]
+print("Failed to get the following cutouts:\n", failed_cutouts_parallel["uri"])
 results_table_parallel = results_table_parallel[results_table_parallel["hdus"] != None]
 ```
 
