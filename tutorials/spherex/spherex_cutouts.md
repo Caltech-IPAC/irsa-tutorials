@@ -257,7 +257,7 @@ for row in results_table_serial:
 print("Time to create cutouts in serial mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 
 # Drop rows that failed to download.
-results_table_serial = results_table_serial[[r["hdus"] is not None for r in results_table_serial]]
+results_table_serial = results_table_serial[result_table_serial["hdus"] != None]
 ```
 
 ### 7.2 Parallel Approach
@@ -296,7 +296,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
 print("Time to create cutouts in parallel mode: {:2.2f} minutes.".format((time.time() - t1) / 60))
 
 # Drop rows that failed to download.
-results_table_parallel = results_table_parallel[[r["hdus"] is not None for r in results_table_parallel]]
+results_table_parallel = results_table_parallel[results_table_parallel["hdus"] != None]
 ```
 
 ## 8. Create a summary table HDU with renamed columns
