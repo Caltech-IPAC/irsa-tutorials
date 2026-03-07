@@ -11,14 +11,11 @@ kernelspec:
   language: python
   name: python3
 authors:
-  - name: IPAC Science Platform Team
   - name: Jessica Krick
+  - name: Vandana Desai
+  - name: Andreas Faisst
   - name: Troy Raen
   - name: Brigitta Sipőcz
-  - name: Jaladh Singhal
-  - name: Andreas Faisst
-  - name: Shoubaneh Hemmati
-  - name: Vandana Desai
 ---
 
 (spherex-intro)=
