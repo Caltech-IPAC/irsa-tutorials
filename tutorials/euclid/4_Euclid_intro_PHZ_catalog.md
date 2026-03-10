@@ -83,12 +83,16 @@ from astropy.io import fits
 from astropy.nddata import Cutout2D
 from astropy.table import QTable
 from astropy import units as u
-from astropy.utils.data import download_file
+from astropy.utils.data import conf, download_file
 from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch, LogStretch, quantity_support
 from astropy.wcs import WCS
 
 from firefly_client import FireflyClient
 from astroquery.ipac.irsa import Irsa
+
+# The Euclid spectrum files are large and the time it takes to read
+# them can exceed astropy's default timeout limit. Increase it.
+conf.remote_timeout = 120
 ```
 
 ## 1. Find the MER Tile ID that corresponds to a given RA and Dec
