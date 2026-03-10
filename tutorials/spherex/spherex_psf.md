@@ -10,8 +10,8 @@ kernelspec:
   language: python
   name: python3
 authors:
-  - name: IRSA Data Science Team
   - name: Vandana Desai
+  - name: Jessica Krick
   - name: Andreas Faisst
   - name: Brigitta Sipőcz
   - name: Troy Raen
