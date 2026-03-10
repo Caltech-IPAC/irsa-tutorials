@@ -20,6 +20,8 @@ downloaded_hdf5_files/
 *.jpg
 *.jpeg
 *.log
+*.npy
+*.npz
 *.parquet
 *.pdf
 *.png
