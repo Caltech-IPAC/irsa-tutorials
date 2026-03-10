@@ -1,20 +1,20 @@
 ---
+authors:
+- name: Vandana Desai
+- name: Jessica Krick
+- name: Andreas Faisst
+- name: "Brigitta Sip\u0151cz"
+- name: Troy Raen
 jupytext:
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-authors:
-  - name: Vandana Desai
-  - name: Jessica Krick
-  - name: Andreas Faisst
-  - name: Brigitta Sipőcz
-  - name: Troy Raen
 ---
 
 # Understanding and Extracting the PSF Extension in a SPHEREx Cutout
@@ -317,8 +317,12 @@ To use this PSF for forward modeling or fitting, you must:
 
 ## About this notebook
 
-**Updated:** 5 March 2026
+**Updated:** 10 March 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
+
+```{code-cell} ipython3
+
+```
