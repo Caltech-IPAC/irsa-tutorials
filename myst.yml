@@ -23,8 +23,6 @@ project:
        keys:
          # These link resolve in the browser but generates did not resolve and 403 for the build
          - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=SPITZER
-         # The IVOA server is down this week; remove these in mid-March 2026
-         - https://www.ivoa.net/documents/latest/ADQL.html
 extends:
   - toc.yml
 site:
