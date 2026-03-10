@@ -74,6 +74,7 @@ from astropy.io import fits
 from astropy.table import QTable
 from astropy import units as u
 from astropy.coordinates import SkyCoord
+from astropy.utils.data import conf
 from astropy.visualization import quantity_support
 
 from astroquery.ipac.irsa import Irsa
@@ -91,6 +92,10 @@ warnings.filterwarnings(
     message="The unit 'erg' has been deprecated",
     category=u.UnitsWarning,
 )
+
+# The Euclid spectrum files are large and the time it takes to read
+# them can exceed astropy's default timeout limit. Increase it.
+conf.remote_timeout = 120
 ```
 
 ## 1. Search for the spectrum of a specific galaxy

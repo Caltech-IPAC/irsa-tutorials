@@ -78,14 +78,14 @@ from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.table import QTable
 from astropy import units as u
-from astropy.utils.data import download_file
-from astropy.utils import data
+from astropy.utils.data import conf, download_file
 from astropy.visualization import ImageNormalize, PercentileInterval, AsinhStretch, quantity_support
 
 from astroquery.ipac.irsa import Irsa
 
-# Increase Astropy’s default network timeout (in seconds) for remote name resolution and data access
-data.conf.remote_timeout = 60
+# The Euclid spectrum files are large and the time it takes to read
+# them can exceed astropy's default timeout limit. Increase it.
+conf.remote_timeout = 120
 
 #suppress warnings about deprecated units and cache
 import warnings
