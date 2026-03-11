@@ -472,7 +472,7 @@ def update_psf_header(old_hdul):
             new_hdul.append(old.copy())
 
     ## TO DO: UPDATE VERSION
-    #new_hdul['PRIMARY'].header["VERSION"] = '6.5' # SET NEW VERSION HERE
+    new_hdul['PRIMARY'].header["VERSION"] = new_hdul['PRIMARY'].header["VERSION"] + "-001" # SET NEW VERSION HERE
 
     return(new_hdul)
 ```
@@ -481,6 +481,13 @@ We now run this function to create a new HDU list that we will use later.
 
 ```{code-cell} ipython3
 new_image_hdul = update_psf_header(old_hdul=image_hdul)
+```
+
+Let's check if the version keywords was updated:
+
+```{code-cell} ipython3
+print(f"Old version: {image_hdul['PRIMARY'].header['VERSION']}")
+print(f"Updated version: {new_image_hdul['PRIMARY'].header['VERSION']}")
 ```
 
 Let's compare the new and old PSF headers to see the difference.
