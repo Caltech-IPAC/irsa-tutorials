@@ -22,10 +22,10 @@ kernelspec:
 +++
 
 ```{warning}
-In the SPHEREx spectral image versions prior to XXXX, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the header. This has now been fixed in versions post XXXX.
-However, users using the old versions will need to implement and extra step (described below in Section 5) to update the image header.
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions post 6.5.5.
+However, users using the old versions will need to implement and extra step (described below in Section 5.1) to update the image header.
 
-For more information, see the following webpage: [PSF Erratum](WEBPAGE)
+For more information about these changes, see the following webpage: [PSF Erratum](WEBPAGE)
 ```
 
 +++
@@ -33,7 +33,7 @@ For more information, see the following webpage: [PSF Erratum](WEBPAGE)
 ## 1. Learning Goals
 
 * Determine how pixels in a SPHEREx cutout map to the pixels in the parent SPHEREx spectral image.
-* Understand the structure of the PSF extension in a SPHEREx cutout (which is the same as the PSF extension in the parent spectral image)
+* Understand the structure of the PSF extension in a SPHEREx cutout (which is the same as the PSF extension in the parent spectral image).
 * Learn how to tell which version of the SPHEREx spectral image you are looking at, and how to interpret this information to obtain the correct PSF extension for the SPHEREx spectral images.
 * Learn which plane in a SPHEREx cutout PSF extension cube most accurately describes the coordinates you are interested in.
 
@@ -70,6 +70,7 @@ import re
 import time
 import urllib.error
 import copy
+from packaging.version import Version
 
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -171,7 +172,7 @@ for attempt in range(max_retries):
         time.sleep(10 * (attempt + 1))
 ```
 
-Examine the header.
+Let's examine the HDU list info.
 
 ```{code-cell} ipython3
 hdul.info()
@@ -215,24 +216,46 @@ The goal of this tutorial now is to find the PSF corresponding to our input coor
 +++
 
 ```{warning}
-In the SPHEREx spectral image versions prior to XXXX, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the header. This has now been fixed in versions post XXXX.
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions post 6.5.5.
 
-For more information, see the following webpage: [PSF Erratum](WEBPAGE)
+For more information about these changes, see the following webpage: [PSF Erratum](WEBPAGE)
 
 **Users using the old versions will need to implement and extra step (described below) to update the image header.**
 ```
 
-Let's first check if a header update is necessary. We can do that by checking the `VERSION` keyword in the header.
+Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
+
+For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4-001` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
 
 ```{code-cell} ipython3
-image_hdul['PRIMARY'].header["VERSION"]
+def parse_version(v):
+    '''
+    Parses versions correctly such that "6.5.4-001" is later than "6.5.5".
+    '''
+    if "-" in v:
+        base, mod = v.split("-", 1)
+        return (1, Version(base), int(mod))  # modified versions always rank higher
+    else:
+        return (0, Version(v), 0)
 ```
 
-If the version of the SPHEREx spectral image is less than `6.4`, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.4`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
+Now, we can use this function to properly compare versions.
+
+```{code-cell} ipython3
+this_version = parse_version( image_hdul['PRIMARY'].header["VERSION"] )
+print(f"Current version is {this_version}")
+
+if this_version <= parse_version("6.5.5"):
+    print("PSF header needs to be updated! -> Go to Section 5.1 :(")
+else:
+    print("PSF header is already up-to-date! -> Proceed to Section 6 :)")
+```
+
+If the version of the SPHEREx spectral image is less or equal than `6.5.5`, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.5.5`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
 
 +++
 
-### 5.1 Updating Old SPHEREx Spectral Image Data (`VERSIONS` < XXX)
+### 5.1 Updating Old SPHEREx Spectral Image Data (if version is $\leq$ 6.5.5)
 
 +++
 
@@ -264,11 +287,18 @@ def update_psf_header(old_hdul):
     
     """
 
+    def parse_version(v):
+        if "-" in v:
+            base, mod = v.split("-", 1)
+            return (1, Version(base), int(mod))  # modified versions always rank higher
+        else:
+            return (0, Version(v), 0)
+
     ## Check if old version
-    this_version = float( old_hdul['PRIMARY'].header["VERSION"] )
-    if this_version <= 6.4:
+    this_version = parse_version( old_hdul['PRIMARY'].header["VERSION"] )
+    if this_version <= parse_version("6.5.5"):
         print(f"Old version detected ({this_version}) -> Update header.")
-    elif this_version > 6.4:
+    elif this_version > Version("6.5.5"):
         print(f"New version detected ({this_version}) -> Do not update header.")
         return(old_hdul)
 
@@ -466,23 +496,13 @@ new_image_hdul['PSF'].header[22:40]
 Now we have to update the variables we have set above.
 
 ```{code-cell} ipython3
-### TODO UPDATE VARIABLES.
+cutout_header = new_image_hdul['IMAGE'].header
+psf_header = new_image_hdul['PSF'].header
+cutout = new_image_hdul['IMAGE'].data
+psfcube = new_image_hdul['PSF'].data
 ```
 
-```{code-cell} ipython3
-hdul['PSF'].header[22:40]
-```
-
-We confirm that the oversampling factor (`OVERSAMP`) is 10.
-The PSFs are distributed in an even grid with 11x11 zones.
-Each of the 121 PSFs is responsible for one of these zones.
-The PSF header therefore includes the center position of these zones as well as the width of the zones.
-These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...121.
-The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...121.
-The zones have approximately equal widths and are arranged in an even grid.
-The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
-
-The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
+With this fix, we are now ready to proceed!
 
 +++
 
