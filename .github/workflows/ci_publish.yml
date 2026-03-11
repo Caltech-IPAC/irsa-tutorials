@@ -78,6 +78,7 @@ jobs:
           git commit -m "Restructuring to help fornax deployment"
           # This is somewhat hacky, but does the job for now.
           for i in $(grep .md deploy_to_fornax_manifest.in); do grep "file: ${i}" notebook_metadata.yml -A 1 | gawk -F : 'NR==1 {printf $2": "} NR!= 1 {print $2}' | cut -c 12-; done > notebook_manifest_descriptions.txt
+          git add notebook_metadata.yml
           git add notebook_manifest_descriptions.txt
-          git commit -m "Adding notebook manifest with one liner descriptions"
+          git commit -m "Adding notebook metadata and manifest with one liner descriptions"
           git push origin deploy_to_fornax --force
