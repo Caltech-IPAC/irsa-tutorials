@@ -30,6 +30,10 @@
   file: tutorials/euclid/euclid-cloud-access.md
   section: Euclid
   description: Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
+- title: Galaxy Clusters
+  file: tutorials/euclid/euclid_clusters_tutorial.md
+  section: Euclid
+  description: Use Euclid Q1 data to detect and validate a galaxy cluster.
 - title: 'Merged Objects Catalog: Introduction'
   file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
   section: Euclid
