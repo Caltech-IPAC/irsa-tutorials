@@ -25,6 +25,9 @@
 - title: Euclid Cloud Access
   file: tutorials/euclid/euclid-cloud-access.md
   description: Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
+- title: Galaxy Clusters
+  file: tutorials/euclid/euclid_clusters_tutorial.md
+  description: Use Euclid Q1 data to detect and validate a galaxy cluster.
 - title: HATS with LSDB
   file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
   description: Use LSDB for user-friendly cross matching and querying of HATS Collections.
