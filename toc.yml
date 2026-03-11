@@ -53,6 +53,9 @@ project:
     - title: COSMOS
       children:
         - file: tutorials/cosmos/sia_v1_cosmos.md
+    - title: Spitzer
+      children:
+        - file: tutorials/spitzer/plot_Spitzer_IRS_spectra.md
     - title: Simulated Data
       file: tutorials/simulated-data/simulated.md
       children:
