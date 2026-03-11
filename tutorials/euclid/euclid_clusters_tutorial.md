@@ -6,9 +6,9 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.16.7
 kernelspec:
-  display_name: Conda Python
+  display_name: Python 3
   language: python
-  name: conda_python
+  name: python3
 ---
 
 # Euclid Galaxy Clusters Analysis Tutorial
