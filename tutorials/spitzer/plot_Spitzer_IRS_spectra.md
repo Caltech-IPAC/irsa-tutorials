@@ -50,7 +50,7 @@ Optional plots of flux versus wavelength
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy "astroquery>=0.4.10"
+# !pip install numpy matplotlib astropy "astroquery>=0.4.10"
 ```
 
 ```{code-cell} ipython3
@@ -65,7 +65,7 @@ from astroquery.vizier import Vizier
 from astroquery.ipac.irsa import Irsa
 
 import warnings
-#suppress warnings about cache 
+# suppress warnings about cache
 warnings.filterwarnings(
     "ignore",
     message="XDG_CACHE_HOME is set",
@@ -92,8 +92,8 @@ Users interested in other instruments or wavelength ranges are encouraged to exp
 We begin by loading a published catalog of debris disk host stars from VizieR.
 
 ```{code-cell} ipython3
-vizier = Vizier() # this instantiates Vizier with its default parameters
-vizier.ROW_LIMIT = 150
+vizier = Vizier()
+vizier.ROW_LIMIT = 150  # Override the default limit of 50
 # VizieR catalog identifier for Mittal et al. (2015)
 mittal = "J/ApJ/798/87"
 
@@ -123,12 +123,12 @@ debris_disks.colnames
 Lets see if any of these debris disks have spectra in the IRSA archive
 
 ```{code-cell} ipython3
-# IRSA queries require sky coordinates, 
+# IRSA queries require sky coordinates,
 # so we convert the RA and Dec columns into a vectorized SkyCoord object.
 coords = SkyCoord(ra=debris_disks["_RA"],
-                           dec=debris_disks["_DE"],
-                           unit=u.deg,
-                           frame='icrs')
+                  dec=debris_disks["_DE"],
+                  unit=u.deg,
+                  frame='icrs')
 
 # Just to make this tutorial run faster, we will limit the number of debris disks
 coords = coords[0:10]
@@ -140,11 +140,11 @@ It optionally plots the retrieved spectra and includes inline comments explainin
 We provide this as a function so it can be easily lifted from this tutorial and used in your own work.
 
 ```{code-cell} ipython3
-def query_and_plot_spectra(positions, *, plot=True, verbose = True):
+def query_and_plot_spectra(positions, *, plot=True, verbose=True):
     """
     Query IRSA for Spitzer IRS spectra near each target position using SSA.
 
-    
+
     Parameters
     ----------
     positions : astropy.coordinates.SkyCoord
@@ -154,13 +154,13 @@ def query_and_plot_spectra(positions, *, plot=True, verbose = True):
     verbose : bool, optional
         If True, print status messages about query results.
     """
-    #for each set of coordinates
+    # for each set of coordinates
     for i, sc in enumerate(positions):
         # Retrieve the target name from the debris disk catalog
         target_name = debris_disks["Name"][i]
-        
+
         # Query the IRSA SSA service around this position
-        result = Irsa.query_ssa(pos=sc, 
+        result = Irsa.query_ssa(pos=sc,
                                 radius=5*u.arcsec,
                                 collection='spitzer_irsenh')
 
@@ -170,19 +170,19 @@ def query_and_plot_spectra(positions, *, plot=True, verbose = True):
                 print(f"No IRS spectra available for target {target_name}")
                 continue
 
-        # Let the user know we have a winner        
+        # Let the user know we have a winner
         if verbose:
             print(f"Found {len(result)} spectrum(s) for {target_name}")
 
         # Loop through each spectrum returned for the object
         for j, row in enumerate(result):
-            
+
             # Each SSA row includes an access URL pointing to the spectrum
             spectrum_url = row['access_url']
-            
+
             # Read the spectrum into an Astropy Table
             single_spec = Table.read(spectrum_url, format="ipac")
-                                                    
+
             # If plotting is enabled, plot the spectrum.
             if plot:
                 plt.figure()
@@ -191,15 +191,15 @@ def query_and_plot_spectra(positions, *, plot=True, verbose = True):
                     plt.plot(single_spec['wavelength'], single_spec['flux_density'], label=label)
                 else:
                     plt.plot(single_spec['wavelength'], single_spec['flux_density'])
-             
+
                 plt.xlabel("Wavelength (μm))")
                 plt.ylabel("Flux ")
                 plt.title(f"Spitzer IRS Spectrum for {target_name}")
-            
+
                 # If more than one spectrum was found, add a legend
                 if len(result) > 1:
                     plt.legend()
-                
+
                 plt.tight_layout()
                 plt.show()
 ```
