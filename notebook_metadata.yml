@@ -82,3 +82,6 @@
 - title: SPE Catalogs
   file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
   description: Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
+- title: Spitzer IRS Spectra
+  file: tutorials/spitzer/plot_Spitzer_IRS_spectra.md
+  description: Discover IRSA's SSA collections, query for spectra, retrieve and visualize Spitzer IRS spectra.
