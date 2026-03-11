@@ -66,6 +66,12 @@ Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout an
 ```
 
 ```{card}
+:link: euclid_clusters_tutorial.md
+:header: [Galaxy Clusters →](euclid_clusters_tutorial.md)
+Use Euclid Q1 data to detect and validate a galaxy cluster.
+```
+
+```{card}
 :link: Euclid_ERO.md
 :header: [ERO Star Clusters →](Euclid_ERO.md)
 Create multi-wavelength ERO image cutouts of a globular cluster, extract sources, and measure photometry. Match Gaia sources with Euclid ERO catalogs, then visualize with Firefly.
