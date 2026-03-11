@@ -1,6 +1,3 @@
-- title: 2MASS Images
-  file: tutorials/2mass/sia_2mass_allsky.md
-  description: Query IRSA's SIA service for an image from the 2MASS All-Sky Atlas images and create and display a cutout.
 - title: AllWISE Images
   file: tutorials/wise/sia_allwise_atlas.md
   description: Retrieve coadded images and make coordinate-based cutouts.
@@ -14,7 +11,7 @@
   file: tutorials/simulated-data/cosmoDC2_TAP_access.md
   description: Access, query, and visualize the catalog.
 - title: COSMOS Images
-  file: tutorials/cosmos/sia_cosmos.md
+  file: tutorials/cosmos/sia_v1_cosmos.md
   description: Query IRSA's SIA service for COSMOS images and create and display a cutout.
 - title: Data Overview
   file: tutorials/spherex/spherex_intro.md
@@ -85,6 +82,3 @@
 - title: SPE Catalogs
   file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
   description: Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
-- title: Spitzer SEIP
-  file: tutorials/spitzer/siav2_seip.md
-  description: Query IRSA's SIA service for an IRAC mosaic and create and display a cutout.
