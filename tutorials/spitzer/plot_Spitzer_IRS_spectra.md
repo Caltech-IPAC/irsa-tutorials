@@ -77,7 +77,7 @@ warnings.filterwarnings(
 Before querying for spectra, it is often useful to see which spectral collections are available through SSA. IRSA hosts spectra from multiple missions and instruments, each grouped into collections.
 
 ```{code-cell} ipython3
-Irsa.list_collections()
+Irsa.list_collections(servicetype='ssa')
 ```
 
 Each entry corresponds to a distinct spectral data collection (for example, Spitzer IRS enhanced products). You can use these collection names with query_ssa(collection=...) to control which archive holdings are searched. Users interested in other instruments or wavelength ranges are encouraged to explore this list and substitute a different collection name below.
