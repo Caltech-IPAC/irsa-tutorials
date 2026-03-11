@@ -21,10 +21,20 @@ kernelspec:
 
 +++
 
+```{warning}
+In the SPHEREx spectral image versions prior to XXXX, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the header. This has now been fixed in versions post XXXX.
+However, users using the old versions will need to implement and extra step (described below in Section 5) to update the image header.
+
+For more information, see the following webpage: [PSF Erratum](WEBPAGE)
+```
+
++++
+
 ## 1. Learning Goals
 
 * Determine how pixels in a SPHEREx cutout map to the pixels in the parent SPHEREx spectral image.
 * Understand the structure of the PSF extension in a SPHEREx cutout (which is the same as the PSF extension in the parent spectral image)
+* Learn how to tell which version of the SPHEREx spectral image you are looking at, and how to interpret this information to obtain the correct PSF extension for the SPHEREx spectral images.
 * Learn which plane in a SPHEREx cutout PSF extension cube most accurately describes the coordinates you are interested in.
 
 +++
@@ -59,6 +69,7 @@ import http.client
 import re
 import time
 import urllib.error
+import copy
 
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -120,10 +131,10 @@ print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
 ```
 
-:::{note}
+```{note}
 SPHEREx data are also available via SIA which can provide a simpler interface for many queries, as demonstrated in {ref}`spherex-intro`.
 An advantage of the method shown above is that it provides access to data immediately after ingestion (which occurs weekly) and is not subject to the same ~1 day delay as SIA.
-:::
+```
 
 For this example, we focus on the first one of the retrieved SPHEREx spectral images.
 
@@ -148,6 +159,7 @@ for attempt in range(max_retries):
     try:
         # Read the data.
         with fits.open(spectral_image_url) as hdul:
+            image_hdul = copy.deepcopy(hdul)
             cutout_header = hdul['IMAGE'].header
             psf_header = hdul['PSF'].header
             cutout = hdul['IMAGE'].data
@@ -183,10 +195,282 @@ This means that the actual size of the PSFs is about 10x10 SPHEREx pixels, which
 
 +++
 
-Let's look at a small part of the PSF header to understand its format:
+Let's look at a small part of the PSF header to understand its format.
 
 ```{code-cell} ipython3
-psf_header[22:40]
+psf_header[0:30]
+```
+
+We confirm that the oversampling factor (`OVERSAMP`) is 10.
+The PSFs are distributed in an even grid with 11x11 zones.
+Each of the 121 PSFs is responsible for one of these zones.
+The PSF header therefore includes the center position of these zones as well as the width of the zones.
+These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...121.
+The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...121.
+The zones have approximately equal widths and are arranged in an even grid.
+The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
+
+The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
+
++++
+
+```{warning}
+In the SPHEREx spectral image versions prior to XXXX, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the header. This has now been fixed in versions post XXXX.
+
+For more information, see the following webpage: [PSF Erratum](WEBPAGE)
+
+**Users using the old versions will need to implement and extra step (described below) to update the image header.**
+```
+
+Let's first check if a header update is necessary. We can do that by checking the `VERSION` keyword in the header.
+
+```{code-cell} ipython3
+image_hdul['PRIMARY'].header["VERSION"]
+```
+
+If the version of the SPHEREx spectral image is less than `6.4`, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.4`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
+
++++
+
+### 5.1 Updating Old SPHEREx Spectral Image Data (`VERSIONS` < XXX)
+
++++
+
+The function that can be used to update the header is shown below. The function
+* first checks if a header update is necessary
+* changes the PSF zone indexing and
+* changes the version of the header such that it is consistent with the new released images
+
+Note that this function an work as standalone function to process many images.
+
+```{code-cell} ipython3
+def update_psf_header(old_hdul):
+    """
+    Fix a old PSF FITS file header by rewriting only the per-plane header metadata
+    so that plane k corresponds to x-fast ordering:
+        k0 = iy * bins_x + ix
+
+    The cube data are left untouched.
+
+    Parameters
+    ----------
+    old_hdul : astropy hdul
+        Old SPHEREx Spectral Image HDUL
+
+    Return
+    ----------
+    new_hdul : astropy hdul
+        New SPHEREx Spectral Image HDUL with updated PSF zone data in header and updated version number
+    
+    """
+
+    ## Check if old version
+    this_version = float( old_hdul['PRIMARY'].header["VERSION"] )
+    if this_version <= 6.4:
+        print(f"Old version detected ({this_version}) -> Update header.")
+    elif this_version > 6.4:
+        print(f"New version detected ({this_version}) -> Do not update header.")
+        return(old_hdul)
+
+    ## Define some auxillary functions -------
+    def parse_ixiy_from_comment(comment):
+        _zone_pat = re.compile(r"\((\d+)\s*,\s*(\d+)\)")
+        m = _zone_pat.search(str(comment))
+        if not m:
+            raise ValueError(f"Could not parse zone indices from comment: {comment!r}")
+        return int(m.group(1)), int(m.group(2))
+    
+    def infer_grid_shape_from_header_comments(hdr, nzone):
+        max_ix = -1
+        max_iy = -1
+    
+        for k1 in range(1, nzone + 1):
+            key = f"XCTR_{k1}"
+            if key not in hdr:
+                raise KeyError(f"Missing required key: {key}")
+            ix, iy = parse_ixiy_from_comment(hdr.comments[key])
+            max_ix = max(max_ix, ix)
+            max_iy = max(max_iy, iy)
+    
+        bins_x = max_ix + 1
+        bins_y = max_iy + 1
+    
+        if bins_x * bins_y != nzone:
+            raise ValueError(
+                f"Inconsistent grid inferred from comments: "
+                f"bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}"
+            )
+    
+        return bins_x, bins_y
+    
+    def collect_axis_values_by_zone(hdr, nzone):
+        """
+        Read the old header and collect unique x/y centers and widths by zone index
+        labels found in the comments.
+    
+        This uses the old header only to recover the per-axis values for each ix, iy.
+        It does NOT use the old plane ordering as truth.
+        """
+        x_center_by_ix = {}
+        y_center_by_iy = {}
+        x_width_by_ix = {}
+        y_width_by_iy = {}
+    
+        for k1 in range(1, nzone + 1):
+            ix, iy = parse_ixiy_from_comment(hdr.comments[f"XCTR_{k1}"])
+    
+            xck = f"XCTR_{k1}"
+            yck = f"YCTR_{k1}"
+            xwk = f"XWID_{k1}"
+            ywk = f"YWID_{k1}"
+    
+            if xck in hdr:
+                val = hdr[xck]
+                if ix in x_center_by_ix and not np.isclose(x_center_by_ix[ix], val):
+                    raise ValueError(
+                        f"Inconsistent XCTR for ix={ix}: "
+                        f"{x_center_by_ix[ix]} vs {val}"
+                    )
+                x_center_by_ix[ix] = val
+    
+            if yck in hdr:
+                val = hdr[yck]
+                if iy in y_center_by_iy and not np.isclose(y_center_by_iy[iy], val):
+                    raise ValueError(
+                        f"Inconsistent YCTR for iy={iy}: "
+                        f"{y_center_by_iy[iy]} vs {val}"
+                    )
+                y_center_by_iy[iy] = val
+    
+            if xwk in hdr:
+                val = hdr[xwk]
+                if ix in x_width_by_ix and not np.isclose(x_width_by_ix[ix], val):
+                    raise ValueError(
+                        f"Inconsistent XWID for ix={ix}: "
+                        f"{x_width_by_ix[ix]} vs {val}"
+                    )
+                x_width_by_ix[ix] = val
+    
+            if ywk in hdr:
+                val = hdr[ywk]
+                if iy in y_width_by_iy and not np.isclose(y_width_by_iy[iy], val):
+                    raise ValueError(
+                        f"Inconsistent YWID for iy={iy}: "
+                        f"{y_width_by_iy[iy]} vs {val}"
+                    )
+                y_width_by_iy[iy] = val
+    
+        return x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy
+    ## End defining some auxillary functions --------
+
+    ## Get Header
+    extname = "PSF"
+    hdu = old_hdul[extname]
+    cube = np.asarray(hdu.data)
+    hdr_in = hdu.header.copy()
+
+    if cube.ndim != 3:
+        raise ValueError(f"Expected 3D PSF cube, got shape {cube.shape}")
+
+    nzone = cube.shape[0]
+    bins_x, bins_y = infer_grid_shape_from_header_comments(hdr_in, nzone)
+
+    print(f"Detected bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}")
+
+    x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy = collect_axis_values_by_zone(
+        hdr_in, nzone
+    )
+
+    # Validate that all needed axis values were recovered
+    missing = []
+    for ix in range(bins_x):
+        if ix not in x_center_by_ix:
+            missing.append(f"x_center[{ix}]")
+        if ix not in x_width_by_ix:
+            missing.append(f"x_width[{ix}]")
+    for iy in range(bins_y):
+        if iy not in y_center_by_iy:
+            missing.append(f"y_center[{iy}]")
+        if iy not in y_width_by_iy:
+            missing.append(f"y_width[{iy}]")
+
+    if missing:
+        raise ValueError(f"Missing axis metadata recovered from old header: {missing}")
+
+    hdr_out = hdr_in.copy()
+
+    # Rewrite only the per-plane metadata so plane k matches x-fast ordering.
+    # plane k0 should correspond to:
+    #   ix = k0 % bins_x
+    #   iy = k0 // bins_x
+    for k0 in range(nzone):
+        ix = k0 % bins_x
+        iy = k0 // bins_x
+        k1 = k0 + 1
+
+        hdr_out[f"XCTR_{k1}"] = (
+            x_center_by_ix[ix],
+            f"Center of x zone ({ix}, {iy})"
+        )
+        hdr_out[f"YCTR_{k1}"] = (
+            y_center_by_iy[iy],
+            f"Center of y zone ({ix}, {iy})"
+        )
+        hdr_out[f"XWID_{k1}"] = (
+            x_width_by_ix[ix],
+            f"Width of x zone ({ix}, {iy})"
+        )
+        hdr_out[f"YWID_{k1}"] = (
+            y_width_by_iy[iy],
+            f"Width of y zone ({ix}, {iy})"
+        )
+
+    # Optional but useful provenance note
+    hdr_out["HISTORY"] = "Rewrote PSF per-plane zone metadata to x-fast ordering."
+    hdr_out["HISTORY"] = "Cube plane data left unchanged."
+
+    
+
+    new_hdu = fits.ImageHDU(data=cube, header=hdr_out, name=hdu.name)
+
+    ext_index = old_hdul.index_of(extname)
+    new_hdul = fits.HDUList()
+    for i, old in enumerate(old_hdul):
+        if i == ext_index:
+            new_hdul.append(new_hdu)
+        else:
+            new_hdul.append(old.copy())
+
+    ## TO DO: UPDATE VERSION
+    #new_hdul['PRIMARY'].header["VERSION"] = '6.5' # SET NEW VERSION HERE
+
+    return(new_hdul)
+```
+
+We now run this function to create a new HDU list that we will use later.
+
+```{code-cell} ipython3
+new_image_hdul = update_psf_header(old_hdul=image_hdul)
+```
+
+Let's compare the new and old PSF headers to see the difference.
+
+```{code-cell} ipython3
+image_hdul['PSF'].header[22:40]
+```
+
+```{code-cell} ipython3
+new_image_hdul['PSF'].header[22:40]
+```
+
+Now we have to update the variables we have set above.
+
+```{code-cell} ipython3
+### TODO UPDATE VARIABLES.
+```
+
+```{code-cell} ipython3
+hdul['PSF'].header[22:40]
 ```
 
 We confirm that the oversampling factor (`OVERSAMP`) is 10.
