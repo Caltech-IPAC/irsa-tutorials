@@ -21,20 +21,20 @@ By the end of this tutorial, you will be able to :
 - Use Irsa.query_ssa() to search for spectra at specific sky positions
 - Retrieve and visualize infrared spectra from the IRSA archive
 - Adapt the workflow shown here to your own science use cases
-  
+
 ## Introduction
 
-In this tutorial we use a published sample of debris disk host stars to demonstrate how to search for and retrieve infrared spectra using IRSA’s SSA service. 
-The targets are drawn from the catalog of debris disks compiled by Mittal et al. (2015, ApJ, 798, 87), which identifies stars exhibiting infrared excesses indicative of circumstellar dust. 
+In this tutorial we use a published sample of debris disk host stars to demonstrate how to search for and retrieve infrared spectra using IRSA’s SSA service.
+The targets are drawn from the catalog of debris disks compiled by Mittal et al. (2015, ApJ, 798, 87), which identifies stars exhibiting infrared excesses indicative of circumstellar dust.
 Debris disks trace the remnants of planet formation and are valuable probes of disk evolution, dust composition, and dynamical interactions with planets.
 
-Infrared spectroscopy is particularly powerful for studying debris disks because many of the diagnostic features of dust grains—such as silicate emission bands—appear at mid‑infrared wavelengths. 
-The Spitzer Infrared Spectrograph (IRS) provides sensitive, low‑ and moderate‑resolution spectra in this regime, enabling measurements of dust temperature, composition, and structure. 
+Infrared spectroscopy is particularly powerful for studying debris disks because many of the diagnostic features of dust grains—such as silicate emission bands—appear at mid‑infrared wavelengths.
+The Spitzer Infrared Spectrograph (IRS) provides sensitive, low‑ and moderate‑resolution spectra in this regime, enabling measurements of dust temperature, composition, and structure.
 Querying the IRSA archive for Spitzer IRS observations allows us to connect published debris‑disk samples with archival spectroscopy and explore these systems in greater physical detail.
 
 ### Instructions
 
-Feel free to adapt this notebook to your own targets and science goals. 
+Feel free to adapt this notebook to your own targets and science goals.
 The functions and overall structure shown here are intended to be reusable for searching IRSA for spectra of interest using SSA.
 
 ### Input
@@ -74,13 +74,16 @@ warnings.filterwarnings(
 ```
 
 ## 1. Exploring SSA catalogs available at IRSA
-Before querying for spectra, it is often useful to see which spectral collections are available through SSA. IRSA hosts spectra from multiple missions and instruments, each grouped into collections.
+Before querying for spectra, it is often useful to see which spectral collections are available through SSA.
+IRSA hosts spectra from multiple missions and instruments, each grouped into collections.
 
 ```{code-cell} ipython3
 Irsa.list_collections(servicetype='ssa')
 ```
 
-Each entry corresponds to a distinct spectral data collection (for example, Spitzer IRS enhanced products). You can use these collection names with query_ssa(collection=...) to control which archive holdings are searched. Users interested in other instruments or wavelength ranges are encouraged to explore this list and substitute a different collection name below.
+Each entry corresponds to a distinct spectral data collection (for example, Spitzer IRS enhanced products).
+You can use these collection names with `query_ssa(collection=...)` to control which archive holdings are searched.
+Users interested in other instruments or wavelength ranges are encouraged to explore this list and substitute a different collection name below.
 
 +++
 
@@ -131,7 +134,8 @@ coords = SkyCoord(ra=debris_disks["_RA"],
 coords = coords[0:10]
 ```
 
-The function below queries IRSA’s SSA service for Spitzer IRS enhanced spectra near each target position. It optionally plots the retrieved spectra and includes inline comments explaining each step.
+The function below queries IRSA’s SSA service for Spitzer IRS enhanced spectra near each target position.
+It optionally plots the retrieved spectra and includes inline comments explaining each step.
 
 We provide this as a function so it can be easily lifted from this tutorial and used in your own work.
 
@@ -212,12 +216,11 @@ query_and_plot_spectra(coords)
 
 **Authors:** IPAC Science Platform Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Vandana Desai
 
-**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
-or problems.
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Updated:** 2026-01-13
 
-**Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on a machine with 8GB RAM and 2 CPU. This runtime is
-heavily dependent on archive servers which means runtime will vary for users".)
+**Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on a machine with 8GB RAM and 2 CPU.
+This runtime is heavily dependent on archive servers which means runtime will vary for users.
 
 **AI:** AI-based tools were used to assist in drafting and refining this tutorial, with all content reviewed and validated by the authors.
