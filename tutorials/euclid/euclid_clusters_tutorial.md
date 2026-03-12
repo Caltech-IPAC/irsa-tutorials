@@ -21,7 +21,7 @@ This approach allows us to compare cluster and field galaxy properties and asses
 
 ```{code-cell} ipython3
 # Install required packages if needed
-#!pip install astroquery requests aiohttp scikit-learn
+#!pip install pandas numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
 
 # Import all necessary libraries
 import os
