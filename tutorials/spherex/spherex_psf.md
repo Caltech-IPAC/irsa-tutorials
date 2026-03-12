@@ -225,18 +225,27 @@ For more information about these changes, see the following webpage: [PSF Erratu
 
 Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
 
-For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4-001` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
+For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
 
 ```{code-cell} ipython3
 def parse_version(v):
-    '''
-    Parses versions correctly such that "6.5.4-001" is later than "6.5.5".
-    '''
-    if "-" in v:
-        base, mod = v.split("-", 1)
-        return (1, Version(base), int(mod))  # modified versions always rank higher
-    else:
-        return (0, Version(v), 0)
+    # detect modifiers
+    modifier = None
+    base = v
+    
+    if "+" in v:
+        base, modifier = v.split("+", 1)
+
+    base_version = Version(base)
+
+    if modifier is None:
+        return (0, base_version, 0)
+
+    # extract numeric part if present
+    m = re.search(r'\d+', modifier)
+    modnum = int(m.group()) if m else 0
+
+    return (1, base_version, modnum)
 ```
 
 Now, we can use this function to properly compare versions.
@@ -288,11 +297,25 @@ def update_psf_header(old_hdul):
     """
 
     def parse_version(v):
-        if "-" in v:
-            base, mod = v.split("-", 1)
-            return (1, Version(base), int(mod))  # modified versions always rank higher
-        else:
-            return (0, Version(v), 0)
+        # detect modifiers
+        modifier = None
+        base = v
+        
+        if "+" in v:
+            base, modifier = v.split("+", 1)
+        elif "-" in v:
+            base, modifier = v.split("-", 1)
+    
+        base_version = Version(base)
+    
+        if modifier is None:
+            return (0, base_version, 0)
+    
+        # extract numeric part if present
+        m = re.search(r'\d+', modifier)
+        modnum = int(m.group()) if m else 0
+    
+        return (1, base_version, modnum)
 
     ## Check if old version
     this_version = parse_version( old_hdul['PRIMARY'].header["VERSION"] )
@@ -472,7 +495,7 @@ def update_psf_header(old_hdul):
             new_hdul.append(old.copy())
 
     ## TO DO: UPDATE VERSION
-    new_hdul['PRIMARY'].header["VERSION"] = new_hdul['PRIMARY'].header["VERSION"] + "-001" # SET NEW VERSION HERE
+    new_hdul['PRIMARY'].header["VERSION"] = new_hdul['PRIMARY'].header["VERSION"] + "+psffix1" # SET NEW VERSION HERE
 
     return(new_hdul)
 ```
