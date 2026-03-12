@@ -26,6 +26,8 @@ h5py
 requests
 seaborn
 scikit-learn
+# indirect dependency brough in by the euclid clusters notebook
+lxml
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
