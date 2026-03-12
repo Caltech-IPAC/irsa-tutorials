@@ -24,6 +24,8 @@ fsspec
 sep>=1.4
 h5py
 requests
+seaborn
+scikit-learn
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
