@@ -303,8 +303,6 @@ def update_psf_header(old_hdul):
         
         if "+" in v:
             base, modifier = v.split("+", 1)
-        elif "-" in v:
-            base, modifier = v.split("-", 1)
     
         base_version = Version(base)
     
