@@ -186,8 +186,14 @@ We have already loaded their data as well as their header.
 psfcube.shape
 ```
 
-The shape of the `psfcube` is (121,101,101).
-This corresponds to a grid of 11x11 PSFs across the image, each of them of the size 101x101 pixels.
+The shape of the `psfcube` is output above.
+In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
+
+```{note}
+The number of PSF zones may change in later versions of data products.
+```
+
+Each PSF has a size of 101x101 pixels.
 
 ```{note}
 Remember that the PSFs are oversampled by a factor of 10.
@@ -203,11 +209,11 @@ psf_header[0:30]
 ```
 
 We confirm that the oversampling factor (`OVERSAMP`) is 10.
-The PSFs are distributed in an even grid with 11x11 zones.
-Each of the 121 PSFs is responsible for one of these zones.
+The PSFs are distributed in an even grid with NxM zones (in QR-2 data products it is N=M=11).
+Each of the NxM PSFs is responsible for one of these zones.
 The PSF header therefore includes the center position of these zones as well as the width of the zones.
-These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...121.
-The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...121.
+These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...(NxM).
+The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...(NxM).
 The zones have approximately equal widths and are arranged in an even grid.
 The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
 
@@ -216,7 +222,7 @@ The goal of this tutorial now is to find the PSF corresponding to our input coor
 +++
 
 ```{warning}
-In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions post 6.5.5.
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
 
 For more information about these changes, see the following webpage: [PSF Erratum](WEBPAGE)
 
