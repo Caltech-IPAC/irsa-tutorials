@@ -21,21 +21,18 @@ kernelspec:
 
 +++
 
-```{warning}
-In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions post 6.5.5.
-However, users using the old versions will need to implement and extra step (described below in Section 5.1) to update the image header.
-
-For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
-```
-
-+++
-
 ## 1. Learning Goals
 
 * Determine how pixels in a SPHEREx cutout map to the pixels in the parent SPHEREx spectral image.
 * Understand the structure of the PSF extension in a SPHEREx cutout (which is the same as the PSF extension in the parent spectral image).
 * Learn how to tell which version of the SPHEREx spectral image you are looking at, and how to interpret this information to obtain the correct PSF extension for the SPHEREx spectral images.
 * Learn which plane in a SPHEREx cutout PSF extension cube most accurately describes the coordinates you are interested in.
+
++++
+
+```{note}
+This notebook is not intended for use of QR-1 data.
+```
 
 +++
 
@@ -226,7 +223,7 @@ In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a miss
 
 For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 
-**Users using the old versions will need to implement and extra step (described below) to update the image header.**
+**Users using the old versions will need to implement and extra step to update the image header. A function to update the header is given [in Section 5.1 below](#update_psf_header_function). **
 ```
 
 Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
@@ -282,6 +279,7 @@ The function that can be used to update the header is shown below. The function
 Note that this function an work as standalone function to process many images.
 
 ```{code-cell} ipython3
+<a id="update_psf_header_function"></a>
 def update_psf_header(old_hdul):
     """
     Fix a old PSF FITS file header by rewriting only the per-plane header metadata
