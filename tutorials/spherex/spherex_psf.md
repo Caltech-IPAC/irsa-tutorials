@@ -25,7 +25,7 @@ kernelspec:
 In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions post 6.5.5.
 However, users using the old versions will need to implement and extra step (described below in Section 5.1) to update the image header.
 
-For more information about these changes, see the following webpage: [PSF Erratum](WEBPAGE)
+For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 ```
 
 +++
@@ -187,9 +187,9 @@ psfcube.shape
 ```
 
 The shape of the `psfcube` is output above.
-In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
 
 ```{note}
+In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
 The number of PSF zones may change in later versions of data products.
 ```
 
@@ -224,7 +224,7 @@ The goal of this tutorial now is to find the PSF corresponding to our input coor
 ```{warning}
 In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
 
-For more information about these changes, see the following webpage: [PSF Erratum](WEBPAGE)
+For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 
 **Users using the old versions will need to implement and extra step (described below) to update the image header.**
 ```
@@ -270,7 +270,7 @@ If the version of the SPHEREx spectral image is less or equal than `6.5.5`, we w
 
 +++
 
-### 5.1 Updating Old SPHEREx Spectral Image Data (if version is $\leq$ 6.5.5)
+### 5.1 Updating PSF Header (for SPHEREx Spectral Image versions $\leq$ 6.5.5)
 
 +++
 
