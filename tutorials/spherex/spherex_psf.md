@@ -558,7 +558,7 @@ for key, val in psf_header.items():
     ym = re.match(r'(YCTR*)', key)
     if ym:
         yplane = int(key.split("_")[1])
-        yctr[xplane] = val
+        yctr[yplane] = val
 ```
 
 Check that we got all of them!
