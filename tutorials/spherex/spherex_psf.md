@@ -1,10 +1,4 @@
 ---
-authors:
-- name: Vandana Desai
-- name: Jessica Krick
-- name: Andreas Faisst
-- name: "Brigitta Sip\u0151cz"
-- name: Troy Raen
 jupytext:
   text_representation:
     extension: .md
@@ -15,6 +9,12 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+authors:
+  - name: Vandana Desai
+  - name: Jessica Krick
+  - name: Andreas Faisst
+  - name: Brigitta Sipőcz
+  - name: Troy Raen
 ---
 
 # Understanding and Extracting the PSF Extension in a SPHEREx Cutout
@@ -223,7 +223,7 @@ In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a miss
 
 For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 
-**Users using the old versions will need to implement and extra step to update the image header. A function to update the header is given [in Section 5.1 below](#update_psf_header_function). **
+**Users using the old versions will need to implement an extra step to update the image header. A function to update the header is given [in Section 5.1 below](#update-psf-header-function).**
 ```
 
 Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
@@ -267,6 +267,7 @@ If the version of the SPHEREx spectral image is less or equal than `6.5.5`, we w
 
 +++
 
+(update-psf-header-function)=
 ### 5.1 Updating PSF Header (for SPHEREx Spectral Image versions $\leq$ 6.5.5)
 
 +++
@@ -279,7 +280,6 @@ The function that can be used to update the header is shown below. The function
 Note that this function an work as standalone function to process many images.
 
 ```{code-cell} ipython3
-<a id="update_psf_header_function"></a>
 def update_psf_header(old_hdul):
     """
     Fix a old PSF FITS file header by rewriting only the per-plane header metadata
