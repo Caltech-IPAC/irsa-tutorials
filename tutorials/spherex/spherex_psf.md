@@ -58,7 +58,7 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy numpy pyvo
+# !pip install astropy matplotlib numpy pyvo
 ```
 
 ```{code-cell} ipython3
@@ -630,7 +630,7 @@ To use this PSF for forward modeling or fitting, you must:
 
 ## About this notebook
 
-**Updated:** 10 March 2026
+**Updated:** 13 March 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
