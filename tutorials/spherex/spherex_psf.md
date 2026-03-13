@@ -219,7 +219,7 @@ The goal of this tutorial now is to find the PSF corresponding to our input coor
 +++
 
 ```{warning}
-In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a mismatch between the spatial layout of the PSF zones and the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
 
 For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 
@@ -235,7 +235,7 @@ def parse_version(v):
     # detect modifiers
     modifier = None
     base = v
-    
+
     if "+" in v:
         base, modifier = v.split("+", 1)
 
@@ -277,12 +277,12 @@ The function that can be used to update the header is shown below. The function
 * changes the PSF zone indexing and
 * changes the version of the header such that it is consistent with the new released images
 
-Note that this function an work as standalone function to process many images.
+Note that this function can work as standalone function to process many images.
 
 ```{code-cell} ipython3
 def update_psf_header(old_hdul):
     """
-    Fix a old PSF FITS file header by rewriting only the per-plane header metadata
+    Fix an old PSF FITS file header by rewriting only the per-plane header metadata
     so that plane k corresponds to x-fast ordering:
         k0 = iy * bins_x + ix
 
@@ -290,33 +290,32 @@ def update_psf_header(old_hdul):
 
     Parameters
     ----------
-    old_hdul : astropy hdul
+    old_hdul : fits.HDUList
         Old SPHEREx Spectral Image HDUL
 
     Return
     ----------
-    new_hdul : astropy hdul
+    new_hdul : fits.HDUList
         New SPHEREx Spectral Image HDUL with updated PSF zone data in header and updated version number
-    
     """
 
     def parse_version(v):
         # detect modifiers
         modifier = None
         base = v
-        
+
         if "+" in v:
             base, modifier = v.split("+", 1)
-    
+
         base_version = Version(base)
-    
+
         if modifier is None:
             return (0, base_version, 0)
-    
+
         # extract numeric part if present
         m = re.search(r'\d+', modifier)
         modnum = int(m.group()) if m else 0
-    
+
         return (1, base_version, modnum)
 
     ## Check if old version
@@ -327,18 +326,18 @@ def update_psf_header(old_hdul):
         print(f"New version detected ({this_version}) -> Do not update header.")
         return(old_hdul)
 
-    ## Define some auxillary functions -------
+    ## Define some auxiliary functions -------
     def parse_ixiy_from_comment(comment):
         _zone_pat = re.compile(r"\((\d+)\s*,\s*(\d+)\)")
         m = _zone_pat.search(str(comment))
         if not m:
             raise ValueError(f"Could not parse zone indices from comment: {comment!r}")
         return int(m.group(1)), int(m.group(2))
-    
+
     def infer_grid_shape_from_header_comments(hdr, nzone):
         max_ix = -1
         max_iy = -1
-    
+
         for k1 in range(1, nzone + 1):
             key = f"XCTR_{k1}"
             if key not in hdr:
@@ -346,23 +345,23 @@ def update_psf_header(old_hdul):
             ix, iy = parse_ixiy_from_comment(hdr.comments[key])
             max_ix = max(max_ix, ix)
             max_iy = max(max_iy, iy)
-    
+
         bins_x = max_ix + 1
         bins_y = max_iy + 1
-    
+
         if bins_x * bins_y != nzone:
             raise ValueError(
                 f"Inconsistent grid inferred from comments: "
                 f"bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}"
             )
-    
+
         return bins_x, bins_y
-    
+
     def collect_axis_values_by_zone(hdr, nzone):
         """
         Read the old header and collect unique x/y centers and widths by zone index
         labels found in the comments.
-    
+
         This uses the old header only to recover the per-axis values for each ix, iy.
         It does NOT use the old plane ordering as truth.
         """
@@ -370,15 +369,15 @@ def update_psf_header(old_hdul):
         y_center_by_iy = {}
         x_width_by_ix = {}
         y_width_by_iy = {}
-    
+
         for k1 in range(1, nzone + 1):
             ix, iy = parse_ixiy_from_comment(hdr.comments[f"XCTR_{k1}"])
-    
+
             xck = f"XCTR_{k1}"
             yck = f"YCTR_{k1}"
             xwk = f"XWID_{k1}"
             ywk = f"YWID_{k1}"
-    
+
             if xck in hdr:
                 val = hdr[xck]
                 if ix in x_center_by_ix and not np.isclose(x_center_by_ix[ix], val):
@@ -387,7 +386,7 @@ def update_psf_header(old_hdul):
                         f"{x_center_by_ix[ix]} vs {val}"
                     )
                 x_center_by_ix[ix] = val
-    
+
             if yck in hdr:
                 val = hdr[yck]
                 if iy in y_center_by_iy and not np.isclose(y_center_by_iy[iy], val):
@@ -396,7 +395,7 @@ def update_psf_header(old_hdul):
                         f"{y_center_by_iy[iy]} vs {val}"
                     )
                 y_center_by_iy[iy] = val
-    
+
             if xwk in hdr:
                 val = hdr[xwk]
                 if ix in x_width_by_ix and not np.isclose(x_width_by_ix[ix], val):
@@ -405,7 +404,7 @@ def update_psf_header(old_hdul):
                         f"{x_width_by_ix[ix]} vs {val}"
                     )
                 x_width_by_ix[ix] = val
-    
+
             if ywk in hdr:
                 val = hdr[ywk]
                 if iy in y_width_by_iy and not np.isclose(y_width_by_iy[iy], val):
@@ -414,9 +413,9 @@ def update_psf_header(old_hdul):
                         f"{y_width_by_iy[iy]} vs {val}"
                     )
                 y_width_by_iy[iy] = val
-    
+
         return x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy
-    ## End defining some auxillary functions --------
+    ## End defining some auxiliary functions --------
 
     ## Get Header
     extname = "PSF"
@@ -484,7 +483,7 @@ def update_psf_header(old_hdul):
     hdr_out["HISTORY"] = "Rewrote PSF per-plane zone metadata to x-fast ordering."
     hdr_out["HISTORY"] = "Cube plane data left unchanged."
 
-    
+
 
     new_hdu = fits.ImageHDU(data=cube, header=hdr_out, name=hdu.name)
 
@@ -658,7 +657,3 @@ To use this PSF for forward modeling or fitting, you must:
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
-
-```{code-cell} ipython3
-
-```
