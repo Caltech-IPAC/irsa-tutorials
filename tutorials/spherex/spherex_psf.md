@@ -228,42 +228,20 @@ For more information about these changes, see the following webpage: [PSF Erratu
 
 Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
 
-For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
+For comparing versions, we can use the Python-internal `Version()` function from the `packaging.version` package. Images that have already been reprocessed can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), and we can use `Version().local` to check for those.
 
 ```{code-cell} ipython3
-def parse_version(v):
-    # detect modifiers
-    modifier = None
-    base = v
-
-    if "+" in v:
-        base, modifier = v.split("+", 1)
-
-    base_version = Version(base)
-
-    if modifier is None:
-        return (0, base_version, 0)
-
-    # extract numeric part if present
-    m = re.search(r'\d+', modifier)
-    modnum = int(m.group()) if m else 0
-
-    return (1, base_version, modnum)
-```
-
-Now, we can use this function to properly compare versions.
-
-```{code-cell} ipython3
-this_version = parse_version( image_hdul['PRIMARY'].header["VERSION"] )
+this_version = Version(image_hdul['PRIMARY'].header["VERSION"])
+contains_psffix1 = this_version.local is not None and "psffix1" in this_version.local
 print(f"Current version is {this_version}")
 
-if this_version <= parse_version("6.5.5"):
+if this_version <= Version("6.5.5") and not contains_psffix1:
     print("PSF header needs to be updated! -> Go to Section 5.1 :(")
 else:
     print("PSF header is already up-to-date! -> Proceed to Section 6 :)")
 ```
 
-If the version of the SPHEREx spectral image is less or equal than `6.5.5`, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.5.5`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
+If the version of the SPHEREx spectral image is less or equal than `6.5.5` and hasn't already been reprocessed, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.5.5` or includes `"psffix1"`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
 
 +++
 
@@ -299,32 +277,32 @@ def update_psf_header(old_hdul):
         New SPHEREx Spectral Image HDUL with updated PSF zone data in header and updated version number
     """
 
-    def parse_version(v):
-        # detect modifiers
-        modifier = None
-        base = v
+    VERSION_FIXED = Version("6.5.6")
+    PSF_FIX_TAG = "psffix1"
 
-        if "+" in v:
-            base, modifier = v.split("+", 1)
+    def psf_fix_applied(hdul) -> bool:
+        """
+        Return True if the PSF fix has been applied.
 
-        base_version = Version(base)
+        Rules:
+        - If the VERSION header is missing in the primary HDU, the fix is not applied.
+        - If VERSION >= VERSION_FIXED, the fix is included in the software release.
+        - Otherwise the local version tag (+...) must contain PSF_FIX_TAG.
+        """
+        header = hdul[0].header
 
-        if modifier is None:
-            return (0, base_version, 0)
+        if "VERSION" not in header:
+            return False
 
-        # extract numeric part if present
-        m = re.search(r'\d+', modifier)
-        modnum = int(m.group()) if m else 0
+        v = Version(header["VERSION"])
 
-        return (1, base_version, modnum)
+        if v >= VERSION_FIXED:
+            return True
 
-    ## Check if old version
-    this_version = parse_version( old_hdul['PRIMARY'].header["VERSION"] )
-    if this_version <= parse_version("6.5.5"):
-        print(f"Old version detected ({this_version}) -> Update header.")
-    elif this_version > Version("6.5.5"):
-        print(f"New version detected ({this_version}) -> Do not update header.")
-        return(old_hdul)
+        return v.local is not None and PSF_FIX_TAG in v.local
+
+    if psf_fix_applied(old_hdul):
+        return old_hdul
 
     ## Define some auxiliary functions -------
     def parse_ixiy_from_comment(comment):
