@@ -71,6 +71,9 @@
     <loc>http://localhost:3000/sia-v1-cosmos</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/plot-spitzer-irs-spectra</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/simulated</loc>
   </url>
   <url>
