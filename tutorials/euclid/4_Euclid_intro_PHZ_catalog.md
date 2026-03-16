@@ -67,7 +67,7 @@ We rely on ``astroquery`` features that have been recently added, so please make
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install matplotlib 'astropy>=5.3' 'astroquery>=0.4.10' fsspec firefly_client
+# !pip install matplotlib 'astropy>=5.3' 'astroquery>=0.4.11' fsspec firefly_client
 ```
 
 ```{code-cell} ipython3

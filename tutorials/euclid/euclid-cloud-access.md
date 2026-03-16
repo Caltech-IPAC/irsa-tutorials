@@ -59,7 +59,7 @@ We rely on ``astroquery`` features that have been recently added, so please make
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs astropy 'astroquery>=0.4.10' matplotlib
+# !pip install s3fs astropy 'astroquery>=0.4.11' matplotlib
 ```
 
 ```{code-cell} ipython3
