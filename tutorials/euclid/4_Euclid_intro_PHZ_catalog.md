@@ -139,10 +139,17 @@ print(f'The MER tile ID for this object is : {tileID}')
 
 ## 2. Download PHZ catalog from IRSA
 
-Use IRSA's TAP to search catalogs
+Use IRSA's TAP to search catalogs and metadata tables associated with Euclid:
+
+
+```{note}
+In the example below, we use ``include_metadata_tables=True``.
+This parameter was introduced in astroquery 0.4.11. For earlier versions, please omit this parameter to receive the combined list of available catalogs and metadata tables.
+```
+
 
 ```{code-cell} ipython3
-Irsa.list_catalogs(filter='euclid')
+Irsa.list_catalogs(filter='euclid', include_metadata_tables=True)
 ```
 
 ```{code-cell} ipython3

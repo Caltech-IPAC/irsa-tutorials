@@ -240,14 +240,19 @@ Once the catalogs are available as Parquet files in the cloud, we can efficientl
 +++
 
 ## 7. Find the MER Object ID for our target
-First, list the Euclid catalogs provided by IRSA:
+First, list the Euclid catalogs provided by IRSA.
+
+```{note}
+In the example below, we use ``include_metadata_tables=True``.
+This parameter was introduced in astroquery 0.4.11. For earlier versions, please omit this parameter to receive the combined list of available catalogs and metadata tables.
+```
 
 ```{code-cell} ipython3
-catalogs = Irsa.list_catalogs(full=True, filter='euclid')
+catalogs = Irsa.list_catalogs(full=True, filter='euclid', include_metadata_tables=True)
 catalogs
 ```
 
-From this table, we can extract the MER catalog name. We also see several other interesting catalogs, let's also extract spectral file association catalog for retrieving spectra later.
+From this table, we can extract the MER catalog name. We also see several other interesting metadata tables, let's also extract spectral file association table for retrieving spectra later.
 
 ```{code-cell} ipython3
 euclid_mer_catalog = 'euclid_q1_mer_catalogue'
