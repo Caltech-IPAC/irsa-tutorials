@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: python3
+  language: python
 ---
 
 # Euclid Galaxy Clusters Analysis Tutorial
@@ -35,6 +35,7 @@ import requests
 import json
 import s3fs
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 # Astropy imports
 from astropy import units as u
@@ -318,6 +319,60 @@ s3 = s3fs.S3FileSystem(
     default_fill_cache=True,
 )
 
+def _download_band(band, mer_images, field_coord, field_id, cache_dir, s3):
+    """Download one photometric band from S3 and write a cutout FITS to the local cache.
+
+    Parses the S3 path from the ``cloud_access`` JSON column of the MER image
+    table, streams the remote FITS file without downloading the full tile, and
+    writes a ``Cutout2D`` of size ``im_cutout`` centred on ``field_coord`` to a
+    local cache file. If a cache file already exists it is reused without
+    re-downloading.
+
+    Parameters
+    ----------
+    band : str
+        Photometric band name, one of ``'VIS'``, ``'Y'``, ``'J'``, ``'H'``.
+    mer_images : `~astropy.table.Table`
+        MER image table with columns ``energy_bandpassname`` and
+        ``cloud_access``.
+    field_coord : `~astropy.coordinates.SkyCoord`
+        Centre of the cutout region.
+    field_id : str
+        Unique identifier used to name the cached FITS file on disk.
+    cache_dir : str
+        Path to the local directory in which cached files are stored.
+    s3 : `s3fs.S3FileSystem`
+        Authenticated S3 filesystem object used to open the remote file.
+
+    Returns
+    -------
+    band : str
+        The band name, echoed back so callers can build a ``{band: path}`` dict.
+    cache_file : str
+        Absolute path to the cached FITS file.
+    """
+    cache_file = os.path.join(cache_dir, f'{band}_{field_id}.fits')
+    if not os.path.exists(cache_file):
+        print(f"  Downloading {band} band...")
+
+        # Parse the S3 path from the cloud_access JSON column
+        row = mer_images[mer_images['energy_bandpassname'] == band][0]
+        cloud = json.loads(row['cloud_access'])
+        s3_obj = f"{cloud['aws']['bucket_name']}/{cloud['aws']['key']}"
+
+        # Stream the remote FITS via S3 and write only the cutout region
+        with s3.open(s3_obj, "rb") as f:
+            with fits.open(f, memmap=False, lazy_load_hdus=True) as hdul:
+                hdu0 = hdul[0]
+                w0 = WCS(hdu0.header)
+                # hdu0.section reads only the needed pixel rows from S3
+                cut0 = Cutout2D(hdu0.section, position=field_coord, size=im_cutout, wcs=w0)
+                fits.writeto(cache_file, cut0.data, header=cut0.wcs.to_header(), overwrite=True)
+    else:
+        print(f"  Using cached {band} band")
+    return band, cache_file
+
+
 def download_and_cache_field(mer_images, field_name, field_coord, field_id):
     """Stream cutout FITS images from S3 and cache them locally.
 
@@ -325,10 +380,9 @@ def download_and_cache_field(mer_images, field_name, field_coord, field_id):
     FITS file directly from the AWS S3 mirror without downloading the full tile.
     A ``Cutout2D`` region of size ``im_cutout`` centred on ``field_coord`` is
     written to a local cache file. On subsequent calls, cached files are reused.
-
-    After caching, the function re-opens each FITS, applies a second
-    ``Cutout2D`` to confirm the footprint, and returns the 2-D pixel arrays
-    together with the VIS-band WCS for downstream analysis.
+    All four bands are downloaded in parallel using threads to reduce wall-clock
+    time. After caching, the function re-opens each FITS and returns the 2-D
+    pixel arrays together with the VIS-band WCS for downstream analysis.
 
     Parameters
     ----------
@@ -354,47 +408,21 @@ def download_and_cache_field(mer_images, field_name, field_coord, field_id):
     """
     print(f"\nProcessing {field_name} field...")
 
-    # Get URLs for each band (unchanged)
-    vis_url = mer_images[mer_images['energy_bandpassname'] == 'VIS'][0]['access_url']
-    y_url = mer_images[mer_images['energy_bandpassname'] == 'Y'][0]['access_url']
-    j_url = mer_images[mer_images['energy_bandpassname'] == 'J'][0]['access_url']
-    h_url = mer_images[mer_images['energy_bandpassname'] == 'H'][0]['access_url']
+    # Download all four bands in parallel; S3 reads are I/O-bound so threads help
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        cached_files = dict(executor.map(
+            lambda b: _download_band(b, mer_images, field_coord, field_id, cache_dir, s3),
+            ['VIS', 'Y', 'J', 'H']
+        ))
 
-    # Download and cache images (ONLY this part is changed)
-    cached_files = {}
-    for band, url in [('VIS', vis_url), ('Y', y_url), ('J', j_url), ('H', h_url)]:
-        cache_file = os.path.join(cache_dir, f'{band}_{field_id}.fits')
-        if not os.path.exists(cache_file):
-            print(f"  Downloading {band} band...")
-
-            # Use cloud_access to avoid downloading the full FITS
-            row = mer_images[mer_images['energy_bandpassname'] == band][0]
-            cloud = json.loads(row['cloud_access'])
-            s3_obj = f"{cloud['aws']['bucket_name']}/{cloud['aws']['key']}"
-
-            # Open remote FITS and write only the cutout region to cache_file
-            with s3.open(s3_obj, "rb") as f:
-                with fits.open(f, memmap=False, lazy_load_hdus=True) as hdul:
-                    hdu0 = hdul[0]
-                    w0 = WCS(hdu0.header)
-                    cut0 = Cutout2D(hdu0.section, position=field_coord, size=im_cutout, wcs=w0)
-                    fits.writeto(cache_file, cut0.data, header=cut0.wcs.to_header(), overwrite=True)
-
-            cached_files[band] = cache_file
-        else:
-            print(f"  Using cached {band} band")
-            cached_files[band] = cache_file
-
-    # Create cutouts and store WCS (unchanged)
+    # Read the cached cutout arrays; store the VIS WCS for downstream use
     cutouts = {}
     cutout_wcs = None
     for band in ['VIS', 'Y', 'J', 'H']:
-        hdu = fits.open(cached_files[band])
-        cutout = Cutout2D(hdu[0].data, position=field_coord, size=im_cutout, wcs=WCS(hdu[0].header))
-        cutouts[band] = cutout.data
-        if band == 'VIS':  # Store WCS from VIS band
-            cutout_wcs = cutout.wcs
-        hdu.close()
+        with fits.open(cached_files[band]) as hdu:
+            cutouts[band] = hdu[0].data.copy()
+            if band == 'VIS':
+                cutout_wcs = WCS(hdu[0].header)
 
     return cutouts, cutout_wcs
 
@@ -470,6 +498,50 @@ def normalize_with_consistent_stretch(cluster_cutouts, control_cutouts, lower_pe
 ```
 
 ```{code-cell} ipython3
+def downsample(arr, factor=4):
+    """Block-average a 2-D or 3-D image array by an integer factor for faster display.
+
+    Reshapes the array into non-overlapping blocks of size ``factor × factor``
+    and takes the mean of each block. This preserves the overall brightness and
+    contrast of the image while reducing the number of pixels that matplotlib
+    must render, which significantly speeds up ``imshow`` for large arrays.
+
+    Parameters
+    ----------
+    arr : `~numpy.ndarray`
+        Input image array. Either 2-D (H, W) for single-band images or
+        3-D (H, W, 3) for RGB composites.
+    factor : int, optional
+        Downsampling factor applied to both spatial axes. A factor of 4 reduces
+        a 7200 × 7200 VIS cutout to 1800 × 1800 pixels. Default is 4.
+
+    Returns
+    -------
+    out : `~numpy.ndarray`
+        Block-averaged array with shape (H // factor, W // factor) for 2-D
+        input or (H // factor, W // factor, 3) for 3-D input.
+
+    Notes
+    -----
+    Rows and columns that do not fit evenly into ``factor``-sized blocks are
+    trimmed before averaging to avoid partial-block artefacts.
+    """
+    h, w = arr.shape[:2]
+
+    # Trim to the largest dimensions divisible by factor
+    h_t = (h // factor) * factor
+    w_t = (w // factor) * factor
+
+    if arr.ndim == 2:
+        # Reshape into (n_blocks_y, factor, n_blocks_x, factor) and average
+        return arr[:h_t, :w_t].reshape(h_t // factor, factor,
+                                       w_t // factor, factor).mean(axis=(1, 3))
+    else:
+        # Same reshape for each colour channel independently
+        return arr[:h_t, :w_t].reshape(h_t // factor, factor,
+                                       w_t // factor, factor, 3).mean(axis=(1, 3))
+
+
 # Process both fields with consistent normalization
 
 print("Using consistent stretching between cluster and control fields...")
@@ -482,23 +554,24 @@ fig, axes = plt.subplots(2, 5, figsize=(20, 8))
 bands = ['VIS', 'Y', 'J', 'H']
 titles = ['VIS', 'Y', 'J', 'H', 'RGB']
 
+# VIS cutouts are ~7200 × 7200 pixels; downsample before display to reduce render time
 # Cluster field (top row)
 for i, (band, title) in enumerate(zip(bands, titles)):
-    axes[0, i].imshow(cluster_norm_cutouts[band], cmap='gray', origin='lower')
+    axes[0, i].imshow(downsample(cluster_norm_cutouts[band]), cmap='gray', origin='lower')
     axes[0, i].set_title(f'Cluster - {title}')
     axes[0, i].axis('off')
 
-axes[0, 4].imshow(cluster_rgb, origin='lower')
+axes[0, 4].imshow(downsample(cluster_rgb), origin='lower')
 axes[0, 4].set_title('Cluster - RGB')
 axes[0, 4].axis('off')
 
 # Control field (bottom row)
 for i, (band, title) in enumerate(zip(bands, titles)):
-    axes[1, i].imshow(control_norm_cutouts[band], cmap='gray', origin='lower')
+    axes[1, i].imshow(downsample(control_norm_cutouts[band]), cmap='gray', origin='lower')
     axes[1, i].set_title(f'Control - {title}')
     axes[1, i].axis('off')
 
-axes[1, 4].imshow(control_rgb, origin='lower')
+axes[1, 4].imshow(downsample(control_rgb), origin='lower')
 axes[1, 4].set_title('Control - RGB')
 axes[1, 4].axis('off')
 
@@ -1869,7 +1942,6 @@ if 'cluster_objects' in locals() and len(cluster_objects) > 0:
             plt.xlim(z_min-0.1,z_max+0.1)
             plt.ylim(z_min-0.1,z_max+0.1)
             plt.show()
-
 ```
 
 **Figure 6- Euclid–NED redshift comparison for cross-matched galaxies within 1″**
