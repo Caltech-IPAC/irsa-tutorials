@@ -9,4 +9,4 @@ This collection includes guidance on cloud-based data access, use of powerful bi
 
 - [SED Visualization](SEDs_in_Firefly.md) - Explore and interactively visualize multi-wavelength SEDs using Firefly.
 
-- [Parallelization](Parallelize_Convolution.md) - Apply parallelization techniques to speed up operations on large astronomical images.
+- [Parallelization](Parallelize_Convolution.md) - Learn parallelization techniques to speed up operations on large astronomical images.

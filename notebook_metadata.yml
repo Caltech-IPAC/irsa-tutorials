@@ -3,19 +3,19 @@
   description: Retrieve coadded images and make coordinate-based cutouts.
 - title: AllWISE Source Catalog
   file: tutorials/wise/wise-allwise-catalog-demo.md
-  description: Explore mid-infrared source properties by querying, filtering, and working with the catalog.
-- title: Cloud Access Intro
+  description: Query the Parquet copy of the AllWISE Source Catalog.
+- title: Cloud Access
   file: tutorials/techniques-and-tools/cloud-access-intro.md
-  description: Learn how to access and work with data served by IRSA from AWS S3 cloud storage.
+  description: Access and work with data served by IRSA from AWS S3 cloud storage.
 - title: CosmoDC2 Data Access
   file: tutorials/simulated-data/cosmoDC2_TAP_access.md
-  description: Access, query, and visualize the catalog.
+  description: Access, query, and visualize the CosmoDC2 catalog.
 - title: COSMOS Images
   file: tutorials/cosmos/sia_v1_cosmos.md
   description: Query IRSA's SIA service for COSMOS images and create and display a cutout.
 - title: Data Overview
   file: tutorials/spherex/spherex_intro.md
-  description: Learn about available data including how to identify which files and formats are appropriate for different use cases.
+  description: Find Spectral Images that overlap a sky position and understand the structure of the Multi-Extension FITS files.
 - title: Early Release Observations (ERO) - Star Clusters
   file: tutorials/euclid/Euclid_ERO.md
   description: Create multi-wavelength ERO image cutouts of a globular cluster, extract sources, and measure photometry. Match Gaia sources with Euclid ERO catalogs, then visualize with Firefly.
@@ -25,16 +25,16 @@
 - title: HATS with LSDB
   file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
   description: Use LSDB for user-friendly cross matching and querying of HATS Collections.
-- title: Introduction
+- title: 'Merged Objects Catalog: Introduction'
   file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
   description: Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
-- title: Magnitudes
+- title: 'Merged Objects Catalog: Magnitudes'
   file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
   description: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
 - title: MER Catalogs
   file: tutorials/euclid/2_Euclid_intro_MER_catalog.md
   description: Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
-- title: MER Mosaics
+- title: MER Image Mosaics
   file: tutorials/euclid/1_Euclid_intro_MER_images.md
   description: Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
 - title: NEOWISE Light Curves
@@ -51,7 +51,7 @@
   description: Access OpenUniverse2024 wide-area simulated survey data.
 - title: OpenUniverse2024 Time Domain
   file: tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md
-  description: Access and analyze the time-domain survey.
+  description: Access and analyze the simulated time-domain OpenUniverse2024 survey.
 - title: OpenUniverse2024 Visualization
   file: tutorials/simulated-data/OpenUniverse2024Preview_Firefly.md
   description: Use Firefly to get an overview of survey structure and visualize content.
@@ -63,13 +63,13 @@
   description: Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
 - title: PSF Models
   file: tutorials/spherex/spherex_psf.md
-  description: Learn how SPHEREx point spread function (PSF) information is organized and accessed.
+  description: Understand how SPHEREx point spread function (PSF) information is organized and accessed.
 - title: Roman HLSS Number Density
   file: tutorials/simulated-data/roman_hlss_number_density.md
   description: Query the catalog and derive galaxy number density.
 - title: SED Visualization
   file: tutorials/techniques-and-tools/SEDs_in_Firefly.md
-  description: Explore and interactively visualize SEDs using Firefly on multi-wavelength datasets.
+  description: Explore and interactively visualize multi-wavelength SEDs using Firefly.
 - title: SIR 1D Spectra
   file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
   description: Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
