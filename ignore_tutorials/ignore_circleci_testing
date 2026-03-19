@@ -1,13 +1,7 @@
-# ignore these 10 now as excluding execution for these is a combination that passes JB2 building on CircleCI.
+# ignore these as they run out of resources on CircleCI.
 # Note that the first 2 are excluded for all kinds of testing; while the parallelize causes issues for GHA JB2 builds and non linux testing, too.
 #
+tutorials/simulated_data/roman_hlss_number_density
+tutorials/simulated_data/openuniverse2024_roman_simulated_timedomainsurvey
 tutorials/euclid/euclid-cloud-access
-tutorials/simulated-data/cosmoDC2_TAP_access
-tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey
-tutorials/simulated-data/roman_hlss_number_density
 tutorials/techniques-and-tools/cloud-access-intro
-tutorials/techniques-and-tools/Parallelize_Convolution
-tutorials/wise/neowise-source-table-lightcurves
-tutorials/wise/neowise-source-table-strategies
-tutorials/wise/wise-allwise-catalog-demo
