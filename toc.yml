@@ -27,7 +27,7 @@ project:
           file: tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
         - title: SPE Catalogs
           file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
-        - title: Clusters
+        - title: Galaxy Clusters
           file: tutorials/euclid/euclid_clusters_tutorial.md
         - title: Merged Objects HATS Catalog
           children:
