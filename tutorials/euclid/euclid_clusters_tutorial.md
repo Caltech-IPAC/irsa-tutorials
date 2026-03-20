@@ -1950,6 +1950,9 @@ if 'cluster_objects' in locals() and len(cluster_objects) > 0:
 
 **Figure 6- Euclid–NED redshift comparison for cross-matched galaxies within 1″**
 
-```{code-cell} ipython3
 
-```
+## About this Notebook
+
+**Updated:** 2026-03-20
+
+**Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
