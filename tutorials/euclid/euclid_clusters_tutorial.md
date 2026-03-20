@@ -80,6 +80,8 @@ We begin by loading the Euclid Q1 cluster catalog. The catalog contains 35 galax
 # Load the Euclid Q1 cluster catalog (https://arxiv.org/abs/2503.19196)
 url = "https://ar5iv.labs.arxiv.org/html/2503.19196"
 fname = "euclid_q1_clusters.csv"
+download_path = "data"
+os.makedirs(download_path, exist_ok=True)
 
 # Read all tables from the arXiv HTML rendering
 dfs = pd.read_html(url)
@@ -108,7 +110,7 @@ df = df.rename(columns={
 })
 
 # Overwrite (or create) the cleaned CSV for downstream use
-df.to_csv(fname, index=False)
+df.to_csv(os.path.join(download_path, fname), index=False)
 
 print(f"Dataset shape: {df.shape}")
 df.head(3)
