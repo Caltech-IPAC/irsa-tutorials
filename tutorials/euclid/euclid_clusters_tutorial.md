@@ -1,4 +1,8 @@
 ---
+authors:
+  - name: Shoubaneh Hemmati
+  - name: Jessica Krick
+  - name: Brigitta Sipőcz
 jupytext:
   text_representation:
     extension: .md
