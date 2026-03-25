@@ -1,4 +1,10 @@
 ---
+authors:
+- name: Vandana Desai
+- name: Jessica Krick
+- name: Andreas Faisst
+- name: "Brigitta Sip\u0151cz"
+- name: Troy Raen
 jupytext:
   text_representation:
     extension: .md
@@ -9,12 +15,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-authors:
-  - name: Vandana Desai
-  - name: Jessica Krick
-  - name: Andreas Faisst
-  - name: Brigitta Sipőcz
-  - name: Troy Raen
 ---
 
 # Understanding and Extracting the PSF Extension in a SPHEREx Cutout
@@ -576,10 +576,11 @@ for zone_id in xctr.keys():
 ```
 
 Once we have created this dictionary with zone pixel coordinates, we can simply search for the closest zone center to the coordinates of interest.
-For this we first add the distance between zone center coordinates and coordinates of interest to the table. (Note that the x,y coordinates of the PSF zone centers are in 1,1 convention, therefore we have to subtract 1 pixels.)
+For this we first add the distance between zone center coordinates and coordinates of interest to the table. 
+Note that the zone pixel center coordinates are 0-based, while their _names_ in the header (for example `XCTR_n`) are 1-based.
 
 ```{code-cell} ipython3
-tab["distance"] = np.sqrt((tab["x"]-1 - xpix_orig)**2 + (tab["y"]-1 - ypix_orig)**2)
+tab["distance"] = np.sqrt((tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2)
 ```
 
 Then we can sort the table and pick the closest zone to coordinates of interest.
@@ -630,8 +631,12 @@ To use this PSF for forward modeling or fitting, you must:
 
 ## About this notebook
 
-**Updated:** 13 March 2026
+**Updated:** 25 March 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
+
+```{code-cell} ipython3
+
+```
