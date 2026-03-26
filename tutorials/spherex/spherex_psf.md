@@ -3,7 +3,7 @@ authors:
 - name: Vandana Desai
 - name: Jessica Krick
 - name: Andreas Faisst
-- name: "Brigitta Sip\u0151cz"
+- name: "Brigitta Sipőcz"
 - name: Troy Raen
 jupytext:
   text_representation:
@@ -637,6 +637,3 @@ To use this PSF for forward modeling or fitting, you must:
 
 **Runtime:** Approximately 30 seconds.
 
-```{code-cell} ipython3
-
-```
