@@ -17,7 +17,7 @@ kernelspec:
 
 # Euclid Galaxy Clusters Analysis Tutorial
 
-This tutorial explores galaxy clusters in the Euclid Q1 Multi-Epoch Release (MER) data to demonstrate cluster detection and validation techniques.
+This tutorial explores galaxy clusters in the Euclid Q1 merged multi-wavelength mosaic (MER) image data to demonstrate cluster detection and validation techniques.
 We select a cluster from this paper (https://arxiv.org/abs/2503.19196), identify a control field that is covered by Euclid Q1 and at least 15 arcmin from any known clusters.
 We download multi-band images and galaxy catalogs, apply clustering algorithms to confirm the existence of galaxy overdensities and identify cluster members.
 We analyze color-magnitude diagrams, extract spectra, and cross-match with external databases for validation.
