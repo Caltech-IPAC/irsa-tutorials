@@ -1,0 +1,29 @@
+cosmos/sia_v1_cosmos.md:  COSMOS
+euclid/1_Euclid_intro_MER_images.md:  Euclid
+euclid/2_Euclid_intro_MER_catalog.md:  Euclid
+euclid/3_Euclid_intro_1D_spectra.md:  Euclid
+euclid/4_Euclid_intro_PHZ_catalog.md:  Euclid
+euclid/5_Euclid_intro_SPE_catalog.md:  Euclid
+euclid/Euclid_ERO.md:  Euclid
+euclid/euclid-cloud-access.md:  Euclid
+euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md:  Euclid
+euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md:  Euclid
+simulated-data/OpenUniverse2024Preview_Firefly.md:  Simulated Data
+simulated-data/cosmoDC2_TAP_access.md:  Simulated Data
+simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md:  Simulated Data
+simulated-data/openuniverse2024_roman_simulated_wideareasurvey.md:  Simulated Data
+simulated-data/roman_hlss_number_density.md:  Simulated Data
+spitzer/plot_Spitzer_IRS_spectra.md:  Spitzer
+spherex/spherex_cutouts.md:  SPHEREx
+spherex/spherex_intro.md:  SPHEREx
+spherex/spherex_psf.md:  SPHEREx
+spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md:  SPHEREx
+techniques-and-tools/cloud-access-intro.md:  Techniques and Tools
+techniques-and-tools/Parallelize_Convolution.md:  Techniques and Tools
+techniques-and-tools/irsa-hats-with-lsdb.md:  Techniques and Tools
+techniques-and-tools/SEDs_in_Firefly.md:  Techniques and Tools
+wise/NEOWISE_light_curve_demo.md:  WISE
+wise/neowise-source-table-lightcurves.md:  WISE
+wise/neowise-source-table-strategies.md:  WISE
+wise/sia_allwise_atlas.md:  WISE
+wise/wise-allwise-catalog-demo.md:  WISE
