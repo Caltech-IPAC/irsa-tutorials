@@ -67,7 +67,7 @@ We rely on ``astroquery`` features that have been recently added, so please make
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed
-# %pip install matplotlib astropy 'astroquery>=0.4.10'
+# %pip install matplotlib astropy 'astroquery>=0.4.11'
 ```
 
 ```{code-cell} ipython3
@@ -154,10 +154,15 @@ print(f'The MER tile ID for this object is : {tileID}')
 
 ## 2. Download SPE catalog from IRSA directly to this notebook
 
-Search for all tables in IRSA labeled as euclid
+Search for all Euclid catalogs and metadata tables in IRSA:
+
+```{note}
+In the example below, we use ``include_metadata_tables=True``.
+This parameter was introduced in astroquery 0.4.11. For earlier versions, please omit this parameter to receive the combined list of available catalogs and metadata tables.
+```
 
 ```{code-cell} ipython3
-Irsa.list_catalogs(filter='euclid')
+Irsa.list_catalogs(filter='euclid', include_metadata_tables=True)
 ```
 
 ```{code-cell} ipython3
