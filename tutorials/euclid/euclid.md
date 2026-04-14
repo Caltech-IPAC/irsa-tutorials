@@ -12,69 +12,15 @@ Data products include:
 - Catalogs of MER objects, photometric redshifts and classifications (PHZ), and spectroscopic redshifts and line measurements (SPE);
 - Merged Objects Catalog (created by IRSA) containing the MER, PHZ, and SPE catalogs in a single HATS Catalog.
 
-````{grid} 1 2 2 3
-
-```{card}
-:link: 1_Euclid_intro_MER_images.md
-:header: [MER Image Mosaics →](1_Euclid_intro_MER_images.md)
-Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
+```{notebook-gallery} notebook_metadata.yml
+tutorials/euclid/1_Euclid_intro_MER_images.md
+tutorials/euclid/3_Euclid_intro_1D_spectra.md
+tutorials/euclid/2_Euclid_intro_MER_catalog.md
+tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
+tutorials/euclid/5_Euclid_intro_SPE_catalog.md
+tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
+tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+tutorials/euclid/euclid-cloud-access.md
+tutorials/euclid/euclid_clusters_tutorial.md
+tutorials/euclid/Euclid_ERO.md
 ```
-
-```{card}
-:link: 3_Euclid_intro_1D_spectra.md
-:header: [SIR 1D Spectra →](3_Euclid_intro_1D_spectra.md)
-Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
-```
-
-```{card}
-:link: 2_Euclid_intro_MER_catalog.md
-:header: [MER Catalogs →](2_Euclid_intro_MER_catalog.md)
-
-Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
-```
-
-```{card}
-:link: 4_Euclid_intro_PHZ_catalog.md
-:header: [PHZ Catalogs →](4_Euclid_intro_PHZ_catalog.md)
-
-Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
-```
-
-```{card}
-:link: 5_Euclid_intro_SPE_catalog.md
-:header: [SPE Catalogs →](5_Euclid_intro_SPE_catalog.md)
-
-Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
-```
-
-```{card}
-:link: merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
-:header: [Merged Objects Catalog →](merged-objects-hats-catalog/1-euclid-q1-hats-intro.md)
-Introduction: Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
-```
-
-```{card}
-:link: merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
-:header: [Merged Objects Catalog →](merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md)
-Magnitudes: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
-```
-
-```{card}
-:link: euclid-cloud-access.md
-:header: [Cloud Access →](euclid-cloud-access.md)
-Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
-```
-
-```{card}
-:link: euclid_clusters_tutorial.md
-:header: [Galaxy Clusters →](euclid_clusters_tutorial.md)
-Use Euclid Q1 data to detect and validate a galaxy cluster.
-```
-
-```{card}
-:link: Euclid_ERO.md
-:header: [ERO Star Clusters →](Euclid_ERO.md)
-Create multi-wavelength ERO image cutouts of a globular cluster, extract sources, and measure photometry. Match Gaia sources with Euclid ERO catalogs, then visualize with Firefly.
-```
-
-````

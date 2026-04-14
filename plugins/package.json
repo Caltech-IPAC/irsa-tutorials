@@ -1,0 +1,14 @@
+{
+  "name": "irsa-myst-plugins",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/notebook-gallery.mjs --bundle --platform=node --format=esm --external:yaml --outfile=dist/notebook-gallery.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
