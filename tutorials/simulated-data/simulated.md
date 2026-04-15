@@ -5,12 +5,10 @@ Because this collection is heterogeneous in coverage, structure, and intended us
 Access methods are tailored to the structure and scale of each product.
 These tutorials are designed to help users get started with accessing, visualizing, and analyzing simulated datasets hosted at IRSA.
 
-- [Roman HLSS Number Density](roman_hlss_number_density.md) - Query the catalog and derive galaxy number density.
-
-- [OpenUniverse2024 Roman Coadds](openuniverse2024_roman_simulated_wideareasurvey.md) - Access OpenUniverse2024 wide-area simulated survey data.
-
-- [OpenUniverse2024 Visualization](OpenUniverse2024Preview_Firefly.md) - Use Firefly to get an overview of survey structure and visualize content.
-
-- [OpenUniverse2024 Time Domain](openuniverse2024_roman_simulated_timedomainsurvey.md) - Access and analyze the simulated time-domain OpenUniverse2024 survey.
-
-- [CosmoDC2 Data Access](cosmoDC2_TAP_access.md) - Access, query, and visualize the CosmoDC2 catalog.
+```{notebook-gallery} notebook_metadata.yml
+tutorials/simulated-data/roman_hlss_number_density.md
+tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey.md
+tutorials/simulated-data/OpenUniverse2024Preview_Firefly.md
+tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md
+tutorials/simulated-data/cosmoDC2_TAP_access.md
+```
