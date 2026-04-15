@@ -25,7 +25,11 @@ project:
          - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=SPITZER
          # GH is rather flaky for CI right now, temporarily measure
          - 'https://github.com/**'
-         
+  plugins:
+    # note: we need to use the built plugin bundle here so make sure to build it with
+    # `cd plugins && npm install && npm run build` after any changes to the plugins/src/
+    - plugins/dist/notebook-gallery.mjs
+    
 extends:
   - toc.yml
 site:
