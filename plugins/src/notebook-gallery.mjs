@@ -27,6 +27,36 @@ function loadMetadata(metadataPath) {
 }
 
 
+// MyST markdown templates — kept separate from logic for readability
+const clickableCardMyst = (link, title, description) => [
+  '```{card}',
+  `:link: ${link}`,
+  `:header: [${title} →](${link})`,
+  description,
+  '```',
+].join('\n');
+
+const unrecognizedCardMyst = (filePath) => [
+  '```{card}',
+  ':header: ⚠️ _Unrecognised notebook_',
+  `Could not find \`${filePath}\``,
+  '```',
+].join('\n');
+
+const metadataErrorMyst = (metadataPath) => [
+  `:::{error} \`notebook-gallery\` error`,
+  `Could not read metadata from \`${metadataPath}\``,
+  ':::',
+].join('\n');
+
+const gridOfCardsMyst = (cards) => [
+  '````{grid} 1 2 2 3',
+  ...cards,
+  '````',
+].join('\n\n');
+// End of MyST markdown templates
+
+
 /**
  * MyST directive: notebook-gallery
  *
@@ -56,27 +86,35 @@ const notebookGalleryDirective = {
   body: { type: String, required: true },
 
   run(data, vfile, ctx) {
+    // Resolve the metadata file path relative to the repo root and load it
     const metadataPath = path.resolve(REPO_ROOT, data.arg);
     const metadataByFile = loadMetadata(metadataPath);
 
     if (!metadataByFile) {
-      return ctx.parseMyst(`:::danger\nnotebook-gallery: could not read \`${metadataPath}\`\n:::`).children;
+      return ctx.parseMyst(metadataErrorMyst(metadataPath)).children;
     }
 
+    // Links in cards must be relative to the file that contains this directive
     const callerDir = path.dirname(path.resolve(vfile.path));
 
-    const cards = data.body.split('\n')
+    // Parse the body: one notebook path per line, skip blank lines and comments
+    const notebookFilePaths = data.body.split('\n')
       .map(l => l.trim())
-      .filter(l => l && !l.startsWith('#'))
-      .map(filePath => {
-        const meta = metadataByFile[filePath];
-        if (!meta) return `:::warning\nnotebook-gallery: not found in metadata: \`${filePath}\`\n:::`;
-        const link = path.relative(callerDir, path.resolve(REPO_ROOT, filePath));
-        return `\`\`\`{card}\n:link: ${link}\n:header: [${meta.title} →](${link})\n${meta.description}\n\`\`\``;
-      });
+      .filter(l => l && !l.startsWith('#'));
 
-    const myst = `\`\`\`\`{grid} 1 2 2 3\n${cards.join('\n\n')}\n\`\`\`\``;
-    return ctx.parseMyst(myst).children;
+    // Build a MyST card string for each notebook path
+    const cards = notebookFilePaths.map(filePath => {
+      const meta = metadataByFile[filePath];
+      if (!meta) return unrecognizedCardMyst(filePath);
+      const link = path.relative(callerDir, path.resolve(REPO_ROOT, filePath));
+      const title = meta.title ?? path.basename(filePath, path.extname(filePath)); // fall back to filename
+      const description = meta.description ?? ''; // fall back to no description
+      return clickableCardMyst(link, title, description);
+    });
+
+    // Wrap all cards in a grid, parse the combined MyST string, and return the
+    // resulting AST nodes to be inserted in place of this directive.
+    return ctx.parseMyst(gridOfCardsMyst(cards)).children;
   },
 };
 

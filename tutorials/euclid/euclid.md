@@ -24,3 +24,18 @@ tutorials/euclid/euclid-cloud-access.md
 tutorials/euclid/euclid_clusters_tutorial.md
 tutorials/euclid/Euclid_ERO.md
 ```
+
+## notebook-gallery exception handling tests
+### Invalid notebook path
+```{notebook-gallery} notebook_metadata.yml
+tutorials/euclid/1_Euclid_intro_MER_images.md
+tutorials/euclid/does_not_exist.md
+tutorials/euclid/2_Euclid_intro_MER_catalog.md
+```
+
+### Invalid metadata path
+```{notebook-gallery} does_not_exist.yml
+tutorials/euclid/1_Euclid_intro_MER_images.md
+tutorials/euclid/2_Euclid_intro_MER_catalog.md
+tutorials/euclid/3_Euclid_intro_1D_spectra.md
+```
