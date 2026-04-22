@@ -64,13 +64,19 @@ project:
         - title: Roman HLSS Number Density
           file: tutorials/simulated-data/roman_hlss_number_density.md
         - title: OpenUniverse2024 Roman coadds
-          file: tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey.md
+          file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
         - title: OpenUniverse2024 Visualization
-          file: tutorials/simulated-data/OpenUniverse2024Preview_Firefly.md
+          file: tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
         - title: OpenUniverse2024 Time Domain
-          file: tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey.md
+          file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey.md
         - title: CosmoDC2 Data Access
           file: tutorials/simulated-data/cosmoDC2_TAP_access.md
+        - title: OpenUniverse2024 Quickstart
+          file: tutorials/simulated-data/OpenUniverse2024/quickstart.md
+        - title: OpenUniverse2024 TDE Light Curve
+          file: tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
+        - title: OpenUniverse2024 SED Fitting
+          file: tutorials/simulated-data/OpenUniverse2024/SED_fit.md
     - title: Techniques & Tools
       file: tutorials/techniques-and-tools/techniques.md
       children:
