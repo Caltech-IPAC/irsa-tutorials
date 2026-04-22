@@ -6,15 +6,23 @@ Access methods are tailored to the structure and scale of each product.
 These tutorials are designed to help users get started with accessing, visualizing, and analyzing simulated datasets hosted at IRSA.
 
 ```{notebook-gallery} notebook_metadata.yml
+tutorials/simulated-data/roman_hlss_number_density.md
+tutorials/simulated-data/cosmoDC2_TAP_access.md
 tutorials/simulated-data/OpenUniverse2024/quickstart.md
 tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
 tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
 tutorials/simulated-data/OpenUniverse2024/SED_fit.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey.md
-tutorials/simulated-data/roman_hlss_number_density.md
-tutorials/simulated-data/cosmoDC2_TAP_access.md
 ```
+
+## Roman High Latitude Spectroscopic Survey — Number Density as a Function of Redshift
+
+Demonstrates how to query the simulated Roman HLSS catalog and derive galaxy number density as a function of redshift, illustrating large-scale structure and the distribution of matter over cosmic time.
+
+## CosmoDC2 — Querying Mock Catalogs via TAP
+
+Demonstrates how to access and query the CosmoDC2 Mock v1 catalogs using IRSA's TAP service and the PyVO library, with queries written in ADQL.
 
 ## OpenUniverse2024
 
