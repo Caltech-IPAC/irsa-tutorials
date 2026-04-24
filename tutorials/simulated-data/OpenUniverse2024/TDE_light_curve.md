@@ -1,4 +1,8 @@
 ---
+authors:
+- name: Jessica Krick
+- name: Jaladh Singhal
+- name: "Brigitta Sip\u0151cz"
 jupytext:
   text_representation:
     extension: .md
@@ -7,12 +11,8 @@ jupytext:
     jupytext_version: 1.19.1
 kernelspec:
   name: python3
-  display_name: Python 3 (ipykernel)
+  display_name: python3
   language: python
-authors:
-  - name: Jessica Krick
-  - name: Jaladh Singhal
-  - name: Brigitta Sipőcz
 ---
 
 # TDE Light Curve
@@ -28,7 +28,9 @@ By the end of this tutorial, you will be able to :
 
 ## Introduction
 
-The [OpenUniverse2024]((https://arxiv.org/abs/2501.05632)) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies. It incorporates the updated “Diffsky” extragalactic model, extended transient modeling across optical/IR wavelengths, and realistic telescope/instrument effects, producing roughly 400 TB of publicly available synthetic imaging and catalogs. The goal of this project is to enable cross-collaboration and maximize science return from next-generation cosmological surveys by providing a consistent simulated sky observed by multiple observatories.
+The [OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies.
+It incorporates the updated “Diffsky” extragalactic model, extended transient modeling across optical/IR wavelengths, and realistic telescope/instrument effects, producing roughly 400 TB of publicly available synthetic imaging and catalogs.
+The goal of this project is to enable cross-collaboration and maximize science return from next-generation cosmological surveys by providing a consistent simulated sky observed by multiple observatories.
 
 Tidal Disruption Events (TDEs) occur when a star passes close enough to a supermassive black hole to be torn apart by tidal forces, producing a luminous flare that can outshine the host galaxy for weeks to months.
 Identifying and characterizing TDE host galaxies is key to understanding the demographics of supermassive black holes and the galactic environments that produce these rare events.
@@ -50,7 +52,6 @@ This notebook is designed to be run sequentially from top to bottom.  All code i
 - Cutout gallery of host galaxy(s)
 
 ## Imports
-
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -198,7 +199,7 @@ show_gallery(files, max_images=n_gallery_images)
 
 ## 2. Find a TDE target from the transient catalog
 
-We use the OpenUniverse2024 transient input catalog — the same SNANA parquet files described in the [SED Fitting tutorial](sed_fit) — to find a TDE.
+We use the OpenUniverse2024 transient input catalog — the same SNANA parquet files described in the [SED Fitting tutorial](SED_fit.md) — to find a TDE.
 The catalog stores one parquet file per HEALPix region, and TDEs are rare, so not every region will contain one.
 The catalog is split into three types of parquet files, each indexed by HEALPix region:                                                                                                
                                                                                                                                                                
@@ -876,7 +877,7 @@ This tutorial was developed with the assistance of AI tools
 
 **References:**
 
-- Bradley et al., 2025; https://zenodo.org/records/14889440/
+- Bradley et al., 2025; https://zenodo.org/records/19636730
 
 - [Robitaille et al., 2013](https://www.aanda.org/articles/aa/full_html/2013/10/aa22068-13/aa22068-13.html)
 
@@ -887,4 +888,3 @@ This tutorial was developed with the assistance of AI tools
 - [Virtanen et al., 2020](https://www.nature.com/articles/s41592-019-0686-2); DOI: 10.1038/s41592-019-0686-2.
 
 - [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
-
