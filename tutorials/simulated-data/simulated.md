@@ -8,7 +8,7 @@ These tutorials are designed to help users get started with accessing, visualizi
 ```{notebook-gallery} notebook_metadata.yml
 tutorials/simulated-data/roman_hlss_number_density.md
 tutorials/simulated-data/cosmoDC2_TAP_access.md
-tutorials/simulated-data/OpenUniverse2024/quickstart.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
 tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
 tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md

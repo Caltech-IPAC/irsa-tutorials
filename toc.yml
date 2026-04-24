@@ -72,7 +72,7 @@ project:
         - title: CosmoDC2 Data Access
           file: tutorials/simulated-data/cosmoDC2_TAP_access.md
         - title: OpenUniverse2024 Quickstart
-          file: tutorials/simulated-data/OpenUniverse2024/quickstart.md
+          file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
         - title: OpenUniverse2024 TDE Light Curve
           file: tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
         - title: OpenUniverse2024 SED Fitting

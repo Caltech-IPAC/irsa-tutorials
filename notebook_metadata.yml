@@ -51,7 +51,7 @@
   section: Simulated Data
   description: Access, query, and visualize the CosmoDC2 catalog.
 - title: OpenUniverse2024 Quickstart
-  file: tutorials/simulated-data/OpenUniverse2024/quickstart.md
+  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
   section: Simulated Data
   description: Access OpenUniverse2024 Roman and Rubin images and catalogs.
 - title: OpenUniverse2024 TDE Light Curve

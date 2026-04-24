@@ -9,6 +9,10 @@ kernelspec:
   name: python3
   display_name: python3
   language: python
+authors:
+  - name: Jessica Krick
+  - name: Jaladh Singhal
+  - name: Brigitta Sipőcz
 ---
 
 # SED fitting on OpenUniverse2024 Roman and Rubin Photometry

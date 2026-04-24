@@ -9,6 +9,10 @@ kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
   language: python
+authors:
+  - name: Jessica Krick
+  - name: Jaladh Singhal
+  - name: Brigitta Sipőcz
 ---
 
 # Quickstart: Accessing OpenUniverse2024 Data
