@@ -286,11 +286,9 @@ Given a sky position (e.g., the host galaxy coordinates from Section 2), we can 
 First we set up the connection to the SIA service and list the available catalogs, then we query by position to get a table of matching images, and finally we extract the cloud locations (S3 URIs) so the files can be opened directly.
 
 ```{code-cell} ipython3
-# Point the astroquery IRSA client to the simulated VO endpoints.
-# Must be connected to the IPAC VPN or local network to access these endpoints.
-# TODO: replace irsadev with irsa when the simulated SIA is deployed to production.
-Irsa.sia_url = "https://irsadev.ipac.caltech.edu/simulated/SIA"
-Irsa.tap_url = "https://irsadev.ipac.caltech.edu/simulated/TAP"
+# Point the astroquery IRSA client to the correct locations.
+Irsa.sia_url = "https://irsa.ipac.caltech.edu/SIA"
+Irsa.tap_url = "https://irsa.ipac.caltech.edu/TAP"
 
 # List all available simulated image collections
 Irsa.list_collections(servicetype='SIA')

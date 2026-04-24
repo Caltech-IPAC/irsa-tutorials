@@ -271,11 +271,9 @@ host_galaxy
 Now we have the host galaxy's position and ID in `host_galaxy`, ready for image queries. With those coordinates in hand, we then query the Roman image files that overlap this region, retrieving only the files needed for subsequent photometry and light-curve analysis.
 
 ```{code-cell} ipython3
-# Make astroquery IRSA queries point to the simulated VO endpoints
-# Must be connected to IPAC VPN or local network to access these endpoints
-# TODO: replace irsadev with irsa when simulated SIA is deployed to Ops
-Irsa.sia_url = "https://irsadev.ipac.caltech.edu/simulated/SIA"
-Irsa.tap_url = "https://irsadev.ipac.caltech.edu/simulated/TAP"
+# Point the astroquery IRSA client to the correct locations.
+Irsa.sia_url = "https://irsa.ipac.caltech.edu/SIA"
+Irsa.tap_url = "https://irsa.ipac.caltech.edu/TAP"
 
 Irsa.list_collections(servicetype='SIA')
 ```
