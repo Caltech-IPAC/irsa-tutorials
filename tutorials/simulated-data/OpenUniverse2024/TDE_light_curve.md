@@ -55,7 +55,7 @@ This notebook is designed to be run sequentially from top to bottom.  All code i
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
+!pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
 ```
 
 ```{code-cell} ipython3
@@ -277,8 +277,8 @@ Now we have the host galaxy's position and ID in `host_galaxy`, ready for image 
 
 ```{code-cell} ipython3
 # Point the astroquery IRSA client to the correct locations.
-Irsa.sia_url = "https://irsa.ipac.caltech.edu/SIA"
-Irsa.tap_url = "https://irsa.ipac.caltech.edu/TAP"
+Irsa.sia_url = "https://irsa.ipac.caltech.edu/simulated/SIA"
+Irsa.tap_url = "https://irsa.ipac.caltech.edu/simulated/TAP"
 
 Irsa.list_collections(servicetype='SIA')
 ```
@@ -656,6 +656,11 @@ def plot_multiband_light_curve(df, bands, start_mjd):
     ax.set_ylabel("Normalized Flux")
     ax.set_title("TDE Host Galaxy Light Curve")
     ax.legend(fontsize="small")
+
+    if xmin == np.inf or xmax == -np.inf:
+        print("⚠️ No valid photometry data found for any band. Cannot plot light curve.")
+        plt.close(fig)
+        return fig
 
     # Restrict x-axis to data range with padding
     margin = 0.05 * (xmax - xmin) if xmax > xmin else 0.1

@@ -291,8 +291,8 @@ First we set up the connection to the SIA service and list the available catalog
 
 ```{code-cell} ipython3
 # Point the astroquery IRSA client to the correct locations.
-Irsa.sia_url = "https://irsa.ipac.caltech.edu/SIA"
-Irsa.tap_url = "https://irsa.ipac.caltech.edu/TAP"
+Irsa.sia_url = "https://irsa.ipac.caltech.edu/simulated/SIA"
+Irsa.tap_url = "https://irsa.ipac.caltech.edu/simulated/TAP"
 
 # List all available simulated image collections
 Irsa.list_collections(servicetype='SIA')
