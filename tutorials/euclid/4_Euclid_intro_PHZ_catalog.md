@@ -73,6 +73,7 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```{code-cell} ipython3
 import os
 import re
+import io
 import urllib
 
 import numpy as np
@@ -394,51 +395,37 @@ ax.imshow(cutout_galaxy.data, cmap='gray', origin='lower',
 
 ## 6. Load the image in Firefly for interactive exploration
 
-+++
-
-Save the data locally if you have not already done so, in order to upload to IRSA viewer.
+First we intialize the Firefly client as explained [here](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) so that we can send our data to Firefly for visualization.
 
 ```{code-cell} ipython3
-download_path = "data"
-if os.path.exists(download_path):
-    print("Output directory already created.")
-else:
-    print("Creating data directory.")
-    os.mkdir(download_path)
+fc = FireflyClient.make_client('https://irsa.ipac.caltech.edu/irsaviewer')
 ```
 
-### Vizualize the image with Firefly
+### Vizualize the FITS image with Firefly
 
-First initialize the client, then set the path to the image, upload it to firefly, load it and align with WCS.
+After initializing the client, we can directly use the FITS image file URL to visualise it in Firefy.
 
 Note this can take a while to upload the full MER image.
 
 ```{code-cell} ipython3
-fc = FireflyClient.make_client('https://irsa.ipac.caltech.edu/irsaviewer')
-
-fc.show_fits(url=filename)
-
-fc.align_images(lock_match=True)
+fc.show_fits_image(filename)
 ```
 
-### Save the table as a CSV for Firefly upload
+### Display the table as an overlay on the FITS image
+
+Since our galaxies table is in memory, we write it to an IO stream (file-like object) for visualizing it in Firefly.
+Besides displaying the table, Firefly will also overlay the positions of the galaxies on the FITS image we visualized earlier.
+You can click on a table row to inspect the particular galaxy in the image, or click on an overlay marker to inspect the particular galaxy in the table.
 
 ```{code-cell} ipython3
-csv_path = os.path.join(download_path, "mer_df.csv")
-result_galaxies.write(csv_path, format="csv")
-```
+tbl_stream = io.BytesIO()
+result_galaxies.write(tbl_stream, format='votable')
 
-### Upload the CSV table to Firefly and display as an overlay on the FITS image
-
-```{code-cell} ipython3
-uploaded_table = fc.upload_file(csv_path)
-print(f"Uploaded Table URL: {uploaded_table}")
-
-fc.show_table(uploaded_table)
+fc.show_table(tbl_stream)
 ```
 
 ## About this Notebook
 
-**Updated**: 2025-09-24
+**Updated**: 2026-04-29
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
