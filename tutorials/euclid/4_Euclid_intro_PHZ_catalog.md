@@ -395,13 +395,15 @@ ax.imshow(cutout_galaxy.data, cmap='gray', origin='lower',
 
 ## 6. Load the image in Firefly for interactive exploration
 
+First we intialize the Firefly client as explained [here](https://caltech-ipac.github.io/firefly_client/usage/initializing-vanilla.html) so that we can send our data to Firefly for visualization.
+
 ```{code-cell} ipython3
 fc = FireflyClient.make_client('https://irsa.ipac.caltech.edu/irsaviewer')
 ```
 
 ### Vizualize the FITS image with Firefly
 
-After initializing the client, we can directly use the FITS image file URL to upload it to Firefy.
+After initializing the client, we can directly use the FITS image file URL to visualise it in Firefy.
 
 Note this can take a while to upload the full MER image.
 
@@ -411,7 +413,9 @@ fc.show_fits_image(filename)
 
 ### Display the table as an overlay on the FITS image
 
-Since our galaxies table is in memory, we write it to an IO stream (file-like object) for uploading it to Firefly.
+Since our galaxies table is in memory, we write it to an IO stream (file-like object) for visualizing it in Firefly.
+Besides displaying the table, Firefly will also overlay the positions of the galaxies on the FITS image we visualized earlier.
+You can click on a table row to inspect the particular galaxy in the image, or click on an overlay marker to inspect the particular galaxy in the table.
 
 ```{code-cell} ipython3
 tbl_stream = io.BytesIO()
