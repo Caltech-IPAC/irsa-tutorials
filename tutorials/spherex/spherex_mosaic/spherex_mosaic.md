@@ -127,7 +127,7 @@ To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https
 We first define the path to the mosaic cube.
 
 ```python
-fn_spherex = "./data/M101_irsa.fits"
+fn_spherex = "M101_irsa.fits"
 ```
 
 Next, we open the image. Note that we convert here the image from MJy/sr to mJy using the relation 
