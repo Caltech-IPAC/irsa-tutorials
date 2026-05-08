@@ -3,14 +3,14 @@ authors:
 - name: Vandana Desai
 - name: Jessica Krick
 - name: Andreas Faisst
-- name: "Brigitta Sipőcz"
+- name: "Brigitta Sip\u0151cz"
 - name: Troy Raen
 jupytext:
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.18.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -637,3 +637,6 @@ To use this PSF for forward modeling or fitting, you must:
 
 **Runtime:** Approximately 30 seconds.
 
+```{code-cell} ipython3
+
+```
