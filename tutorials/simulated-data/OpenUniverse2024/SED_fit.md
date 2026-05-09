@@ -120,7 +120,7 @@ def inspect_parquet_columns(s3_path, *, region='us-east-1', max_rows=0):
     s3_path : str
         Full S3 path to the Parquet file, e.g.
         "s3://nasa-irsa-simulations/openuniverse2024/roman/full/.../SNANA_9921.parquet"
-    region : str
+    region : str, optional
         S3 region, default to 'us-east-1' where Fornax is located.
     max_rows : int, optional
         If > 0, print the first few rows of data for context. Default is 0 (just columns).
@@ -177,7 +177,7 @@ Next we merge the SN sample with the host galaxy fluxes and physical properties.
 jupyter:
   source_hidden: true
 ---
-def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file):
+def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file, *, region='us-east-1'):
     """
     Load a supernova (SNANA) sample and join it with host galaxy flux + info tables.
 
@@ -190,6 +190,8 @@ def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file):
         S3 path to the galaxy flux parquet (Roman+Rubin flux columns).
     galaxy_info_file : str
         S3 path to the corresponding galaxy info parquet (physical parameters).
+    region : str, optional
+        S3 region, default to 'us-east-1' where Fornax is located.        
 
     Returns
     -------
@@ -198,7 +200,7 @@ def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file):
     """
 
     # Initialize an anonymous (public read-only) S3 filesystem connection
-    fs = pyarrow.fs.S3FileSystem(anonymous=True)
+    fs = pyarrow.fs.S3FileSystem(region=region, anonymous=True)
 
     # Load SN sample
     sn_df = pq.read_table(sn_flux_file, filesystem=fs).to_pandas()

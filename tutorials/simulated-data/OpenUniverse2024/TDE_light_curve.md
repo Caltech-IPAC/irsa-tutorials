@@ -215,7 +215,7 @@ We then cross-match the TDE's host_id into the galaxy file to retrieve the host'
 First, we connect to S3 and list all available SNANA parquet files in the catalog.
 
 ```{code-cell} ipython3
-fs = pyarrow.fs.S3FileSystem(anonymous=True)
+fs = pyarrow.fs.S3FileSystem(region='us-east-1', anonymous=True)
 catalog_prefix = f"{BUCKET_NAME}/{OU_PREFIX}/roman/full/{CATALOG_NAME}"
 
 # List all SNANA parquet files in the catalog directory, sorted for consistent ordering.

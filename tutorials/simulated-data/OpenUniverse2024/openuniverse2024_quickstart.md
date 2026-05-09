@@ -209,7 +209,7 @@ print("Galaxy flux file: ", gal_flux_path)
 We use it here for the SNANA catalog and repeat it for the galaxy info and flux catalogs below.
 
 ```{code-cell} ipython3
-def inspect_parquet_files(s3_path):
+def inspect_parquet_files(s3_path, *, region='us-east-1'):
     """
     Print the structure of a Parquet file on S3 without reading its data.
 
@@ -221,7 +221,7 @@ def inspect_parquet_files(s3_path):
     s3_path : str
         S3 path to the Parquet file (without the s3:// prefix).
     """
-    fs = pyarrow.fs.S3FileSystem(anonymous=True)
+    fs = pyarrow.fs.S3FileSystem(region=region, anonymous=True)
     meta = pq.read_metadata(s3_path, filesystem=fs)
     schema = pq.read_schema(s3_path, filesystem=fs)
 
@@ -237,7 +237,7 @@ inspect_parquet_files(snana_path)
 
 ```{code-cell} ipython3
 # Read just the model_name column to see what transient types are in this region
-fs = pyarrow.fs.S3FileSystem(anonymous=True)
+fs = pyarrow.fs.S3FileSystem(region='us-east-1', anonymous=True)
 model_names = pq.read_table(snana_path, filesystem=fs, columns=["model_name"]).to_pandas()
 model_names["model_name"].unique()
 ```
@@ -263,9 +263,9 @@ We read the full SNANA catalog here, then use a filter to fetch only the matchin
 Note: The next cell takes ~45s to run
 
 ```{code-cell} ipython3
-fs = pyarrow.fs.S3FileSystem(anonymous=True)
+fs = pyarrow.fs.S3FileSystem(region='us-east-1', anonymous=True)
 
-# Read the full SNANA catalog for this region
+# Read the full SNANA catalog
 df_snana = pq.read_table(snana_path, filesystem=fs).to_pandas()
 
 # Pick one transient — here we grab the first row as an example
