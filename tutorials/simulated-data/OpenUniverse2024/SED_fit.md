@@ -111,7 +111,7 @@ list out some basic information including column names
 jupyter:
   source_hidden: true
 ---
-def inspect_parquet_columns(s3_path, max_rows=0):
+def inspect_parquet_columns(s3_path, *, region='us-east-1', max_rows=0):
     """
     Read Parquet file from S3 into memory and inspect structure
 
@@ -120,6 +120,8 @@ def inspect_parquet_columns(s3_path, max_rows=0):
     s3_path : str
         Full S3 path to the Parquet file, e.g.
         "s3://nasa-irsa-simulations/openuniverse2024/roman/full/.../SNANA_9921.parquet"
+    region : str
+        S3 region, default to 'us-east-1' where Fornax is located.
     max_rows : int, optional
         If > 0, print the first few rows of data for context. Default is 0 (just columns).
 
@@ -130,7 +132,7 @@ def inspect_parquet_columns(s3_path, max_rows=0):
 
     """
 
-    fs = pyarrow.fs.S3FileSystem(anonymous=True)
+    fs = pyarrow.fs.S3FileSystem(region=region, anonymous=True)
     df = pq.read_table(s3_path, filesystem=fs).to_pandas()
 
     print(f"Found {df.shape[1]} columns and {df.shape[0]} rows")
