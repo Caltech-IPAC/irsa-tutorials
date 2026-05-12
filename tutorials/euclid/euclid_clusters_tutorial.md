@@ -1,8 +1,8 @@
 ---
 authors:
-  - name: Shoubaneh Hemmati
-  - name: Jessica Krick
-  - name: Brigitta Sipőcz
+- name: Shoubaneh Hemmati
+- name: Jessica Krick
+- name: "Brigitta Sipőcz"
 jupytext:
   text_representation:
     extension: .md
@@ -17,24 +17,54 @@ kernelspec:
 
 # Euclid Galaxy Clusters Analysis Tutorial
 
+## Learning Goals
+
+By the end of this tutorial, you will be able to:
+
+- Access the Euclid Q1 cluster catalog and MER multi-band image data from IRSA.
+- Apply DBSCAN to identify galaxy overdensities and confirm cluster membership.
+- Analyze color-magnitude diagrams to characterize cluster and field galaxy populations.
+- Cross-match Euclid photometric data with NED to independently validate cluster detections.
+
+## Introduction
+
+Galaxy clusters are the most massive gravitationally bound structures in the universe, and studying them reveals how large-scale structure forms and how environment shapes galaxy evolution.
+Euclid is exceptionally well-suited for this science.
+Its wide-field imager covers large areas of sky in a single pointing, making it efficient at finding rare, massive clusters across a range of redshifts.
+The combination of a deep optical VIS band — reaching sub-arcsecond resolution — with simultaneous near-infrared Y, J, and H photometry means that cluster member galaxies can be cleanly separated from foreground and background objects using photometric redshifts, even at z ~ 0.5 and beyond where cluster members are faint and red.
+The red sequence of passively evolving ellipticals that dominates cluster cores stands out sharply in Euclid color space, and the infrared bands trace stellar mass rather than recent star formation, giving a more complete census of cluster membership.
+Together these properties make Euclid data ideal for detecting clusters, characterising their galaxy populations, and comparing cluster members to field galaxies.
+
 This tutorial explores galaxy clusters in the Euclid Q1 merged multi-wavelength mosaic (MER) image data to demonstrate cluster detection and validation techniques.
 We select a cluster from this paper (https://arxiv.org/abs/2503.19196), identify a control field that is covered by Euclid Q1 and at least 15 arcmin from any known clusters.
 We download multi-band images and galaxy catalogs, apply clustering algorithms to confirm the existence of galaxy overdensities and identify cluster members.
 We analyze color-magnitude diagrams, extract spectra, and cross-match with external databases for validation.
 This approach allows us to compare cluster and field galaxy properties and assess the reliability of cluster detections.
 
-```{code-cell} ipython3
-# Install required packages if needed
-#!pip install pandas numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
+### Input
 
-# Import all necessary libraries
+- Euclid Q1 cluster catalog (PZWav detections from [arXiv:2503.19196](https://arxiv.org/abs/2503.19196))
+- Euclid Q1 MER multi-band mosaic images
+- Euclid Q1 photometric galaxy catalogs
+
+### Output
+
+- Confirmed galaxy cluster and control field detection using DBSCAN
+- Color-magnitude diagrams comparing cluster and field populations
+- Cross-matched redshift comparison between Euclid and NED
+
+## Imports
+
+```{code-cell} ipython3
+# Uncomment the next line to install dependencies if needed.
+# !pip install pandas numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
+```
+
+```{code-cell} ipython3
 import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-import warnings
-import shutil
 import requests
 import json
 import s3fs
@@ -63,18 +93,17 @@ from sklearn.cluster import DBSCAN
 
 # Statistics and signal processing
 from scipy.stats import gaussian_kde
-from scipy.ndimage import gaussian_filter1d
-
-# Set up plotting style
-plt.style.use('default')
-sns.set_palette("husl")
+from scipy.ndimage import gaussian_filter1d, median_filter
 
 Number = u.def_unit("Number")
 u.add_enabled_units([Number])
 ```
 
 ## 1. Loading the Cluster Catalog
-We begin by loading the Euclid Q1 cluster catalog. The catalog contains 35 galaxy clusters with photometric redshifts, coordinates, and richness estimates from the PZWav algorithm.
+
+The Euclid Q1 cluster catalog from [arXiv:2503.19196](https://arxiv.org/abs/2503.19196) is not available as a direct download, so we read it from the HTML-rendered version of the paper.
+The HTML table sometimes contains Unicode formatting artifacts in the coordinate columns (e.g., typographic minus signs in negative declinations), which we normalize before use.
+The catalog contains 35 galaxy clusters with photometric redshifts, coordinates, and richness estimates from the PZWav algorithm.
 
 ```{code-cell} ipython3
 # Load the Euclid Q1 cluster catalog (https://arxiv.org/abs/2503.19196)
@@ -83,34 +112,37 @@ fname = "euclid_q1_clusters.csv"
 download_path = "data"
 os.makedirs(download_path, exist_ok=True)
 
-# Read all tables from the arXiv HTML rendering
-dfs = pd.read_html(url)
+csv_path = os.path.join(download_path, fname)
+if os.path.exists(csv_path):
+    df = pd.read_csv(csv_path)
+else:
+    # Read all tables from the arXiv HTML rendering
+    dfs = pd.read_html(url)
 
-# Select the table containing the cluster catalog
-df = dfs[1].copy()
+    # Select the table containing the cluster catalog
+    df = dfs[1].copy()
 
-# Drop the spurious row that contains units instead of data
-df = df[df["ID"].notna()]
+    # Drop the spurious row that contains units instead of data
+    df = df[df["ID"].notna()]
 
-# Normalize Unicode minus signs and extract numeric RA/Dec values
-# (HTML tables sometimes concatenate values or include formatting artifacts)
-for col in ["RAPZWav", "DecPZWav"]:
-    df[col] = (
-        df[col].astype(str)
-               .str.replace("−", "-", regex=False)
-               .str.extract(r"([-+]?\d+(?:\.\d+)?)")[0]
-               .astype(float)
-    )
+    # Normalize Unicode minus signs and extract numeric RA/Dec values
+    # (HTML tables sometimes concatenate values or include formatting artifacts)
+    for col in ["RAPZWav", "DecPZWav"]:
+        df[col] = (
+            df[col].astype(str)
+                   .str.replace("−", "-", regex=False)
+                   .str.extract(r"([-+]?\d+(?:\.\d+)?)")[0]
+                   .astype(float)
+        )
 
-# Rename LaTeX-style column names to clean, code-friendly names
-df = df.rename(columns={
-    "zPZWavz_{\\mathrm{PZWav}}": "zPZWav",
-    "zAMICOz_{\\mathrm{AMICO}}": "zAMICO",
-    "λPmem\\lambda_{\\mathrm{Pmem}}": "lambdaPmem",
-})
+    # Rename LaTeX-style column names to clean, code-friendly names
+    df = df.rename(columns={
+        "zPZWavz_{\\mathrm{PZWav}}": "zPZWav",
+        "zAMICOz_{\\mathrm{AMICO}}": "zAMICO",
+        "λPmem\\lambda_{\\mathrm{Pmem}}": "lambdaPmem",
+    })
 
-# Overwrite (or create) the cleaned CSV for downstream use
-df.to_csv(os.path.join(download_path, fname), index=False)
+    df.to_csv(csv_path, index=False)
 
 print(f"Dataset shape: {df.shape}")
 df.head(3)
@@ -118,14 +150,43 @@ df.head(3)
 
 ## 2. A Cluster and Control Field Selection
 
-We implement a systematic field selection process: (1) randomly select a target cluster from the catalog, and (2) identify a control field that maintains a minimum 20 arcmin separation from all known cluster locations.
-This ensures the control field represents the general field population without contamination from known structures.
+We use cluster EUCL-Q1-CL-1, a richly populated galaxy overdensity at z = 0.55 detected in the Euclid Q1 data.
+We also need a control field — a region of sky with no known clusters — to characterise the field galaxy population for comparison.
 
 ```{code-cell} ipython3
-# Set random seed for reproducibility
-np.random.seed(45)
+# Select cluster EUCL-Q1-CL-1 from the catalog
+cluster = df[df['ID'] == 'EUCL-Q1-CL-1'].iloc[0]
+cluster_ra  = cluster['RAPZWav']
+cluster_dec = cluster['DecPZWav']
+cluster_z   = cluster['zPZWav']
+cluster_coord = SkyCoord(ra=cluster_ra, dec=cluster_dec, unit='deg')
 
-# Function to check if a field has exactly 4 MER images (one per band)
+print(f"Cluster: {cluster['NAME']}")
+print(f"  RA: {cluster_ra:.4f}°, Dec: {cluster_dec:.4f}°, z = {cluster_z:.2f}")
+
+# Query the MER image catalog for this position
+cluster_mer_images = Irsa.query_sia(pos=(cluster_coord, 2.0 * u.arcmin), collection='euclid_DpdMerBksMosaic')
+cluster_mer_images = cluster_mer_images[
+    (cluster_mer_images['facility_name'] == 'Euclid') &  #also contains data from other telescopes, so be specific
+    (cluster_mer_images['dataproduct_subtype'] == 'science')
+]
+print(f"  Found {len(cluster_mer_images)} MER science images")
+```
+
+A control field is a sky region with no known galaxy clusters, used to characterise the general field galaxy population for comparison with the cluster environment. 
+We select the control field by picking a random offset direction from a catalog cluster and rejecting any candidate control field that falls within `min_distance_arcmin` of any known cluster.
+
+The MER mosaic is organised into tiles, and positions near tile boundaries may overlap two tiles, which complicates downloading.
+We also check that both the cluster and control field each fall on exactly one tile before proceeding.
+
+We fix the random seed so the tutorial gives reproducible results by always picking the same control field.
+To explore a different control field, change the seed value or remove the seed entirely.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def check_mer_tile_requirement(coord, search_radius=2.0):
     """Check whether a sky coordinate is covered by exactly 4 Euclid MER science images.
 
@@ -161,9 +222,14 @@ def check_mer_tile_requirement(coord, search_radius=2.0):
     except (DALQueryError, Timeout, ConnectionError, OSError) as e:
         print(f"  ✗ Error querying MER tiles: {e}")
         return False, None
+```
 
-# Function to find a random control field that avoids all cluster locations
-def find_control_field_corrected(cluster_df, cluster_ra, cluster_dec, min_distance_arcmin=15, max_attempts=100):
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
+def find_control_field(cluster_df, cluster_ra, cluster_dec, min_distance_arcmin=15, max_attempts=100):
     """Find a random control field offset from the known cluster catalog.
 
     Generates candidate control fields by randomly offsetting 25–35 arcmin from
@@ -224,90 +290,29 @@ def find_control_field_corrected(cluster_df, cluster_ra, cluster_dec, min_distan
     fallback_ra = (cluster_ra + fallback_offset) % 360.0
     fallback_dec = np.clip(cluster_dec + fallback_offset, -90.0, 90.0)
     return fallback_ra, fallback_dec
+```
 
-# Function to find a valid cluster and control field combination
-def find_valid_cluster_control_pair(cluster_df, max_attempts=50):
-    """Find a cluster and matched control field each covered by a single MER tile.
+```{code-cell} ipython3
+# Set random seed so results are reproducible — change or remove to explore different control fields
+np.random.seed(45)
 
-    Iterates over randomly selected clusters and, for each, attempts to find a
-    control field via :func:`find_control_field_corrected` such that both
-    positions are covered by exactly 4 MER science images — i.e., neither falls
-    across a tile boundary. The single-tile requirement keeps the data download
-    straightforward and avoids mosaicking artefacts at tile edges.
-
-    If no valid pair is found after ``max_attempts`` iterations, falls back to
-    the first catalog entry with a best-effort control field.
-
-    Parameters
-    ----------
-    cluster_df : `pandas.DataFrame`
-        Cluster catalog with columns ``RAPZWav``, ``DecPZWav``, ``ID``,
-        and ``zPZWav``.
-    max_attempts : int, optional
-        Maximum number of cluster/control combinations to try. Default is 50.
-
-    Returns
-    -------
-    cluster : `pandas.Series`
-        Row from ``cluster_df`` for the selected cluster.
-    control_ra : float
-        RA of the matched control field in degrees.
-    control_dec : float
-        Dec of the matched control field in degrees.
-    cluster_mer_images : `~astropy.table.Table`
-        MER image table for the cluster field.
-    control_mer_images : `~astropy.table.Table`
-        MER image table for the control field.
-    """
-    print("Searching for cluster and control field combination with single MER tiles...")
-
-    for attempt in range(max_attempts):
-        print(f"\nAttempt {attempt + 1}/{max_attempts}:")
-
-        cluster = cluster_df.sample(n=1).iloc[0]
-        cluster_coord = SkyCoord(ra=cluster['RAPZWav'], dec=cluster['DecPZWav'], unit='deg')
-        print(f"Selected cluster: ID={cluster['ID']}, z={cluster['zPZWav']:.2f}")
-
-        cluster_single_tile, cluster_mer_images = check_mer_tile_requirement(cluster_coord)
-        if not cluster_single_tile:
-            print("  Skipping cluster - requires multiple tiles")
-            continue
-
-        control_ra, control_dec = find_control_field_corrected(cluster_df, cluster['RAPZWav'], cluster['DecPZWav'])
-        control_coord = SkyCoord(ra=control_ra, dec=control_dec, unit='deg')
-
-        control_single_tile, control_mer_images = check_mer_tile_requirement(control_coord)
-        if not control_single_tile:
-            print("  Skipping control field - requires multiple tiles")
-            continue
-
-        print("  ✓ Both cluster and control field require single tiles!")
-        return cluster, control_ra, control_dec, cluster_mer_images, control_mer_images
-
-    # Fallback
-    print(f"\nWarning: Could not find valid cluster/control pair after {max_attempts} attempts.")
-    cluster = cluster_df.iloc[0]
-    cluster_coord = SkyCoord(ra=cluster['RAPZWav'], dec=cluster['DecPZWav'], unit='deg')
-    control_ra, control_dec = find_control_field_corrected(cluster_df, cluster['RAPZWav'], cluster['DecPZWav'])
-    control_coord = SkyCoord(ra=control_ra, dec=control_dec, unit='deg')
-
-    _, cluster_mer_images = check_mer_tile_requirement(cluster_coord)
-    _, control_mer_images = check_mer_tile_requirement(control_coord)
-
-    return cluster, control_ra, control_dec, cluster_mer_images, control_mer_images
-
-# Find valid cluster and control field combination
-cluster, control_ra, control_dec, cluster_mer_images, control_mer_images = find_valid_cluster_control_pair(df)
-
-# Create coordinate objects for later use
-cluster_coord = SkyCoord(ra=cluster['RAPZWav'], dec=cluster['DecPZWav'], unit='deg')
+# Find a control field that avoids all known clusters
+control_ra, control_dec = find_control_field(df, cluster['RAPZWav'], cluster['DecPZWav'])
 control_coord = SkyCoord(ra=control_ra, dec=control_dec, unit='deg')
+
+# Verify it falls on a single MER tile and retrieve its image table
+control_valid, control_mer_images = check_mer_tile_requirement(control_coord)
+if not control_valid:
+    print("Warning: control field may span multiple tiles — consider re-running to select a different one")
+
+print(f"Control field:  RA: {control_ra:.4f}°, Dec: {control_dec:.4f}°")
 ```
 
 ## 3. Data Download and Caching
 
-Download and cache Euclid Q1 MER mosaics for both the selected cluster and control field with 12 arcmin cutouts (time consuming).
-The MER tile querying was already performed in Section 2 to ensure single-tile requirements.
+Rather than downloading full MER tiles — which can be hundreds of megabytes each — we stream 12-arcmin cutouts directly from the Euclid data hosted in the cloud on AWS S3.
+A 12-arcmin field of view is large enough to capture both the cluster core and a surrounding field region, while keeping the download manageable.
+The cutouts are saved to a local cache so that re-running the notebook skips the network requests entirely.
 
 ```{code-cell} ipython3
 # Define parameters for cutouts
@@ -324,7 +329,18 @@ s3 = s3fs.S3FileSystem(
     default_cache_type="readahead",
     default_fill_cache=True,
 )
+```
 
+We now retrieve 12-arcmin cutouts centred on both the cluster and control fields.
+The first run streams data directly from the AWS S3 mirror; subsequent runs read from the local cache.
+
+Because the four photometric bands are independent of each other, `download_and_cache_field` downloads all of them in parallel, then reads back the cached cutouts and returns the image arrays together with the VIS-band WCS needed for later analysis.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def _download_band(band, mer_images, field_coord, field_id, cache_dir, s3):
     """Download one photometric band from S3 and write a cutout FITS to the local cache.
 
@@ -377,8 +393,13 @@ def _download_band(band, mer_images, field_coord, field_id, cache_dir, s3):
     else:
         print(f"  Using cached {band} band")
     return band, cache_file
+```
 
-
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def download_and_cache_field(mer_images, field_name, field_coord, field_id):
     """Stream cutout FITS images from S3 and cache them locally.
 
@@ -431,7 +452,9 @@ def download_and_cache_field(mer_images, field_name, field_coord, field_id):
                 cutout_wcs = WCS(hdu[0].header)
 
     return cutouts, cutout_wcs
+```
 
+```{code-cell} ipython3
 # Download and cache both fields
 cluster_cutouts, cluster_cutout_wcs = download_and_cache_field(
     cluster_mer_images, "cluster", cluster_coord, cluster["ID"]
@@ -448,10 +471,16 @@ print(f"Control field cutout size: {control_cutouts['VIS'].shape}")
 
 ## 4. Multi-band Image Visualization
 
-Create and display VIS, Y, J, H bands plus RGB composite for both cluster and control fields.
+Before running the clustering algorithm it is useful to inspect the data directly.
+We display the four Euclid MER bands — the optical VIS band and the three NISP near-infrared bands (Y, J, H) — each in grayscale, alongside a false-color RGB composite in which H is mapped to red, J to green, and VIS to blue.
+In the composite, galaxies with older, redder stellar populations appear orange-to-red while bluer, star-forming galaxies appear cyan or blue.
+Displaying the cluster and control fields side by side at the same stretch gives an immediate visual impression of whether a concentration of red galaxies is present at the cluster position.
 
 ```{code-cell} ipython3
-# Improved normalization for consistent stretching between fields
+---
+jupyter:
+  source_hidden: true
+---
 def normalize_with_consistent_stretch(cluster_cutouts, control_cutouts, lower_percentile=1, upper_percentile=99):
     """Normalize cluster and control cutouts using a shared percentile stretch.
     The RGB composite is assembled as H→R, J→G, VIS→B, which maps redder
@@ -504,6 +533,10 @@ def normalize_with_consistent_stretch(cluster_cutouts, control_cutouts, lower_pe
 ```
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def downsample(arr, factor=4):
     """Block-average a 2-D or 3-D image array by an integer factor for faster display.
 
@@ -546,8 +579,9 @@ def downsample(arr, factor=4):
         # Same reshape for each colour channel independently
         return arr[:h_t, :w_t].reshape(h_t // factor, factor,
                                        w_t // factor, factor, 3).mean(axis=(1, 3))
+```
 
-
+```{code-cell} ipython3
 # Process both fields with consistent normalization
 
 print("Using consistent stretching between cluster and control fields...")
@@ -589,6 +623,9 @@ plt.show()
 Top row: the cluster candidate field shown in the Euclid VIS band and the three NISP near-infrared bands (Y, J, H), followed by an RGB composite constructed as **R = H, G = J, B = VIS**.
 Bottom row: a nearby control field displayed in the same set of bands and with the same RGB mapping.
 
+The images give a qualitative impression of the cluster, but to identify members and compare their properties we need the photometric catalog.
+We query the Euclid Q1 MER photometric catalog and the photometric redshift (photo-z) catalog from IRSA, joining them on object ID and filtering to galaxies at the cluster redshift with well-constrained photo-z uncertainties.
+
 ```{code-cell} ipython3
 # Query galaxies in both fields with BOX search
 table_mer = 'euclid_q1_mer_catalogue'
@@ -596,8 +633,18 @@ table_phz = 'euclid_q1_phz_photo_z'
 
 # Convert cutout size to degrees
 cutout_deg = im_cutout.to(u.deg).value
+```
 
-# Function to query galaxies for a field
+We now query both fields for galaxies that fall within a narrow photometric redshift slice centered on the cluster redshift (±0.12). 
+Querying the same redshift slice in both the cluster and control fields is what makes the overdensity comparison meaningful.
+We do a cursory overdensity calculation based on the number of galaxies in the cluster field over number of galaxies in the control field identified in the redshift slice.
+Then we show part of the cluster dataframe to see what information we have available.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def query_galaxies_for_field(ra, dec, field_name, redshift_center, redshift_width=0.1):
     """Query galaxies within a redshift slice around a sky position.
 
@@ -652,7 +699,9 @@ def query_galaxies_for_field(ra, dec, field_name, redshift_center, redshift_widt
     print(f"Found {len(result)} galaxies in {field_name} field (z = {redshift_center:.2f} ± {redshift_width:.2f})")
 
     return result
+```
 
+```{code-cell} ipython3
 # Query galaxies for both fields in the cluster redshift slice
 cluster_galaxies = query_galaxies_for_field(
     cluster['RAPZWav'], cluster['DecPZWav'], "cluster",
@@ -711,7 +760,8 @@ This approach is accurate over the small field of view of a single 12-arcmin cut
 **Parameter choices and customisation**
 
 The defaults `eps=500` and `min_samples=18` were tuned empirically for a 12-arcmin cutout at z~0.4 with Euclid Q1 data.
-They are not universal, the right values depend on the cluster redshift, richness, cutout size, and the depth of the photo-z sample. In particular:
+They are not universal, the right values depend on the cluster redshift, richness, cutout size, and the depth of the photo-z sample.
+In particular:
 
 - The physical scale probed by `eps` changes with redshift.
   At higher redshift the same angular scale subtends a larger physical distance, so you may want to increase `eps` to keep the probed scale near the virial radius.
@@ -726,7 +776,10 @@ If the cluster or control field is close to a tile edge, this fraction may be la
 The function prints the number of galaxies within bounds as a diagnostic, if a large fraction are lost, consider selecting a field better centred on the tile.
 
 ```{code-cell} ipython3
-# Function to apply DBSCAN clustering with validity check (needed due to query/cutout mismatch)
+---
+jupyter:
+  source_hidden: true
+---
 def apply_dbscan_clustering(galaxy_df, wcs, rgb_image, field_name, eps=500, min_samples=18):
     """Apply DBSCAN to detect galaxy overdensities in a redshift-selected sample. DBSCAN operates on the 2-D projected
     spatial distribution of galaxies at approximately the same redshift.
@@ -798,7 +851,12 @@ def apply_dbscan_clustering(galaxy_df, wcs, rgb_image, field_name, eps=500, min_
     print(f"{field_name} field: {n_clusters} clusters, {n_noise} noise points")
 
     return labels, valid_galaxy_coords, n_clusters, n_noise
+```
 
+A genuine cluster should produce a compact spatial overdensity in the redshift slice; the control field should show mostly noise.
+We run DBSCAN on both fields so we can compare the results directly.
+
+```{code-cell} ipython3
 # Apply clustering to both fields (with validity check)
 cluster_labels, cluster_galaxy_coords, cluster_n_clusters, cluster_n_noise = apply_dbscan_clustering(
     cluster_df_galaxies, cluster_cutout_wcs, cluster_rgb, "Cluster"
@@ -822,19 +880,11 @@ if len(cluster_labels) > 0:
 
     for k, col in zip(cluster_unique_labels, cluster_colors):
         if k == -1:
-            col = 'black'
-            marker = ''
-            size = 10
-            alpha = 0.3
-        else:
-            marker = 'o'
-            size = 30
-            alpha = 0.7
-
+            continue  # noise points not shown
         class_member_mask = (cluster_labels == k)
         xy = cluster_galaxy_coords[class_member_mask]
         if len(xy) > 0:  # Check if there are any points to plot
-            ax1.scatter(xy[:, 0], xy[:, 1], c=[col], marker=marker, s=size, alpha=alpha)
+            ax1.scatter(xy[:, 0], xy[:, 1], c=[col], marker='o', s=30, alpha=0.7)
 else:
     print("No cluster data to plot")
 
@@ -850,19 +900,11 @@ if len(control_labels) > 0:
 
     for k, col in zip(control_unique_labels, control_colors):
         if k == -1:
-            col = 'black'
-            marker = ''
-            size = 10
-            alpha = 0.3
-        else:
-            marker = 'o'
-            size = 30
-            alpha = 0.7
-
+            continue  # noise points not shown
         class_member_mask = (control_labels == k)
         xy = control_galaxy_coords[class_member_mask]
         if len(xy) > 0:  # Check if there are any points to plot
-            ax2.scatter(xy[:, 0], xy[:, 1], c=[col], marker=marker, s=size, alpha=alpha)
+            ax2.scatter(xy[:, 0], xy[:, 1], c=[col], marker='o', s=30, alpha=0.7)
 else:
     print("No control field data to plot")
 
@@ -876,9 +918,10 @@ plt.show()
 
 **Figure 2. DBSCAN clustering of galaxy candidates in redshift slices: cluster field vs. control field.**
 Each panel shows the RGB cutout (R = H, G = J, B = VIS) with points overplotted for sources selected within successive redshift slices and clustered using **DBSCAN** (density-based spatial clustering).
-Points assigned to a DBSCAN cluster are shown as colored circular markers; points labeled as noise/outliers (DBSCAN label = −1) are shown with low-opacity markers.
+Points assigned to a DBSCAN cluster are shown as colored circular markers; noise/outlier points (DBSCAN label = −1) are not shown.
 The left panel (cluster field) contains multiple spatial overdensities identified by DBSCAN, consistent with the expectation that a real cluster field may include one or more galaxy concentrations within the scanned redshift range.
-In the right panel (control field), no real clusters are found as expected. In some examples, a “cluster” can be identified around a bright star; this is interpreted as an **artifact-driven detection** (e.g., spurious sources near diffraction spikes/halos in Euclid Q1), rather than a genuine galaxy overdensity.
+In the right panel (control field), no real clusters are found as expected.
+In some examples, a “cluster” can be identified around a bright star; this is interpreted as an **artifact-driven detection** (e.g., spurious sources near diffraction spikes/halos in Euclid Q1), rather than a genuine galaxy overdensity.
 
 +++
 
@@ -886,9 +929,14 @@ In the right panel (control field), no real clusters are found as expected. In s
 
 We analyze the color-magnitude properties of cluster and field galaxies to understand their stellar populations and star formation histories.
 The Y-H color vs H magnitude diagram reveals differences in galaxy properties between cluster and field environments.
+With the DBSCAN labels computed, we separate each field's galaxy catalog into cluster members (label ≥ 0) and field galaxies (label = −1). 
+Combining field galaxies from both the cluster and control fields gives us a larger baseline sample for comparison.
 
 ```{code-cell} ipython3
-# Function to identify cluster members and field galaxies
+---
+jupyter:
+  source_hidden: true
+---
 def identify_cluster_members(galaxy_df, labels, galaxy_coords, field_name):
     """Separate a galaxy sample into cluster members and field galaxies.
 
@@ -976,7 +1024,9 @@ def identify_cluster_members(galaxy_df, labels, galaxy_coords, field_name):
         cluster_counts = cluster_members['cluster_id'].value_counts().sort_index()
 
     return cluster_members, field_galaxies
+```
 
+```{code-cell} ipython3
 # Analyze both fields
 cluster_members_cluster_field, field_galaxies_cluster_field = identify_cluster_members(
     cluster_df_galaxies, cluster_labels, cluster_galaxy_coords, "Cluster"
@@ -997,11 +1047,16 @@ print(f"Total cluster members: {len(all_cluster_members)}")
 print(f"Total field galaxies: {len(all_field_galaxies)}")
 ```
 
-```{code-cell} ipython3
-# Create simplified Y-H vs H color-magnitude diagram with density contours
-fig, ax = plt.subplots(1, 1, figsize=(8, 5))
+At z~0.4, the H band probes rest-frame near-infrared light dominated by old, low-mass stars, while the Y band samples shorter wavelengths where younger stellar populations contribute more.
+The Y−H color therefore tracks the age and star formation activity of the stellar population.
+Passive ellipticals galaxies in a cluster at the same redshift, that have stopped forming stars, tend to share similar Y−H colors, producing a tight sequence in the color-magnitude diagram known as the red sequence.
+We convert the uniform-aperture fluxes in the photo-z catalog to AB magnitudes and exclude objects outside physically reasonable bounds (H < 17 or H > 25, or |Y−H| outside [−0.5, 1.5]) to remove saturated sources, noise-dominated detections, and photometric outliers.
 
-# Calculate Y-H color and H magnitude
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def calculate_color_magnitude(df):
     """Convert uniform-aperture fluxes to AB magnitudes and compute Y-H color.
 
@@ -1033,12 +1088,19 @@ def calculate_color_magnitude(df):
     df['Y_H_color'] = df['Y_mag'] - df['H_mag']
 
     return df
+```
 
+```{code-cell} ipython3
 # Calculate color-magnitude properties using only the needed fluxes
 cluster_cmd = calculate_color_magnitude(all_cluster_members[['flux_y_unif', 'flux_h_unif']])
 field_cmd = calculate_color_magnitude(all_field_galaxies[['flux_y_unif', 'flux_h_unif']])
+```
 
-# Remove outliers using plot boundaries (much simpler and more intuitive)
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def remove_outliers_bounds(df, h_min=17, h_max=25, yh_min=-0.5, yh_max=1.5):
     """Filter a colour-magnitude table to a physically motivated range.
 
@@ -1073,7 +1135,9 @@ def remove_outliers_bounds(df, h_min=17, h_max=25, yh_min=-0.5, yh_max=1.5):
         (df_clean['Y_H_color'] >= yh_min) & (df_clean['Y_H_color'] <= yh_max)
     ]
     return df_clean
+```
 
+```{code-cell} ipython3
 # Remove outliers from both populations (using plot boundaries)
 print("Removing outliers outside plot boundaries...")
 cluster_cmd_clean = remove_outliers_bounds(cluster_cmd)
@@ -1081,6 +1145,10 @@ field_cmd_clean = remove_outliers_bounds(field_cmd)
 
 print(f"Cluster galaxies: {len(cluster_cmd)} -> {len(cluster_cmd_clean)} (removed {len(cluster_cmd) - len(cluster_cmd_clean)})")
 print(f"Field galaxies: {len(field_cmd)} -> {len(field_cmd_clean)} (removed {len(field_cmd) - len(field_cmd_clean)})")
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(1, 1, figsize=(8, 5))
 
 # Plot comparison with lower alpha for better visibility
 ax.scatter(field_cmd_clean['H_mag'], field_cmd_clean['Y_H_color'],
@@ -1135,7 +1203,8 @@ plt.show()
 ```
 
 **Figure 3. Y−H versus H colour–magnitude diagram for the cluster candidates compared to the control field.**
-We construct an H-band magnitude and a Y−H colour from the Euclid Q1 uniform-aperture fluxes (`flux_h_unif`, `flux_y_unif`) by converting microjansky fluxes to AB magnitudes. Points show individual objects: cluster members (red) and field galaxies (blue).
+We construct an H-band magnitude and a Y−H colour from the Euclid Q1 uniform-aperture fluxes (`flux_h_unif`, `flux_y_unif`) by converting microjansky fluxes to AB magnitudes.
+Points show individual objects: cluster members (red) and field galaxies (blue).
 
 To highlight the dominant loci beyond the sparse scatter, we overlay density contours derived from a 2D Gaussian kernel density estimate (KDE) computed in the \((H,\,Y-H)\) plane separately for the cluster and field samples.
 The KDE is evaluated on a regular grid spanning the plotted limits, and three contour levels are drawn for each population (solid red for cluster; dashed blue for field).
@@ -1145,8 +1214,13 @@ A genuine cluster is expected to show a relatively **tighter and/or shifted colo
 
 ## 7. Spectral Analysis
 
-We extract 1D spectra for cluster and field galaxies from the Euclid spectroscopic data to analyze their emission line properties and star formation activity.
-The analysis includes spectral smoothing, flux normalization, and identification of nebular emission lines (Hα, Hβ, [OII], [OIII], etc.) that fall within the observed near-infrared wavelength range at the cluster's redshift. Note: This section is computationally intensive and may be skipped for initial analysis.
+Euclid's NISP instrument provides slitless near-infrared spectra covering roughly 9,200–18,800 Å.
+At the cluster redshift of z~0.55, common optical emission lines — Hα (6563 Å), [OII] (3727 Å), [OIII] (5007 Å), are redshifted into this wavelength window.
+Active star-forming galaxies show strong emission in these lines while passive (quiescent) galaxies do not, so comparing the median spectra of cluster members versus field galaxies can reveal whether the dense cluster environment has suppressed star formation.
+
+The analysis continuum-subtracts each spectrum, normalizes it to a common scale, and marks the expected observed wavelengths of emission lines at the cluster redshift.
+
+Note: This section is computationally intensive and may be skipped for an initial look at the data.
 
 ```{code-cell} ipython3
 spectra_cache_dir = "data/irsa_spectra"
@@ -1157,7 +1231,16 @@ table_1dspectra = "euclid.objectid_spectrafile_association_q1"
 
 cluster_object_ids = all_cluster_members["object_id"].tolist()
 field_object_ids   = all_field_galaxies["object_id"].tolist()
+```
 
+We retrieve up to ten spectra for each population.
+Ten spectra per group is sufficient to show whether the cluster and field populations differ in their emission-line properties.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def get_n_spectra(obj_ids, n=10):
     """
     Fetch up to n spectra for the given object_ids, stopping early once n are found.
@@ -1286,7 +1369,9 @@ def get_n_spectra(obj_ids, n=10):
             continue
 
     return dict(list(spectra.items())[:n])
+```
 
+```{code-cell} ipython3
 # Run (it will stop as soon as it finds 10 real spectra)
 cluster_spectra = get_n_spectra(cluster_object_ids, n=10)
 field_spectra   = get_n_spectra(field_object_ids, n=10)
@@ -1296,12 +1381,10 @@ print(f"Field spectra retrieved:   {len(field_spectra)}")
 print(f"Cache dir: {spectra_cache_dir}/")
 ```
 
-```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.ndimage import gaussian_filter1d, median_filter
+Before processing the spectra, we define the rest-frame wavelengths of the emission lines we expect to see and set the parameters for spectral preprocessing: a mild Gaussian smoothing to suppress pixel-to-pixel noise, a running-median window for continuum estimation, and the half-width of the photo-z slice used to set the expected wavelength range for each line.
 
-# --- your line lists (kept as-is, but note: duplicate keys get overwritten in dicts) ---
+```{code-cell} ipython3
+# Emission line rest-frame wavelengths (Angstroms) used to mark expected features on the spectra
 optical_lines = {
     'Hα': 6563,
     'Hβ': 4861,
@@ -1330,17 +1413,26 @@ nir_lines = {
 
 emission_lines = {**optical_lines, **nir_lines}
 
-# --- parameters you can tune quickly ---
+# Spectral processing parameters (adjust to suit your data)
 sigma_smooth = 1.5        # 0 to disable smoothing
 cont_window = 151          # running-median window in pixels (odd recommended)
 norm_percentile = 95       # robust scale from residuals
 n_grid = 900               # common wavelength grid points for stacking
 
-# If you have these from selection, use them. Otherwise keep your old ±0.12 approach:
+# Cluster redshift and slice boundaries
 cluster_z = float(cluster['zPZWav']) if 'zPZWav' in cluster else float(cluster.get('zPZ', np.nan))
 redshift_width = 0.12
 z_min, z_max = cluster_z - redshift_width, cluster_z + redshift_width
+```
 
+To compare spectra from different galaxies on the same plot we need to put them on a common scale.
+The three helper functions below handle this: `preprocess_spectrum` continuum-subtracts and normalizes a single spectrum, `build_stack` projects all spectra onto a shared wavelength grid and computes the median and scatter at each wavelength, and `lines_in_window` identifies which emission lines fall within the observed wavelength range at the cluster redshift.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def preprocess_spectrum(spec):
     """Continuum-remove + robust-normalize a spectrum for visualization."""
     w = np.asarray(spec['wave'].value, float)
@@ -1387,7 +1479,13 @@ def preprocess_spectrum(spec):
 
     y = resid / scale
     return w, y
+```
 
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def build_stack(spectra_dict, w_grid):
     """Interpolate processed spectra onto a common grid and return matrix [nobj, ngrid]."""
     Ys = []
@@ -1408,7 +1506,13 @@ def build_stack(spectra_dict, w_grid):
     p16 = np.nanpercentile(Y, 16, axis=0)
     p84 = np.nanpercentile(Y, 84, axis=0)
     return Y, med, p16, p84
+```
 
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def lines_in_window(wmin, wmax, z):
     """Return dict of lines whose observed wavelength falls in [wmin, wmax]."""
     out = {}
@@ -1417,7 +1521,11 @@ def lines_in_window(wmin, wmax, z):
         if wmin <= obs <= wmax:
             out[name] = obs
     return out
+```
 
+With the preprocessing functions in place, we determine a common observed-frame wavelength grid that spans all available spectra, stack the cluster and field samples separately, and then plot both populations side by side with emission lines marked at the expected observed wavelengths for the cluster redshift.
+
+```{code-cell} ipython3
 # --- determine a common observed-frame wavelength grid from available spectra ---
 all_w = []
 for d in [cluster_spectra, field_spectra]:
@@ -1437,8 +1545,13 @@ w_grid = np.linspace(wmin, wmax, n_grid)
 # --- build stacks ---
 cluster_stack = build_stack(cluster_spectra, w_grid)
 field_stack   = build_stack(field_spectra,   w_grid)
+```
 
-# --- plot: two panels, close to your original, but readable ---
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def label_emission_line(ax, x, label, y=0.92, rotation=90, color='k'):
     """Place a vertical emission-line label at wavelength x."""
     ax.text(
@@ -1451,8 +1564,6 @@ def label_emission_line(ax, x, label, y=0.92, rotation=90, color='k'):
         va='top',
         bbox=dict(facecolor='white', edgecolor='none', alpha=0.6, pad=1)
     )
-
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 9), sharex=True)
 
 def plot_panel(ax, spectra_dict, stack, color, title):
     # individual processed spectra (faint)
@@ -1474,6 +1585,10 @@ def plot_panel(ax, spectra_dict, stack, color, title):
     ax.set_title(title)
     ax.grid(True, alpha=0.35)
     ax.legend(loc="upper right")
+```
+
+```{code-cell} ipython3
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 9), sharex=True)
 
 plot_panel(ax1, cluster_spectra, cluster_stack, "tab:blue", "Cluster spectra (continuum-subtracted + robust-normalized)")
 plot_panel(ax2, field_spectra,   field_stack,   "tab:green", "Control/field spectra (continuum-subtracted + robust-normalized)")
@@ -1515,368 +1630,182 @@ Euclid Q1 spectra contain known instrumental artifacts that are addressed in DR1
 
 ## 8. NED Database Search
 
-We search the NASA/IPAC Extragalactic Database (NED) for information about our cluster center, field center, and cluster member galaxies.
-This might provide additional information on cluster members. We search a smaller radius of 3 arcmin to avoid NED timeout.
+We search the NASA/IPAC Extragalactic Database (NED) for spectroscopically confirmed objects within 3 arcmin of both the cluster and control field centers, filtered to the cluster redshift slice.
+This provides an independent check of cluster membership using spectroscopic redshifts and lets us verify that the control field contains no known structures at the cluster redshift.
 
 ```{code-cell} ipython3
-# Get coordinates from our analysis
-cluster_ra = cluster['RAPZWav']  # 60.4686 degrees
-cluster_dec = cluster['DecPZWav']  # -50.4780 degrees
-cluster_z = cluster['zPZWav']  # 0.43
+---
+jupyter:
+  source_hidden: true
+---
+def search_ned_field(ra, dec, z_min, z_max, label, radius_arcmin=3, max_retries=3):
+    """Search NED within radius_arcmin of (ra, dec), filter to z_min–z_max, and print a summary.
 
-# Search NED for cluster center
-print("=== SEARCHING NED FOR CLUSTER CENTER ===")
-try:
-    cluster_center_results = Ned.query_region(SkyCoord(ra=cluster_ra, dec=cluster_dec, unit='deg'),
-                                            radius=5*u.arcsec)
-    print(f"Found {len(cluster_center_results)} objects within 5 arcsec of cluster center")
-    if len(cluster_center_results) > 0:
-        print("\\nCluster center objects:")
-        for i, obj in enumerate(cluster_center_results[:5]):  # Show first 5
-            print(f"  {i+1}. {obj['Object Name']} - Type: {obj['Type']} - z: {obj['Redshift']}")
-    else:
-        print("No objects found in NED at cluster center")
-except (RemoteServiceError, Timeout, ConnectionError) as e:
-    print(f"Error searching cluster center: {e}")
+    Returns
+    -------
+    objects : astropy Table or None
+        Rows in the redshift range, or None on failure.
+    ned_ra_col, ned_dec_col : str or None
+        Names of the RA and Dec columns in the returned table.
+    ned_coord_unit : tuple or None
+        Unit tuple suitable for SkyCoord construction.
+    """
+    ra_candidates  = ['RA(deg)', 'RA_deg', 'RA', 'RAJ2000']
+    dec_candidates = ['DEC(deg)', 'DEC_deg', 'DEC', 'DEJ2000']
 
-print()
+    def pick_col(table, candidates):
+        for c in candidates:
+            if c in table.colnames:
+                return c
+        return None
 
-# Search NED for control field center
-print("=== SEARCHING NED FOR CONTROL FIELD CENTER ===")
-try:
-    control_center_results = Ned.query_region(SkyCoord(ra=control_ra, dec=control_dec, unit='deg'),
-                                            radius=5*u.arcsec)
-    print(f"Found {len(control_center_results)} objects within 5 arcsec of control field center")
-    if len(control_center_results) > 0:
-        print("\\nControl field center objects:")
-        for i, obj in enumerate(control_center_results[:5]):  # Show first 5
-            print(f"  {i+1}. {obj['Object Name']} - Type: {obj['Type']} - z: {obj['Redshift']}")
-    else:
-        print("No objects found in NED at control field center")
-except (RemoteServiceError, Timeout, ConnectionError) as e:
-    print(f"Error searching control field center: {e}")
+    center = SkyCoord(ra=ra, dec=dec, unit='deg')
 
-print()
+    for attempt in range(max_retries):
+        try:
+            results = Ned.query_region(center, radius=radius_arcmin * u.arcmin)
+
+            has_z = np.isfinite(np.asarray(results['Redshift'], float))
+            objects_with_z = results[has_z]
+            in_z_range = (objects_with_z['Redshift'] >= z_min) & (objects_with_z['Redshift'] <= z_max)
+            objects = objects_with_z[in_z_range]
+
+            print(f"{label}: {len(results)} total NED objects, {len(objects_with_z)} with redshift, "
+                  f"{len(objects)} in z={z_min:.2f}–{z_max:.2f}")
+
+            ned_ra_col  = pick_col(results, ra_candidates)
+            ned_dec_col = pick_col(results, dec_candidates)
+            if ned_ra_col is None or ned_dec_col is None:
+                raise KeyError(f"Could not find RA/Dec columns. Available: {results.colnames}")
+
+            ra_unit_str = str(getattr(results[ned_ra_col], 'unit', '')).lower()
+            use_deg = 'deg' in ra_unit_str or 'deg' in ned_ra_col.lower()
+            ned_coord_unit = ('deg', 'deg') if use_deg else (u.hourangle, u.deg)
+
+            if len(objects) > 0:
+                for obj in objects:
+                    obj_coord = SkyCoord(ra=obj[ned_ra_col], dec=obj[ned_dec_col], unit=ned_coord_unit)
+                    sep = center.separation(obj_coord).to(u.arcmin).value
+                    print(f"  {obj['Object Name']} - {obj['Type']} - z={obj['Redshift']:.3f} - {sep:.1f}'")
+                types = np.array([str(t) for t in objects['Type']], dtype=str)
+                unique, counts = np.unique(types, return_counts=True)
+                print("  Types:", dict(zip(unique, counts)))
+            else:
+                print("  No objects found in redshift range")
+
+            return objects, ned_ra_col, ned_dec_col, ned_coord_unit
+
+        except (Timeout, ConnectionError) as e:
+            if attempt < max_retries - 1:
+                time.sleep(5)
+            else:
+                print(f"{label}: NED search failed after {max_retries} attempts")
+        except (RemoteServiceError, OSError, KeyError) as e:
+            print(f"{label}: NED search error: {e}")
+            break
+
+    return None, None, None, None
 ```
 
 ```{code-cell} ipython3
-# Cluster center + redshift slice
-cluster_ra  = cluster['RAPZWav']
-cluster_dec = cluster['DecPZWav']
-cluster_z   = cluster['zPZWav']
 z_min, z_max = cluster_z - 0.06, cluster_z + 0.06
 
-# Try NED search with retry logic
-max_retries = 3
-for attempt in range(max_retries):
-    try:
-        print(f"NED search attempt {attempt + 1}/{max_retries}...")
-
-        # Search NED within 3 arcmin of cluster center
-        results = Ned.query_region(
-            SkyCoord(ra=cluster_ra, dec=cluster_dec, unit='deg'),
-            radius=3 * u.arcmin
-        )
-
-        print(f"\nNED search results:")
-        print(f"  Total objects found: {len(results)}")
-
-        # Count objects with redshift information
-        has_z = np.isfinite(np.asarray(results['Redshift'], float))
-        objects_with_z = results[has_z]
-        print(f"  Objects with redshift: {len(objects_with_z)}")
-
-        # Count objects in cluster redshift range
-        in_z_range = (objects_with_z['Redshift'] >= z_min) & (objects_with_z['Redshift'] <= z_max)
-        cluster_objects = objects_with_z[in_z_range]
-        print(f"  Objects in z={z_min:.2f}-{z_max:.2f}: {len(cluster_objects)}")
-
-        # --- robustly choose RA/Dec columns (NED output varies) ---
-        print("\nNED columns:", results.colnames)
-
-        ra_candidates  = ['RA(deg)', 'RA_deg', 'RA', 'RAJ2000']
-        dec_candidates = ['DEC(deg)', 'DEC_deg', 'DEC', 'DEJ2000']
-
-        def pick_col(table, candidates):
-            for c in candidates:
-                if c in table.colnames:
-                    return c
-            return None
-
-        ra_col  = pick_col(results, ra_candidates)
-        dec_col = pick_col(results, dec_candidates)
-
-        if ra_col is None or dec_col is None:
-            raise KeyError(f"Could not find RA/Dec columns in NED table. Columns are: {results.colnames}")
-
-        print(f"Using RA column: {ra_col}")
-        print(f"Using Dec column: {dec_col}")
-
-        # Decide whether RA/Dec are in degrees or sexagesimal strings
-        # (If the column name explicitly indicates degrees, treat as deg/deg; otherwise assume RA is hourangle, Dec is deg.)
-        use_deg = (('deg' in ra_col.lower()) or ra_col.lower().endswith('_deg')) and (('deg' in dec_col.lower()) or dec_col.lower().endswith('_deg'))
-        coord_unit = ('deg', 'deg') if use_deg else (u.hourangle, u.deg)
-
-        if len(cluster_objects) > 0:
-            print("\nObjects in cluster redshift range:")
-
-            cluster_coord = SkyCoord(ra=cluster_ra, dec=cluster_dec, unit='deg')
-
-            for obj in cluster_objects:
-                obj_coord = SkyCoord(ra=obj[ra_col], dec=obj[dec_col], unit=coord_unit)
-                sep = cluster_coord.separation(obj_coord).to(u.arcmin).value
-                print(f"  {obj['Object Name']} - {obj['Type']} - z={obj['Redshift']:.3f} - {sep:.1f}'")
-
-            # Type counts (Astropy-friendly)
-            types = np.array([str(t) for t in cluster_objects['Type']], dtype=str)
-            unique, counts = np.unique(types, return_counts=True)
-            print("\nTypes:", dict(zip(unique, counts)))
-        else:
-            print("No objects found in cluster redshift range")
-
-        break  # Success, exit retry loop
-
-    except (Timeout, ConnectionError) as e:
-        print(f"Timeout/connection error (attempt {attempt + 1}): {e}")
-        if attempt < max_retries - 1:
-            print("Retrying in 5 seconds...")
-            time.sleep(5)
-        else:
-            print("NED search failed after all retries")
-    except (RemoteServiceError, OSError, KeyError) as e:
-        print(f"NED search error: {e}")
-        break
+cluster_objects, ned_ra_col, ned_dec_col, ned_coord_unit = search_ned_field(
+    cluster_ra, cluster_dec, z_min, z_max, label="Cluster field"
+)
 ```
 
+We repeat the search at the control field center to confirm that no previously catalogued structures fall within the comparison region.
+
 ```{code-cell} ipython3
-# Try NED search with retry logic for control field
-max_retries = 3
-for attempt in range(max_retries):
-    try:
-        # Search NED within 5 arcmin of control field center
-        control_results = Ned.query_region(SkyCoord(ra=control_ra, dec=control_dec, unit='deg'), radius=3*u.arcmin)
-
-        # Filter for objects with redshift in cluster range
-        has_z = ~np.isnan(control_results['Redshift'])
-        in_z_range = (control_results['Redshift'] >= z_min) & (control_results['Redshift'] <= z_max)
-        control_objects = control_results[has_z & in_z_range]
-
-        print(f"Control field NED search: {len(control_results)} total objects, {len(control_objects)} in z={z_min:.2f}-{z_max:.2f}")
-
-        if len(control_objects) > 0:
-            print("\\nObjects in control field redshift range:")
-            for obj in control_objects:
-                obj_coord = SkyCoord(ra=obj['RA(deg)'], dec=obj['DEC(deg)'], unit='deg')
-                control_coord = SkyCoord(ra=control_ra, dec=control_dec, unit='deg')
-                sep = control_coord.separation(obj_coord).to(u.arcmin).value
-                print(f"  {obj['Object Name']} - {obj['Type']} - z={obj['Redshift']:.3f} - {sep:.1f}'")
-
-            print(f"\\nControl field types: {dict(control_objects['Type'].value_counts())}")
-        else:
-            print("No objects found in control field redshift range")
-
-        break  # Success, exit retry loop
-
-    except (Timeout, ConnectionError) as e:
-        if attempt < max_retries - 1:
-            time.sleep(5)
-        else:
-            print("Control field NED search failed after all retries")
-    except (RemoteServiceError, OSError) as e:
-        print(f"Control field NED search error: {e}")
-        break
+control_objects, *_ = search_ned_field(
+    control_ra, control_dec, z_min, z_max, label="Control field"
+)
 ```
 
+We now overlay the NED-catalogued objects on the cluster and control field images to see how the spectroscopically confirmed sources (from NED) are spatially related to the photometric cluster members found by DBSCAN.
+
 ```{code-cell} ipython3
-# Overlay NED sources on cluster member visualization
-if 'cluster_objects' in locals() and len(cluster_objects) > 0:
-    # Create the same plot as before but with NED sources added
+---
+jupyter:
+  source_hidden: true
+---
+def overlay_ned_sources(
+    cluster_objects, control_objects,
+    ned_ra_col, ned_dec_col, ned_coord_unit,
+    cluster_rgb, control_rgb,
+    cluster_cutout_wcs, control_cutout_wcs,
+    cluster_labels, cluster_galaxy_coords,
+    control_labels, control_galaxy_coords,
+):
+    if cluster_objects is None or len(cluster_objects) == 0:
+        print("No cluster NED objects to overlay.")
+        return
+
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 8),
                                    subplot_kw={'projection': cluster_cutout_wcs})
 
-    # Cluster field (left subplot) - make background much more transparent
-    ax1.imshow(cluster_rgb, origin='lower', alpha=0.3)
-    cluster_unique_labels = set(cluster_labels)
-    cluster_colors = plt.cm.Spectral(np.linspace(0, 1, len(cluster_unique_labels)))
+    for ax, rgb, labels, coords, ned_objs, wcs, title in [
+        (ax1, cluster_rgb, cluster_labels, cluster_galaxy_coords,
+         cluster_objects, cluster_cutout_wcs, 'Cluster Field with NED Sources'),
+        (ax2, control_rgb, control_labels, control_galaxy_coords,
+         control_objects if control_objects is not None else [], control_cutout_wcs, 'Control Field'),
+    ]:
+        ax.imshow(rgb, origin='lower', alpha=0.3)
 
-    for k, col in zip(cluster_unique_labels, cluster_colors):
-        if k == -1:
-            col = 'black'
-            marker = 'o'
-            size = 10
-            alpha = 0.3
-        else:
-            marker = 'o'
-            size = 20
-            alpha = 0.8
+        unique_labels = set(labels)
+        colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+        for k, col in zip(unique_labels, colors):
+            if k == -1:
+                continue  # noise points not shown
+            mask = (labels == k)
+            xy = coords[mask]
+            if len(xy) > 0:
+                ax.scatter(xy[:, 0], xy[:, 1], c='red', marker='o', s=20, alpha=0.8,
+                           edgecolors='white', linewidth=0.5)
 
-        class_member_mask = (cluster_labels == k)
-        xy = cluster_galaxy_coords[class_member_mask]
+        for obj in ned_objs:
+            ned_coord = SkyCoord(ra=obj[ned_ra_col], dec=obj[ned_dec_col], unit=ned_coord_unit)
+            ned_pixel = wcs.world_to_pixel(ned_coord)
+            if (0 <= ned_pixel[0] < rgb.shape[1] and 0 <= ned_pixel[1] < rgb.shape[0]):
+                ax.scatter(ned_pixel[0], ned_pixel[1], facecolors='none', marker='o', s=100,
+                           alpha=0.9, edgecolors='blue', linewidth=3)
 
-        if len(xy) > 0:
-            ax1.scatter(xy[:, 0], xy[:, 1], c='red', marker=marker, s=size, alpha=alpha,
-                       edgecolors='white', linewidth=0.5)
+        ax.set_title(title, fontsize=14, fontweight='bold')
+        ax.set_xlabel('RA')
+        ax.set_ylabel('Dec')
 
-    # Add NED sources in cluster field
-    for obj in cluster_objects:
-        # Find coordinate columns
-        ra_col = None
-        dec_col = None
-
-        for col in cluster_objects.colnames:
-            col_lower = col.lower()
-            if ('ra' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'ra':
-                ra_col = col
-            elif ('dec' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'dec':
-                dec_col = col
-            elif 'right' in col_lower and 'ascension' in col_lower:
-                ra_col = col
-            elif 'declination' in col_lower:
-                dec_col = col
-
-        if ra_col and dec_col:
-            ned_coord = SkyCoord(ra=obj[ra_col], dec=obj[dec_col], unit='deg')
-            ned_pixel = cluster_cutout_wcs.world_to_pixel(ned_coord)
-
-            # Check if NED source is within the image bounds
-            if (0 <= ned_pixel[0] < cluster_rgb.shape[1] and
-                0 <= ned_pixel[1] < cluster_rgb.shape[0]):
-                ax1.scatter(ned_pixel[0], ned_pixel[1], c='none', marker='o', s=50,
-                           alpha=0.9, edgecolors='blue', linewidth=3,
-                           label=f"NED {obj['Type']} (z={obj['Redshift']:.3f})")
-        else:
-            # Try to use first two numeric columns as fallback
-            numeric_cols = []
-            for col in cluster_objects.colnames:
-                try:
-                    float(obj[col])
-                    numeric_cols.append(col)
-                except:
-                    pass
-            if len(numeric_cols) >= 2:
-                try:
-                    ned_coord = SkyCoord(ra=obj[numeric_cols[0]], dec=obj[numeric_cols[1]], unit='deg')
-                    ned_pixel = cluster_cutout_wcs.world_to_pixel(ned_coord)
-                    if (0 <= ned_pixel[0] < cluster_rgb.shape[1] and
-                        0 <= ned_pixel[1] < cluster_rgb.shape[0]):
-                        ax1.scatter(ned_pixel[0], ned_pixel[1], c='none', marker='o', s=200,
-                                   alpha=0.9, edgecolors='blue', linewidth=3,
-                                   label=f"NED {obj['Type']} (z={obj['Redshift']:.3f})")
-                except:
-                    pass
-
-    ax1.set_title('Cluster Field with NED Sources', fontsize=14, fontweight='bold')
-    ax1.set_xlabel('RA')
-    ax1.set_ylabel('Dec')
-
-    # Control field (right subplot) - make background more transparent for comparison
-    ax2.imshow(control_rgb, origin='lower', alpha=0.3)
-    control_unique_labels = set(control_labels)
-    control_colors = plt.cm.Spectral(np.linspace(0, 1, len(control_unique_labels)))
-
-    for k, col in zip(control_unique_labels, control_colors):
-        if k == -1:
-            col = 'black'
-            marker = 'o'
-            size = 10
-            alpha = 0.3
-        else:
-            marker = 'o'
-            size = 20
-            alpha = 0.8
-
-        class_member_mask = (control_labels == k)
-        xy = control_galaxy_coords[class_member_mask]
-
-        if len(xy) > 0:
-            ax2.scatter(xy[:, 0], xy[:, 1], c='red', marker=marker, s=size, alpha=alpha,
-                       edgecolors='white', linewidth=0.5)
-
-    # Add NED sources in control field if any were found
-    if 'control_objects' in locals() and len(control_objects) > 0:
-        for obj in control_objects:
-            # Find coordinate columns
-            ra_col = None
-            dec_col = None
-
-            for col in control_objects.colnames:
-                col_lower = col.lower()
-                if ('ra' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'ra':
-                    ra_col = col
-                elif ('dec' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'dec':
-                    dec_col = col
-                elif 'right' in col_lower and 'ascension' in col_lower:
-                    ra_col = col
-                elif 'declination' in col_lower:
-                    dec_col = col
-
-            if ra_col and dec_col:
-                ned_coord = SkyCoord(ra=obj[ra_col], dec=obj[dec_col], unit='deg')
-                ned_pixel = control_cutout_wcs.world_to_pixel(ned_coord)
-
-                # Check if NED source is within the image bounds
-                if (0 <= ned_pixel[0] < control_rgb.shape[1] and
-                    0 <= ned_pixel[1] < control_rgb.shape[0]):
-                    ax2.scatter(ned_pixel[0], ned_pixel[1], c='none', marker='o', s=200,
-                               alpha=0.9, edgecolors='blue', linewidth=3,
-                               label=f"NED {obj['Type']} (z={obj['Redshift']:.3f})")
-            else:
-                # Try to use first two numeric columns as fallback
-                numeric_cols = []
-                for col in control_objects.colnames:
-                    try:
-                        float(obj[col])
-                        numeric_cols.append(col)
-                    except:
-                        pass
-                if len(numeric_cols) >= 2:
-                    try:
-                        ned_coord = SkyCoord(ra=obj[numeric_cols[0]], dec=obj[numeric_cols[1]], unit='deg')
-                        ned_pixel = control_cutout_wcs.world_to_pixel(ned_coord)
-                        if (0 <= ned_pixel[0] < control_rgb.shape[1] and
-                            0 <= ned_pixel[1] < control_rgb.shape[0]):
-                            ax2.scatter(ned_pixel[0], ned_pixel[1], c='none', marker='o', s=200,
-                                       alpha=0.9, edgecolors='blue', linewidth=3,
-                                       label=f"NED {obj['Type']} (z={obj['Redshift']:.3f})")
-                    except:
-                        pass
-
-    ax2.set_title('Control Field', fontsize=14, fontweight='bold')
-    ax2.set_xlabel('RA')
-    ax2.set_ylabel('Dec')
-
-    # Add legend for NED sources
-    if len(cluster_objects) > 0:
-        # Get unique NED types for legend
-        ned_types = set(obj['Type'] for obj in cluster_objects)
-        handles = []
-        labels = []
-
-        handles.append(plt.Line2D([0], [0], marker='o', color='none',
-                                linestyle='None', markersize=3,
-                                markeredgecolor='blue', markeredgewidth=2))
-        labels.append(f"NED Galaxy")
-
-
-        handles.append(plt.Line2D([0], [0], marker='o', color='red',
-                                linestyle='None', markersize=1, alpha=0.3))
-        labels.append(r'Euclid Galaxy in $\Delta$z')
-        # Add cluster member legend
-
-        handles.append(plt.Line2D([0], [0], marker='o', color='red',
-                                linestyle='None', markersize=8, alpha=0.8))
-        labels.append('Euclid Cluster Members')
-
-        fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 0.95),
-                  ncol=len(handles), fontsize=10)
+    handles = [
+        plt.Line2D([0], [0], marker='o', color='none', linestyle='None',
+                   markersize=8, markeredgecolor='blue', markeredgewidth=2),
+        plt.Line2D([0], [0], marker='o', color='red', linestyle='None',
+                   markersize=8, alpha=0.8),
+    ]
+    fig.legend(handles, ['NED Galaxy', 'Euclid Cluster Members'],
+               loc='upper center', bbox_to_anchor=(0.5, 0.95), ncol=2, fontsize=10)
 
     plt.tight_layout()
     plt.show()
 ```
 
-**Figure 5- Euclid and NED galaxy distributions in cluster and control fields.**
-Left: Cluster field showing Euclid-selected galaxies in the cluster redshift slice (red) and NED galaxies with spectroscopic redshift (blue).
-Right: matched control field showing no confirmed NED detection in the redshift slice of the cluster.
+```{code-cell} ipython3
+overlay_ned_sources(
+    cluster_objects, control_objects,
+    ned_ra_col, ned_dec_col, ned_coord_unit,
+    cluster_rgb, control_rgb,
+    cluster_cutout_wcs, control_cutout_wcs,
+    cluster_labels, cluster_galaxy_coords,
+    control_labels, control_galaxy_coords,
+)
+```
+
+**Figure 5. Euclid DBSCAN cluster members and NED sources in cluster and control fields.**
+Filled red circles are Euclid photometric cluster members identified by DBSCAN.
+Open blue circles are NED sources with spectroscopic redshifts in the cluster redshift slice; a blue circle overlapping a red dot indicates a source detected by both.
+The control field (right) contains no NED detections in the cluster redshift range, as expected for a blank field.
+
+As a final validation, we cross-match the Euclid photometric cluster members against NED sources that have spectroscopic redshifts and compare their redshift estimates directly.
+Agreement between the Euclid photo-z values and the NED spectroscopic redshifts would confirm that our photometric selection is picking up real cluster members.
 
 ```{code-cell} ipython3
 # Cross-match Euclid and NED sources for redshift comparison
@@ -1888,32 +1817,18 @@ euclid_redshifts = cluster_members_cluster_field['phz_median'].values
 
 # Get NED sources if available
 if 'cluster_objects' in locals() and len(cluster_objects) > 0:
-    # Find coordinate columns for NED
-    ra_col = None
-    dec_col = None
-
-    for col in cluster_objects.colnames:
-        col_lower = col.lower()
-        if ('ra' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'ra':
-            ra_col = col
-        elif ('dec' in col_lower and ('deg' in col_lower or 'degree' in col_lower)) or col_lower == 'dec':
-            dec_col = col
-        elif 'right' in col_lower and 'ascension' in col_lower:
-            ra_col = col
-        elif 'declination' in col_lower:
-            dec_col = col
-
-    if ra_col and dec_col:
-        # Create NED coordinates
-        ned_coords = SkyCoord(ra=cluster_objects[ra_col].data,
-                             dec=cluster_objects[dec_col].data, unit='deg')
+    if ned_ra_col and ned_dec_col:
+        ned_coords = SkyCoord(ra=cluster_objects[ned_ra_col].data,
+                             dec=cluster_objects[ned_dec_col].data, unit=ned_coord_unit)
         ned_redshifts = cluster_objects['Redshift'].data
 
         # Cross-match within 1 arcsec
         idx_ned, idx_euclid, d2d, d3d = search_around_sky(ned_coords, euclid_coords, 2*u.arcsec)
 
-        if len(idx_ned) > 0:
-            print(f"Found {len(idx_ned)} matches between NED and Euclid sources within 1 arcsec")
+        if len(idx_ned) == 0:
+            print("No cross-matches found between NED and Euclid sources within 2 arcsec.")
+        else:
+            print(f"Found {len(idx_ned)} matches between NED and Euclid sources within 2 arcsec")
 
             # Get matched redshifts
             ned_z_matched = ned_redshifts[idx_ned]
@@ -1925,7 +1840,6 @@ if 'cluster_objects' in locals() and len(cluster_objects) > 0:
             plt.plot([0, 1], [0, 1], 'r--', alpha=0.5, label='Perfect match')
 
             # Add cluster redshift reference lines
-            cluster_z = cluster['zPZWav']
             plt.axvline(cluster_z, color='orange', linestyle=':', alpha=0.7, label=f'Cluster z={cluster_z:.3f}')
             plt.axhline(cluster_z, color='orange', linestyle=':', alpha=0.7)
 
@@ -1950,11 +1864,19 @@ if 'cluster_objects' in locals() and len(cluster_objects) > 0:
             plt.show()
 ```
 
-**Figure 6- Euclid–NED redshift comparison for cross-matched galaxies within 1″**
+**Figure 6. Euclid–NED redshift comparison for cross-matched galaxies within 2″.** This figure only appears when at least one match is found.
 
 
-## About this Notebook
+## Acknowledgements
 
-**Updated:** 2026-03-20
+- [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
-**Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
+## About this notebook
+
+**Authors:** Shoubaneh Hemmati, Jessica Krick, Brigitta Sipőcz
+
+**Updated:** 2026-04-23
+
+**Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
+
+**Runtime:** As of the date above, this notebook takes about 2 minutes 40 seconds to run to completion on a machine with 64 GB RAM and 16 CPU (Fornax Large server). This runtime is dependent on archive servers which means runtime will vary for users.
