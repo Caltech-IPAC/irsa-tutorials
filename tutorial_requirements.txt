@@ -24,9 +24,8 @@ fsspec
 sep>=1.4
 h5py
 requests
-seaborn
 scikit-learn
-# indirect dependency brough in by the euclid clusters notebook
+# indirect dependency brough in by pandas in the euclid clusters notebook
 lxml
 # For supporting myst-based notebooks
 jupytext
