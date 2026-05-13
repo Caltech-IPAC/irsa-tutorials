@@ -6,10 +6,10 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.1
+    jupytext_version: 1.17.2
 kernelspec:
   name: python3
-  display_name: python3
+  display_name: Python 3 (ipykernel)
   language: python
 ---
 
@@ -337,11 +337,14 @@ lines = [
     (3.30, r"PAH 3.3 $\mu$m"),
     (4.05, r"Br-$\alpha$"),
 ]
+
+# plot spectrum and emission lines
 trans = mpl.transforms.blended_transform_factory(ax1.transData, ax1.transAxes)
 for wave, label in lines:
-    ax1.axvline(wave, linestyle=":", color="gray", linewidth=0.5)
-    ax1.text(wave, 0.97, label, transform=trans, fontsize=7,
-             va="top", ha="center", rotation=90, color="gray")
+    ax1.axvline(wave, ymin=0.3, linestyle=":", color="gray", linewidth=0.5)
+    ax1.text(wave, 0.05, label, transform=trans, fontsize=7,
+             va="bottom", ha="center", rotation=90, color="gray")
+
 ax1.tick_params(which="both", axis="both", labelsize=12)
 ax1.set_xlabel(r"Wavelength [$\mu$m]", fontsize=12)
 ax1.set_ylabel(r"Flux [mJy]", fontsize=12)
@@ -368,6 +371,40 @@ print(f"Continuum planes: {planes_continuum}")
 
 ```{note}
 For a target at higher redshift, replace `z = 0.0` with the known redshift. The observed PAH wavelength shifts to `3.3 * (1 + z)` microns, and the correct planes are selected automatically from `wave_tab`.
+```
+
+We can also visualize the chosen planes on the spectrum plot to for additional checking.
+
+```{code-cell} ipython3
+## Plot Spectrum (again, for checking planes)
+fig = plt.figure(figsize=(7,4))
+ax1 = fig.add_subplot(1,1,1)
+
+# spectrum
+ax1.plot(phot_table["wavelengths"] , phot_table["aperture_sum_bkgsub"], "o", markersize=3, markerfacecolor="black", markeredgecolor="black")
+
+# plot spectrum and emission lines
+trans = mpl.transforms.blended_transform_factory(ax1.transData, ax1.transAxes)
+for wave, label in lines:
+    ax1.axvline(wave, linestyle=":", color="gray", linewidth=0.5)
+    ax1.text(wave, 0.05, label, transform=trans, fontsize=7,
+             va="bottom", ha="center", rotation=90, color="gray")
+
+# indicated planes
+[ax1.text(phot_table["wavelengths"][ss-1] , phot_table["aperture_sum_bkgsub"][ss-1]*1.1, phot_table["plane"][ss-1] , fontsize=7, va="bottom", ha="center", rotation=90, color="blue") for ss in planes_feature]
+[ax1.text(phot_table["wavelengths"][ss-1] , phot_table["aperture_sum_bkgsub"][ss-1]*1.1, phot_table["plane"][ss-1] , fontsize=7, va="bottom", ha="center", rotation=90, color="red") for ss in planes_continuum]
+ax1.plot(phot_table["wavelengths"][np.asarray(planes_feature)-1] , phot_table["aperture_sum_bkgsub"][np.asarray(planes_feature)-1], "o", markersize=3, markerfacecolor="blue", markeredgecolor="blue")
+ax1.plot(phot_table["wavelengths"][np.asarray(planes_continuum)-1] , phot_table["aperture_sum_bkgsub"][np.asarray(planes_continuum)-1], "o", markersize=3, markerfacecolor="red", markeredgecolor="red")
+
+ax1.tick_params(which="both", axis="both", labelsize=12)
+ax1.set_xlabel(r"Wavelength [$\mu$m]", fontsize=12)
+ax1.set_ylabel(r"Flux [mJy]", fontsize=12)
+
+plt.show()
+```
+
+```{note}
+If you create maps for other lines, it might be worth checking the plane numbers on the spectrum directly to avoid contamination of other line when defining the continuum planes.
 ```
 
 For the map creation, we set up a handy function:
