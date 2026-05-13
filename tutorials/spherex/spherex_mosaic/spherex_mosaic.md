@@ -1,21 +1,21 @@
 ---
-jupyter:
-  jupytext:
-    cell_metadata_filter: -all
-    notebook_metadata_filter: all,-language_info
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.17.2
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
+jupytext:
+  cell_metadata_filter: -all
+  notebook_metadata_filter: all,-language_info
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
 ---
 
 # Understanding and Analyzing SPHEREx Mosaic Cubes 
 
++++
 
 ## 1. Learning Goals
 
@@ -24,6 +24,7 @@ jupyter:
 * Create a PAH $3.3\,{\rm \mu m}$ emission line map from a plane in the cube.
 * Obtain the corresponding GALEX FUV image from IRSA and overlay the PAH $3.3\,{\rm \mu m}$ map.
 
++++
 
 ## 2. SPHEREx Overview
 
@@ -39,16 +40,17 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 
 More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
++++
 
 ## 3. Imports
 The following packages must be installed to run this notebook.
 
-```python
+```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
 # !pip install astropy matplotlib numpy photutils reproject astroquery
 ```
 
-```python
+```{code-cell} ipython3
 import copy
 
 import numpy as np
@@ -71,7 +73,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 ```
 
-```python
+```{code-cell} ipython3
 ## Define some plotting formats
 def load_plotting_defaults():
     mpl.rcParams['xtick.minor.visible'] = True
@@ -106,7 +108,7 @@ To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https
 
 We first define the path to the mosaic cube.
 
-```python
+```{code-cell} ipython3
 fn_spherex = "M101_irsa.fits"
 ```
 
@@ -123,10 +125,11 @@ The header includes multiple WCS axes including a wavelength axis. In order to e
 In addition, some metadata on `NAXIS` is preserved in the header which gives an error later when we run the `reproject` algorithm. We therefore remove the wavelength axis here by using `hdr.pop('NAXIS3', None)`.
 ```
 
++++
 
 We can now open the cube taking into account the changes and issues we discussed above:
 
-```python
+```{code-cell} ipython3
 with fits.open(fn_spherex) as hdul:
     hdul.info()
 
@@ -149,7 +152,6 @@ with fits.open(fn_spherex) as hdul:
     hdr2.pop('NAXIS3', None) # remove wavelength axis
     cube_wcs = WCS(hdr2 , fobj=hdul, naxis=2)
     print(f"Loaded SPHEREx cube with pixel scale {pixscale_mosaic} arcsec/px")
-
 ```
 
 Note that the FITS has different layers.
@@ -160,11 +162,13 @@ Note that the FITS has different layers.
 * The `SPECTRAL_CHANNELS` layer summarizes some useful additional information on the spectral channels used to create the cube planes in a binary table.
 * The `WCS-WAVE` layer contains a binary table summarizing the wavelength information for each plane in the cube.
 
++++
 
 ## 5. Create a Quick Look Spectrum
 
 Once we have the cube loaded, let's generate a quick-look spectrum. This has two purposes: First, it shows how to extract a spectrum from a cube using the `PhotUtils` python package. Second, it allows us to visualize the wavelength channels (i.e., planes) which we will need to chose the planes to make the final PAH $3.3\,{\rm \mu m}$ map.
 
++++
 
 ### 5.1 Create a Wavelength Look-Up Table
 
@@ -172,7 +176,7 @@ Later we will measure an aperture flux on each plane (representing a different w
 
 We construct the wavelenght look-up table from the `WCS-WAVE` layer, which summarizes the wavelength information.
 
-```python
+```{code-cell} ipython3
 wave_tab = Table( [wave_tab_tmp["PLANE"][0],
                   np.asarray([ww[0] for ww in wave_tab_tmp["WAVELENGTHS"][0] ]),
                   np.asarray([ww[0] for ww in wave_tab_tmp["BANDWIDTHS"][0] ])],
@@ -182,11 +186,10 @@ wave_tab = Table( [wave_tab_tmp["PLANE"][0],
 
 Let's have a look at this table. The `bandwidths` correspond to the width of each wavelength channel.
 
-```python
+```{code-cell} ipython3
 wave_tab
 ```
 
-<!-- #region -->
 ### 5.2 Extract Spectrum
 
 To obtain the spectrum, we create a function that computes the sum of the fluxes in apertures and does a background subtraction using an annulus. Both aperture and annulus sizes are user-defined. We use the `PhotUtils` package for this (see [here](https://photutils.readthedocs.io/en/latest/user_guide/aperture.html) for more information).
@@ -197,9 +200,8 @@ Furthermore, the function creates a plot showing the collapsed cube and the aper
 ```{tip}
 This function provides a very simple aperture photometry with background subtraction. The method can be extended. For example the function does not calculate photometric errors.  
 ```
-<!-- #endregion -->
 
-```python
+```{code-cell} ipython3
 def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r_outer_px=100, makeplot=True):
     '''
     Create quick look spectrum from simple aperture photometry with background subtraction
@@ -305,7 +307,7 @@ def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r
     return(phot_all)
 ```
 
-```python
+```{code-cell} ipython3
 phot_table = measure_aperture_photometry_cube(cube = cube_img , r_aperture_px = 20, r_inner_px = 60, r_outer_px= 100, makeplot = True)
 phot_table
 ```
@@ -316,13 +318,13 @@ Note that are some NaN values in that table. This is because of missing data for
 
 Finally, we also add the wavelength from the wavelength look-up table that created above to the photometry table. This makes it easy to plot the spectrum afterwards.
 
-```python
+```{code-cell} ipython3
 phot_table["wavelengths"] = wave_tab["wavelengths"].copy()
 ```
 
 Now that we have all the information, we can finally plot the spectrum. In addition, we also add some prominent emission lines (sorted by wavelength in the legend) and indicate the cube plane numbers around the $3.3\,{\rm \mu m}$ PAH feature. These numbers will be needed later to create the emission line map.
 
-```python
+```{code-cell} ipython3
 ## Plot Spectrum
 fig = plt.figure(figsize=(7,4))
 ax1 = fig.add_subplot(1,1,1)
@@ -360,7 +362,7 @@ Note that the plane IDs are 1-indexed (i.e. start from 1). However, the cube is 
 
 For the cube creation, we set up a handy function:
 
-```python
+```{code-cell} ipython3
 def make_map(cube,
              planes_feature = [63],
              planes_continuum = [61,62,64,65]
@@ -389,13 +391,13 @@ def make_map(cube,
 
 And now we can easily extract the cube with the `planes_feature` and `planes_continuum` defined above.
 
-```python
+```{code-cell} ipython3
 img_map = make_map(cube_img , planes_feature = [63] , planes_continuum = [61,62,64,65])
 ```
 
 Finally, we can plot our PAH $3.3\,{\rm \mu m}$ SPHEREx map!
 
-```python
+```{code-cell} ipython3
 fig = plt.figure(figsize=(5,5))
 ax1 = fig.add_subplot(1,1,1)
 lims = np.nanpercentile(img_map.flatten() , q=(5,99.5))
@@ -408,6 +410,7 @@ plt.show()
 
 The map shows the location of the PAH $3.3\,{\rm \mu m}$ emission in the local galaxy M101. Specifically, the $3.3\,{\rm \mu m}$ feature is an observational indicator of very small carbonageous dust grains. You can see that the PAH emission is not continuous as it is tied to regions of star formation. To explore this further, we can correlate the PAH map with the GALEX far-UV (FUV) continuum map, which maps the UV emission of hot, young stars. This is done in the next section.
 
++++
 
 ## 7. Get Corresponding GALEX Image
 
@@ -415,16 +418,15 @@ Next we retrieve the GALEX image corresponding to the SPHEREx mosaic. This is sc
 
 We first obtain the position in coordinates at the center of the SPHEREx cube. Note that this is a 3d cube, so we have to take axes 1 and 2 (0-indexed) to obtain the coordinates!
 
-```python
+```{code-cell} ipython3
 radec = cube_wcs.all_pix2world(cube_img.shape[2]//2 , cube_img.shape[1]//2 , 0)
 print(f"Sky position at R.A. = {radec[0]} and Decl. = {radec[1]}")
 pos = SkyCoord(ra=radec[0], dec=radec[1], unit='deg')
-
 ```
 
 We then query IRSA at this position to obtain the GALEX FUV image. This data product is part of the [Spitzer Local Volume Legacy Survey](https://irsa.ipac.caltech.edu/data/SPITZER/LVL/overview.html), which observes many local galaxies. Accordingly, we query the collection `spitzer_lvl` and search for `science` images from GALEX in the `FUV` energy passband.
 
-```python
+```{code-cell} ipython3
 im_table = Irsa.query_sia(pos=(pos, 1 * u.arcsec), collection='spitzer_lvl')
 sel = np.where((im_table["dataproduct_subtype"] == "science") & (im_table["instrument_name"] == "GALEX") & (im_table["energy_bandpassname"] == "FUV") )[0]
 im_table[sel]
@@ -436,7 +438,7 @@ Once we have the table, we can access the URL of the image in the `access_url` c
 Note that we also update the header of the image once we created the cutout. This will be necessary when we reproject the GALEX image onto the SPHEREx mosaic pixel scale.
 ```
 
-```python
+```{code-cell} ipython3
 image_url = im_table['access_url'][sel][0]
 size = u.Quantity([40,40], u.arcmin)
 
@@ -453,7 +455,7 @@ with fits.open(image_url, memmap=False) as hdul:
 
 Additionally, we do some post-processing on the image to convert the pixel units to milli-Jansky, similar as the SPHEREx mosaic. Note that the zero points for the GALEX FUV and NUV images are different as defined above. We refer to the [Spitzer LVL documentation](https://irsa.ipac.caltech.edu/data/SPITZER/LVL/doc/LVL_DR5_v5.pdf) for more details on the GALEX pixel units.
 
-```python
+```{code-cell} ipython3
 zps = {"fuv":18.82, "nuv":20.08}
 img_galex_ab = -2.5*np.log10(img_galex) + zps["fuv"]
 img_galex = 10**(-0.4*(img_galex_ab - 23.9)) / 1e3 # AB -> ujy -> mjy
@@ -461,7 +463,7 @@ img_galex = 10**(-0.4*(img_galex_ab - 23.9)) / 1e3 # AB -> ujy -> mjy
 
 In a last step, we will have to reproject the GALEX image to the SPHEREx mosaic. This is necesary so we can overlap the GALEX image with the PAH $3.3\,{\rm \mu m}$ map that we have created above. For this, we use the `reproject` package.
 
-```python
+```{code-cell} ipython3
 img_galex_rep, fp = reproject_exact(input_data = (img_galex , hdr_galex), output_projection = cube_wcs )
 img_galex_rep[img_galex_rep == 0] = np.nan
 img_galex_rep = img_galex_rep / np.nansum(img_galex_rep) * np.nansum(img_galex)
@@ -469,7 +471,7 @@ img_galex_rep = img_galex_rep / np.nansum(img_galex_rep) * np.nansum(img_galex)
 
 Finally, we caon overlay the PAH emission on the GALEX map, which is our final result of this tutorial notebook.
 
-```python
+```{code-cell} ipython3
 fig = plt.figure(figsize=(9,9))
 ax1 = fig.add_subplot(1,1,1)
 
@@ -506,6 +508,7 @@ plt.show()
 The figure shows the PAH $3.3\,{\rm \mu m}$ emission (red contours) on top of the GALEX FUV continuum emission (blue). The inset shows a zoom in on the central regions.
 This comparison confirms that the PAH $3.3\,{\rm \mu m}$ emission generally follows the location of young hot stars. However, there are also differences (see zoom-in) where there are bright UV regions devoid of PAH emission. This may be the case where the strong ionization fields of young stars dissolve the small dust grains.
 
++++
 
 ## Acknowledgements
 
@@ -518,7 +521,3 @@ This comparison confirms that the PAH $3.3\,{\rm \mu m}$ emission generally foll
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** This notebook takes about 20 seconds to run to completion on a machine with 32GB RAM and 8 CPU.
-
-```python
-
-```
