@@ -14,21 +14,6 @@ jupyter:
     name: python3
 ---
 
----
-authors:
-- name: Andreas Faisst
-jupytext:
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.18.1
-kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
-  name: python3
----
-
 # Understanding and Analyzing SPHEREx Mosaic Cubes 
 
 
@@ -84,14 +69,11 @@ from reproject import reproject_exact
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+```
 
-
-## Plotting stuff
+```python
+## Define some plotting formats
 def load_plotting_defaults():
-    mpl.rcParams['font.size'] = 14
-    mpl.rcParams['axes.labelpad'] = 7
-    mpl.rcParams['xtick.major.pad'] = 7
-    mpl.rcParams['ytick.major.pad'] = 7
     mpl.rcParams['xtick.minor.visible'] = True
     mpl.rcParams['ytick.minor.visible'] = True
     mpl.rcParams['xtick.minor.top'] = True
@@ -104,21 +86,19 @@ def load_plotting_defaults():
     mpl.rcParams['ytick.minor.size'] = 3
     mpl.rcParams['xtick.direction'] = 'in'
     mpl.rcParams['ytick.direction'] = 'in'
-    #mpl.rc('text', usetex=True)
-    mpl.rc('font', family='serif')
     mpl.rcParams['xtick.top'] = True
     mpl.rcParams['ytick.right'] = True
-    mpl.rcParams['hatch.linewidth'] = 1.5
-    
 
 load_plotting_defaults()
 def_cols = plt.rcParams['axes.prop_cycle'].by_key()['color']
 ```
 
-## Open SPHEREx Mosaic Cube
+## 4. Open SPHEREx Mosaic Cube
 We first show how to open the SPHEREx mosaic cube and how to assign wavelengths to the different planes in the cube.
 
-Because the [IRSA mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) does not have an API, we have created and downloaded the mosaic already and added it to the `./data/` directory. 
+The mosaic cube was obtained from the [IRSA SPHEREx mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) GUI. The mosaic tool computes a cube (x,y,$\lambda$) from SPHEREx data at a given sky position provided by the user. In brief, the tool gathers all the SPHEREx spectral images at that position, extracts the pixels at similar wavelenghts, and reprojects them into cube layers at the respective wavelengths. The final cube has 102 wavelength layers from $0.75$ to $5\,{\rm \mu m}$. The user can also specify the spatial size of the cube.
+
+Because the IRSA SPHEREx mosaic tool does not have an API, we have created and downloaded the mosaic already and added it to the `./data/` directory. 
 
 ```{tip}
 To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) and type in *M101* in the `Output Mosaic Center` text field. For the size of the mosaic, choose 30 arcminutes for both axis. For the output mosaic pixel scale choose 9 arcseconds. 
@@ -174,13 +154,23 @@ with fits.open(fn_spherex) as hdul:
 
 Note that the FITS has different layers.
 
-* The `IMAGE` layer is the actual cube.
+* The `IMAGE` layer is the actual cube where the 3 dimensions are (x, y, wavelength).
 * The `NHITS` layer includes the number of images that were combined in the mosaic for each pixel.
 * The `FLAGS` layer includes some useful flags to identify outlier and overflow pixels.
 * The `SPECTRAL_CHANNELS` layer summarizes some useful additional information on the spectral channels used to create the cube planes in a binary table.
 * The `WCS-WAVE` layer contains a binary table summarizing the wavelength information for each plane in the cube.
 
-Next we construct a handy table from the `WCS-WAVE` layer summarizing the wavelength information. This will also allow us to later add wavelengths to the cube planes.
+
+## 5. Create a Quick Look Spectrum
+
+Once we have the cube loaded, let's generate a quick-look spectrum. This has two purposes: First, it shows how to extract a spectrum from a cube using the `PhotUtils` python package. Second, it allows us to visualize the wavelength channels (i.e., planes) which we will need to chose the planes to make the final PAH $3.3\,{\rm \mu m}$ map.
+
+
+### 5.1 Create a Wavelength Look-Up Table
+
+Later we will measure an aperture flux on each plane (representing a different wavelength) of the mosaic cube. In order to turn this aperture flux table into a spectrum, we need to track the relevant wavelength range of each plane. Furthermore, the wavelength look-up table will be used to construct the emission line map.
+
+We construct the wavelenght look-up table from the `WCS-WAVE` layer, which summarizes the wavelength information.
 
 ```python
 wave_tab = Table( [wave_tab_tmp["PLANE"][0],
@@ -197,9 +187,7 @@ wave_tab
 ```
 
 <!-- #region -->
-## Create a Quick Look Spectrum
-
-Once we have the cube loaded, let's generate a quick-look spectrum. This has two purposes: First, it shows how to extract a spectrum from a cube using the `PhotUtils` python package. Second, it allows us to visualize the wavelength channels (i.e., planes) which we will need to chose the planes to make the final PAH $3.3\,{\rm \mu m}$ map.
+### 5.2 Extract Spectrum
 
 To obtain the spectrum, we create a function that computes the sum of the fluxes in apertures and does a background subtraction using an annulus. Both aperture and annulus sizes are user-defined. We use the `PhotUtils` package for this (see [here](https://photutils.readthedocs.io/en/latest/user_guide/aperture.html) for more information).
 The measurements are done for each cube plane and the combined.
@@ -212,27 +200,60 @@ This function provides a very simple aperture photometry with background subtrac
 <!-- #endregion -->
 
 ```python
-def get_aperture_photometry(cube , r_aperture_px , r_inner_px , r_outer_px, MAKEPLOT):
+def measure_aperture_photometry_cube(cube,
+                            r_aperture_px = 20,
+                            r_inner_px = 60,
+                            r_outer_px = 100,
+                            MAKEPLOT = True
+                           ):
     '''
     Create quick look spectrum from simple aperture photometry with background subtraction
     from annulus.
 
-    PARAMETERS:
-    ===========
-    cube: input SPHEREx mosaic cube
-    r_aperture_px: Aperture for flux extraction in pixels
-    r_inner_px: Inner annulus bound for background calculation in pixels
-    r_outer_px: Outer annulus bound for background calculation in pixels
-    MAKEPLOT: Set to `True` if function should create a figure showing the collapsed
-              cube with overlay of aperture and annulli.
+    Parameters
+    ----------
+    cube : numpy.ndarray
+        Input SPHEREx mosaic cube.
+    r_aperture_px : float
+        Aperture for flux extraction in pixels.
+    r_inner_px : float
+        Inner annulus bound for background calculation in pixels.
+    r_outer_px : float
+        Outer annulus bound for background calculation in pixels.
+    MAKEPLOT : book
+        Set to `True` if function should create a figure showing the collapsed
+        cube with overlay of aperture and annulli.
 
-    RETURNS:
-    ========
-    A table including the photometry results (sum of aperture flux, plane ID, etc).
+    Return
+    -------
+    astropy.QTable
+        A table including the photometry results (sum of aperture flux, plane ID, etc).
     
     '''
 
-    def _helper(img , position, aperture, annulus_aperture): 
+    ## Define helper function to compute the photometry efficiently
+    def apphot_helper(img , position, aperture, annulus_aperture):
+        '''
+        Helper function which computes the photometry for a single image.
+        Helper function will be called in series to obtain photometry for all images/planes.
+
+        Parameters
+        ----------
+        img : numpy.ndarray
+            Two-dimensional image on which aperture photometry is performed.
+        position : tuple of float
+            Center position of the aperture.
+        aperture : photutils.CircularAperture
+            Aperture for photometry extraction.
+        annulus_aperture : photutils.CircularAnnulus
+            Annulus aperture for background estimation.
+        
+        Returns
+        -------
+        astropy.QTable
+            A table including the photometry results (sum of aperture flux, plane ID, etc).
+        
+        '''
         
         ## Calculate background
         sigclip = SigmaClip(sigma=3.0, maxiters=10)
@@ -242,12 +263,12 @@ def get_aperture_photometry(cube , r_aperture_px , r_inner_px , r_outer_px, MAKE
         total_bkg = bkg_mean * aperture_area
         
         ## Get photometry and subtract background
-        #error = img * 0.3
         phot_table = aperture_photometry(img, aperture)
         phot_table["aperture_sum_bkgsub"] = phot_table["aperture_sum"] - total_bkg
     
         return(phot_table)
 
+    
     ## Define position and apertures
     position = (cube.shape[1]//2,cube.shape[2]//2)
     aperture = CircularAperture(position, r=r_aperture_px)
@@ -255,7 +276,7 @@ def get_aperture_photometry(cube , r_aperture_px , r_inner_px , r_outer_px, MAKE
 
     
     ## Compute photometry (use helper function to iterate over planes)
-    phot_all = vstack( [_helper(cube[ii,:,:] , position, aperture, annulus_aperture) for ii in range(cube.shape[0])] ) # run all planes
+    phot_all = vstack( [apphot_helper(cube[ii,:,:] , position, aperture, annulus_aperture) for ii in range(cube.shape[0])] ) # run all planes
     phot_all["id"] = np.arange(cube.shape[0])+1 ## add plane numbers back
     phot_all.rename_column("id","plane")
 
@@ -281,17 +302,24 @@ def get_aperture_photometry(cube , r_aperture_px , r_inner_px , r_outer_px, MAKE
 
         ax1.tick_params(which="both", axis="both", color="white", labelsize=11)
 
+        ax1.set_xlabel(r"$x$ [px]")
+        ax1.set_ylabel(r"$y$ [px]")
+
         plt.show()
 
     return(phot_all)
 ```
 
 ```python
-phot_table = get_aperture_photometry(cube = cube_img , r_aperture_px = 20, r_inner_px = 60, r_outer_px= 100, MAKEPLOT = True)
+phot_table = measure_aperture_photometry_cube(cube = cube_img , r_aperture_px = 20, r_inner_px = 60, r_outer_px= 100, MAKEPLOT = True)
 phot_table
 ```
 
-Finally, we also add the wavelength from the table we created above to the photometry table. This makes it easy to plot the spectrum afterwards.
+```{note}
+Note that are some NaN values in that table. This is because of missing data for these specific planes. As the SPHEREx mission progresses, these missing data will be filled in.
+```
+
+Finally, we also add the wavelength from the wavelength look-up table that created above to the photometry table. This makes it easy to plot the spectrum afterwards.
 
 ```python
 phot_table["wavelengths"] = wave_tab["wavelengths"].copy()
@@ -327,7 +355,7 @@ ax1.set_ylabel(r"Flux [mJy]", fontsize=12)
 plt.show()
 ```
 
-## Create a PAH $3.3\,{\rm \mu m}$ Map
+## 6. Create a PAH $3.3\,{\rm \mu m}$ Map
 
 We now create the PAH $3.3\,{\rm \mu m}$ map from the cube. Using the spectrum plot above, we can identify the cube wavelength planes that include the PAH feature (plane 63) and the planes that include the continuum (planes 61/62 on the blue and 64/65 on the red). The emission line map is then simply created by subtracting the continuum planes from the plane containing the emission line.
 
@@ -338,18 +366,29 @@ Note that the plane IDs are 1-indexed (i.e. start from 1). However, the cube is 
 For the cube creation, we set up a handy function:
 
 ```python
-def make_map(cube , planes_feature , planes_continuum):
+def make_map(cube,
+             planes_feature = [63],
+             planes_continuum = [61,62,64,65]
+            ):
     '''
     Create SPHEREX map from planes. Note that the plane IDs are 1-indexed.
 
-    PARAMETERS:
-    ===========
-    cube: SPHEREx Mosaic cube
-    planes_feature: The cube planes including the emission line feature
-    planes_continuum: The cube planes including the continuum which will be subtracted
+    Parameters
+    ----------
+    cube : numpy.ndarray
+        SPHEREx Mosaic cube.
+    planes_feature : list of int
+        The cube planes including the emission line feature.
+    planes_continuum : list of int
+        The cube planes including the continuum which will be subtracted.
+
+    Returns
+    -------
+    numpy.ndarray
+        Two-dimensional map.
     
     '''
-    img_map = np.nansum( cube_img[np.asarray(planes_feature)-1 , :,:], axis=0 ) - np.nanmedian( cube_img[np.asarray(planes_continuum)-1 , :,:], axis=0 )
+    img_map = np.nansum( cube[np.asarray(planes_feature)-1 , :,:], axis=0 ) - np.nanmedian( cube[np.asarray(planes_continuum)-1 , :,:], axis=0 )
     return(img_map)
 ```
 
@@ -367,10 +406,15 @@ ax1 = fig.add_subplot(1,1,1)
 lims = np.nanpercentile(img_map.flatten() , q=(5,99.5))
 ax1.imshow(img_map , origin="lower", vmin=lims[0], vmax=lims[1], norm="linear", cmap="inferno")
 ax1.tick_params(which="both", axis="both", color="white", labelsize=11)
+ax1.set_xlabel(r"$x$ [px]")
+ax1.set_ylabel(r"$y$ [px]")
 plt.show()
 ```
 
-## Get Corresponding GALEX Image
+The map shows the location of the PAH $3.3\,{\rm \mu m}$ emission in the local galaxy M101. Specifically, the $3.3\,{\rm \mu m}$ feature is an observational indicator of very small carbonageous dust grains. You can see that the PAH emission is not continuous as it is tied to regions of star formation. To explore this further, we can correlate the PAH map with the GALEX far-UV (FUV) continuum map, which maps the UV emission of hot, young stars. This is done in the next section.
+
+
+## 7. Get Corresponding GALEX Image
 
 Next we retrieve the GALEX image corresponding to the SPHEREx mosaic. This is scientifically interesting as we can observe how the PAH emission correlates with UV emission of hot young stars. It is expected that there is an anticorrelation as the small PAH grain (traced by the $3.3\,{\rm \mu m}$ feature) are being dissociated in strong UV radiation fields.
 
@@ -431,18 +475,42 @@ img_galex_rep = img_galex_rep / np.nansum(img_galex_rep) * np.nansum(img_galex)
 Finally, we caon overlay the PAH emission on the GALEX map, which is our final result of this tutorial notebook.
 
 ```python
-fig = plt.figure(figsize=(7,7))
+fig = plt.figure(figsize=(9,9))
 ax1 = fig.add_subplot(1,1,1)
+
+## Main figure -------
 
 # plot PAH map
 lims = np.nanpercentile(img_galex_rep.flatten() , q=(5,99.5))
 ax1.imshow(img_galex_rep , origin="lower", vmin=lims[0], vmax=lims[1], norm="linear", cmap="Blues")
 
 # Overplot contours
-ax1.contour(img_map, levels=[0.2,0.4,0.5], colors="red", linewidths=0.5)
+ax1.contour(img_map, levels=[0.3,0.4,0.5], colors="red", linewidths=0.5)
+
+ax1.set_xlabel(r"$x$ [px]")
+ax1.set_ylabel(r"$y$ [px]")
+
+
+## Inset (zoom-in) -----
+axins = ax1.inset_axes([0.5,0.05,0.5,0.3])
+
+center = [125, 120] # center in pixels
+width = [70,50] # with in pixels
+img_galex_rep_zoom = img_galex_rep[int(center[1]-width[1]/2):int(center[1]+width[1]/2) , int(center[0]-width[0]/2):int(center[0]+width[0]/2)]
+img_map_zoom = img_map[int(center[1]-width[1]/2):int(center[1]+width[1]/2) , int(center[0]-width[0]/2):int(center[0]+width[0]/2)]
+
+# plot PAH map
+axins.imshow(img_galex_rep_zoom , origin="lower", vmin=lims[0], vmax=lims[1], norm="linear", cmap="Blues")
+
+# Overplot contours
+axins.contour(img_map_zoom, levels=[0.3,0.4,0.5], colors="red", linewidths=1)
 
 plt.show()
 ```
+
+The figure shows the PAH $3.3\,{\rm \mu m}$ emission (red contours) on top of the GALEX FUV continuum emission (blue). The inset shows a zoom in on the central regions.
+This comparison confirms that the PAH $3.3\,{\rm \mu m}$ emission generally follows the location of young hot stars. However, there are also differences (see zoom-in) where there are bright UV regions devoid of PAH emission. This may be the case where the strong ionization fields of young stars dissolve the small dust grains.
+
 
 ## Acknowledgements
 
@@ -454,7 +522,7 @@ plt.show()
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
-**Runtime:** Approximately 30 seconds.
+**Runtime:** This notebook takes about 20 seconds to run to completion on a machine with 32GB RAM and 8 CPU.
 
 ```python
 
