@@ -200,12 +200,7 @@ This function provides a very simple aperture photometry with background subtrac
 <!-- #endregion -->
 
 ```python
-def measure_aperture_photometry_cube(cube,
-                            r_aperture_px = 20,
-                            r_inner_px = 60,
-                            r_outer_px = 100,
-                            MAKEPLOT = True
-                           ):
+def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r_outer_px=100, makeplot=True):
     '''
     Create quick look spectrum from simple aperture photometry with background subtraction
     from annulus.
@@ -281,7 +276,7 @@ def measure_aperture_photometry_cube(cube,
     phot_all.rename_column("id","plane")
 
     ## Plot if asked for
-    if MAKEPLOT:
+    if makeplot:
 
         fig = plt.figure(figsize=(5,5))
         ax1 = fig.add_subplot(1,1,1)
@@ -311,7 +306,7 @@ def measure_aperture_photometry_cube(cube,
 ```
 
 ```python
-phot_table = measure_aperture_photometry_cube(cube = cube_img , r_aperture_px = 20, r_inner_px = 60, r_outer_px= 100, MAKEPLOT = True)
+phot_table = measure_aperture_photometry_cube(cube = cube_img , r_aperture_px = 20, r_inner_px = 60, r_outer_px= 100, makeplot = True)
 phot_table
 ```
 
