@@ -6,14 +6,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
+  display_name: python3
+  language: python
 ---
 
-# Understanding and Analyzing SPHEREx Mosaic Cubes 
+# Understanding and Analyzing SPHEREx Mosaic Cubes
 
 +++
 
@@ -112,22 +112,21 @@ We first define the path to the mosaic cube.
 fn_spherex = "M101_irsa.fits"
 ```
 
-Next, we open the image. Note that we convert here the image from MJy/sr to mJy using the relation 
+Next, we open the image and convert the flux units from MJy/sr to mJy:
 
-```
-[mJy] = [MJy/sr] x 23.5045 x (pixelscale)^2 / 1E3
-```
+$$[\rm{mJy}] = [\rm{MJy/sr}] \times 23.5045 \times (\rm{pixel\ scale})^2 / 1000$$
 
-In addition, we also adjust the `BUNIT` keyword in the header to reflect the changes.
+We also update the `BUNIT` keyword in the header to reflect this change.
 
-```{warning}
-The header includes multiple WCS axes including a wavelength axis. In order to extract the spatial WCS (which is used, for example, for plotting or reprojection), we have to pass `astropy.wcs.WCS()` the header *and* the HDU list as well as specify the axes (the first two): `wcs = WCS(hdr, fobj=hdul, naxis=2)`. For more information, see the [astropy WCS documentation](https://docs.astropy.org/en/stable/api/astropy.wcs.WCS.html).
-In addition, some metadata on `NAXIS` is preserved in the header which gives an error later when we run the `reproject` algorithm. We therefore remove the wavelength axis here by using `hdr.pop('NAXIS3', None)`.
+The cube's WCS describes three axes — right ascension, declination, and wavelength. For spatial operations like plotting and reprojection we only need the two sky axes, which we extract with `WCS.celestial`.
+
+```{note}
+We pass `fobj=hdul` when constructing the WCS so that astropy has access to the full FITS file, not just the header. This is necessary when the WCS solution references auxiliary data — such as distortion corrections or lookup tables — stored in other extensions of the file.
 ```
 
 +++
 
-We can now open the cube taking into account the changes and issues we discussed above:
+We can now open the cube:
 
 ```{code-cell} ipython3
 with fits.open(fn_spherex) as hdul:
@@ -146,11 +145,8 @@ with fits.open(fn_spherex) as hdul:
     cube_img = hdul["IMAGE"].data * 23.5045 * (pixscale_mosaic)**2 / 1e3 # Mjy/sr -> mjy
     cube_hdr['BUNIT'] = "mjy"
     
-    # get spatial WCS
-    hdr2 = cube_hdr.copy()
-    hdr2["NAXIS"] = 2
-    hdr2.pop('NAXIS3', None) # remove wavelength axis
-    cube_wcs = WCS(hdr2 , fobj=hdul, naxis=2)
+    # extract the 2D spatial WCS (dropping the spectral axis)
+    cube_wcs = WCS(cube_hdr, fobj=hdul).celestial
     print(f"Loaded SPHEREx cube with pixel scale {pixscale_mosaic} arcsec/px")
 ```
 
@@ -322,7 +318,7 @@ Finally, we also add the wavelength from the wavelength look-up table that creat
 phot_table["wavelengths"] = wave_tab["wavelengths"].copy()
 ```
 
-Now that we have all the information, we can finally plot the spectrum. In addition, we also add some prominent emission lines (sorted by wavelength in the legend) and indicate the cube plane numbers around the $3.3\,{\rm \mu m}$ PAH feature. These numbers will be needed later to create the emission line map.
+Now that we have all the information, we can plot the spectrum. We also mark some prominent near-infrared emission features for reference.
 
 ```{code-cell} ipython3
 ## Plot Spectrum
@@ -332,19 +328,20 @@ ax1 = fig.add_subplot(1,1,1)
 # spectrum
 ax1.plot(phot_table["wavelengths"] , phot_table["aperture_sum_bkgsub"], "o", markersize=3, markerfacecolor="black", markeredgecolor="black")
 
-# some emission lines
-ax1.axvline(1.28, linestyle=":", color="gray", linewidth=0.5, label=r"Pa-$\beta$")
-ax1.axvline(1.6, linestyle=":", color="gray", linewidth=0.5, label=r"$1.6\,{\rm \mu m}$ bump")
-ax1.axvline(1.87, linestyle=":", color="gray", linewidth=0.5, label=r"Pa-$\alpha$")
-ax1.axvline(2.36, linestyle=":", color="gray", linewidth=0.5, label=r"Br-$\beta$")
-ax1.axvline(3.3, linestyle=":", color="gray", linewidth=0.5, label=r"PAH $3.3\,{\rm \mu m}$")
-ax1.axvline(4.05, linestyle=":", color="gray", linewidth=0.5, label=r"Br-$\alpha$")
-
-# add plane numbers around PAH 3.3
-sel = np.where( (phot_table["wavelengths"] > 2.6) & (phot_table["wavelengths"] < 3.8) & (~np.isnan(phot_table["aperture_sum_bkgsub"])) )[0]
-[ax1.text(phot_table["wavelengths"][ss] , phot_table["aperture_sum_bkgsub"][ss]*1.1, phot_table["plane"][ss] , fontsize=7, va="bottom", ha="center", rotation=90) for ss in sel]
-
-ax1.legend(fontsize=8)
+# label emission lines directly on the plot
+lines = [
+    (1.28, r"Pa-$\beta$"),
+    (1.60, r"1.6 $\mu$m bump"),
+    (1.87, r"Pa-$\alpha$"),
+    (2.36, r"Br-$\beta$"),
+    (3.30, r"PAH 3.3 $\mu$m"),
+    (4.05, r"Br-$\alpha$"),
+]
+trans = mpl.transforms.blended_transform_factory(ax1.transData, ax1.transAxes)
+for wave, label in lines:
+    ax1.axvline(wave, linestyle=":", color="gray", linewidth=0.5)
+    ax1.text(wave, 0.97, label, transform=trans, fontsize=7,
+             va="top", ha="center", rotation=90, color="gray")
 ax1.tick_params(which="both", axis="both", labelsize=12)
 ax1.set_xlabel(r"Wavelength [$\mu$m]", fontsize=12)
 ax1.set_ylabel(r"Flux [mJy]", fontsize=12)
@@ -354,13 +351,26 @@ plt.show()
 
 ## 6. Create a PAH $3.3\,{\rm \mu m}$ Map
 
-We now create the PAH $3.3\,{\rm \mu m}$ map from the cube. Using the spectrum plot above, we can identify the cube wavelength planes that include the PAH feature (plane 63) and the planes that include the continuum (planes 61/62 on the blue and 64/65 on the red). The emission line map is then simply created by subtracting the continuum planes from the plane containing the emission line.
+We now create the PAH $3.3\,{\rm \mu m}$ map from the cube. The emission line map is created by subtracting the median of nearby continuum planes from the feature plane.
 
-```{warning}
-Note that the plane IDs are 1-indexed (i.e. start from 1). However, the cube is an *ndarray*, which is 0-indexed. If we want to access wavelength plane 63, we will have to chose `cube[63-1,:,:]`.
+We first identify the relevant planes by matching the observed PAH wavelength to the entries in `wave_tab`. For M101 the redshift is negligible, but the same code works for any target — just set `z` to the known redshift.
+
+```{code-cell} ipython3
+z = 0.0  # redshift of target
+pah_obs = 3.3 * (1 + z)  # observed PAH wavelength in microns
+
+pah_idx = np.argmin(np.abs(wave_tab["wavelengths"] - pah_obs))
+planes_feature = [wave_tab["plane"][pah_idx]]
+planes_continuum = list(wave_tab["plane"][[pah_idx - 2, pah_idx - 1, pah_idx + 1, pah_idx + 2]])
+print(f"Feature plane: {planes_feature}  ({wave_tab['wavelengths'][pah_idx]:.3f} μm)")
+print(f"Continuum planes: {planes_continuum}")
 ```
 
-For the cube creation, we set up a handy function:
+```{note}
+For a target at higher redshift, replace `z = 0.0` with the known redshift. The observed PAH wavelength shifts to `3.3 * (1 + z)` microns, and the correct planes are selected automatically from `wave_tab`.
+```
+
+For the map creation, we set up a handy function:
 
 ```{code-cell} ipython3
 def make_map(cube,
@@ -389,10 +399,10 @@ def make_map(cube,
     return(img_map)
 ```
 
-And now we can easily extract the cube with the `planes_feature` and `planes_continuum` defined above.
+With the planes identified, we can now build the map:
 
 ```{code-cell} ipython3
-img_map = make_map(cube_img , planes_feature = [63] , planes_continuum = [61,62,64,65])
+img_map = make_map(cube_img, planes_feature=planes_feature, planes_continuum=planes_continuum)
 ```
 
 Finally, we can plot our PAH $3.3\,{\rm \mu m}$ SPHEREx map!
