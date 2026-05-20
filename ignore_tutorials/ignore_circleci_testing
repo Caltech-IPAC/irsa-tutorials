@@ -1,9 +1,11 @@
 # ignore these as they run out of resources on CircleCI.
 # Note that we don't duplicate the listing of notebooks that are ignored for all types of testing.
 #
-tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey
 tutorials/simulated-data/roman_hlss_number_density
 tutorials/euclid/euclid-cloud-access
 tutorials/techniques-and-tools/cloud-access-intro
 tutorials/euclid/euclid_clusters_tutorial.md
+# There are fsps install issues on circleCI, remove once https://github.com/Caltech-IPAC/irsa-tutorials/issues/315 is resolved
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md

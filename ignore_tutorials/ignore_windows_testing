@@ -1,2 +1,4 @@
 # The way the notebooks use the multiprocessing module is known to not work on non-Linux
 tutorials/techniques-and-tools/Parallelize_Convolution
+# There are fsps install issues for windows, skipping the notebook
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
