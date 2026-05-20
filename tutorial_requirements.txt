@@ -30,6 +30,7 @@ astro-sedpy
 astro-prospector
 dynesty<2
 fsps
+seaborn
 # indirect dependency brough in by pandas in the euclid clusters notebook
 lxml
 # For supporting myst-based notebooks
