@@ -13,6 +13,9 @@ tutorials/simulated-data/cosmoDC2_TAP_access.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_demodata_20000808_instances.csv
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
 tutorials/simulated-data/roman_hlss_number_density.md
 tutorials/spitzer/plot_Spitzer_IRS_spectra.md
 tutorials/spherex/spherex_cutouts.md
