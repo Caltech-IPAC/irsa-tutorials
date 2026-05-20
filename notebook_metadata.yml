@@ -55,11 +55,11 @@
   section: Simulated Data
   description: Access OpenUniverse2024 Roman and Rubin images and catalogs.
 - title: OpenUniverse2024 TDE Light Curve
-  file: tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
+  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve.md
   section: Simulated Data
   description: Locate a simulated TDE, retrieve Roman images, and build a multi-epoch light curve.
 - title: OpenUniverse2024 SED Fitting
-  file: tutorials/simulated-data/OpenUniverse2024/SED_fit.md
+  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
   section: Simulated Data
   description: Fit spectral energy distributions for supernova host galaxies using Prospector.
 - title: OpenUniverse2024 Time Domain

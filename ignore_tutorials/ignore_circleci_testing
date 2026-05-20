@@ -1,8 +1,8 @@
 # ignore these as they run out of resources on CircleCI.
 # Note that we don't duplicate the listing of notebooks that are ignored for all types of testing.
 #
-tutorials/simulated-data/openuniverse2024_roman_simulated_timedomainsurvey
-tutorials/simulated-data/openuniverse2024_roman_simulated_wideareasurvey
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey
 tutorials/simulated-data/roman_hlss_number_density
 tutorials/euclid/euclid-cloud-access
 tutorials/techniques-and-tools/cloud-access-intro

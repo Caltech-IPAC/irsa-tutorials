@@ -11,7 +11,7 @@ tutorials/simulated-data/cosmoDC2_TAP_access.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
 tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
-tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
-tutorials/simulated-data/OpenUniverse2024/SED_fit.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve.md
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey.md
 ```
