@@ -74,9 +74,9 @@ project:
         - title: OpenUniverse2024 Quickstart
           file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
         - title: OpenUniverse2024 TDE Light Curve
-          file: tutorials/simulated-data/OpenUniverse2024/TDE_light_curve.md
+          file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve.md
         - title: OpenUniverse2024 SED Fitting
-          file: tutorials/simulated-data/OpenUniverse2024/SED_fit.md
+          file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
     - title: Techniques & Tools
       file: tutorials/techniques-and-tools/techniques.md
       children:
