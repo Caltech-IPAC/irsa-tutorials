@@ -1,4 +1,10 @@
 ---
+authors:
+- name: Andreas Faisst
+- name: Jessica Krick
+- name: "Brigitta Sip\u0151cz"
+- name: Troy Raen
+- name: Vandana Desai
 jupytext:
   text_representation:
     extension: .md
