@@ -74,10 +74,6 @@ import matplotlib as mpl
 ```
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 ## Define some plotting formats
 def load_plotting_defaults():
     mpl.rcParams['xtick.minor.visible'] = True
@@ -202,10 +198,6 @@ This function provides a very simple aperture photometry with background subtrac
 ```
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r_outer_px=100, makeplot=True):
     '''
     Create quick look spectrum from simple aperture photometry with background subtraction
