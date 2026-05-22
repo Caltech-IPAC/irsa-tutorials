@@ -11,4 +11,5 @@ tutorials/spherex/spherex_intro.md
 tutorials/spherex/spherex_cutouts.md
 tutorials/spherex/spherex_psf.md
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
+tutorials/spherex/spherex_mosaic.md
 ```

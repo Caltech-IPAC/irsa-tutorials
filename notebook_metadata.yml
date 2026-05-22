@@ -86,6 +86,10 @@
   file: tutorials/spherex/spherex_psf.md
   section: SPHEREx
   description: Understand how SPHEREx point spread function (PSF) information is organized and accessed.
+- title: Mosaic Cube
+  file: tutorials/spherex/spherex_mosaic.md
+  section: SPHEREx
+  description: Understand and analyze a SPHEREx Mosaic Cube downloaded from the SPHEREx Mosaic tool.
 - title: Source Discovery Tool
   file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
   section: SPHEREx

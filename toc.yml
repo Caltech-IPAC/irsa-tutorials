@@ -14,6 +14,8 @@ project:
           file: tutorials/spherex/spherex_psf.md
         - title: Source Discovery Tool
           file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
+        - title: Mosaic Cubes
+          file: tutorials/spherex/spherex_mosaic.md
     - title: Euclid
       file: tutorials/euclid/euclid.md
       children:

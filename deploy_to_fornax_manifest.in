@@ -34,6 +34,7 @@ tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/default
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/firefly_viz.py
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/sdt_utils.py
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool/source_extraction.py
+tutorials/spherex/spherex_mosaic.md
 tutorials/techniques-and-tools/cloud-access-intro.md
 tutorials/techniques-and-tools/Parallelize_Convolution.md
 tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
