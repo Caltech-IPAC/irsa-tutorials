@@ -56,8 +56,8 @@ This approach allows us to compare cluster and field galaxy properties and asses
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next line to install dependencies if needed.
-# !pip install pandas numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
+# Uncomment the next line to install dependencies if needed. Note that lxml is an upstream optional dependency for pandas.
+# !pip install pandas lxml numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
 ```
 
 ```{code-cell} ipython3
@@ -173,7 +173,7 @@ cluster_mer_images = cluster_mer_images[
 print(f"  Found {len(cluster_mer_images)} MER science images")
 ```
 
-A control field is a sky region with no known galaxy clusters, used to characterise the general field galaxy population for comparison with the cluster environment. 
+A control field is a sky region with no known galaxy clusters, used to characterise the general field galaxy population for comparison with the cluster environment.
 We select the control field by picking a random offset direction from a catalog cluster and rejecting any candidate control field that falls within `min_distance_arcmin` of any known cluster.
 
 The MER mosaic is organised into tiles, and positions near tile boundaries may overlap two tiles, which complicates downloading.
@@ -635,7 +635,7 @@ table_phz = 'euclid_q1_phz_photo_z'
 cutout_deg = im_cutout.to(u.deg).value
 ```
 
-We now query both fields for galaxies that fall within a narrow photometric redshift slice centered on the cluster redshift (±0.12). 
+We now query both fields for galaxies that fall within a narrow photometric redshift slice centered on the cluster redshift (±0.12).
 Querying the same redshift slice in both the cluster and control fields is what makes the overdensity comparison meaningful.
 We do a cursory overdensity calculation based on the number of galaxies in the cluster field over number of galaxies in the control field identified in the redshift slice.
 Then we show part of the cluster dataframe to see what information we have available.
@@ -929,7 +929,7 @@ In some examples, a “cluster” can be identified around a bright star; this i
 
 We analyze the color-magnitude properties of cluster and field galaxies to understand their stellar populations and star formation histories.
 The Y-H color vs H magnitude diagram reveals differences in galaxy properties between cluster and field environments.
-With the DBSCAN labels computed, we separate each field's galaxy catalog into cluster members (label ≥ 0) and field galaxies (label = −1). 
+With the DBSCAN labels computed, we separate each field's galaxy catalog into cluster members (label ≥ 0) and field galaxies (label = −1).
 Combining field galaxies from both the cluster and control fields gives us a larger baseline sample for comparison.
 
 ```{code-cell} ipython3
