@@ -56,8 +56,8 @@ This approach allows us to compare cluster and field galaxy properties and asses
 ## Imports
 
 ```{code-cell} ipython3
-# Uncomment the next line to install dependencies if needed. Note that lxml is an upstream optional dependency for pandas.
-# !pip install pandas lxml numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
+# Uncomment the next line to install dependencies if needed.
+# !pip install pandas[xml] numpy matplotlib s3fs tqdm astropy astroquery pyvo requests scikit-learn
 ```
 
 ```{code-cell} ipython3

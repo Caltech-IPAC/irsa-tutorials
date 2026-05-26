@@ -10,7 +10,7 @@ astroquery>=0.4.10
 scipy>=1.10
 pyarrow>=10.0.1
 hpgeom
-pandas>=1.5.2
+pandas[xml]>=1.5.2
 dask[distributed]
 lsdb>=0.6.6,<0.8
 psutil
@@ -31,8 +31,6 @@ astro-prospector
 dynesty<2
 fsps
 seaborn
-# indirect dependency brough in by pandas in the euclid clusters notebook
-lxml
 # For supporting myst-based notebooks
 jupytext
 # Making admonotions look nice for the myst notebooks
