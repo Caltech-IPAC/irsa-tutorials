@@ -20,6 +20,9 @@
     <loc>http://localhost:3000/spherex-source-discovery-tool-demo</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/spherex-mosaic</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/euclid</loc>
   </url>
   <url>
@@ -93,6 +96,15 @@
   </url>
   <url>
     <loc>http://localhost:3000/cosmodc2-tap-access</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/openuniverse2024-quickstart</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/openuniverse2024-tde-light-curve</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/openuniverse2024-sed-fit</loc>
   </url>
   <url>
     <loc>http://localhost:3000/techniques</loc>
