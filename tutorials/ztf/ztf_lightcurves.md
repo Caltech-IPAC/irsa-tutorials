@@ -1,7 +1,8 @@
 ---
 authors:
 - name: Jaladh Singhal
-- name: IRSA Data Science Team
+- name: Troy Raen
+- name: "Brigitta Sip\u0151cz"
 jupytext:
   text_representation:
     extension: .md
@@ -14,7 +15,7 @@ kernelspec:
   name: python3
 ---
 
-(ztf-lightcurves-lsdb)=
+(ztf-lightcurves)=
 # Access ZTF DR24 Light Curves from HATS Catalog
 
 +++
@@ -25,9 +26,9 @@ By the end of this tutorial, you will learn how to:
 
 - Open ZTF DR24 HATS catalogs for light curves and the Objects Table using `lsdb`.
 - Retrieve light curves for specific sources by ZTF object IDs using an index search.
-- Retrieve light curves for sources in a sky region using a cone search on RA and Dec.
+- Retrieve light curves for sources in a sky region using a cone search.
 - Cross-reference the Objects Table to enrich cone search results with per-source variability statistics.
-- Plot ZTF light curves filtered by variability.
+- Plot ZTF light curves (filtered by variability statistics).
 
 +++
 
@@ -38,7 +39,7 @@ The ZTF DR24 enhanced data products at IRSA include two [HATS](https://irsa.ipac
 - **Lightcurves catalog**: one row per ZTF object, with a nested column storing the full photometry time series — timestamps, magnitudes, uncertainties, and quality flags.
 - **Objects Table**: one row per ZTF object per band, with collapsed light curve metrics such as magnitude RMS, chi-squared variability statistic, number of good observations, and mean magnitude.
 
-These HATS catalogs offer a scalable, cloud-native alternative to the ZTF light curve service, enabling efficient access especially when the service is overloaded.
+These HATS catalogs offer a scalable, cloud-native alternative to the [ZTF light curve service](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html), enabling efficient access especially when the service is overloaded.
 The [lsdb](https://docs.lsdb.io/en/latest/index.html) Python library provides a convenient interface for working with HATS catalogs, including spatial queries and object-ID-based lookups.
 
 This tutorial covers two common entry points for accessing ZTF light curves:
@@ -56,7 +57,7 @@ For more context on ZTF DR24 data products, refer to the [ZTF DR24 release notes
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs "lsdb>=0.6.6,<0.8" pyarrow pandas numpy astropy matplotlib
+# !pip install s3fs "lsdb>=0.6.6,<0.8" pyarrow pandas astropy matplotlib
 ```
 
 ```{code-cell} ipython3
@@ -64,7 +65,6 @@ import s3fs
 import lsdb
 import pyarrow.parquet as pq
 from astropy.coordinates import SkyCoord
-import numpy as np
 import pandas as pd
 from astropy import units as u
 import os
@@ -120,7 +120,7 @@ s3.ls(f"{ztf_bucket}/{ztf_objects_hats_prefix}")
 ztf_objects_schema_path = "ztf_dr24_objects-hats/dataset/_common_metadata"  # ztf_dr24_objects-hats is the catalog name identified above
 ```
 
-## 2. Explore the Catalog Schemas
+## 2. Explore the Catalog Schema
 
 Before querying the catalogs, let's inspect what columns are available in each.
 We read schemas from the `_common_metadata` files, which also contain column metadata such as units and descriptions:
@@ -152,12 +152,8 @@ ztf_lc_schema_df
 ```
 
 Notice the `lightcurve` column — this is a **nested column** that stores the full photometric time series for each ZTF object.
-Each element of `lightcurve` is itself a table with columns including:
-
-- `hmjd`:  Heliocentric-based Modified Julian Date of each observation
-- `mag` / `magerr`: Magnitude and its uncertainty
-- `clrcoeff`: Linear color coefficient term from photometric calibration
-- `catflags`: Photometric/image quality flags encoded as bits (described in the [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) section 13.6; set `catflags == 0` to keep only clean epochs)
+Each element of `lightcurve` is itself a table with columns including `hmjd`, `mag`,`magerr`, `clrcoeff` and `catflags`.
+We save the list of columns interesting to us for later use when opening the catalog with `lsdb`:
 
 ```{code-cell} ipython3
 ztf_lc_columns = ["objectid", "objra", "objdec", "filterid", "nepochs", "lightcurve"]
@@ -197,7 +193,6 @@ In your workflow, these IDs might come from a previous query, a catalog crossmat
 
 ```{code-cell} ipython3
 object_ids = [686103400034440, 686103400106565]
-object_ids
 ```
 
 ```{code-cell} ipython3
@@ -206,6 +201,8 @@ ztf_lcs_by_id
 ```
 
 ### 3.4 Compute and Inspect the Results
+
+Now we execute the query we planned in previous steps by calling `compute()`. This is where the data is read into memory as a Pandas DataFrame.
 
 ```{code-cell} ipython3
 ztf_lcs_by_id_df = ztf_lcs_by_id.compute()
@@ -224,6 +221,7 @@ ztf_lcs_by_id_df['lightcurve'].iloc[0]
 ```
 
 ### 3.5 Plot Light Curves
+When plotting the light curves, it's important to note that we apply `catflags == 0` filter to keep only clean epochs (as described in the [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) section 13.6).
 
 ```{code-cell} ipython3
 fig, axs = plt.subplots(len(ztf_lcs_by_id_df), 1,
@@ -234,7 +232,7 @@ if len(ztf_lcs_by_id_df) == 1:
     axs = [axs]
 
 for ax, (_, row) in zip(axs, ztf_lcs_by_id_df.iterrows()):
-    lc = row['lightcurve'].query("catflags == 0")
+    lc = row['lightcurve'].query("catflags == 0")  # to keep only clean epochs
     title = f"ZTF Object {row['objectid']}  (RA={row['objra']:.4f}°, Dec={row['objdec']:.4f}°)"
     pts = ax.plot(lc['hmjd'], lc['mag'], '.', markersize=4, zorder=3)
     ax.errorbar(
@@ -256,10 +254,10 @@ If you have sky coordinates and want all ZTF sources within a given area, use a 
 
 ### 4.1 Define a Spatial Filter
 
-We use the same sky position as the [ZTF light curve API docs](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html) positional example:
+We use the same sky position as the [ZTF light curve API docs](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html) positional example but you can specify any coordinates and search radius you want:
 
 ```{code-cell} ipython3
-target = SkyCoord(ra=298.0025, dec=29.87147, unit="deg")  # same as ZTF light curve API docs positional example
+target = SkyCoord(ra=298.0025, dec=29.87147, unit="deg")
 search_radius = 5 * u.arcsec
 ```
 
@@ -276,10 +274,13 @@ spatial_filter = lsdb.ConeSearch(
 ### 4.2 Define Row Filters
 
 In addition to the spatial filter, we can pre-filter rows using Parquet column statistics.
-Here we keep only objects with more than 100 epochs, focusing on well-sampled light curves:
+Here we keep only objects with more than 50 epochs, focusing on well-sampled light curves:
 
 ```{code-cell} ipython3
-row_filters = [["nepochs", ">", 100]]
+row_filters = [
+    ["nepochs", ">", 50],
+    # additional filters can be added here if desired
+    ]
 ```
 
 ### 4.3 Open the Filtered Light Curves Catalog
@@ -300,7 +301,7 @@ Notice that only the partitions overlapping the cone are included, avoiding read
 
 ### 4.4 Compute and Inspect the Results
 
-Now we execute the query by calling `compute()`. The ZTF DR24 LC catalog stores full nested light curves per HATS partition — each partition can be several gigabytes regardless of cone size. We create a Dask client with `memory_limit=None` to avoid per-worker memory caps:
+Now we execute the query by calling `compute()`. The ZTF DR24 LC catalog stores full nested light curves per HATS partition. We wrap the compute call in a Dask client to parallelize if multiple partitions are involved, and to monitor progress in the Dask dashboard.
 
 ```{code-cell} ipython3
 def get_nworkers(catalog):
@@ -315,11 +316,11 @@ with Client(n_workers=get_nworkers(ztf_lc_cone),
 ```
 
 ```{code-cell} ipython3
-ztf_lc_cone_df
+print(f"Found {len(ztf_lc_cone_df)} ZTF light curves for the search criteria.")
 ```
 
 ```{code-cell} ipython3
-print(f"Found {len(ztf_lc_cone_df)} ZTF light curves for the search criteria.")
+ztf_lc_cone_df.head(5)
 ```
 
 Each row corresponds to one ZTF object. The `lightcurve` column contains a nested DataFrame per object:
@@ -331,7 +332,7 @@ ztf_lc_cone_df['lightcurve'].iloc[0]
 ## 5. [Optional] Look Up Additional Info from the Objects Table
 
 ```{note}
-This section is optional — skip it if you only need the raw light curves from section 4.
+This section is optional — skip it if you don't need additional information beyond the raw light curves from section 4.
 ```
 
 ### 5.1 Explore the Objects Table Schema
@@ -347,7 +348,7 @@ ztf_objects_schema = pq.read_schema(
 pq_schema_to_df(ztf_objects_schema)
 ```
 
-We'll select a subset of columns useful for characterizing variable sources:
+We'll select a subset of columns useful for characterizing and annotating variable sources:
 
 ```{code-cell} ipython3
 ztf_objects_columns = ['oid', 'ra', 'dec', 'filtercode', 'ngoodobsrel', 'chisq', 'magrms', 'meanmag', 'medianabsdev']
@@ -355,7 +356,7 @@ ztf_objects_columns = ['oid', 'ra', 'dec', 'filtercode', 'ngoodobsrel', 'chisq',
 
 ### 5.2 Open the Objects Table
 
-We reuse the same `spatial_filter` from section 4 to retrieve Objects Table entries for the same sky region:
+We reuse the same `spatial_filter` from section 4 to retrieve Objects Table entries for the same sky region. This is important for ensuring we only retrieve rows relevant to the light curves we got from the position search.
 
 ```{code-cell} ipython3
 ztf_objects_cone = lsdb.open_catalog(
@@ -381,12 +382,11 @@ ztf_objects_cone_df
 
 ### 5.4 Merge Objects Table Info into Light Curves
 
-We join the Objects Table with the position search light curves on the shared object ID:
+We merge the Objects Table with the position search light curves on the shared object ID via an inner join:
 
 ```{code-cell} ipython3
-objects_cols_to_merge = ['oid', 'filtercode', 'ngoodobsrel', 'chisq', 'magrms', 'meanmag', 'medianabsdev']
 combined_df = ztf_lc_cone_df.merge(
-    ztf_objects_cone_df[objects_cols_to_merge],
+    ztf_objects_cone_df,
     left_on='objectid',
     right_on='oid',
     how='inner'
@@ -396,11 +396,17 @@ combined_df
 
 ## 6. Plot Most Variable Light Curves from the Position Search
 
-Using the `chisq` column from the Objects Table, we select the top 3 most variable sources from the position search and plot their light curves annotated with summary statistics:
+Using the `chisq` column, we rudimentarily select the top 3 most variable sources from the position search results combined with objects table.
 
 ```{code-cell} ipython3
+# most_variable = ztf_lc_cone_df  # uncomment if you skipped section 5, and comment the line below
 most_variable = combined_df.nlargest(3, 'chisq')
+most_variable
+```
 
+Then we plot their light curves annotated with summary statistics:
+
+```{code-cell} ipython3
 fig, axs = plt.subplots(len(most_variable), 1,
                         figsize=(10, 4 * len(most_variable)),
                         constrained_layout=True)
@@ -409,7 +415,7 @@ if len(most_variable) == 1:
     axs = [axs]
 
 for ax, (_, row) in zip(axs, most_variable.iterrows()):
-    lc = row['lightcurve'].query("catflags == 0")
+    lc = row['lightcurve'].query("catflags == 0")  # to keep only clean epochs
     title = (f"ZTF Object {row['objectid']}  ({row['filtercode']} band)\n"
              f"χ²={row['chisq']:.2f},  RMS mag={row['magrms']:.4f},  "
              f"mean mag={row['meanmag']:.3f},  N good obs={int(row['ngoodobsrel'])}")
@@ -429,6 +435,8 @@ plt.show()
 
 ## About this notebook
 
-Updated: 2026-05-26
+**Updated:** 2026-05-27
 
-Contact: the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or to report problems.
+**Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or to report problems.
+
+**AI Acknowledgement:** This tutorial was developed with the assistance of AI tools.
