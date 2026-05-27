@@ -1818,7 +1818,7 @@ euclid_coords = SkyCoord(ra=cluster_members_cluster_field['ra'],
 euclid_redshifts = cluster_members_cluster_field['phz_median'].values
 
 # Get NED sources if available
-if 'cluster_objects' in locals() and len(cluster_objects) > 0:
+if cluster_objects is not None and len(cluster_objects) > 0:
     if ned_ra_col and ned_dec_col:
         ned_coords = SkyCoord(ra=cluster_objects[ned_ra_col].data,
                              dec=cluster_objects[ned_dec_col].data, unit=ned_coord_unit)
