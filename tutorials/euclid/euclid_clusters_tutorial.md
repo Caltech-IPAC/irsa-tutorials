@@ -43,7 +43,7 @@ This approach allows us to compare cluster and field galaxy properties and asses
 
 ### Input
 
-- Euclid Q1 cluster catalog (PZWav detections from [arXiv:2503.19196](https://arxiv.org/abs/2503.19196))
+- Euclid Q1 cluster catalog (PZWav and AMICO detections from [arXiv:2503.19196](https://arxiv.org/abs/2503.19196))
 - Euclid Q1 MER multi-band mosaic images
 - Euclid Q1 photometric galaxy catalogs
 
@@ -105,7 +105,7 @@ u.add_enabled_units([Number])
 
 The Euclid Q1 cluster catalog from [arXiv:2503.19196](https://arxiv.org/abs/2503.19196) is not available as a direct download, so we read it from the HTML-rendered version of the paper.
 The HTML table sometimes contains Unicode formatting artifacts in the coordinate columns (e.g., typographic minus signs in negative declinations), which we normalize before use.
-The catalog contains 35 galaxy clusters with photometric redshifts, coordinates, and richness estimates from the PZWav algorithm.
+The catalog contains 35 galaxy clusters with photometric redshifts, coordinates, and richness estimates from the PZWav  and AMICO algorithms.
 
 ```{code-cell} ipython3
 # Load the Euclid Q1 cluster catalog (https://arxiv.org/abs/2503.19196)
