@@ -6,5 +6,3 @@ tutorials/wise/wise-allwise-catalog-demo
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo
 # We run into build timeouts on GHA, ignore this tutorial as a temporary workaround for https://github.com/Caltech-IPAC/irsa-tutorials/issues/317
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve
-# TMP workaround for #321, there are a lot of untreated issues for unavailable ned
-tutorials/euclid/euclid_clusters_tutorial
