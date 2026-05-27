@@ -3,4 +3,6 @@ tutorials/techniques-and-tools/Parallelize_Convolution
 # Uses about 10G of memory which doesn't leave enough for other notebooks
 tutorials/wise/wise-allwise-catalog-demo
 # Requires source extractor, which requires a conda install
-tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
+tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo
+# We run into build timeouts on GHA, ignore this tutorial as a temporary workaround for https://github.com/Caltech-IPAC/irsa-tutorials/issues/317
+tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve
