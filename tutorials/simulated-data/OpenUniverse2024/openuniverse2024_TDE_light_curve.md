@@ -8,7 +8,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.1
+    jupytext_version: 1.19.3
 kernelspec:
   name: python3
   display_name: python3
@@ -64,7 +64,7 @@ import numpy as np
 import s3fs
 from matplotlib import pyplot as plt
 import pandas as pd
-from photutils.aperture import SkyCircularAperture, aperture_photometry
+from photutils.aperture import SkyCircularAperture, SkyCircularAnnulus, aperture_photometry, ApertureStats
 from scipy.ndimage import rotate
 from astropy import units as u
 from astropy.coordinates import SkyCoord
@@ -177,6 +177,7 @@ def show_gallery(files, max_images=9):
             vmin, vmax = np.nanpercentile(data, [5, 99])
             # Show image in grayscale with good contrast
             axes[i].imshow(data, origin="lower", cmap="gray", vmin=vmin, vmax=vmax)
+            del data
             # Title: just the base filename
             axes[i].set_title(f.split("/")[-1], fontsize=8)
             # Remove tick marks and labels
@@ -193,7 +194,7 @@ def show_gallery(files, max_images=9):
 
 ```{code-cell} ipython3
 # Number of example images to display. Increase to see more of the available images.
-n_gallery_images = 6
+n_gallery_images = 4
 show_gallery(files, max_images=n_gallery_images)
 ```
 
@@ -423,10 +424,6 @@ The first function, `run_aperture_photometry()`, performs simple circular apertu
 The two plotting functions then compile these measurements into time-ordered plots showing how the observed flux evolves across multiple visits, providing a first look at temporal variability that could signal transient activity or host-galaxy changes.
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 def run_aperture_photometry(host_galaxy, bandname, image_column="image_filenames", aperture_radius=1.0):
     """
     Perform circular aperture photometry on a list of FITS images.
@@ -480,15 +477,18 @@ def run_aperture_photometry(host_galaxy, bandname, image_column="image_filenames
             # Check output (optional)
             #print(phot_table)
 
-            # Background estimate (median of finite pixels)
-            background = np.nanmedian(data)
+            # Background estimate from a local annulus around the source
+            annulus = SkyCircularAnnulus(sky_position, r_in=3 * aperture_radius * u.arcsec,
+                                                       r_out=6 * aperture_radius * u.arcsec)
+            annulus_stats = ApertureStats(data, annulus, wcs=wcs)
+            background = annulus_stats.median
 
             # Subtract background from aperture sum
             aperture_area = pixel_aperture.area
             flux = phot_table['aperture_sum'][0] - background * aperture_area
 
-            # Approximate uncertainty from background rms
-            flux_err = np.nanstd(data) * np.sqrt(aperture_area)
+            # Approximate uncertainty from background rms in annulus
+            flux_err = annulus_stats.std * np.sqrt(aperture_area)
 
             # Observation mid-time from MJD-OBS
             mjd_obs = header.get('MJD-OBS', None)
@@ -719,6 +719,7 @@ def make_cutout(fname, ra, dec, size=100):
         except Exception as e:
             print(f"Error creating cutout for {fname}: {e}")
             return None
+        del img
 
         # Step 2: determine rotation angle to place North at the top.
         # Invert the CD matrix to find the North direction in pixel space.
@@ -830,7 +831,7 @@ def cutout_gallery(image_filenames, mjd_list, ra, dec, aperture_radius_pix_list,
 # make cutout gallery of the host galaxy
 
 # Number of cutout images to display. Increase to show more epochs.
-n_cutout_images = 6
+n_cutout_images = 4
 
 single_gal = host_galaxy.iloc[0]
 
