@@ -25,9 +25,9 @@ kernelspec:
 By the end of this tutorial, you will learn how to:
 
 - Open ZTF DR24 HATS catalogs for light curves and the Objects Table using `lsdb`.
-- Retrieve light curves for specific sources by ZTF object IDs using an index search.
-- Retrieve light curves for sources in a sky region using a cone search.
-- Cross-reference the Objects Table to enrich cone search results with per-source variability statistics.
+- Retrieve light curves for specific objects by ZTF object IDs using an index search.
+- Retrieve light curves for objects in a sky region using a cone search.
+- Cross-reference the Objects Table to enrich cone search results with per-object variability statistics.
 - Plot ZTF light curves (filtered by variability statistics).
 
 +++
@@ -37,7 +37,7 @@ By the end of this tutorial, you will learn how to:
 The ZTF DR24 enhanced data products at IRSA include two [HATS](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats) (Hierarchical Adaptive Tiling Scheme) catalogs hosted on AWS S3:
 
 - **Lightcurves catalog**: one row per ZTF object, with a nested column storing the full photometry time series — timestamps, magnitudes, uncertainties, and quality flags.
-- **Objects Table**: one row per ZTF object per band, with collapsed light curve metrics such as magnitude RMS, chi-squared variability statistic, number of good observations, and mean magnitude.
+- **Objects Table**: one row per ZTF object, with collapsed light curve metrics such as magnitude RMS, chi-squared variability statistic, number of good observations, and mean magnitude.
 
 These HATS catalogs offer a scalable, cloud-native alternative to the [ZTF light curve service](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html), enabling efficient access especially when the service is overloaded.
 The [lsdb](https://docs.lsdb.io/en/latest/index.html) Python library provides a convenient interface for working with HATS catalogs, including spatial queries and object-ID-based lookups.
@@ -83,8 +83,8 @@ From IRSA's [cloud data access page](https://irsa.ipac.caltech.edu/cloud_access/
 
 ```{code-cell} ipython3
 ztf_bucket = "ipac-irsa-ztf"
-ztf_lc_hats_prefix = "ztf/enhanced/dr24/lc/hats" # Light curves catalog
-ztf_objects_hats_prefix = "ztf/enhanced/dr24/objects/hats" # Objects table
+ztf_lc_hats_prefix = "ztf/enhanced/dr24/lc/hats" # Lightcurves catalog
+ztf_objects_hats_prefix = "ztf/enhanced/dr24/objects/hats" # Objects Table
 ```
 
 [s3fs](https://s3fs.readthedocs.io/en/latest/) provides a filesystem-like Python interface for AWS S3 buckets.
@@ -94,7 +94,7 @@ First, we create an S3 client:
 s3 = s3fs.S3FileSystem(anon=True)
 ```
 
-Let's list the contents of the ZTF DR24 lightcurves HATS **collection**:
+Let's list the contents of the ZTF DR24 Lightcurves HATS **Collection**:
 
 ```{code-cell} ipython3
 s3.ls(f"{ztf_bucket}/{ztf_lc_hats_prefix}")
@@ -151,7 +151,7 @@ ztf_lc_schema_df = pq_schema_to_df(ztf_lc_schema)
 ztf_lc_schema_df
 ```
 
-Notice the `lightcurve` column — this is a **nested column** that stores the full photometric time series for each ZTF object.
+Notice the `lightcurve` column — this is a **[nested](https://nested-pandas.readthedocs.io/) column** that stores the full photometric time series for each ZTF object.
 Each element of `lightcurve` is itself a table with columns including `hmjd`, `mag`,`magerr`, `clrcoeff` and `catflags`.
 We save the list of columns interesting to us for later use when opening the catalog with `lsdb`:
 
@@ -337,7 +337,7 @@ This section is optional — skip it if you don't need additional information be
 
 ### 5.1 Explore the Objects Table Schema
 
-The Objects Table contains per-band summary statistics for each ZTF source.
+The Objects Table contains summary statistics for each ZTF object.
 Let's inspect its schema to identify columns of interest:
 
 ```{code-cell} ipython3
@@ -346,6 +346,11 @@ ztf_objects_schema = pq.read_schema(
     filesystem=s3
 )
 pq_schema_to_df(ztf_objects_schema)
+```
+
+```{important} `objectid` == `oid`
+ZTF's object ID column is named `objectid` in Lightcurves and `oid` in Objects Table.
+Despite this difference, the two columns are the same and can be used to join the catalogs. 
 ```
 
 We'll select a subset of columns useful for characterizing and annotating variable sources:
@@ -416,7 +421,7 @@ if len(most_variable) == 1:
 
 for ax, (_, row) in zip(axs, most_variable.iterrows()):
     lc = row['lightcurve'].query("catflags == 0")  # to keep only clean epochs
-    title = (f"ZTF Object {row['objectid']}  ({row['filtercode']} band)\n"
+    title = (f"ZTF Object {row['objectid']}  ({row['filtercode']} filter)\n"
              f"χ²={row['chisq']:.2f},  RMS mag={row['magrms']:.4f},  "
              f"mean mag={row['meanmag']:.3f},  N good obs={int(row['ngoodobsrel'])}")
     pts = ax.plot(lc['hmjd'], lc['mag'], '.', markersize=4, zorder=3)
