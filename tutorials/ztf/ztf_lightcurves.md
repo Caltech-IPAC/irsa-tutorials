@@ -44,10 +44,10 @@ The [lsdb](https://docs.lsdb.io/en/latest/index.html) Python library provides a 
 
 This tutorial covers two common entry points for accessing ZTF light curves:
 
-1. **Object IDs**: you have specific ZTF object IDs — from a previous query, a catalog crossmatch, or a published source list — and want their light curves directly.
-2. **RA/Dec**: you have sky coordinates and want all ZTF sources within a given radius.
+1. **Object IDs**: you have specific ZTF object IDs — from a previous query, a catalog crossmatch, or a published object list — and want their light curves directly.
+2. **RA/Dec**: you have sky coordinates and want all ZTF objects within a given radius.
 
-Both approaches are demonstrated below. An optional section then shows how to join the position search results with the Objects Table to select and plot the most variable sources using robust variability statistics.
+Both approaches are demonstrated below. An optional section then shows how to join the position search results with the Objects Table to select and plot the most variable objects using robust variability statistics.
 
 For more context on ZTF DR24 data products, refer to the [ZTF DR24 release notes](https://irsa.ipac.caltech.edu/data/ZTF/docs/releases/ztf_release_notes_latest) and [explanatory supplement](https://irsa.ipac.caltech.edu/data/ZTF/docs/ztf_explanatory_supplement.pdf) at IRSA.
 
@@ -101,7 +101,7 @@ s3.ls(f"{ztf_bucket}/{ztf_lc_hats_prefix}")
 ```
 
 In this collection, you can see collection properties, catalog, index table, and margin cache in order.
-You can explore more directories to see how this HATS collection follows the directory structure described in IRSA's documentation on [HATS partitioning and HATS Collections](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats).
+You can explore more directories to see how this HATS Collection follows the directory structure described in IRSA's documentation on [HATS partitioning and HATS Collections](https://irsa.ipac.caltech.edu/docs/parquet_catalogs/#hats).
 
 As per the documentation, the Parquet file containing the schema for this catalog is stored in `dataset/_common_metadata`.
 Let's save its path for later use (using the catalog name identified from the listing above):
@@ -110,7 +110,7 @@ Let's save its path for later use (using the catalog name identified from the li
 ztf_lc_schema_path = "ztf_dr24_lc-hats/dataset/_common_metadata"  # ztf_dr24_lc-hats is the catalog name identified above
 ```
 
-Similarly, let's list the ZTF DR24 Objects Table HATS collection:
+Similarly, let's list the ZTF DR24 Objects Table HATS Collection:
 
 ```{code-cell} ipython3
 s3.ls(f"{ztf_bucket}/{ztf_objects_hats_prefix}")
@@ -164,9 +164,9 @@ ztf_lc_columns = ["objectid", "objra", "objdec", "filterid", "nepochs", "lightcu
 If you have specific ZTF object IDs, you can retrieve their light curves directly using an index search — no spatial filter needed.
 This is the fastest approach for targeted lookups.
 
-### 3.1 Open the Light Curves Catalog
+### 3.1 Open the Lightcurves Catalog
 
-We open the ZTF DR24 light curves HATS catalog. No data is read yet — lsdb opens catalogs [lazily](https://docs.lsdb.io/en/latest/tutorials/lazy_operations.html):
+We open the ZTF DR24 Lightcurves HATS catalog. No data is read yet — lsdb opens catalogs [lazily](https://docs.lsdb.io/en/latest/tutorials/lazy_operations.html):
 
 ```{code-cell} ipython3
 ztf_lc_catalog = lsdb.open_catalog(
@@ -178,7 +178,7 @@ ztf_lc_catalog
 
 ### 3.2 Identify the Index Column
 
-The ZTF DR24 light curves HATS catalog ships with an ancillary index table that enables fast lookups by object ID.
+The ZTF DR24 Lightcurves HATS catalog ships with an ancillary index table that enables fast lookups by object ID.
 Let's identify which column is indexed:
 
 ```{code-cell} ipython3
@@ -189,7 +189,7 @@ print(f"Index column: {ztf_lc_idx_column}")
 ### 3.3 Perform an Index Search
 
 We use the same object IDs from the [ZTF light curve API docs](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html) multi-object example — you can compare results from this tutorial directly with that service.
-In your workflow, these IDs might come from a previous query, a catalog crossmatch, or a published source table:
+In your workflow, these IDs might come from a previous query, a catalog crossmatch, or a published object catalog:
 
 ```{code-cell} ipython3
 object_ids = [686103400034440, 686103400106565]
@@ -250,7 +250,7 @@ plt.show()
 
 ## 4. Get Light Curves by Sky Position
 
-If you have sky coordinates and want all ZTF sources within a given area, use a cone search.
+If you have sky coordinates and want all ZTF objects within a given area, use a cone search.
 
 ### 4.1 Define a Spatial Filter
 
@@ -283,7 +283,7 @@ row_filters = [
     ]
 ```
 
-### 4.3 Open the Filtered Light Curves Catalog
+### 4.3 Open the Filtered Lightcurves Catalog
 
 We open the catalog with both filters applied. lsdb evaluates this lazily — no data is read yet:
 
@@ -353,7 +353,7 @@ ZTF's object ID column is named `objectid` in Lightcurves and `oid` in Objects T
 Despite this difference, the two columns are the same and can be used to join the catalogs. 
 ```
 
-We'll select a subset of columns useful for characterizing and annotating variable sources:
+We'll select a subset of columns useful for characterizing and annotating variable objects:
 
 ```{code-cell} ipython3
 ztf_objects_columns = ['oid', 'ra', 'dec', 'filtercode', 'ngoodobsrel', 'chisq', 'magrms', 'meanmag', 'medianabsdev']
@@ -401,7 +401,7 @@ combined_df
 
 ## 6. Plot Most Variable Light Curves from the Position Search
 
-Using the `chisq` column, we rudimentarily select the top 3 most variable sources from the position search results combined with objects table.
+Using the `chisq` column, we rudimentarily select the top 3 most variable objects from the position search results combined with the Objects Table.
 
 ```{code-cell} ipython3
 # most_variable = ztf_lc_cone_df  # uncomment if you skipped section 5, and comment the line below
@@ -434,7 +434,7 @@ for ax, (_, row) in zip(axs, most_variable.iterrows()):
     ax.invert_yaxis()
     ax.set_title(title, fontsize=10)
 
-fig.suptitle("Most Variable ZTF DR24 Sources from Position Search (annotated with Objects Table data)", fontsize=13, y=1.02)
+fig.suptitle("Most Variable ZTF DR24 Objects from Position Search (annotated with Objects Table data)", fontsize=13, y=1.02)
 plt.show()
 ```
 
