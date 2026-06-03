@@ -60,6 +60,10 @@ project:
     - title: Spitzer
       children:
         - file: tutorials/spitzer/plot_Spitzer_IRS_spectra.md
+    - title: ZTF
+      children:
+        - title: DR24 Light Curves (HATS)
+          file: tutorials/ztf/ztf_lightcurves.md
     - title: Simulated Data
       file: tutorials/simulated-data/simulated.md
       children:
