@@ -34,9 +34,9 @@ The goal of this project is to enable cross-collaboration and maximize science r
 
 Tidal Disruption Events (TDEs) occur when a star passes close enough to a supermassive black hole to be torn apart by tidal forces, producing a luminous flare that can outshine the host galaxy for weeks to months.
 Identifying and characterizing TDE host galaxies is key to understanding the demographics of supermassive black holes and the galactic environments that produce these rare events.
-This notebook demonstrates how to locate a simulated TDE from the OpenUniverse2024 transient input catalog, identify its host galaxy, and extract optical and infrared photometry from Roman images to construct a multi-epoch light curve. 
+This notebook demonstrates how to locate a simulated TDE from the OpenUniverse2024 transient input catalog, identify its host galaxy, and extract optical and infrared photometry from Roman images to construct a multi-epoch light curve.
 The OpenUniverse2024 dataset also provides matched Rubin optical coverage over the same sky.
-With a few simple changes in Sections 3 and 4, this workflow can be extended to other Roman and Rubin bands to build a true multi-wavelength light curve.  
+With a few simple changes in Sections 3 and 4, this workflow can be extended to other Roman and Rubin bands to build a true multi-wavelength light curve.
 
 ### Instructions
 
@@ -202,15 +202,15 @@ show_gallery(files, max_images=n_gallery_images)
 
 We use the OpenUniverse2024 transient input catalog — the same SNANA parquet files described in the [SED Fitting tutorial](SED_fit.md) — to find a TDE.
 The catalog stores one parquet file per HEALPix region, and TDEs are rare, so not every region will contain one.
-The catalog is split into three types of parquet files, each indexed by HEALPix region:                                                                                                
-                                                                                                                                                               
-   1. snana_{region}.parquet — the transient source catalog, with one row per simulated event (supernovae, TDEs, etc.), including fields such as the event    
-  type (model_name) and the ID of the host galaxy (host_id)                                                                                                    
-   2. galaxy_{region}.parquet — the host galaxy catalog, with sky positions and physical properties for each galaxy                                           
-   3. galaxy_flux_{region}.parquet — multi-band photometry for each galaxy (used in the SED Fitting tutorial but not needed here)                             
-   
+The catalog is split into three types of parquet files, each indexed by HEALPix region:
+
+   1. snana_{region}.parquet — the transient source catalog, with one row per simulated event (supernovae, TDEs, etc.), including fields such as the event
+  type (model_name) and the ID of the host galaxy (host_id)
+   2. galaxy_{region}.parquet — the host galaxy catalog, with sky positions and physical properties for each galaxy
+   3. galaxy_flux_{region}.parquet — multi-band photometry for each galaxy (used in the SED Fitting tutorial but not needed here)
+
 TDEs are rare, so not every region will contain one.
-We use the known center of the Roman Time-Domain Survey to target the right region directly. 
+We use the known center of the Roman Time-Domain Survey to target the right region directly.
 We then cross-match the TDE's host_id into the galaxy file to retrieve the host's sky coordinates for the image search that follows.
 
 First, we connect to S3 and list all available SNANA parquet files in the catalog.
@@ -251,7 +251,7 @@ Next, we scan this file and find a row with `model_name == "NON1ASED.TDE-BBFIT"`
 ```{code-cell} ipython3
 # Read the parquet file into a pandas dataframe.
 df = pq.read_table(snana_path, filesystem=fs).to_pandas()
-# Look for TDE models. 
+# Look for TDE models.
 mask = df["model_name"] == "NON1ASED.TDE-BBFIT"
 if mask.any():
    # Choose the first TDE
@@ -420,10 +420,14 @@ host_galaxy
 
 ## 4.  Make a Light Curve
 This section demonstrates how to extract and visualize a light curve for a Tidal Disruption Event using simulated Roman images in two bands (J129 and H158).
-The first function, `run_aperture_photometry()`, performs simple circular aperture photometry on a set of FITS images from S3 using the astropy [photutils](https://photutils.readthedocs.io/en/stable/) package. 
+The first function, `run_aperture_photometry()`, performs simple circular aperture photometry on a set of FITS images from S3 using the astropy [photutils](https://photutils.readthedocs.io/en/stable/) package.
 The two plotting functions then compile these measurements into time-ordered plots showing how the observed flux evolves across multiple visits, providing a first look at temporal variability that could signal transient activity or host-galaxy changes.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def run_aperture_photometry(host_galaxy, bandname, image_column="image_filenames", aperture_radius=1.0):
     """
     Perform circular aperture photometry on a list of FITS images.
@@ -733,7 +737,7 @@ def make_cutout(fname, ra, dec, size=100):
         cutout.data = rotate(cutout.data, angle=angle, reshape=False, cval=np.nan)
 
         return cutout
-        
+
 ```
 
 ```{code-cell} ipython3
