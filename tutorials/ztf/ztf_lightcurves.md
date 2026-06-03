@@ -202,10 +202,20 @@ ztf_lcs_by_id
 
 ### 3.4 Compute and Inspect the Results
 
-Now we execute the query we planned in previous steps by calling `compute()`. This is where the data is read into memory as a Pandas DataFrame.
+Now we execute the query by calling `compute()`, which reads the data into memory as a Pandas DataFrame. We use a Dask client to parallelize across partitions, manage 
+memory, and monitor progress in the Dask dashboard.
 
 ```{code-cell} ipython3
-ztf_lcs_by_id_df = ztf_lcs_by_id.compute()
+def get_nworkers(catalog):
+    return min(os.cpu_count(), catalog.npartitions + 1)
+
+with Client(n_workers=get_nworkers(ztf_lcs_by_id),
+            threads_per_worker=1,
+            memory_limit=None  # each partition can be several GB; avoid per-worker cap
+            ) as client:
+    print(f"You can monitor progress in the Dask dashboard at {client.dashboard_link}")
+    ztf_lcs_by_id_df = ztf_lcs_by_id.compute()
+
 ztf_lcs_by_id_df
 ```
 
@@ -252,13 +262,23 @@ plt.show()
 
 If you have sky coordinates and want all ZTF objects within a given area, use a cone search.
 
+```{important} ZTF objects are defined per (filter, field, quadrant)
+ZTF objects (i.e., unique object IDs) are defined _per_ (filter, field, quadrant).
+This means that observations of a single _astrophysical_ object are usually spread out amongst several different _ZTF_ objects.
+
+At minimum, a given astrophysical object will be represented by up to 3 ZTF objects, one per filter (g, r, and i).
+The per-filter observations may themselves be separated into additional ZTF objects if the astrophysical object lies near the boundary of a ZTF field and/or quadrant.
+
+ZTF's pixel scale is 1"/pixel (see [ZTF Technical Specifications](https://www.ptf.caltech.edu/page/ztf_technical)), so combining all ZTF objects within a 1" cone search may be reasonable for a given astrophysical object.
+```
+
 ### 4.1 Define a Spatial Filter
 
 We use the same sky position as the [ZTF light curve API docs](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html) positional example but you can specify any coordinates and search radius you want:
 
 ```{code-cell} ipython3
 target = SkyCoord(ra=298.0025, dec=29.87147, unit="deg")
-search_radius = 5 * u.arcsec
+search_radius = 1 * u.arcsec # to keep the runtime minimal for this tutorial
 ```
 
 Using lsdb, we define a cone [search object](https://docs.lsdb.io/en/latest/tutorials/region_selection.html#4.-The-Search-object) for this region:
@@ -274,11 +294,11 @@ spatial_filter = lsdb.ConeSearch(
 ### 4.2 Define Row Filters
 
 In addition to the spatial filter, we can pre-filter rows using Parquet column statistics.
-Here we keep only objects with more than 50 epochs, focusing on well-sampled light curves:
+Here we keep only objects with more than 25 epochs, focusing on well-sampled light curves:
 
 ```{code-cell} ipython3
 row_filters = [
-    ["nepochs", ">", 50],
+    ["nepochs", ">", 25],
     # additional filters can be added here if desired
     ]
 ```
@@ -301,12 +321,10 @@ Notice that only the partitions overlapping the cone are included, avoiding read
 
 ### 4.4 Compute and Inspect the Results
 
-Now we execute the query by calling `compute()`. The ZTF DR24 LC catalog stores full nested light curves per HATS partition. We wrap the compute call in a Dask client to parallelize if multiple partitions are involved, and to monitor progress in the Dask dashboard.
+Now we execute the query by calling `compute()`, which reads the data into memory as a Pandas DataFrame. We use a Dask client to parallelize across partitions, manage 
+memory, and monitor progress in the Dask dashboard.
 
 ```{code-cell} ipython3
-def get_nworkers(catalog):
-    return min(os.cpu_count(), catalog.npartitions + 1)
-
 with Client(n_workers=get_nworkers(ztf_lc_cone),
             threads_per_worker=1,
             memory_limit=None  # each partition can be several GB; avoid per-worker cap
@@ -348,7 +366,7 @@ ztf_objects_schema = pq.read_schema(
 pq_schema_to_df(ztf_objects_schema)
 ```
 
-```{important} `objectid` == `oid`
+```{important} objectid == oid
 ZTF's object ID column is named `objectid` in Lightcurves and `oid` in Objects Table.
 Despite this difference, the two columns are the same and can be used to join the catalogs. 
 ```
@@ -401,11 +419,11 @@ combined_df
 
 ## 6. Plot Most Variable Light Curves from the Position Search
 
-Using the `chisq` column, we rudimentarily select the top 3 most variable objects from the position search results combined with the Objects Table.
+Using the `chisq` column, we rudimentarily select the top 2 most variable objects from the position search results combined with the Objects Table.
 
 ```{code-cell} ipython3
-# most_variable = ztf_lc_cone_df  # uncomment if you skipped section 5, and comment the line below
-most_variable = combined_df.nlargest(3, 'chisq')
+# most_variable = ztf_lc_cone_df.iloc[:2]  # uncomment if you skipped section 5, and comment the line below
+most_variable = combined_df.nlargest(2, 'chisq')
 most_variable
 ```
 
@@ -440,7 +458,7 @@ plt.show()
 
 ## About this notebook
 
-**Updated:** 2026-05-27
+**Updated:** 2026-06-02
 
 **Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or to report problems.
 
