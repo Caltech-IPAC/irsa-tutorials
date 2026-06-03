@@ -392,9 +392,10 @@ Since ZTF objects are defined per band, setting `n_neighbors=1` means this is on
 ```{code-cell} ipython3
 euclid_x_ztf = euclid_cone.crossmatch(
     ztf_cone,
-    suffixes=("_euclid", "_ztf"), # to distinguish columns from the two catalogs
     n_neighbors=1, # default is 1 too, can be tweaked
-    radius_arcsec=1  # default is 1 arcsec too, can be tweaked
+    radius_arcsec=1,  # default is 1 arcsec too, can be tweaked
+    suffixes=("_euclid", "_ztf"), # to distinguish columns from the two catalogs
+    suffix_method="all_columns",
 )
 euclid_x_ztf
 ```
