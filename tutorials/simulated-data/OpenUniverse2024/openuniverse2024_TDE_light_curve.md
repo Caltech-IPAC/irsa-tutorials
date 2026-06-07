@@ -55,7 +55,7 @@ This notebook is designed to be run sequentially from top to bottom.  All code i
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-!pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
+# !pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
 ```
 
 ```{code-cell} ipython3
