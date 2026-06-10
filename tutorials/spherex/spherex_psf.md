@@ -24,9 +24,9 @@ kernelspec:
 ## 1. Learning Goals
 
 * Determine how pixels in a SPHEREx cutout map to the pixels in the parent SPHEREx spectral image.
-* Understand the structure of the PSF extension in a SPHEREx cutout (which is the same as the PSF extension in the parent spectral image).
-* Learn how to tell which version of the SPHEREx spectral image you are looking at, and how to interpret this information to obtain the correct PSF extension for the SPHEREx spectral images.
-* Learn which plane in a SPHEREx cutout PSF extension cube most accurately describes the coordinates you are interested in.
+* Understand the structure of the PSF and ePSF extension in a SPHEREx cutout (which is the same as the (e)PSF extension in the parent spectral image).
+* Learn how to tell which version of the SPHEREx spectral image you are looking at, and how to interpret this information to obtain the correct PSF/ePSF extension for the SPHEREx spectral images.
+* Learn which plane in a SPHEREx cutout (e)PSF extension cube most accurately describes the coordinates you are interested in.
 
 +++
 
@@ -275,7 +275,7 @@ epsf_header = image_hdul['EPSF'].header
 image_hdul['EPSF'].header
 ```
 
-First, let's look at the general information directly from the ePSF header. 
+First, let's look at the general information directly from the ePSF header.
 
 ```{code-cell} ipython3
 print(f"Oversampling in x: {epsf_header["OVSMPX"]}")
@@ -309,7 +309,6 @@ In addition, the table contains other useful information such as the ePSF area (
 
 Now, as we have the ePSFs loaded, we proceed to obtain the ePSF corresponding to our cutout. 
 Above we have already obtained the pixel position of our cutout on the parent LVF image. We can then match this position to the 0-indexed zone centers given in the binary table (`XCENTER` and `YCENTER`).
-
 
 ```{code-cell} ipython3
 dist = np.sqrt( (xpix_orig - epsf_bintable["XCENTER"])**2 + (ypix_orig - epsf_bintable["YCENTER"])**2  )
@@ -359,7 +358,6 @@ Then let's look at the shape of the `psfcube`:
 ```{code-cell} ipython3
 psfcube.shape
 ```
-
 
 ```{note}
 In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
@@ -749,22 +747,6 @@ ax1 = fig.add_subplot(1, 1, 1)
 ax1.imshow(psf)
 
 plt.show()
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
 ```
 
 ## 6. Appendix
