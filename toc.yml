@@ -90,3 +90,5 @@ project:
           file: tutorials/techniques-and-tools/SEDs_in_Firefly.md
         - title: Parallelization
           file: tutorials/techniques-and-tools/Parallelize_Convolution.md
+        - title: Moving object searches
+          file: tutorials/techniques-and-tools/MOST_queries.md
