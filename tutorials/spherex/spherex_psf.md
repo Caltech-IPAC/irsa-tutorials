@@ -3,14 +3,14 @@ authors:
 - name: Vandana Desai
 - name: Jessica Krick
 - name: Andreas Faisst
-- name: "Brigitta Sipőcz"
+- name: "Brigitta Sip\u0151cz"
 - name: Troy Raen
 jupytext:
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.18.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -58,7 +58,7 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy pyvo
+# !pip install astropy numpy pyvo
 ```
 
 ```{code-cell} ipython3
@@ -84,7 +84,12 @@ from astropy.utils.data import conf
 conf.remote_timeout = 120
 ```
 
-## 4. Get SPHEREx Cutout
+## 4. Get SPHEREx Cutout and Obtain Position on Parent Frame
+
+In this section, we show how to obtain a SPHEREx cutout and obtain the pixel position of the cutout on the parent LVF image.
+
+
+### 4.1 Obtain SPHEREx Cutout
 
 We first obtain a SPHEREx cutout for a given coordinate of interest from IRSA archive.
 For this we define a coordinate and a size of the cutout.
@@ -141,7 +146,7 @@ spectral_image_url = results['uri'][0]
 print(spectral_image_url)
 ```
 
-## 5. Read in a SPHEREx Cutout
+### 4.2 Read SPHEREx Cutout
 
 Next, we use standard astropy tools to open the fits image and to read the different headers and data.
 Transient read errors occur sometimes, so we'll catch those and retry a few times.
@@ -159,9 +164,7 @@ for attempt in range(max_retries):
         with fits.open(spectral_image_url) as hdul:
             image_hdul = copy.deepcopy(hdul)
             cutout_header = hdul['IMAGE'].header
-            psf_header = hdul['PSF'].header
             cutout = hdul['IMAGE'].data
-            psfcube = hdul['PSF'].data
         break
     except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
         if attempt == max_retries - 1:
@@ -169,21 +172,194 @@ for attempt in range(max_retries):
         time.sleep(10 * (attempt + 1))
 ```
 
-Let's examine the HDU list info.
-
 ```{code-cell} ipython3
 hdul.info()
 ```
 
 The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
-We focus in this example on the extensions `IMAGE` and `PSF`.
-We have already loaded their data as well as their header.
+We focus in this example on the extensions `IMAGE` and `ePSF` (or `PSF`, as described below).
+
+Let's also get the version of the image. The version is needed later to decide how to handle the PSF. For obtaining the version of the image, we define a handy function.
+
+```{code-cell} ipython3
+def parse_version(v):
+    # detect modifiers
+    modifier = None
+    base = v
+    
+    if "+" in v:
+        base, modifier = v.split("+", 1)
+
+    base_version = Version(base)
+
+    if modifier is None:
+        return (0, base_version, 0)
+
+    # extract numeric part if present
+    m = re.search(r'\d+', modifier)
+    modnum = int(m.group()) if m else 0
+
+    return (1, base_version, modnum)
+```
+
+We apply that function to the image and print the version.
+
+```{code-cell} ipython3
+this_version = parse_version( image_hdul['PRIMARY'].header["VERSION"] )
+print(f"Current version is {this_version}")
+```
+
+### 4.3 Determine the Pixel Location of the Cutout on the Parent SPHEREx Image
+
+Since the PSF is spatially varying over the parent LVF image, we first want to figure out the image pixels of the cutout.
+To identify the zone which covers the coordinates of interest, we first need to translate these coordinates to the pixel coordinates on the parent large SPHEREx image from which the cutout was created.
+We do this by first determining the pixel $(x,y)$ coordinates of our coordinates of interest on the cutout itself.
+
+```{code-cell} ipython3
+wcs = WCS(cutout_header)
+xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra, dec=dec))
+
+print(f"Pixel values of coordinates of interest on cutout image: x = {xpix_cutout}, y = {ypix_cutout}")
+```
+
+Next, we use the `CRPIX1A` and `CRPIX1A` header keywords (which describe the center of the cutout on the parent SPHEREx image) to shift the (x,y) coordinates of input to the parent SPHEREx image.
+
+```{code-cell} ipython3
+crpix1a = cutout_header["CRPIX1A"]
+crpix2a = cutout_header["CRPIX2A"]
+
+xpix_orig = 1 + xpix_cutout - crpix1a
+ypix_orig = 1 + ypix_cutout - crpix2a
+
+print(f"Pixel values of coordinates of interest on parent SPHEREx image: x = {xpix_orig}, y = {ypix_orig}")
+```
+
+We will use these coordinates later to obtain the correct spatial PSF.
+
++++
+
+## 5. Obtain the PSF
+
+The PSF may be incorporated in the HDU in two different ways. Specifically, since version X we have included a new, more accurate PSF, called the "effective" PSF (ePSF). 
+Differently than the previously used PSF, the ePSF is *not* an optical PSF. Instead, the ePSF is a subpixel-resolved model of the pixel-convolved PSF, which predicts pixel values for a point source at arbitrary sub-pixel positions. Also new, we implemented a simpler way to read the PSF layer - it is now simply a binary table with array columns.
+
+To summarize:
+* Versions earlier than `7.0` contain the old PSF (saved in the `PSF` FITS layer). These are QR-1 and QR-2 data.
+* Versions after (including) `7.0`  contain the new ePSF (saved in the `ePSF` FITS layer). These are QR-3 and DR1 data.
+
+While eventually all data products will use the new PSF, we show in the next two sections how to read in each of the PSF.
+
++++
+
+### 5.1 Obtaining the ePSF (versions $\geq$ 7.0)
+
+#### 5.1.1 Obtaining the ePSFs
+
+The newer ePSFs are stored in the `ePSF` layer in the FITS file of the LVF image. Let's read that in from the image HDUL, which we have obtained above.
+Note that contrary to the old PSFs, the ePSF is stored in th eform of a binary table.
+
+```{code-cell} ipython3
+### REMOVE BEFORE PUBLISHING!!
+## CURRENTLY, THE IMAGES ON IRSA DO NOT HAVE THE EPSF. FOR TESTING, WE LOAD A 
+## IMAGE MANUALLY.
+with fits.open("./test_epsf.fits") as hdul:
+    image_hdul = copy.deepcopy(hdul)
+```
+
+```{code-cell} ipython3
+epsf_bintable = Table(image_hdul['EPSF'].data)
+epsf_header = image_hdul['EPSF'].header
+```
+
+```{code-cell} ipython3
+image_hdul['EPSF'].header
+```
+
+First, let's look at the general information directly from the ePSF header. 
+
+```{code-cell} ipython3
+print(f"Oversampling in x: {epsf_header["OVSMPX"]}")
+print(f"Oversampling in y: {epsf_header["OVSMPY"]}")
+print(f"Size of the ePSF (oversampled): {epsf_header["TDIM14"]}")
+print(f"Number of ePSFs in total (= total number of zones): {epsf_header["NAXIS2"]}")
+```
+
+Next, let's first look at the binary table.
+
+```{code-cell} ipython3
+epsf_bintable
+```
+
+It's just a binary table but note that the last column `EPSF` is a 2d-array! This makes loading the ePSF very simple as shown below.
+There are also other columns such as `BINX` and `BINY` which are the ePSF zone identifications and their corresponding x,y cooordinates `XCENTER` and `YCENTER`, respectively.
+
+From this table, we can also obtain the number of zones in x and y:
+
+```{code-cell} ipython3
+print(f"Number of zones in x-direction: {np.max(epsf_bintable["BINX"]+1)}")
+print(f"Number of zones in y-direction: {np.max(epsf_bintable["BINY"]+1)}")
+```
+
+There are are 21x21 zones (so 441 entries in total). Note that later versions of the ePSF may have different number of zones. They do not have to be equal in x and y-direction.
+In addition, the table contains other useful information such as the ePSF area ($N_{\rm eff}$) and the center wavelength at the PSF (`WV_MEAN`). This is further explained in Section 6.1.
+
++++
+
+#### 5.1.2 Determine the ePSF Corresponding to Coordinates of Interest
+
+Now, as we have the ePSFs loaded, we proceed to obtain the ePSF corresponding to our cutout. 
+Above we have already obtained the pixel position of our cutout on the parent LVF image. We can then match this position to the 0-indexed zone centers given in the binary table (`XCENTER` and `YCENTER`).
+
+
+```{code-cell} ipython3
+dist = np.sqrt( (xpix_orig - epsf_bintable["XCENTER"])**2 + (ypix_orig - epsf_bintable["YCENTER"])**2  )
+sel_zone = np.where( dist == np.min(dist))[0][0]
+bin_x = epsf_bintable["BINX"][sel_zone]
+bin_y = epsf_bintable["BINY"][sel_zone]
+print(f"Row in ePSF binary table: {sel_zone}")
+print(f"BINX = {bin_x}, BINY = {bin_y}")
+```
+
+We then simply select the right row in the ePSF binary table. We can use the `sel_zone` (which is the row in the ePSF binary table) directly, or select by `BINX` and `BINY`.
+Since the `EPSF` column is a cells of 2d-arrays, it is very easy to load the ePSF from that.
+
+```{code-cell} ipython3
+sel = np.where( (epsf_bintable["BINX"] == bin_x) & (epsf_bintable["BINY"] == bin_y))[0][0]
+epsf = epsf_bintable["EPSF"][sel]
+print(f"Shape of ePSF: {epsf.shape}")
+print(f"N_eff of PSF: {epsf_bintable['NEFF_MEAN'][sel]}")
+print(f"Wavelength of PSF: {epsf_bintable['CWAVE'][sel]} um")
+```
+
+Finally, display the ePSF.
+
+```{code-cell} ipython3
+fig = plt.figure(figsize=(5,5))
+ax1 = fig.add_subplot(1,1,1)
+im1 = ax1.imshow(epsf, origin="lower")
+
+plt.colorbar(im1, ax=ax1, shrink=0.5)
+plt.show()
+```
+
+### 5.2 Obtaining the old PSF (versions $<$ 7.0)
+
+
+#### 5.2.1 Obtain the PSFs
+
+The older PSFs are stored in the `PSF` layer in the FITS file of the LVF image. Let's read that in from the image HDUL, which we have obtained above. It comes with data and a header.
+
+```{code-cell} ipython3
+psf_header = image_hdul['PSF'].header
+psfcube = image_hdul['PSF'].data
+```
+
+Then let's look at the shape of the `psfcube`:
 
 ```{code-cell} ipython3
 psfcube.shape
 ```
 
-The shape of the `psfcube` is output above.
 
 ```{note}
 In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
@@ -214,53 +390,46 @@ The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i
 The zones have approximately equal widths and are arranged in an even grid.
 The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
 
-The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
-
 +++
 
 ```{warning}
-In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a mismatch between the spatial layout of the PSF zones and the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
 
 For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
 
-**Users using the old versions will need to implement an extra step to update the image header. A function to update the header is given [in Section 5.1 below](#update-psf-header-function).**
+**Users using the old versions will need to implement and extra step to update the image header. A function to update the header is given [below](#update_psf_header_function). **
 ```
 
 Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
 
-For comparing versions, we can use the Python-internal `Version()` function from the `packaging.version` package. Images that have already been reprocessed can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), and we can use `Version().local` to check for those.
+For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
+
+We have already obtained the version of the LVF image below. Now we can check if we need to modify the header.
 
 ```{code-cell} ipython3
-this_version = Version(image_hdul['PRIMARY'].header["VERSION"])
-contains_psffix1 = this_version.local is not None and "psffix1" in this_version.local
-print(f"Current version is {this_version}")
-
-if this_version <= Version("6.5.5") and not contains_psffix1:
-    print("PSF header needs to be updated! -> Go to Section 5.1 :(")
+if this_version <= parse_version("6.5.5"):
+    print("PSF header needs to be updated! -> Need to update the header (see below) :(")
 else:
-    print("PSF header is already up-to-date! -> Proceed to Section 6 :)")
+    print("PSF header is already up-to-date! -> Proceed to Section 5.2.3 :)")
 ```
 
-If the version of the SPHEREx spectral image is less or equal than `6.5.5` and hasn't already been reprocessed, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.5.5` or includes `"psffix1"`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
+#### 5.2.2 How to update the PSF header (only versions $\leq$6.5.5)
 
-+++
+If the version of the SPHEREx spectral image is less or equal than `6.5.5` (without the `psffix` suffix) we need to update the PSF header. If the version is later than `6.5.5`, the header is already updated and the PSF issue is fixed. In this case, this sub-section can be skipped.
 
-(update-psf-header-function)=
-### 5.1 Updating PSF Header (for SPHEREx Spectral Image versions $\leq$ 6.5.5)
-
-+++
-
-The function that can be used to update the header is shown below. The function
+We define a function below which can be used to update the header information.
+Specifically, the function 
 * first checks if a header update is necessary
 * changes the PSF zone indexing and
-* changes the version of the header such that it is consistent with the new released images
+* changes the version of the header such that it is consistent with the new released images.
 
 Note that this function can work as standalone function to process many images.
 
 ```{code-cell} ipython3
+#<a id="update_psf_header_function"></a>
 def update_psf_header(old_hdul):
     """
-    Fix an old PSF FITS file header by rewriting only the per-plane header metadata
+    Fix a old PSF FITS file header by rewriting only the per-plane header metadata
     so that plane k corresponds to x-fast ordering:
         k0 = iy * bins_x + ix
 
@@ -268,54 +437,55 @@ def update_psf_header(old_hdul):
 
     Parameters
     ----------
-    old_hdul : fits.HDUList
+    old_hdul : astropy hdul
         Old SPHEREx Spectral Image HDUL
 
     Return
     ----------
-    new_hdul : fits.HDUList
+    new_hdul : astropy hdul
         New SPHEREx Spectral Image HDUL with updated PSF zone data in header and updated version number
+    
     """
 
-    VERSION_FIXED = Version("6.5.6")
-    PSF_FIX_TAG = "psffix1"
+    def parse_version(v):
+        # detect modifiers
+        modifier = None
+        base = v
+        
+        if "+" in v:
+            base, modifier = v.split("+", 1)
+    
+        base_version = Version(base)
+    
+        if modifier is None:
+            return (0, base_version, 0)
+    
+        # extract numeric part if present
+        m = re.search(r'\d+', modifier)
+        modnum = int(m.group()) if m else 0
+    
+        return (1, base_version, modnum)
 
-    def psf_fix_applied(hdul) -> bool:
-        """
-        Return True if the PSF fix has been applied.
+    ## Check if old version
+    this_version = parse_version( old_hdul['PRIMARY'].header["VERSION"] )
+    if this_version <= parse_version("6.5.5"):
+        print(f"Old version detected ({this_version}) -> Update header.")
+    elif this_version > parse_version("6.5.5"):
+        print(f"New version detected ({this_version}) -> Do not update header.")
+        return(old_hdul)
 
-        Rules:
-        - If the VERSION header is missing in the primary HDU, the fix is not applied.
-        - If VERSION >= VERSION_FIXED, the fix is included in the software release.
-        - Otherwise the local version tag (+...) must contain PSF_FIX_TAG.
-        """
-        header = hdul[0].header
-
-        if "VERSION" not in header:
-            return False
-
-        v = Version(header["VERSION"])
-
-        if v >= VERSION_FIXED:
-            return True
-
-        return v.local is not None and PSF_FIX_TAG in v.local
-
-    if psf_fix_applied(old_hdul):
-        return old_hdul
-
-    ## Define some auxiliary functions -------
+    ## Define some auxillary functions -------
     def parse_ixiy_from_comment(comment):
         _zone_pat = re.compile(r"\((\d+)\s*,\s*(\d+)\)")
         m = _zone_pat.search(str(comment))
         if not m:
             raise ValueError(f"Could not parse zone indices from comment: {comment!r}")
         return int(m.group(1)), int(m.group(2))
-
+    
     def infer_grid_shape_from_header_comments(hdr, nzone):
         max_ix = -1
         max_iy = -1
-
+    
         for k1 in range(1, nzone + 1):
             key = f"XCTR_{k1}"
             if key not in hdr:
@@ -323,23 +493,23 @@ def update_psf_header(old_hdul):
             ix, iy = parse_ixiy_from_comment(hdr.comments[key])
             max_ix = max(max_ix, ix)
             max_iy = max(max_iy, iy)
-
+    
         bins_x = max_ix + 1
         bins_y = max_iy + 1
-
+    
         if bins_x * bins_y != nzone:
             raise ValueError(
                 f"Inconsistent grid inferred from comments: "
                 f"bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}"
             )
-
+    
         return bins_x, bins_y
-
+    
     def collect_axis_values_by_zone(hdr, nzone):
         """
         Read the old header and collect unique x/y centers and widths by zone index
         labels found in the comments.
-
+    
         This uses the old header only to recover the per-axis values for each ix, iy.
         It does NOT use the old plane ordering as truth.
         """
@@ -347,15 +517,15 @@ def update_psf_header(old_hdul):
         y_center_by_iy = {}
         x_width_by_ix = {}
         y_width_by_iy = {}
-
+    
         for k1 in range(1, nzone + 1):
             ix, iy = parse_ixiy_from_comment(hdr.comments[f"XCTR_{k1}"])
-
+    
             xck = f"XCTR_{k1}"
             yck = f"YCTR_{k1}"
             xwk = f"XWID_{k1}"
             ywk = f"YWID_{k1}"
-
+    
             if xck in hdr:
                 val = hdr[xck]
                 if ix in x_center_by_ix and not np.isclose(x_center_by_ix[ix], val):
@@ -364,7 +534,7 @@ def update_psf_header(old_hdul):
                         f"{x_center_by_ix[ix]} vs {val}"
                     )
                 x_center_by_ix[ix] = val
-
+    
             if yck in hdr:
                 val = hdr[yck]
                 if iy in y_center_by_iy and not np.isclose(y_center_by_iy[iy], val):
@@ -373,7 +543,7 @@ def update_psf_header(old_hdul):
                         f"{y_center_by_iy[iy]} vs {val}"
                     )
                 y_center_by_iy[iy] = val
-
+    
             if xwk in hdr:
                 val = hdr[xwk]
                 if ix in x_width_by_ix and not np.isclose(x_width_by_ix[ix], val):
@@ -382,7 +552,7 @@ def update_psf_header(old_hdul):
                         f"{x_width_by_ix[ix]} vs {val}"
                     )
                 x_width_by_ix[ix] = val
-
+    
             if ywk in hdr:
                 val = hdr[ywk]
                 if iy in y_width_by_iy and not np.isclose(y_width_by_iy[iy], val):
@@ -391,9 +561,9 @@ def update_psf_header(old_hdul):
                         f"{y_width_by_iy[iy]} vs {val}"
                     )
                 y_width_by_iy[iy] = val
-
+    
         return x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy
-    ## End defining some auxiliary functions --------
+    ## End defining some auxillary functions --------
 
     ## Get Header
     extname = "PSF"
@@ -461,7 +631,661 @@ def update_psf_header(old_hdul):
     hdr_out["HISTORY"] = "Rewrote PSF per-plane zone metadata to x-fast ordering."
     hdr_out["HISTORY"] = "Cube plane data left unchanged."
 
+    
 
+    new_hdu = fits.ImageHDU(data=cube, header=hdr_out, name=hdu.name)
+
+    ext_index = old_hdul.index_of(extname)
+    new_hdul = fits.HDUList()
+    for i, old in enumerate(old_hdul):
+        if i == ext_index:
+            new_hdul.append(new_hdu)
+        else:
+            new_hdul.append(old.copy())
+
+    ## TO DO: UPDATE VERSION
+    new_hdul['PRIMARY'].header["VERSION"] = new_hdul['PRIMARY'].header["VERSION"] + "+psffix1" # SET NEW VERSION HERE
+
+    return(new_hdul)
+```
+
+We now run this function to create a new HDU list that we will use later.
+
+```{code-cell} ipython3
+new_image_hdul = update_psf_header(old_hdul=image_hdul)
+```
+
+Let’s check if the version keywords was updated:
+
+```{code-cell} ipython3
+print(f"Old version: {image_hdul['PRIMARY'].header['VERSION']}")
+print(f"Updated version: {new_image_hdul['PRIMARY'].header['VERSION']}")
+```
+
+Let’s compare the new and old PSF headers to see the difference.
+
+```{code-cell} ipython3
+image_hdul['PSF'].header[22:40]
+```
+
+```{code-cell} ipython3
+new_image_hdul['PSF'].header[22:40]
+```
+
+Now we have to update the variables we have set above.
+
+```{code-cell} ipython3
+cutout_header = new_image_hdul['IMAGE'].header
+psf_header = new_image_hdul['PSF'].header
+cutout = new_image_hdul['IMAGE'].data
+psfcube = new_image_hdul['PSF'].data
+```
+
+With this fix, we are now ready to proceed!
+
++++
+
+#### 5.2.3 Determine the PSF Corresponding to Coordinates of Interest
+
+Finally, as we have the PSFs loaded, we proceed to obtain the PSF corresponding to our cutout.
+
+Since we now know the (x,y) pixel values of the cutout on the parent SPHEREx LVF image (see above), we can identify the PSF zone. In the following we first extract the zone pixel coordinates from the `XCTR_*` and `YCTR_*` keys in the PSF header.
+
+```{code-cell} ipython3
+xctr = {}
+yctr = {}
+
+for key, val in psf_header.items():
+    # Look for keys like XCTR* or YCTR*
+    xm = re.match(r'(XCTR*)', key)
+    if xm:
+        xplane = int(key.split("_")[1])
+        xctr[xplane] = val
+    ym = re.match(r'(YCTR*)', key)
+    if ym:
+        yplane = int(key.split("_")[1])
+        yctr[yplane] = val
+```
+
+Check that we got all of them!
+
+```{code-cell} ipython3
+len(xctr) == len(yctr)
+```
+
+Make a nice table so we can easily search for the distance between zone center and coordinates of interest.
+
+```{code-cell} ipython3
+tab = Table(names=["zone_id" , "x" , "y"], dtype=[int, float, float])
+for zone_id in xctr.keys():
+    tab.add_row([zone_id , xctr[zone_id] , yctr[zone_id]])
+```
+
+Once we have created this dictionary with zone pixel coordinates, we can simply search for the closest zone center to the coordinates of interest. For this we first add the distance between zone center coordinates and coordinates of interest to the table. Note that the zone pixel center coordinates are 0-based, while their names in the header (for example `XCTR_n`) are 1-based.
+
+```{code-cell} ipython3
+tab["distance"] = np.sqrt((tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2)
+```
+
+Then we can sort the table and pick the closest zone to coordinates of interest.
+
+```{code-cell} ipython3
+tab.sort("distance")
+
+psf_cube_plane = tab[0]["zone_id"]
+distance_min = tab[0]["distance"]
+
+print(f"The PSF zone corresponding to coordinates of interest is {psf_cube_plane} with a distance of {distance_min} pixels")
+```
+
+Now that we know which zone corresponds to coordinates of interest, we can extract it and plot it.
+
+```{code-cell} ipython3
+psf = psfcube[psf_cube_plane-1]
+
+fig = plt.figure(figsize=(5, 5))
+ax1 = fig.add_subplot(1, 1, 1)
+
+ax1.imshow(psf)
+
+plt.show()
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+## 6. Appendix
+
+### 6.1 More Things to Do with the ePSF!
+
+The new ePSF binary table contains some more useful information in addition to the ePSFs themselves. Here we explore some of these additional data.
+
+One interesting thing to do is to plot the ePSF area ($N_{\rm eff}$) as a function of zone position (`XCENTER` and `YCENTER`) and wavelength (`CWAVE`). Below, we show how to access this information and how to visualize it.
+
+```{code-cell} ipython3
+fig = plt.figure(figsize=(16,4))
+ax1 = fig.add_subplot(1,3,1)
+ax2 = fig.add_subplot(1,3,2)
+ax3 = fig.add_subplot(1,3,3)
+
+## Spatial distribution of N_eff
+x = epsf_bintable["XCENTER"]
+y = epsf_bintable["YCENTER"]
+z = epsf_bintable["NEFF_MEAN"]
+im1 = ax1.scatter(x, y, c=z)
+plt.colorbar(im1 , ax=ax1, label=r"$N_{\rm eff}$")
+
+## As a matrix (not the ii<->jj swap)
+mat = np.zeros((21,21))
+for ii in range(21):
+    for jj in range(21):
+        sel = np.where( (epsf_bintable["BINX"] == ii) & (epsf_bintable["BINY"] == jj))[0][0]
+        mat[jj,ii] = epsf_bintable["NEFF_MEAN"][sel]
+im2 = ax2.imshow(mat , origin="lower")
+plt.colorbar(im2 , ax=ax2, label=r"$N_{\rm eff}$")
+        
+## As a function of wavelength
+x = epsf_bintable["CWAVE"] # wavelength at the center of the PSF zone
+y = epsf_bintable["NEFF_MEAN"]
+ax3.scatter(x , y, c=z , marker="o", s=5)
+
+ax3.set_xlabel(r"Wavelength [$\mu m$]")
+ax3.set_ylabel(r"$N_{\rm eff}$")
+
+plt.show()
+```
+
+### 6.2. Using the SPHEREx (e)PSF in Forward Modeling (e.g., Tractor)
+
+The PSF returned by this notebook is oversampled relative to the native SPHEREx detector pixel grid.
+This is intentional: the PSF is evaluated on a fine sub-pixel grid so that it can represent different intra-pixel source positions accurately.
+
+Tools such as Tractor do not expect an oversampled PSF directly.
+Instead, they require a PSF that is pixel-integrated at the native detector resolution and evaluated at the correct sub-pixel phase of the source.
+If you pass the oversampled PSF directly into Tractor without resampling, the effective PSF width and normalization will be incorrect, which can lead to systematic differences relative to the SPHEREx Spectrophotometry Tool.
+
+To use this PSF for forward modeling or fitting, you must:
+1. Shift the oversampled PSF to the source’s sub-pixel position,
+2. Downsample (integrate) it onto the native SPHEREx pixel grid, and
+3. Normalize the resulting PSF before passing it to Tractor.
+
+#### 6.2.1 Using the ePSF
+
+The ePSF originates from the Photutils package, therefore it can be directly used directly with the `EPSModel` class:
+
+```
+from photutils.psf import EPSFModel
+```
+
+To demonstrate this, we use our ePSF which we have loaded above in Section 5.1.
+
+First, we retrieve the oversampling factor of the ePSF. The oversampling is given in the ePSF binary table header, which we have loaded above.
+
+```{code-cell} ipython3
+ovs = (
+    int(epsf_header.get("OVSMPY", 1)),
+    int(epsf_header.get("OVSMPX", 1))
+)
+print(f"Oversampling of ePSF: {ovs}")
+```
+
+Using the oversampling factor, we can then construct the ePSF Photutils model.
+
+```{code-cell} ipython3
+from photutils.psf import EPSFModel
+
+epsf_model = EPSFModel(data=epsf, oversampling=ovs)
+```
+
+The ePSF is still in oversampled resolution. Some photometer codes (such as Tractor) can use the PSF only on the native pixel size. We therefore have to rebin the PSF back to the native SPHEREx resolution. In this process, we have to take into account *where* in the image coordinates a source lands; whether it lands in the center of a pixel of off center. This will affect how the PSF is rebinned. This is especially important for PSFs that are undersampled with respect to the pixel size (as it is the case for SPHEREx).
+
+We first define a function that does the rebinning:
+
+```{code-cell} ipython3
+def render_epsf_stamp_centered(
+        epsf: EPSFModel,
+        x0: float,
+        y0: float,
+        stamp_size: int = 11,
+        unit_flux: bool = True,
+    ):
+        """
+        Render an ePSF model into a stamp that is centered on (x0, y0) in
+        *image pixel coordinates*, and return the lower-left index of the stamp.
+
+        Parameters
+        ----------
+        epsf : `photutils.psf.epsf.EPSFModel`
+            Must support epsf.evaluate(x, y, flux=..., x_0=..., y_0=...).
+        x0, y0 : `float`
+            Source centroid in image pixel coordinates (pixel centers).
+        stamp_size : `int`
+            Size of the returned square stamp (pixels).
+        unit_flux : `bool`
+            If True, renormalize stamp so sum == 1.
+
+        Returns
+        -------
+        psf_stamp : `numpy.ndarray`
+            Rendered PSF image with shape (``stamp_size``, ``stamp_size``).
+        x_ll, y_ll : `int`
+            Integer lower-left pixel index of the stamp in the image coordinate system.
+            That is, psf_stamp[0,0] corresponds to image pixel (y_ll, x_ll).
+        """
+
+        # Not sure why this was necessary
+        x0 = float(x0)
+        y0 = float(y0)
+
+        # Half-size in pixel-center coordinates
+        half = (stamp_size - 1) / 2.0
+
+        # Integer pixel index of lower-left corner of the stamp
+        # (pixel-center convention)
+        x_ll = int(np.floor(x0 - half))
+        y_ll = int(np.floor(y0 - half))
+
+        # Pixel-center coordinates where the PSF is evaluated
+        x_centers = x_ll + np.arange(stamp_size)
+        y_centers = y_ll + np.arange(stamp_size)
+
+        Y, X = np.meshgrid(y_centers, x_centers, indexing="ij")
+
+        # Evaluate ePSF at native resolution
+        psf_stamp = epsf.evaluate(X, Y, flux=1.0, x_0=x0, y_0=y0)
+
+        if unit_flux:
+            s = psf_stamp.sum()
+            if s > 0 and np.isfinite(s):
+                psf_stamp /= s
+
+        return psf_stamp, x_ll, y_ll
+```
+
+Note that this function makes use of the Photutils class `EPSFModel`, the ePSF Photutils model which we have defined above.
+Important are `x0` and `y0`, which tell the function *where* on a pixel the source ends up. The function uses sub-pixel sampling to do the rebinning. For example, the PSF will look differently if the source falls on half pixels, such as at position (100.5, 100.5). The function also returns the lower left corner coordinates which can be used to drop the image into a large mosaic (for example for image simulations).
+
+For illustrative purposes, we construct two PSF stamps (in SPHEREx resolution) at two different position for the source. For the PSF size (in SPHEREx pixels), we choose 11 by 11 (note that this works best if the stamp size has an odd pixel number).
+
+```{code-cell} ipython3
+psf_stamp1 , x_ll_1, y_ll_1 = render_epsf_stamp_centered(epsf = epsf_model , x0=50, y0=50, stamp_size=11, unit_flux = True)
+print(f"Drop-in position ({x_ll_1},{y_ll_1}), total flux: {np.sum(psf_stamp1)}")
+
+psf_stamp2 , x_ll_2, y_ll_2 = render_epsf_stamp_centered(epsf = epsf_model , x0=100.5, y0=100.5, stamp_size=11, unit_flux = True)
+print(f"Drop-in position ({x_ll_2},{y_ll_2}), total flux: {np.sum(psf_stamp2)}")
+```
+
+Now we can plot the two PSF stamp patches side-by-side for comparison. Since the second one has a sub-pixel shift (as the source lands between pixels), it is not centered in the cutout.
+
+```{code-cell} ipython3
+fig = plt.figure(figsize=(6,3))
+ax1 = fig.add_subplot(1,2,1)
+ax2 = fig.add_subplot(1,2,2)
+
+ax1.imshow(psf_stamp1, origin="lower")
+ax1.set_title("Source at (50,50)")
+
+ax2.imshow(psf_stamp2, origin="lower")
+ax2.set_title("Source at (100.5,100.5)")
+
+plt.show()
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+END. OLD VERSION BELOW
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
+```
+
+The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+We focus in this example on the extensions `IMAGE` and `PSF`.
+We have already loaded their data as well as their header.
+
+```{code-cell} ipython3
+psfcube.shape
+```
+
+The shape of the `psfcube` is output above.
+
+```{note}
+In the QR-2 data, the shape is (121,101,101), which corresponds to a grid of 11x11 PSF zones across the image.
+The number of PSF zones may change in later versions of data products.
+```
+
+Each PSF has a size of 101x101 pixels.
+
+```{note}
+Remember that the PSFs are oversampled by a factor of 10.
+This means that the actual size of the PSFs is about 10x10 SPHEREx pixels, which corresponds to about 60x60 arcseconds.
+```
+
++++
+
+Let's look at a small part of the PSF header to understand its format.
+
+```{code-cell} ipython3
+psf_header[0:30]
+```
+
+We confirm that the oversampling factor (`OVERSAMP`) is 10.
+The PSFs are distributed in an even grid with NxM zones (in QR-2 data products it is N=M=11).
+Each of the NxM PSFs is responsible for one of these zones.
+The PSF header therefore includes the center position of these zones as well as the width of the zones.
+These center coordinate are specified with `XCTR_i` and `YCTR_i`, respectively, where i = 1...(NxM).
+The widths are specified with `XWID_i` and `YWID_i`, respectively, where again i = 1...(NxM).
+The zones have approximately equal widths and are arranged in an even grid.
+The size of the zones is sufficient to capture well the changes of the PSF size and structure with wavelength and spatial coordinates.
+
+The goal of this tutorial now is to find the PSF corresponding to our input coordinates of interest.
+
++++
+
+```{warning}
+In the SPHEREx spectral image versions prior or equal to 6.5.5, there was a missmatch between the spatial layout of the PSF zones and the the indexing of the PSF zones in the image header. This has now been fixed in versions 6.5.6 and beyond.
+
+For more information about these changes, see the following webpage: [PSF Erratum](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/psfhdrerr.html)
+
+**Users using the old versions will need to implement and extra step to update the image header. A function to update the header is given [in Section 5.1 below](#update_psf_header_function). **
+```
+
+Let's first check here if a header update is necessary. We can do that by printing the `VERSION` keyword in the header.
+
+For comparisons versions, we can use the Python-internal `Version()` function from the `packaging.version` package. However, since reprocessed images can have version names such as `6.5.4+psffix1` (which are superior to `6.5.4`, for example), we have to write a little wrapper function such that `Version()` can interpret these correctly.
+
+```{code-cell} ipython3
+def parse_version(v):
+    # detect modifiers
+    modifier = None
+    base = v
+    
+    if "+" in v:
+        base, modifier = v.split("+", 1)
+
+    base_version = Version(base)
+
+    if modifier is None:
+        return (0, base_version, 0)
+
+    # extract numeric part if present
+    m = re.search(r'\d+', modifier)
+    modnum = int(m.group()) if m else 0
+
+    return (1, base_version, modnum)
+```
+
+Now, we can use this function to properly compare versions.
+
+```{code-cell} ipython3
+this_version = parse_version( image_hdul['PRIMARY'].header["VERSION"] )
+print(f"Current version is {this_version}")
+
+if this_version <= parse_version("6.5.5"):
+    print("PSF header needs to be updated! -> Go to Section 5.1 :(")
+else:
+    print("PSF header is already up-to-date! -> Proceed to Section 6 :)")
+```
+
+If the version of the SPHEREx spectral image is less or equal than `6.5.5`, we will have to update the header. This is explained in Section 5.1. If the version is later than `6.5.5`, the header is already updated and the PSF issue is fixed. In this case, proceed to Section 6 directly.
+
++++
+
+### 5.1 Updating PSF Header (for SPHEREx Spectral Image versions $\leq$ 6.5.5)
+
++++
+
+The function that can be used to update the header is shown below. The function
+* first checks if a header update is necessary
+* changes the PSF zone indexing and
+* changes the version of the header such that it is consistent with the new released images
+
+Note that this function an work as standalone function to process many images.
+
+```{code-cell} ipython3
+<a id="update_psf_header_function"></a>
+def update_psf_header(old_hdul):
+    """
+    Fix a old PSF FITS file header by rewriting only the per-plane header metadata
+    so that plane k corresponds to x-fast ordering:
+        k0 = iy * bins_x + ix
+
+    The cube data are left untouched.
+
+    Parameters
+    ----------
+    old_hdul : astropy hdul
+        Old SPHEREx Spectral Image HDUL
+
+    Return
+    ----------
+    new_hdul : astropy hdul
+        New SPHEREx Spectral Image HDUL with updated PSF zone data in header and updated version number
+    
+    """
+
+    def parse_version(v):
+        # detect modifiers
+        modifier = None
+        base = v
+        
+        if "+" in v:
+            base, modifier = v.split("+", 1)
+    
+        base_version = Version(base)
+    
+        if modifier is None:
+            return (0, base_version, 0)
+    
+        # extract numeric part if present
+        m = re.search(r'\d+', modifier)
+        modnum = int(m.group()) if m else 0
+    
+        return (1, base_version, modnum)
+
+    ## Check if old version
+    this_version = parse_version( old_hdul['PRIMARY'].header["VERSION"] )
+    if this_version <= parse_version("6.5.5"):
+        print(f"Old version detected ({this_version}) -> Update header.")
+    elif this_version > Version("6.5.5"):
+        print(f"New version detected ({this_version}) -> Do not update header.")
+        return(old_hdul)
+
+    ## Define some auxillary functions -------
+    def parse_ixiy_from_comment(comment):
+        _zone_pat = re.compile(r"\((\d+)\s*,\s*(\d+)\)")
+        m = _zone_pat.search(str(comment))
+        if not m:
+            raise ValueError(f"Could not parse zone indices from comment: {comment!r}")
+        return int(m.group(1)), int(m.group(2))
+    
+    def infer_grid_shape_from_header_comments(hdr, nzone):
+        max_ix = -1
+        max_iy = -1
+    
+        for k1 in range(1, nzone + 1):
+            key = f"XCTR_{k1}"
+            if key not in hdr:
+                raise KeyError(f"Missing required key: {key}")
+            ix, iy = parse_ixiy_from_comment(hdr.comments[key])
+            max_ix = max(max_ix, ix)
+            max_iy = max(max_iy, iy)
+    
+        bins_x = max_ix + 1
+        bins_y = max_iy + 1
+    
+        if bins_x * bins_y != nzone:
+            raise ValueError(
+                f"Inconsistent grid inferred from comments: "
+                f"bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}"
+            )
+    
+        return bins_x, bins_y
+    
+    def collect_axis_values_by_zone(hdr, nzone):
+        """
+        Read the old header and collect unique x/y centers and widths by zone index
+        labels found in the comments.
+    
+        This uses the old header only to recover the per-axis values for each ix, iy.
+        It does NOT use the old plane ordering as truth.
+        """
+        x_center_by_ix = {}
+        y_center_by_iy = {}
+        x_width_by_ix = {}
+        y_width_by_iy = {}
+    
+        for k1 in range(1, nzone + 1):
+            ix, iy = parse_ixiy_from_comment(hdr.comments[f"XCTR_{k1}"])
+    
+            xck = f"XCTR_{k1}"
+            yck = f"YCTR_{k1}"
+            xwk = f"XWID_{k1}"
+            ywk = f"YWID_{k1}"
+    
+            if xck in hdr:
+                val = hdr[xck]
+                if ix in x_center_by_ix and not np.isclose(x_center_by_ix[ix], val):
+                    raise ValueError(
+                        f"Inconsistent XCTR for ix={ix}: "
+                        f"{x_center_by_ix[ix]} vs {val}"
+                    )
+                x_center_by_ix[ix] = val
+    
+            if yck in hdr:
+                val = hdr[yck]
+                if iy in y_center_by_iy and not np.isclose(y_center_by_iy[iy], val):
+                    raise ValueError(
+                        f"Inconsistent YCTR for iy={iy}: "
+                        f"{y_center_by_iy[iy]} vs {val}"
+                    )
+                y_center_by_iy[iy] = val
+    
+            if xwk in hdr:
+                val = hdr[xwk]
+                if ix in x_width_by_ix and not np.isclose(x_width_by_ix[ix], val):
+                    raise ValueError(
+                        f"Inconsistent XWID for ix={ix}: "
+                        f"{x_width_by_ix[ix]} vs {val}"
+                    )
+                x_width_by_ix[ix] = val
+    
+            if ywk in hdr:
+                val = hdr[ywk]
+                if iy in y_width_by_iy and not np.isclose(y_width_by_iy[iy], val):
+                    raise ValueError(
+                        f"Inconsistent YWID for iy={iy}: "
+                        f"{y_width_by_iy[iy]} vs {val}"
+                    )
+                y_width_by_iy[iy] = val
+    
+        return x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy
+    ## End defining some auxillary functions --------
+
+    ## Get Header
+    extname = "PSF"
+    hdu = old_hdul[extname]
+    cube = np.asarray(hdu.data)
+    hdr_in = hdu.header.copy()
+
+    if cube.ndim != 3:
+        raise ValueError(f"Expected 3D PSF cube, got shape {cube.shape}")
+
+    nzone = cube.shape[0]
+    bins_x, bins_y = infer_grid_shape_from_header_comments(hdr_in, nzone)
+
+    print(f"Detected bins_x={bins_x}, bins_y={bins_y}, nzone={nzone}")
+
+    x_center_by_ix, y_center_by_iy, x_width_by_ix, y_width_by_iy = collect_axis_values_by_zone(
+        hdr_in, nzone
+    )
+
+    # Validate that all needed axis values were recovered
+    missing = []
+    for ix in range(bins_x):
+        if ix not in x_center_by_ix:
+            missing.append(f"x_center[{ix}]")
+        if ix not in x_width_by_ix:
+            missing.append(f"x_width[{ix}]")
+    for iy in range(bins_y):
+        if iy not in y_center_by_iy:
+            missing.append(f"y_center[{iy}]")
+        if iy not in y_width_by_iy:
+            missing.append(f"y_width[{iy}]")
+
+    if missing:
+        raise ValueError(f"Missing axis metadata recovered from old header: {missing}")
+
+    hdr_out = hdr_in.copy()
+
+    # Rewrite only the per-plane metadata so plane k matches x-fast ordering.
+    # plane k0 should correspond to:
+    #   ix = k0 % bins_x
+    #   iy = k0 // bins_x
+    for k0 in range(nzone):
+        ix = k0 % bins_x
+        iy = k0 // bins_x
+        k1 = k0 + 1
+
+        hdr_out[f"XCTR_{k1}"] = (
+            x_center_by_ix[ix],
+            f"Center of x zone ({ix}, {iy})"
+        )
+        hdr_out[f"YCTR_{k1}"] = (
+            y_center_by_iy[iy],
+            f"Center of y zone ({ix}, {iy})"
+        )
+        hdr_out[f"XWID_{k1}"] = (
+            x_width_by_ix[ix],
+            f"Width of x zone ({ix}, {iy})"
+        )
+        hdr_out[f"YWID_{k1}"] = (
+            y_width_by_iy[iy],
+            f"Width of y zone ({ix}, {iy})"
+        )
+
+    # Optional but useful provenance note
+    hdr_out["HISTORY"] = "Rewrote PSF per-plane zone metadata to x-fast ordering."
+    hdr_out["HISTORY"] = "Cube plane data left unchanged."
+
+    
 
     new_hdu = fits.ImageHDU(data=cube, header=hdr_out, name=hdu.name)
 
@@ -558,7 +1382,7 @@ for key, val in psf_header.items():
     ym = re.match(r'(YCTR*)', key)
     if ym:
         yplane = int(key.split("_")[1])
-        yctr[yplane] = val
+        yctr[xplane] = val
 ```
 
 Check that we got all of them!
@@ -576,11 +1400,10 @@ for zone_id in xctr.keys():
 ```
 
 Once we have created this dictionary with zone pixel coordinates, we can simply search for the closest zone center to the coordinates of interest.
-For this we first add the distance between zone center coordinates and coordinates of interest to the table. 
-Note that the zone pixel center coordinates are 0-based, while their _names_ in the header (for example `XCTR_n`) are 1-based.
+For this we first add the distance between zone center coordinates and coordinates of interest to the table. (Note that the x,y coordinates of the PSF zone centers are in 1,1 convention, therefore we have to subtract 1 pixels.)
 
 ```{code-cell} ipython3
-tab["distance"] = np.sqrt((tab["x"] - xpix_orig)**2 + (tab["y"] - ypix_orig)**2)
+tab["distance"] = np.sqrt((tab["x"]-1 - xpix_orig)**2 + (tab["y"]-1 - ypix_orig)**2)
 ```
 
 Then we can sort the table and pick the closest zone to coordinates of interest.
@@ -631,9 +1454,12 @@ To use this PSF for forward modeling or fitting, you must:
 
 ## About this notebook
 
-**Updated:** 25 March 2026
+**Updated:** 10 March 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
 
+```{code-cell} ipython3
+
+```
