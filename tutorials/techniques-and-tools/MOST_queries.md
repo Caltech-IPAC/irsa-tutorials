@@ -740,7 +740,7 @@ for i in range(n_img):
         ax.imshow(cutout.data,origin='lower',norm=norm,cmap='Greys_r')
 
         #Add title indicating the band and date
-        ax.set_title(f'Band: W{band_names[j]}\nMJD: {np.round(header['MJD_OBS'],2)}')
+        ax.set_title(f"Band: W{band_names[j]}\nMJD: {np.round(header['MJD_OBS'], 2)}")
 
 
         #Now make reference cutout
