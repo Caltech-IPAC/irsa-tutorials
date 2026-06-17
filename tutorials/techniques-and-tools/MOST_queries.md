@@ -38,7 +38,7 @@ Metadata tables containing the location of the target as a function of time and 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy 'astroquery>=0.4.10' regions reproject photutils
+# !pip install astropy 'astroquery>=0.4.10' regions reproject
 ```
 
 ```{code-cell} ipython3
@@ -70,9 +70,6 @@ from regions import PixCoord, PolygonSkyRegion
 
 #Package for reprojecting images
 from reproject import reproject_interp
-
-#For performing aperture photometry
-from photutils.aperture import CircularAperture, aperture_photometry
 ```
 
 :::{tip}
@@ -777,10 +774,6 @@ We have chosen to reproject the AllWISE cutouts to the match this orientation, r
 We will also need to generate equivalent cutouts again below, so once again we can collect the cells above into a single function that will retrieve and plot the cutouts.
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 def plot_cutouts(most_output, return_stack=False):
     '''
     Function to plot (NEO)WISE cutouts identifed in a
@@ -1146,7 +1139,7 @@ plot_path(most_output)
 
 **Authors:** Michael G. Jones and the IRSA Data Science Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Shoubaneh Hemmati, Vandana Desai, and Tim Brooke
 
-**Updated:** 29 October 2025
+**Updated:** 16 June 2026
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
