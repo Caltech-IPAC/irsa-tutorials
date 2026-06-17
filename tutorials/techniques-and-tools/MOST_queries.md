@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.19.3
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -548,9 +548,10 @@ ordered_metadata = most_output['metadata']
 ordered_metadata.sort(['mjd_obs','band'])
 
 #Construct the image IDs to relate rows to those in the results table
-ordered_metadata['Image_ID'] = np.char.add(np.char.add(ordered_metadata['scan_id']+'_',
-                                                       np.array(ordered_metadata['frame_num'],dtype='str')+'_'),
-                                           np.array(ordered_metadata['band'],dtype='str'))
+imgIDs = []
+for i in range(len(ordered_metadata)):
+    imgIDs.append(f"{ordered_metadata[i]['scan_id']}_{ordered_metadata[i]['frame_num']}_{ordered_metadata[i]['band']}")
+ordered_metadata['Image_ID'] = imgIDs
 
 #Duplicate results table and index by image ID
 indexed_results = most_output['results']
