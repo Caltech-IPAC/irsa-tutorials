@@ -81,6 +81,7 @@ import matplotlib as mpl
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 ## Define some plotting formats
 def load_plotting_defaults():
