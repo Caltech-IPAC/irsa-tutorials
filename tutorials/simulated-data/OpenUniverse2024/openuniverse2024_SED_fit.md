@@ -110,6 +110,7 @@ list out some basic information including column names
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def inspect_parquet_columns(s3_path, *, region='us-east-1', max_rows=0):
     """
@@ -176,6 +177,7 @@ Next we merge the SN sample with the host galaxy fluxes and physical properties.
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file, *, region='us-east-1'):
     """
@@ -251,6 +253,7 @@ A tight correlation along the 1:1 line indicates successful matching.
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_redshift_comparison(df):
     """
@@ -349,6 +352,7 @@ roman_bands = {
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def scale_rubin_to_roman(df, rubin_bands, roman_bands, match_wave=0.87, verbose=False):
     """
@@ -445,6 +449,7 @@ def scale_rubin_to_roman(df, rubin_bands, roman_bands, match_wave=0.87, verbose=
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def photons_to_maggies_with_filter(photon_flux, filt):
     """
@@ -493,6 +498,7 @@ def photons_to_maggies_with_filter(photon_flux, filt):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def add_maggie_columns(df):
     """
@@ -545,6 +551,7 @@ def add_maggie_columns(df):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_single_sed(df, rubin_bands, roman_bands, galaxy_index=0, loglog=False):
     """
@@ -636,6 +643,7 @@ plot_single_sed(df_scaled, rubin_bands, roman_bands, 1, loglog=True)
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_many_seds(df, rubin_bands, roman_bands, n_galaxies=10, loglog=False):
     """
@@ -744,6 +752,7 @@ Prospector has its own built in functions to do writing and reading, but
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def df_to_all_obs(df, flux_err_frac=0.1):
     """
@@ -801,6 +810,7 @@ def df_to_all_obs(df, flux_err_frac=0.1):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def process_output(output, model, obs, sps):
     """
@@ -903,6 +913,7 @@ def process_output(output, model, obs, sps):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def run_fit(obs, model_params, sps, lnprobfn, noise_model, fitting_kwargs):
     """
@@ -965,6 +976,7 @@ def run_fit(obs, model_params, sps, lnprobfn, noise_model, fitting_kwargs):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def run_fit_star(args):
     """
@@ -1007,6 +1019,7 @@ def run_fit_star(args):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def fit_sample_parallel(obs_list, model_params, sps, lnprobfn, noise_model=(None,None),
                         fitting_kwargs=None, nproc=None):
@@ -1057,6 +1070,7 @@ def fit_sample_parallel(obs_list, model_params, sps, lnprobfn, noise_model=(None
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def save_outputs_hdf5(outputs, obs_list, filename="all_galaxies.h5"):
     """
@@ -1240,6 +1254,7 @@ use this section to quickly load the fitted results instead of re-running Prospe
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def download_results_hdf5_from_gdrive(file_id, dest_path="./sn_fits.h5"):
     """
@@ -1272,6 +1287,7 @@ def download_results_hdf5_from_gdrive(file_id, dest_path="./sn_fits.h5"):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def load_outputs_hdf5(filename="sn_fits.h5",
                       file_id="1BuymtEXJsxbd8PqwkIEmff-76JGGa650"):
@@ -1353,6 +1369,7 @@ After fitting, we can visualize the results by comparing observed and modeled SE
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_SED_fit(outputs, obs_list, galaxy_id):
     """
@@ -1464,6 +1481,7 @@ for gid in galaxy_ids[:5]:
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_corner(outputs, obs_list, galaxy_id):
     """
@@ -1556,6 +1574,7 @@ Agreement along the 1:1 line indicates successful recovery of physical parameter
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_stellar_mass_verification(df, outputs):
     """
@@ -1642,6 +1661,7 @@ We compare the distribution of Prospector-derived stellar masses for the two SN 
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_1a_vs_cc_mass(df_sn, outputs):
     """

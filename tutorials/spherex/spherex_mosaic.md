@@ -109,10 +109,10 @@ We first show how to open the SPHEREx mosaic cube and how to assign wavelengths 
 
 The mosaic cube was obtained from the [IRSA SPHEREx mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) GUI. The mosaic tool computes a cube (x,y,$\lambda$) from SPHEREx data at a given sky position provided by the user. In brief, the tool gathers all the SPHEREx spectral images at that position, extracts the pixels at similar wavelenghts, and reprojects them into cube layers at the respective wavelengths. The final cube has 102 wavelength layers from $0.75$ to $5\,{\rm \mu m}$. The user can also specify the spatial size of the cube.
 
-Because the IRSA SPHEREx mosaic tool does not have an API, we have created and downloaded the mosaic already and added it to the `./data/` directory. 
+Because the IRSA SPHEREx mosaic tool does not have an API, we have created and downloaded the mosaic already and added it to the `./data/` directory.
 
 ```{tip}
-To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) and type in *M101* in the `Output Mosaic Center` text field. For the size of the mosaic, choose 30 arcminutes for both axis. For the output mosaic pixel scale choose 9 arcseconds. 
+To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-mosaic) and type in *M101* in the `Output Mosaic Center` text field. For the size of the mosaic, choose 30 arcminutes for both axis. For the output mosaic pixel scale choose 9 arcseconds.
 ```
 
 We first define the path to the mosaic cube.
@@ -153,7 +153,7 @@ with fits.open(fn_spherex) as hdul:
     # adjust image units and update header BUNIT
     cube_img = hdul["IMAGE"].data * 23.5045 * (pixscale_mosaic)**2 / 1e3 # Mjy/sr -> mjy
     cube_hdr['BUNIT'] = "mjy"
-    
+
     # extract the 2D spatial WCS (dropping the spectral axis)
     cube_wcs = WCS(cube_hdr, fobj=hdul).celestial
     print(f"Loaded SPHEREx cube with pixel scale {pixscale_mosaic} arcsec/px")
@@ -203,13 +203,14 @@ Furthermore, the function creates a plot showing the collapsed cube and the aper
 
 
 ```{tip}
-This function provides a very simple aperture photometry with background subtraction. The method can be extended. For example the function does not calculate photometric errors.  
+This function provides a very simple aperture photometry with background subtraction. The method can be extended. For example the function does not calculate photometric errors.
 ```
 
 ```{code-cell} ipython3
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r_outer_px=100, makeplot=True):
     '''
@@ -234,7 +235,7 @@ def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r
     -------
     astropy.QTable
         A table including the photometry results (sum of aperture flux, plane ID, etc).
-    
+
     '''
 
     ## Define helper function to compute the photometry efficiently
@@ -253,34 +254,34 @@ def measure_aperture_photometry_cube(cube, *, r_aperture_px=20, r_inner_px=60, r
             Aperture for photometry extraction.
         annulus_aperture : photutils.CircularAnnulus
             Annulus aperture for background estimation.
-        
+
         Returns
         -------
         astropy.QTable
             A table including the photometry results (sum of aperture flux, plane ID, etc).
-        
+
         '''
-        
+
         ## Calculate background
         sigclip = SigmaClip(sigma=3.0, maxiters=10)
         aperstats = ApertureStats(img, annulus_aperture, sigma_clip=sigclip)
         bkg_mean = aperstats.mean
         aperture_area = aperture.area_overlap(img)
         total_bkg = bkg_mean * aperture_area
-        
+
         ## Get photometry and subtract background
         phot_table = aperture_photometry(img, aperture)
         phot_table["aperture_sum_bkgsub"] = phot_table["aperture_sum"] - total_bkg
-    
+
         return(phot_table)
 
-    
+
     ## Define position and apertures
     position = (cube.shape[1]//2,cube.shape[2]//2)
     aperture = CircularAperture(position, r=r_aperture_px)
     annulus_aperture = CircularAnnulus(position, r_in=r_inner_px, r_out=r_outer_px)
 
-    
+
     ## Compute photometry (use helper function to iterate over planes)
     phot_all = vstack( [apphot_helper(cube[ii,:,:] , position, aperture, annulus_aperture) for ii in range(cube.shape[0])] ) # run all planes
     phot_all["id"] = np.arange(cube.shape[0])+1 ## add plane numbers back
@@ -443,7 +444,7 @@ def make_map(cube,
     -------
     numpy.ndarray
         Two-dimensional map.
-    
+
     '''
     img_map = np.nansum( cube[np.asarray(planes_feature)-1 , :,:], axis=0 ) - np.nanmedian( cube[np.asarray(planes_continuum)-1 , :,:], axis=0 )
     return(img_map)
