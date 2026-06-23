@@ -6,8 +6,8 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.19.3
 kernelspec:
-  name: python3
-  display_name: Python 3 (ipykernel)
+  name: conda-env-test-py
+  display_name: Python [conda env:test]
   language: python
 ---
 
@@ -775,6 +775,10 @@ We have chosen to reproject the AllWISE cutouts to the match this orientation, r
 We will also need to generate equivalent cutouts again below, so once again we can collect the cells above into a single function that will retrieve and plot the cutouts.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
 def plot_cutouts(most_output, return_stack=False):
     '''
     Function to plot (NEO)WISE cutouts identifed in a
@@ -805,9 +809,10 @@ def plot_cutouts(most_output, return_stack=False):
     ordered_metadata.sort(['mjd_obs','band'])
     
     #Construct the image IDs to relate rows to those in the results table
-    ordered_metadata['Image_ID'] = np.char.add(np.char.add(ordered_metadata['scan_id']+'_',
-                                                           np.array(ordered_metadata['frame_num'],dtype='str')+'_'),
-                                               np.array(ordered_metadata['band'],dtype='str'))
+    imgIDs = []
+    for i in range(len(ordered_metadata)):
+        imgIDs.append(f"{ordered_metadata[i]['scan_id']}_{ordered_metadata[i]['frame_num']}_{ordered_metadata[i]['band']}")
+    ordered_metadata['Image_ID'] = imgIDs
     
     #Duplicate results table and index by image ID
     indexed_results = most_output['results']
