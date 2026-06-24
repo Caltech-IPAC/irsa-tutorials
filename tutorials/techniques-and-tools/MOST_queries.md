@@ -6,8 +6,8 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.19.3
 kernelspec:
-  name: conda-env-test-py
-  display_name: Python [conda env:test]
+  name: python3
+  display_name: Python 3
   language: python
 ---
 
