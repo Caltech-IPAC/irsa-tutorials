@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.3
+    jupytext_version: 1.17.3
 kernelspec:
   name: python3
   display_name: Python 3
@@ -1119,7 +1119,7 @@ The format of the output is exactly as for the previous queries and we can use t
 plot_path(most_output)
 ```
 
-In addition to the MPC one-line format, orbital elements can also be listed manually one-by-one as argument in the `query_object` function.
+In addition to the MPC one-line format, orbital elements can also be listed manually one-by-one as arguments in the `query_object` function.
 The exact same search for 2I/Borisov performed above (Section 4) using its name, `"2I"`, can also be performed by entering its orbital elements directly.
 Several epochs of orbit parameters are available for 2I/Borisov and its orbit changed significantly over time (due in part to outgassing).
 If we look for the one line MPCORB database entry for 2I/Borisov, it will list only the paramters for the latest epoch.
@@ -1147,9 +1147,9 @@ plot_path(most_output)
 
 ## About this notebook
 
-**Authors:** Michael G. Jones and the IRSA Data Science Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Shoubaneh Hemmati, Vandana Desai, and Tim Brooke
+**Authors:** Michael G. Jones, Brigitta Sipőcz, and Tim Brooke
 
-**Updated:** 16 June 2026
+**Updated:** 25 June 2026
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
