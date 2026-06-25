@@ -114,6 +114,10 @@
   file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
   section: Techniques and Tools
   description: Use LSDB for user-friendly cross matching and querying of HATS Collections.
+- title: Moving Object Searches
+  file: tutorials/techniques-and-tools/MOST_queries.md
+  section: Techniques and Tools
+  description: Run MOST queries to find images of moving objects, retrieve cutouts, and stack exposures to boost detection.
 - title: NEOWISE Solar System Objects
   file: tutorials/wise/NEOWISE_light_curve_demo.md
   section: WISE
