@@ -71,6 +71,9 @@ from regions import PixCoord, PolygonSkyRegion
 
 #Package for reprojecting images
 from reproject import reproject_interp
+
+# Astropy's default timeout limit can be too short in some cases. Increase it to 2 minutes.
+conf.remote_timeout = 120
 ```
 
 :::{tip}
