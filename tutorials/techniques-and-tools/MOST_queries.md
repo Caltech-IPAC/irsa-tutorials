@@ -57,6 +57,7 @@ from astroquery.ipac.irsa import Irsa
 #Tools for opening FITS files, making cutout, and displaying images
 import astropy.io.fits as fits
 from astropy.nddata import Cutout2D
+from astropy.utils.data import conf
 from astropy.visualization import ImageNormalize, ZScaleInterval
 
 #For handling physical units and positions on the sky
