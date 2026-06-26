@@ -80,6 +80,7 @@ import requests
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def download_file(file_url, save_path):
     """
@@ -118,6 +119,7 @@ def download_file(file_url, save_path):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def download_files_in_parallel(file_url_list, save_dir):
     """
@@ -154,6 +156,7 @@ def download_files_in_parallel(file_url_list, save_dir):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def download_simulations(download_dir, download_all=True):
     """
@@ -236,6 +239,7 @@ download_simulations(download_dir, download_all=False)
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def fetch_column_names():
     """
@@ -274,6 +278,7 @@ def fetch_column_names():
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
     """
@@ -335,6 +340,7 @@ def read_hdf5_to_pandas(file_path, columns_to_keep, columns_to_convert):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def assign_redshift_bins(df, z_min, z_max, dz=0.1):
     """
@@ -464,6 +470,7 @@ Do the numbers we are getting and their distributions make sense?
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def get_bin_area(dec_edges, ra_width):
     """
@@ -492,6 +499,7 @@ def get_bin_area(dec_edges, ra_width):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def calculate_counts_per_deg2(df):
     """
@@ -545,6 +553,7 @@ def calculate_counts_per_deg2(df):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_dec_bins(dec_bins, galaxy_counts):
     """
@@ -583,6 +592,7 @@ def plot_dec_bins(dec_bins, galaxy_counts):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_dec_bins_per_deg2(dec_bins, counts_per_deg2):
     """
@@ -635,6 +645,7 @@ This is a first pass at making a number density plot with just a single data fil
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def jackknife_galaxy_count(df, grid_cells=10):
     """
@@ -715,6 +726,7 @@ def jackknife_galaxy_count(df, grid_cells=10):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_galaxy_counts_vs_redshift_with_jackknife(counts, std_dev_counts, z_bin_centers):
     """
@@ -797,6 +809,7 @@ Originally this section attempted to use dask instead of pandas to hold the data
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def calculate_area(df):
     """
@@ -830,6 +843,7 @@ def calculate_area(df):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def galaxy_counts_per_hdf5_binned(
     df,
@@ -903,6 +917,7 @@ def galaxy_counts_per_hdf5_binned(
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
     counts_summary, z_bin_centers, halpha_flux_thresholds, halpha_summary,
@@ -995,6 +1010,7 @@ def plot_binned_galaxy_counts_vs_redshift_with_jackknife(
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def jackknife_wrapper(file_list,  halpha_flux_thresholds, find_halpha_bins=False):
     """
@@ -1151,6 +1167,7 @@ The uncertainties are plotted as error bars on the data points above.  There are
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_jackknife_fractional_uncertainty(z_bin_centers, counts, std_dev_counts):
     """
