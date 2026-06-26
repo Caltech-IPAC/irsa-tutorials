@@ -12,7 +12,8 @@ pyarrow>=10.0.1
 hpgeom
 pandas[xml]>=1.5.2
 dask[distributed]
-lsdb>=0.6.6,<0.8
+# lsdb<0.8 returns wrong results for some catalogs, e.g. ZTF DR24 Lightcurves
+lsdb>=0.8.1
 psutil
 ray
 s3fs
