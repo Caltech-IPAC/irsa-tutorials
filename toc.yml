@@ -65,7 +65,7 @@ project:
       children:
         - title: Roman HLSS Number Density
           file: tutorials/simulated-data/roman_hlss_number_density.md
-        - title: OpenUniverse2024 Roman coadds
+        - title: OpenUniverse2024 Roman Coadds
           file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
         - title: OpenUniverse2024 Visualization
           file: tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
@@ -86,9 +86,9 @@ project:
           file: tutorials/techniques-and-tools/cloud-access-intro.md
         - title: LSDB HATS
           file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
-        - title: SED visualization
-          file: tutorials/techniques-and-tools/SEDs_in_Firefly.md
+        - title: Moving Object Searches
+          file: tutorials/techniques-and-tools/MOST_queries.md
         - title: Parallelization
           file: tutorials/techniques-and-tools/Parallelize_Convolution.md
-        - title: Moving object searches
-          file: tutorials/techniques-and-tools/MOST_queries.md
+        - title: SED Visualization
+          file: tutorials/techniques-and-tools/SEDs_in_Firefly.md

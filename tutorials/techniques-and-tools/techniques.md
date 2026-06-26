@@ -6,6 +6,7 @@ This collection includes guidance on cloud-based data access, use of powerful bi
 ```{notebook-gallery} notebook_metadata.yml
 tutorials/techniques-and-tools/cloud-access-intro.md
 tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
-tutorials/techniques-and-tools/SEDs_in_Firefly.md
+tutorials/techniques-and-tools/MOST_queries.md
 tutorials/techniques-and-tools/Parallelize_Convolution.md
+tutorials/techniques-and-tools/SEDs_in_Firefly.md
 ```
