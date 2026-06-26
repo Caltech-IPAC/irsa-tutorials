@@ -38,7 +38,7 @@ Metadata tables containing the location of the target as a function of time and 
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install aiohttp 'astropy>=7.0.2' 'astroquery>=0.4.10' matplotlib numpy regions reproject requests
+# !pip install aiohttp 'astropy>=7.2.0' 'astroquery>=0.4.10' matplotlib numpy regions reproject requests
 ```
 
 ```{code-cell} ipython3
