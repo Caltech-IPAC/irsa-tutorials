@@ -117,7 +117,7 @@ To retrieve the same mosaic as provided here, go to the [IRSA mosaic tool](https
 We first define the path to the mosaic cube.
 
 ```{code-cell} ipython3
-fn_spherex = "https://irsa.ipac.caltech.edu/onlinehelp/spherex/spherex/M101_irsa.fits"
+fn_spherex = "https://irsa.ipac.caltech.edu/data/demos/notebooks/spherex/M101_irsa.fits"
 ```
 
 Next, we open the image and convert the flux units from MJy/sr to mJy:
