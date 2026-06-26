@@ -116,9 +116,12 @@
     <loc>http://localhost:3000/irsa-hats-with-lsdb</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/seds-in-firefly</loc>
+    <loc>http://localhost:3000/most-queries</loc>
   </url>
   <url>
     <loc>http://localhost:3000/parallelize-convolution</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/seds-in-firefly</loc>
   </url>
 </urlset>
