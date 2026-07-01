@@ -567,13 +567,7 @@ We can load the light curves data into a DataFrame by using the `compute()` meth
 Note: You may see a memory warning from lsdb which is expected due to the large size of Lightcurve data.
 
 ```{code-cell} ipython3
-with Client(n_workers=get_nworkers(ztf_lcs),
-            threads_per_worker=1,
-            memory_limit=None # to prevent it from running out of memory
-            ) as client:
-    print(f"This may take more than a few minutes to complete. You can monitor progress in Dask dashboard at {client.dashboard_link}")
-    ztf_lcs_df = ztf_lcs.compute()
-
+ztf_lcs_df = ztf_lcs.compute() # you may need to parallelize it with Dask client like in section 5.2 above
 ztf_lcs_df
 ```
 
