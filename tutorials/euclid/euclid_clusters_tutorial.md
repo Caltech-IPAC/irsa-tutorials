@@ -188,6 +188,7 @@ To explore a different control field, change the seed value or remove the seed e
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def check_mer_tile_requirement(coord, search_radius=2.0):
     """Check whether a sky coordinate is covered by exactly 4 Euclid MER science images.
@@ -230,6 +231,7 @@ def check_mer_tile_requirement(coord, search_radius=2.0):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def find_control_field(cluster_df, cluster_ra, cluster_dec, min_distance_arcmin=15, max_attempts=100):
     """Find a random control field offset from the known cluster catalog.
@@ -342,6 +344,7 @@ Because the four photometric bands are independent of each other, `download_and_
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def _download_band(band, mer_images, field_coord, field_id, cache_dir, s3):
     """Download one photometric band from S3 and write a cutout FITS to the local cache.
@@ -401,6 +404,7 @@ def _download_band(band, mer_images, field_coord, field_id, cache_dir, s3):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def download_and_cache_field(mer_images, field_name, field_coord, field_id):
     """Stream cutout FITS images from S3 and cache them locally.
@@ -482,6 +486,7 @@ Displaying the cluster and control fields side by side at the same stretch gives
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def normalize_with_consistent_stretch(cluster_cutouts, control_cutouts, lower_percentile=1, upper_percentile=99):
     """Normalize cluster and control cutouts using a shared percentile stretch.
@@ -538,6 +543,7 @@ def normalize_with_consistent_stretch(cluster_cutouts, control_cutouts, lower_pe
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def downsample(arr, factor=4):
     """Block-average a 2-D or 3-D image array by an integer factor for faster display.
@@ -646,6 +652,7 @@ Then we show part of the cluster dataframe to see what information we have avail
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def query_galaxies_for_field(ra, dec, field_name, redshift_center, redshift_width=0.1):
     """Query galaxies within a redshift slice around a sky position.
@@ -781,6 +788,7 @@ The function prints the number of galaxies within bounds as a diagnostic, if a l
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def apply_dbscan_clustering(galaxy_df, wcs, rgb_image, field_name, eps=500, min_samples=18):
     """Apply DBSCAN to detect galaxy overdensities in a redshift-selected sample. DBSCAN operates on the 2-D projected
@@ -938,6 +946,7 @@ Combining field galaxies from both the cluster and control fields gives us a lar
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def identify_cluster_members(galaxy_df, labels, galaxy_coords, field_name):
     """Separate a galaxy sample into cluster members and field galaxies.
@@ -1058,6 +1067,7 @@ We convert the uniform-aperture fluxes in the photo-z catalog to AB magnitudes a
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def calculate_color_magnitude(df):
     """Convert uniform-aperture fluxes to AB magnitudes and compute Y-H color.
@@ -1102,6 +1112,7 @@ field_cmd = calculate_color_magnitude(all_field_galaxies[['flux_y_unif', 'flux_h
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def remove_outliers_bounds(df, h_min=17, h_max=25, yh_min=-0.5, yh_max=1.5):
     """Filter a colour-magnitude table to a physically motivated range.
@@ -1242,6 +1253,7 @@ Ten spectra per group is sufficient to show whether the cluster and field popula
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def get_n_spectra(obj_ids, n=10):
     """
@@ -1434,6 +1446,7 @@ The three helper functions below handle this: `preprocess_spectrum` continuum-su
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def preprocess_spectrum(spec):
     """Continuum-remove + robust-normalize a spectrum for visualization."""
@@ -1487,6 +1500,7 @@ def preprocess_spectrum(spec):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def build_stack(spectra_dict, w_grid):
     """Interpolate processed spectra onto a common grid and return matrix [nobj, ngrid]."""
@@ -1514,6 +1528,7 @@ def build_stack(spectra_dict, w_grid):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def lines_in_window(wmin, wmax, z):
     """Return dict of lines whose observed wavelength falls in [wmin, wmax]."""
@@ -1553,6 +1568,7 @@ field_stack   = build_stack(field_spectra,   w_grid)
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def label_emission_line(ax, x, label, y=0.92, rotation=90, color='k'):
     """Place a vertical emission-line label at wavelength x."""
@@ -1639,6 +1655,7 @@ This provides an independent check of cluster membership using spectroscopic red
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def search_ned_field(ra, dec, z_min, z_max, label, radius_arcmin=3, max_retries=3):
     """Search NED within radius_arcmin of (ra, dec), filter to z_min–z_max, and print a summary.
@@ -1731,6 +1748,7 @@ We now overlay the NED-catalogued objects on the cluster and control field image
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def overlay_ned_sources(
     cluster_objects, control_objects,
