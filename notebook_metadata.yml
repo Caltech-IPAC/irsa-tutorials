@@ -138,3 +138,7 @@
   file: tutorials/wise/wise-allwise-catalog-demo.md
   section: WISE
   description: Query the Parquet copy of the AllWISE Source Catalog.
+- title: ZTF DR24 Light Curves
+  file: tutorials/ztf/ztf_lightcurves.md
+  section: ZTF
+  description: Retrieve ZTF DR24 light curves from HATS catalogs using LSDB, by object ID or sky region.
