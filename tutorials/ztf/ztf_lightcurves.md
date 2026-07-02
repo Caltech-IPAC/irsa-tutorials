@@ -382,7 +382,16 @@ ztf_objects_columns = ['oid', 'ra', 'dec', 'filtercode', 'ngoodobsrel', 'chisq',
 ### 5.2 Open the Objects Table
 
 As with Lightcurves, we can load objects from the Objects Table by doing either an index search or a spatial search.
-We'll do a spatial search here.
+We'll do a spatial search here, which is generally faster.
+
+```{note}
+Objects Table contains more objects than Lightcurves.
+This is because objects were identified using co-added reference images that have deeper photometry than the single-exposure detection limits.
+So objects may be "missing" from Lightcurves, or may be present but sparsely sampled, when their photometry is fainter or approximately equal to the single-exposure detection limits.
+See item 9 in the "What you should know about the ZTF Release Products" section of the [release notes](https://irsa.ipac.caltech.edu/data/ZTF/docs/releases/ztf_release_notes_latest).
+```
+
+We reuse the same `spatial_filter` from section 4 to retrieve Objects Table entries for the same sky region. This is important for ensuring we only retrieve rows relevant to the light curves we got from the position search.
 
 
 ```{code-cell} ipython3
