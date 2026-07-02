@@ -57,7 +57,7 @@ For more context on ZTF DR24 data products, refer to the [ZTF DR24 release notes
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install s3fs "lsdb>=0.6.6,<0.8" pyarrow pandas astropy matplotlib
+# !pip install s3fs "lsdb>=0.8.1" pyarrow pandas astropy matplotlib
 ```
 
 ```{code-cell} ipython3
