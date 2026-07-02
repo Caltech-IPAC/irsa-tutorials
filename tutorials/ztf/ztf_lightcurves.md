@@ -24,7 +24,7 @@ kernelspec:
 
 By the end of this tutorial, you will learn how to:
 
-- Open ZTF DR24 HATS catalogs for light curves and the Objects Table using `lsdb`.
+- Open ZTF DR24 Lightcurves and Objects Table HATS Catalogs using `lsdb`.
 - Retrieve light curves for specific objects by ZTF object IDs using an index search.
 - Retrieve light curves for objects in a sky region using a cone search.
 - Cross-reference the Objects Table to enrich cone search results with per-object variability statistics.
@@ -260,7 +260,9 @@ plt.show()
 
 ## 4. Get Light Curves by Sky Position
 
-If you have sky coordinates and want all ZTF objects within a given area, use a cone search.
+If you have sky coordinates and want all ZTF objects within a given area, use a [spatial search](https://docs.lsdb.io/en/latest/tutorials/region_selection.html).
+We'll do a cone search here.
+Box and polygon searches are also available.
 
 ```{important} ZTF objects are defined per (filter, field, quadrant)
 ZTF objects (i.e., unique object IDs) are defined _per_ (filter, field, quadrant).
@@ -379,7 +381,9 @@ ztf_objects_columns = ['oid', 'ra', 'dec', 'filtercode', 'ngoodobsrel', 'chisq',
 
 ### 5.2 Open the Objects Table
 
-We reuse the same `spatial_filter` from section 4 to retrieve Objects Table entries for the same sky region. This is important for ensuring we only retrieve rows relevant to the light curves we got from the position search.
+As with Lightcurves, we can load objects from the Objects Table by doing either an index search or a spatial search.
+We'll do a spatial search here.
+
 
 ```{code-cell} ipython3
 ztf_objects_cone = lsdb.open_catalog(
