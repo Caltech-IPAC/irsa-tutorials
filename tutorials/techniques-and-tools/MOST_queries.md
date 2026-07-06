@@ -7,7 +7,7 @@ jupytext:
     jupytext_version: 1.17.3
 kernelspec:
   name: python3
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
 ---
 
@@ -1024,9 +1024,10 @@ ascii.write(most_output['metadata'], output="metadata_table.tbl", format='ipac',
 Support for SPHEREx in MOST was added in June 2026. SPHEREx images can be obtained in much the same way as the WISE examples shown above by setting the `'catalog'` argument to `"spherex"`.
 
 Here we search for images containing the asteroid Vesta taken during August 2025.
+We use the NAIF ID, 20000004, for Vesta as "Vesta" would result in multiple matches when querying JPL Horizons.
 
 ```{code-cell} ipython3
-most_output = Most.query_object(output_mode="Regular",obj_name="Vesta",
+most_output = Most.query_object(output_mode="Regular",obj_name="20000004",
                                 obs_begin="2025-08-01",obs_end="2025-08-31",
                                 catalog="spherex")
 ```
