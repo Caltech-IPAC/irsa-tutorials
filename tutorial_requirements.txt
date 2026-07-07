@@ -29,8 +29,6 @@ scikit-learn
 gdown
 astro-sedpy
 astro-prospector
-dynesty<2
-fsps
 seaborn
 regions
 # For supporting myst-based notebooks
