@@ -1184,7 +1184,7 @@ This step runs Prospector on a small subset of galaxies and writes a new `sn_fit
 ```{code-cell} ipython3
 # This notebook uses [FSPS](https://github.com/cconroy20/fsps) to fit SEDs.
 #FSPS requires installation which includes cloning that repo to get the data files.
-#This repo ([ipac-sp-notebooks](https://github.com/IPAC-SW/ipac-sp-notebooks/)) includes FSPS as a submodule to #make things a little easier.
+#This repo ([irsa-tutorials](https://github.com/Caltech-IPAC/irsa-tutorials/)) includes FSPS as a submodule to make things a little easier.
 #If you have cloned this repo, running the following cell will complete the setup.
 #If not, either clone this repo and then run the cell or else follow the full instructions at the FSPS link instead.
 
