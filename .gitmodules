@@ -1,0 +1,3 @@
+[submodule "tutorials/simulated-data/OpenUniverse2024/fsps"]
+	path = tutorials/simulated-data/OpenUniverse2024/fsps
+	url = https://github.com/cconroy20/fsps.git
