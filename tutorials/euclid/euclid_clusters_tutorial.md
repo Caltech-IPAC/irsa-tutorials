@@ -688,7 +688,7 @@ def query_galaxies_for_field(ra, dec, field_name, redshift_center, redshift_widt
             f"JOIN {table_phz} as phz "
             f"ON mer.object_id = phz.object_id "
             f"WHERE 1 = CONTAINS(POINT('ICRS', mer.ra, mer.dec), "
-            f"BOX('ICRS', {ra}, {dec}, {cutout_deg/np.cos(np.radians(dec))}, {cutout_deg})) "
+            f"BOX('ICRS', {ra}, {dec}, {cutout_deg}, {cutout_deg})) "
             f"AND phz.flux_vis_unif > 0 "
             f"AND phz.flux_y_unif > 0 "
             f"AND phz.flux_j_unif > 0 "
