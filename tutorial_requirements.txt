@@ -31,7 +31,7 @@ astro-sedpy
 astro-prospector
 seaborn
 regions
-# For supporting myst-based notebooks
-jupytext
+# For supporting myst-based notebooks, lower pin as we need a bugfix from that release
+jupytext>=1.19.4
 # Making admonotions look nice for the myst notebooks
 jupyterlab-myst
