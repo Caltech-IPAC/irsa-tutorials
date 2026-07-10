@@ -37,6 +37,12 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade tox
 
+      - name: Using execution-output cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: _build/execute
+          key: JB-output
+
       - name: Execute notebooks while building HTMLs
         run: tox -e py312-buildhtml
 

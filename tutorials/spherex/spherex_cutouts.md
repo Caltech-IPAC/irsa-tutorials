@@ -160,7 +160,7 @@ def process_cutout(row, ra, dec, cache):
         Ra and Dec coordinates (same as used for the TAP query) with attached astropy units
     cache : bool
         If set to `True`, the output of cached and the cutout processing will run faster next time.
-        Turn this feature off by setting `cache = False`.
+        Turn this feature off by setting ``cache=False``.
     '''
 
     with fits.open(row["uri"], cache=cache) as hdulist:
@@ -206,7 +206,7 @@ def process_cutout_with_error_handling(row, ra, dec, cache):
         Ra and Dec coordinates (same as used for the TAP query) with attached astropy units
     cache : bool
         If set to `True`, the output of cached and the cutout processing will run faster next time.
-        Turn this feature off by setting `cache = False`.
+        Turn this feature off by setting ``cache=False``.
     '''
     try:
         process_cutout(row, ra, dec, cache=cache)
