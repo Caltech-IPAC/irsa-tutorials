@@ -232,6 +232,7 @@ Since the template-fit photometry is recommended for extended objects, we'll sep
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 # Galaxy + any. Star + galaxy. QSO + galaxy.
 classes = {"Galaxy": (2, 3, 6, 7), "Star": (1, 3), "QSO": (4, 6)}
@@ -304,6 +305,7 @@ This figure is inspired by Romelli Fig. 6 (top panel).
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 # Only consider objects within these mag and mag difference limits.
 mag_limits, mag_diff_limits = (16, 24), (-1, 1)

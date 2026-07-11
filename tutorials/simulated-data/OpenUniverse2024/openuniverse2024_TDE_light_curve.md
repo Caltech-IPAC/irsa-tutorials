@@ -143,6 +143,7 @@ Let's take a look at a few images to see what we are dealing with.
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def show_gallery(files, max_images=9):
     """
@@ -292,6 +293,7 @@ OU_RUBIN_SIA_COLLECTION = 'simulated_rubin_openuniverse2024'
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def get_s3_fpath(cloud_access):
     cloud_info = json.loads(cloud_access) # converts str to dict
@@ -307,6 +309,7 @@ First, we find the filenames of the images in the Roman TDS survey which include
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def Roman_TDS_image_search(host_galaxy, radius, bandname):
     """
@@ -360,6 +363,7 @@ Since there are > 100 TDS images per band, we will:
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def select_images_by_mjd_quantiles(images, n_select=9):
     """
@@ -426,6 +430,7 @@ The two plotting functions then compile these measurements into time-ordered plo
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def run_aperture_photometry(host_galaxy, bandname, image_column="image_filenames", aperture_radius=1.0):
     """
@@ -525,6 +530,7 @@ host_galaxy
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_single_band_light_curve(df, bandname, start_mjd):
     """
@@ -595,6 +601,7 @@ def plot_single_band_light_curve(df, bandname, start_mjd):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def plot_multiband_light_curve(df, bands, start_mjd):
     """
@@ -685,6 +692,7 @@ We follow the example in this [tutorial](https://caltech-ipac.github.io/irsa-tut
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def make_cutout(fname, ra, dec, size=100):
     """
@@ -739,6 +747,7 @@ def make_cutout(fname, ra, dec, size=100):
 ---
 jupyter:
   source_hidden: true
+tags: [hide-cell]
 ---
 def cutout_gallery(image_filenames, mjd_list, ra, dec, aperture_radius_pix_list, size=100, ncols=4,
                    galaxy_id=None):
