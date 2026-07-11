@@ -5,6 +5,8 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.17.3
+execute:
+  skip: true
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
