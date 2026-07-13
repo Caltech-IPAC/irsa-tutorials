@@ -41,7 +41,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
         with:
           path: _build/execute
-          key: JB-output
+          key: JB-output-${{ github.run_id }}
+          kestore-keys: |
+            JB-output-
 
       - name: Execute notebooks while building HTMLs
         run: tox -e py312-buildhtml
