@@ -393,6 +393,7 @@ def select_images_by_mjd_quantiles(images, n_select=9):
 
 ```{code-cell} ipython3
 galaxy_id = int(host_galaxy.iloc[0]["galaxy_id"])
+host_coord = SkyCoord(host_galaxy.iloc[0]["ra"], host_galaxy.iloc[0]["dec"], unit='deg')
 
 for bandname in bands:
     image_tbl = all_band_images[bandname]
@@ -402,11 +403,12 @@ for bandname in bands:
     in_window = [tde_start <= r['t_min'] <= tde_end for r in image_tbl]
     selected_images = image_tbl[in_window]
 
-    # 2. filter out images where the host galaxy is close to the edge of image
-    # 'dist_to_point' is the distance from the center of the image to the host galaxy
-    # 's_fov' is the estimated diameter of the circular region covered by the image
-    # so we keep images where the host galaxy is within 0.45 * s_fov (= 90% from the image center)
-    not_on_edge = [r['dist_to_point'] < (0.45 * r['s_fov']) for r in selected_images]
+    # 2. filter out images where the host galaxy falls near the edge
+    # 's_fov' is the estimated diameter of the image, so 0.45 * s_fov is 90% of its radius.
+    # Keep images where the host galaxy sits closer than that to the center ('s_ra', 's_dec').
+    image_centers = SkyCoord(selected_images['s_ra'], selected_images['s_dec'], unit='deg')
+    dist_to_center = host_coord.separation(image_centers).deg
+    not_on_edge = dist_to_center < (0.45 * selected_images['s_fov'])
     selected_images = selected_images[not_on_edge]
 
     # 3. select an evenly time-sampled subset
