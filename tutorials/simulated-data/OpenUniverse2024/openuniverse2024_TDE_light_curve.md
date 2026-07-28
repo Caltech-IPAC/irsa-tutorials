@@ -8,7 +8,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.1
+    jupytext_version: 1.19.3
 kernelspec:
   name: python3
   display_name: python3
@@ -34,9 +34,9 @@ The goal of this project is to enable cross-collaboration and maximize science r
 
 Tidal Disruption Events (TDEs) occur when a star passes close enough to a supermassive black hole to be torn apart by tidal forces, producing a luminous flare that can outshine the host galaxy for weeks to months.
 Identifying and characterizing TDE host galaxies is key to understanding the demographics of supermassive black holes and the galactic environments that produce these rare events.
-This notebook demonstrates how to locate a simulated TDE from the OpenUniverse2024 transient input catalog, identify its host galaxy, and extract optical and infrared photometry from Roman images to construct a multi-epoch light curve. 
+This notebook demonstrates how to locate a simulated TDE from the OpenUniverse2024 transient input catalog, identify its host galaxy, and extract optical and infrared photometry from Roman images to construct a multi-epoch light curve.
 The OpenUniverse2024 dataset also provides matched Rubin optical coverage over the same sky.
-With a few simple changes in Sections 3 and 4, this workflow can be extended to other Roman and Rubin bands to build a true multi-wavelength light curve.  
+With a few simple changes in Sections 3 and 4, this workflow can be extended to other Roman and Rubin bands to build a true multi-wavelength light curve.
 
 ### Instructions
 
@@ -55,7 +55,7 @@ This notebook is designed to be run sequentially from top to bottom.  All code i
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-!pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
+# !pip install numpy astropy s3fs photutils matplotlib scipy pandas fsspec pyarrow hpgeom astroquery
 ```
 
 ```{code-cell} ipython3
@@ -64,7 +64,7 @@ import numpy as np
 import s3fs
 from matplotlib import pyplot as plt
 import pandas as pd
-from photutils.aperture import SkyCircularAperture, aperture_photometry
+from photutils.aperture import SkyCircularAperture, SkyCircularAnnulus, aperture_photometry, ApertureStats
 from scipy.ndimage import rotate
 from astropy import units as u
 from astropy.coordinates import SkyCoord
@@ -178,6 +178,7 @@ def show_gallery(files, max_images=9):
             vmin, vmax = np.nanpercentile(data, [5, 99])
             # Show image in grayscale with good contrast
             axes[i].imshow(data, origin="lower", cmap="gray", vmin=vmin, vmax=vmax)
+            del data
             # Title: just the base filename
             axes[i].set_title(f.split("/")[-1], fontsize=8)
             # Remove tick marks and labels
@@ -194,7 +195,7 @@ def show_gallery(files, max_images=9):
 
 ```{code-cell} ipython3
 # Number of example images to display. Increase to see more of the available images.
-n_gallery_images = 6
+n_gallery_images = 4
 show_gallery(files, max_images=n_gallery_images)
 ```
 
@@ -202,15 +203,15 @@ show_gallery(files, max_images=n_gallery_images)
 
 We use the OpenUniverse2024 transient input catalog — the same SNANA parquet files described in the [SED Fitting tutorial](SED_fit.md) — to find a TDE.
 The catalog stores one parquet file per HEALPix region, and TDEs are rare, so not every region will contain one.
-The catalog is split into three types of parquet files, each indexed by HEALPix region:                                                                                                
-                                                                                                                                                               
-   1. snana_{region}.parquet — the transient source catalog, with one row per simulated event (supernovae, TDEs, etc.), including fields such as the event    
-  type (model_name) and the ID of the host galaxy (host_id)                                                                                                    
-   2. galaxy_{region}.parquet — the host galaxy catalog, with sky positions and physical properties for each galaxy                                           
-   3. galaxy_flux_{region}.parquet — multi-band photometry for each galaxy (used in the SED Fitting tutorial but not needed here)                             
-   
+The catalog is split into three types of parquet files, each indexed by HEALPix region:
+
+   1. snana_{region}.parquet — the transient source catalog, with one row per simulated event (supernovae, TDEs, etc.), including fields such as the event
+  type (model_name) and the ID of the host galaxy (host_id)
+   2. galaxy_{region}.parquet — the host galaxy catalog, with sky positions and physical properties for each galaxy
+   3. galaxy_flux_{region}.parquet — multi-band photometry for each galaxy (used in the SED Fitting tutorial but not needed here)
+
 TDEs are rare, so not every region will contain one.
-We use the known center of the Roman Time-Domain Survey to target the right region directly. 
+We use the known center of the Roman Time-Domain Survey to target the right region directly.
 We then cross-match the TDE's host_id into the galaxy file to retrieve the host's sky coordinates for the image search that follows.
 
 First, we connect to S3 and list all available SNANA parquet files in the catalog.
@@ -251,7 +252,7 @@ Next, we scan this file and find a row with `model_name == "NON1ASED.TDE-BBFIT"`
 ```{code-cell} ipython3
 # Read the parquet file into a pandas dataframe.
 df = pq.read_table(snana_path, filesystem=fs).to_pandas()
-# Look for TDE models. 
+# Look for TDE models.
 mask = df["model_name"] == "NON1ASED.TDE-BBFIT"
 if mask.any():
    # Choose the first TDE
@@ -392,6 +393,7 @@ def select_images_by_mjd_quantiles(images, n_select=9):
 
 ```{code-cell} ipython3
 galaxy_id = int(host_galaxy.iloc[0]["galaxy_id"])
+host_coord = SkyCoord(host_galaxy.iloc[0]["ra"], host_galaxy.iloc[0]["dec"], unit='deg')
 
 for bandname in bands:
     image_tbl = all_band_images[bandname]
@@ -401,11 +403,12 @@ for bandname in bands:
     in_window = [tde_start <= r['t_min'] <= tde_end for r in image_tbl]
     selected_images = image_tbl[in_window]
 
-    # 2. filter out images where the host galaxy is close to the edge of image
-    # 'dist_to_point' is the distance from the center of the image to the host galaxy
-    # 's_fov' is the estimated diameter of the circular region covered by the image
-    # so we keep images where the host galaxy is within 0.45 * s_fov (= 90% from the image center)
-    not_on_edge = [r['dist_to_point'] < (0.45 * r['s_fov']) for r in selected_images]
+    # 2. filter out images where the host galaxy falls near the edge
+    # 's_fov' is the estimated diameter of the image, so 0.45 * s_fov is 90% of its radius.
+    # Keep images where the host galaxy sits closer than that to the center ('s_ra', 's_dec').
+    image_centers = SkyCoord(selected_images['s_ra'], selected_images['s_dec'], unit='deg')
+    dist_to_center = host_coord.separation(image_centers).deg
+    not_on_edge = dist_to_center < (0.45 * selected_images['s_fov'])
     selected_images = selected_images[not_on_edge]
 
     # 3. select an evenly time-sampled subset
@@ -423,7 +426,7 @@ host_galaxy
 
 ## 4.  Make a Light Curve
 This section demonstrates how to extract and visualize a light curve for a Tidal Disruption Event using simulated Roman images in two bands (J129 and H158).
-The first function, `run_aperture_photometry()`, performs simple circular aperture photometry on a set of FITS images from S3 using the astropy [photutils](https://photutils.readthedocs.io/en/stable/) package. 
+The first function, `run_aperture_photometry()`, performs simple circular aperture photometry on a set of FITS images from S3 using the astropy [photutils](https://photutils.readthedocs.io/en/stable/) package.
 The two plotting functions then compile these measurements into time-ordered plots showing how the observed flux evolves across multiple visits, providing a first look at temporal variability that could signal transient activity or host-galaxy changes.
 
 ```{code-cell} ipython3
@@ -485,15 +488,18 @@ def run_aperture_photometry(host_galaxy, bandname, image_column="image_filenames
             # Check output (optional)
             #print(phot_table)
 
-            # Background estimate (median of finite pixels)
-            background = np.nanmedian(data)
+            # Background estimate from a local annulus around the source
+            annulus = SkyCircularAnnulus(sky_position, r_in=3 * aperture_radius * u.arcsec,
+                                                       r_out=6 * aperture_radius * u.arcsec)
+            annulus_stats = ApertureStats(data, annulus, wcs=wcs)
+            background = annulus_stats.median
 
             # Subtract background from aperture sum
             aperture_area = pixel_aperture.area
             flux = phot_table['aperture_sum'][0] - background * aperture_area
 
-            # Approximate uncertainty from background rms
-            flux_err = np.nanstd(data) * np.sqrt(aperture_area)
+            # Approximate uncertainty from background rms in annulus
+            flux_err = annulus_stats.std * np.sqrt(aperture_area)
 
             # Observation mid-time from MJD-OBS
             mjd_obs = header.get('MJD-OBS', None)
@@ -727,6 +733,7 @@ def make_cutout(fname, ra, dec, size=100):
         except Exception as e:
             print(f"Error creating cutout for {fname}: {e}")
             return None
+        del img
 
         # Step 2: determine rotation angle to place North at the top.
         # Invert the CD matrix to find the North direction in pixel space.
@@ -740,7 +747,7 @@ def make_cutout(fname, ra, dec, size=100):
         cutout.data = rotate(cutout.data, angle=angle, reshape=False, cval=np.nan)
 
         return cutout
-        
+
 ```
 
 ```{code-cell} ipython3
@@ -839,7 +846,7 @@ def cutout_gallery(image_filenames, mjd_list, ra, dec, aperture_radius_pix_list,
 # make cutout gallery of the host galaxy
 
 # Number of cutout images to display. Increase to show more epochs.
-n_cutout_images = 6
+n_cutout_images = 4
 
 single_gal = host_galaxy.iloc[0]
 
