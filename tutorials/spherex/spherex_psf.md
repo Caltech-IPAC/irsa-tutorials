@@ -273,7 +273,7 @@ except Exception as e:
 ```{code-cell} ipython3
 ### CURRENTLY, THE IMAGES ON IRSA DO NOT HAVE THE EPSF. FOR TESTING, WE LOAD A 
 ## IMAGE MANUALLY. NEED TO PUT THIS ON IRSA SERVER LATER FOR DOWNLOAD!!!
-with fits.open("./test_epsf.fits") as hdul:
+with fits.open("./data/level2_2025W17_4B_0238_2D3_spx_l2b-v26-2026-196.fits") as hdul:
     image_hdul = copy.deepcopy(hdul)
 ```
 
@@ -338,15 +338,9 @@ epsf_header
 We now show some of the most important general information directly from the ePSF header.
 
 ```{code-cell} ipython3
-## Quick helper to get correct header key to obtain the size of the ePSF
-keys = list(epsf_header.keys())
-vals = [epsf_header[key] for key in keys]
-idx = np.where(np.asarray(vals) == "EPSF")[0][0]
-epsf_size_key = keys[idx]
-
 print(f"Oversampling in x: {epsf_header["OVSMPX"]}")
 print(f"Oversampling in y: {epsf_header["OVSMPY"]}")
-print(f"Size of the ePSF (oversampled): {epsf_header[epsf_size_key]}")
+print(f"Size of the ePSF (oversampled): {epsf_header["TDIM11"]}")
 print(f"Number of ePSFs in total (= total number of zones): {epsf_header["NAXIS2"]}")
 ```
 
