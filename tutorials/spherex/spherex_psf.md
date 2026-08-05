@@ -58,7 +58,7 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy numpy pyvo
+# !pip install astropy matplotlib numpy pyvo photutils
 ```
 
 ```{code-cell} ipython3
@@ -78,6 +78,8 @@ from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.table import Table
 from astropy.wcs import WCS
+
+from photutils.psf import ImagePSF
 
 # The time it takes to read SPHEREx files can exceed
 # astropy's default timeout limit. Increase it.
@@ -121,7 +123,7 @@ service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 query = f"""
 SELECT
     'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
-    p.time_bounds_lower, energy_bandpassname, time_bounds_lower, time_bounds_upper, provenance_version
+    p.time_bounds_lower, p.energy_bandpassname, p.time_bounds_lower, p.time_bounds_upper, p.provenance_version
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
@@ -263,11 +265,17 @@ Note that the ePSFs are stored in the form of a binary table, which makes it str
 
 ```{code-cell} ipython3
 try:
-    epsf_bintable = Table(image_hdul['EPSF'].data)
-    epsf_header = image_hdul['EPSF'].header
-    print("ePSF is loaded!")
-except Exception as e:
-    print("It looks like you have an older image that does not contain the EPSF extension. Please proceed to Section 5.2!")
+    epsf_hdu = image_hdul["EPSF"]
+except KeyError:
+    print(
+        "This image does not contain the EPSF extension. "
+        "It was likely created with an older version. "
+        "Please proceed to Section 5.2."
+    )
+else:
+    epsf_bintable = Table(epsf_hdu.data)
+    epsf_header = epsf_hdu.header
+    print("ePSF loaded.")
 ```
 
 ```{code-cell} ipython3
@@ -279,8 +287,12 @@ with fits.open("./data/level2_2025W17_4B_0238_2D3_spx_l2b-v26-2026-196.fits") as
 
 ### 5.2 Obtaining the old PSF (versions $<$ 7.0)
 
-We advice the users **not** to use the older PSFs, which are stored in the `PSF` layer in the FITS file of the LVF images.
+We advice the users **not** to use the older PSFs, which are stored in the `PSF` layer in the FITS file of the older (versions $<$ 7.0) LVF images.
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
+
+```{note}
+Eventually, after the reprocessing of the data products, the older version LVF images will be replaced by newer versions. Generally, we advise to download the newest images (which also contain improved flagging and calibrations). However, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs. 
+```
 
 For this, we first have to figure out the detector on which the image was taken.
 
@@ -312,6 +324,8 @@ fig = plt.figure(figsize=(16,10))
 ax1 = fig.add_subplot(1,2,1)
 
 im1 = ax1.imshow(epsf_mosaic, origin='lower')
+ax1.set_xlabel("$x$")
+ax1.set_ylabel("$y")
 plt.show()
 ```
 
@@ -410,6 +424,10 @@ ax1 = fig.add_subplot(1,1,1)
 im1 = ax1.imshow(epsf, origin="lower")
 
 plt.colorbar(im1, ax=ax1, shrink=0.5)
+
+ax1.set_xlabel("$x$ (oversampled pixels)")
+ax1.set_ylabel("$y$ (oversampled pixels)")
+
 plt.show()
 ```
 
@@ -423,6 +441,7 @@ One interesting thing to do is to plot the ePSF area ($N_{\rm eff}$) as a functi
 
 ```{code-cell} ipython3
 fig = plt.figure(figsize=(16,4))
+plt.subplots_adjust(wspace=0.3, hspace=0.0)
 ax1 = fig.add_subplot(1,3,1)
 ax2 = fig.add_subplot(1,3,2)
 ax3 = fig.add_subplot(1,3,3)
@@ -432,16 +451,22 @@ x = epsf_bintable["XCENTER"]
 y = epsf_bintable["YCENTER"]
 z = epsf_bintable["NEFF_MEAN"]
 im1 = ax1.scatter(x, y, c=z)
-plt.colorbar(im1 , ax=ax1, label=r"$N_{\rm eff}$")
 
-## As a matrix (not the ii<->jj swap)
+ax1.set_xlabel("$x$")
+ax1.set_ylabel("$y$")
+plt.colorbar(im1 , ax=ax1, label=r"$N_{\rm eff}$ (PSF effective area)")
+
+## As a matrix (note the ii<->jj swap)
 mat = np.zeros((nzones_y,nzones_x))
 for ii in range(nzones_x):
     for jj in range(nzones_y):
         sel = np.where( (epsf_bintable["BINX"] == ii) & (epsf_bintable["BINY"] == jj))[0][0]
         mat[jj,ii] = epsf_bintable["NEFF_MEAN"][sel]
 im2 = ax2.imshow(mat , origin="lower", aspect=nzones_x/nzones_y)
-plt.colorbar(im2 , ax=ax2, label=r"$N_{\rm eff}$")
+
+ax2.set_xlabel("$x$ PSF zones")
+ax2.set_ylabel("$y$ PSF zones")
+plt.colorbar(im2 , ax=ax2, label=r"$N_{\rm eff}$ (PSF effective area)")
         
 ## As a function of wavelength
 x = epsf_bintable["CWAVE"] # wavelength at the center of the PSF zone
@@ -449,10 +474,14 @@ y = epsf_bintable["NEFF_MEAN"]
 ax3.scatter(x , y, c=z , marker="o", s=5)
 
 ax3.set_xlabel(r"Wavelength [$\mu m$]")
-ax3.set_ylabel(r"$N_{\rm eff}$")
+ax3.set_ylabel(r"$N_{\rm eff}$ (PSF effective area)")
 
 plt.show()
 ```
+
+The left and middle panel show the change of the PSF effective area as a function of pixels on this detector (3). One can see areas of worse (= larger area) ePSFs, which is due to the detector and optics specifics. The right panel shows how the effective PSF area varies as a function of wavelength. Generally, the PSF grows for redder wavelengths.
+
++++
 
 ### 7.2. Using the SPHEREx (e)PSF in Forward Modeling (e.g., Tractor)
 
@@ -469,10 +498,10 @@ To use this PSF for forward modeling or fitting, you must:
 3. Normalize the resulting PSF before passing it to Tractor.
 
 
-The ePSF originates from the Photutils package, therefore it can be directly used directly with the `EPSModel` class:
+The ePSF originates from the Photutils package, therefore it can be directly used directly with the `EPSModel` class (note that in later version of *photutils* this is changed to the `ImagePSF` class):
 
 ```
-from photutils.psf import EPSFModel
+from photutils.psf import ImagePSF
 ```
 
 To demonstrate this, we use our ePSF which we have loaded above in Section 5.1.
@@ -490,9 +519,7 @@ print(f"Oversampling of ePSF: {ovs}")
 Using the oversampling factor, we can then construct the ePSF Photutils model.
 
 ```{code-cell} ipython3
-from photutils.psf import EPSFModel
-
-epsf_model = EPSFModel(data=epsf, oversampling=ovs)
+epsf_model = ImagePSF(data=epsf, oversampling=ovs)
 ```
 
 The ePSF is still in oversampled resolution. Some photometer codes (such as Tractor) can use the PSF only on the native pixel size. We therefore have to rebin the PSF back to the native SPHEREx resolution. In this process, we have to take into account *where* in the image coordinates a source lands; whether it lands in the center of a pixel of off center. This will affect how the PSF is rebinned. This is especially important for PSFs that are undersampled with respect to the pixel size (as it is the case for SPHEREx).
@@ -501,7 +528,7 @@ We first define a function that does the rebinning:
 
 ```{code-cell} ipython3
 def render_epsf_stamp_centered(
-        epsf: EPSFModel,
+        epsf: ImagePSF,
         x0: float,
         y0: float,
         stamp_size: int = 11,
@@ -513,7 +540,7 @@ def render_epsf_stamp_centered(
 
         Parameters
         ----------
-        epsf : `photutils.psf.epsf.EPSFModel`
+        epsf : `photutils.psf.epsf.ImagePSF`
             Must support epsf.evaluate(x, y, flux=..., x_0=..., y_0=...).
         x0, y0 : `float`
             Source centroid in image pixel coordinates (pixel centers).
@@ -531,7 +558,7 @@ def render_epsf_stamp_centered(
             That is, psf_stamp[0,0] corresponds to image pixel (y_ll, x_ll).
         """
 
-        # Not sure why this was necessary
+        # Convert to Python floats (accepts ints and NumPy scalar types).
         x0 = float(x0)
         y0 = float(y0)
 
@@ -577,14 +604,19 @@ Now we can plot the two PSF stamp patches side-by-side for comparison. Since the
 
 ```{code-cell} ipython3
 fig = plt.figure(figsize=(6,3))
+plt.subplots_adjust(wspace=0.5, hspace=0.0)
 ax1 = fig.add_subplot(1,2,1)
 ax2 = fig.add_subplot(1,2,2)
 
 ax1.imshow(psf_stamp1, origin="lower")
 ax1.set_title("Source at (50,50)")
+ax1.set_xlabel("$x$ (SPHEREx pixels)")
+ax1.set_ylabel("$y$ (SPHEREx pixels)")
 
 ax2.imshow(psf_stamp2, origin="lower")
 ax2.set_title("Source at (100.5,100.5)")
+ax2.set_xlabel("$x$ (SPHEREx pixels)")
+ax2.set_ylabel("$y$ (SPHEREx pixels)")
 
 plt.show()
 ```
@@ -595,12 +627,8 @@ plt.show()
 
 ## About this notebook
 
-**Updated:** 29 July 2026
+**Updated:** 5 August 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
-
-```{code-cell} ipython3
-
-```
