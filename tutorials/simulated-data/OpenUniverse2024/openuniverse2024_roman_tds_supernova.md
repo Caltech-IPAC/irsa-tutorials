@@ -64,6 +64,7 @@ from astropy.wcs import WCS, FITSFixedWarning
 from astroquery.ipac.irsa import Irsa
 from matplotlib import animation
 from scipy.ndimage import rotate
+from IPython.display import HTML
 
 # Needed to access data in the cloud
 import s3fs
@@ -127,6 +128,11 @@ def animate_stamps(stamps, savepath, no_whitespace=True,
     writer = animation.PillowWriter()
     anim = animation.FuncAnimation(fig, animate, interval=600, frames=len(stamps))
     anim.save(savepath, writer=writer)
+
+    # Close the figure so the notebook does not also print a static copy of the first frame,
+    # and hand the animation back so it can be displayed with playback controls.
+    plt.close(fig)
+    return anim
 ```
 
 ## Read in the Observation Sequence File to learn more about the "observations" that make up the simulated Roman Time Domain Survey.
@@ -206,6 +212,8 @@ print('Number of nearby SNIa:', len(nearby_sn1a))
 ```
 
 A supernova is only worth animating if Roman happened to be looking at that patch of sky while it was bright. The catalog records the date each one peaks in `peak_mjd`, and the survey visits any given field in bursts rather than continuously, so we pick an object whose peak falls inside a well-visited stretch of the survey.
+
+The cuts above cannot check this for us: they confirm a supernova went off somewhere inside the survey's footprint and date range, not that the telescope was pointed at it at the time. If you change `oid` to explore a different object, compare the dates it was bright, `start_mjd` through `end_mjd`, against the dates Roman actually visited its position, which arrive as the `t_min` column of the image search a few cells below. Objects that pass every cut here but were only observed long before or after they erupted are common; for those, the epoch window a few cells below comes back empty and the notebook cannot build an animation at all.
 
 ```{code-cell} ipython3
 # Let's choose SN 20131477, which peaks while its field is being visited regularly.
@@ -338,7 +346,13 @@ Watch the supernova brighten near the middle of the sequence and fade away again
 ```{code-cell} ipython3
 savepath = f'SN{oid}.gif'
 savepath
-animate_stamps(stamps, savepath, labels=[f'MJD {m:.1f}' for m in mjd])
+anim = animate_stamps(stamps, savepath, labels=[f'MJD {m:.1f}' for m in mjd])
+```
+
+The saved gif loops without stopping, which makes a brief brightening hard to follow. Displaying the animation instead gives playback controls: pause it, step one epoch at a time with the arrows, drag the slider to any frame, and read the date in the corner as you go.
+
+```{code-cell} ipython3
+HTML(anim.to_jshtml(default_mode='once'))
 ```
 
 ***
