@@ -36,7 +36,7 @@ This tutorial is a focused introduction to data access only. It covers the three
 2. **Parquet catalogs** — transient (SNANA), galaxy, and galaxy-flux tables, indexed by HEALPix sky region
 3. **Image search via SIA** — querying which images cover a given sky position using astroquery and the IRSA Simple Image Access service
 
-No astrophysical analysis is performed here. For science workflows that build on these access patterns, see the [TDE Light Curve](TDE_light_curve) and [SED Fitting](SED_fit) tutorials in this repository.
+No astrophysical analysis is performed here. For science workflows that build on these access patterns, see the [TDE Light Curve](openuniverse2024_TDE_light_curve) and [SED Fitting](openuniverse2024_SED_fit) tutorials in this repository.
 
 ### Instructions
 
