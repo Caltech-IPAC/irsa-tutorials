@@ -13,7 +13,7 @@ authors:
   - name: Lauren Aldoroty
 ---
 
-# Analyzing cloud-hosted simulated Roman Time Domain Survey images
+# Following a simulated supernova through the Roman Time Domain Survey
 
 +++
 
@@ -21,10 +21,21 @@ authors:
 
 By the end of this tutorial, you will:
 
-1. learn more about the "observations" that make up the simulated Roman TDS preview.
-2. learn how to find the locations of simulated supernovae in the preview data.
-3. learn how to create aligned cutouts of simulated Roman images.
-4. learn how to make an animated gif from these cutouts.
+1. learn more about the "observations" that make up the simulated Roman Time Domain Survey (TDS).
+2. learn how to find the locations of simulated supernovae in the transient catalog.
+3. learn how to ask IRSA which simulated Roman images cover a given position and time.
+4. learn how to create aligned cutouts of simulated Roman images.
+5. learn how to make an animated gif from these cutouts.
+
++++
+
+## Introduction
+
+The Roman Time Domain Survey revisits the same patch of sky over and over, which is what makes it possible to watch a transient appear and fade. This notebook picks one simulated Type Ia supernova out of the OpenUniverse2024 transient catalog, collects every Roman image that covers it while it is bright, and stacks those images into a short movie.
+
+The survey stores its images by pointing and detector rather than by sky position, so which files contain a particular supernova is not something you can work out from the file paths. IRSA's Simple Image Access (SIA) service answers exactly that question, and we use it here to assemble the list of images to stack.
+
+If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart) tutorial introduces the directory layout, the parquet catalogs, and the image search used below.
 
 +++
 
@@ -32,23 +43,25 @@ By the end of this tutorial, you will:
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy
+# !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy astroquery hpgeom
 ```
 
 ```{code-cell} ipython3
 # Import modules
 import warnings
+import json
 
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import hpgeom
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.nddata import Cutout2D
 from astropy.nddata.utils import NoOverlapError
-from astropy.table import Table
 from astropy.wcs import WCS, FITSFixedWarning
+from astroquery.ipac.irsa import Irsa
 from matplotlib import animation
 from scipy.ndimage import rotate
 
@@ -61,28 +74,13 @@ s3 = s3fs.S3FileSystem(anon=True)  # create an S3 client
 warnings.simplefilter('ignore', category=FITSFixedWarning)
 ```
 
-## Define a module to get the date (mjd) of a particular pointing.
-
 ```{code-cell} ipython3
-def get_mjd(pointing,
-            obseq_path=f's3://nasa-irsa-simulations/openuniverse2024/roman/preview/RomanTDS/Roman_TDS_obseq_11_6_23.fits'):
+# Point the astroquery IRSA client at the simulated-data services, which are
+# separate from the ones serving IRSA's observed data.
+Irsa.sia_url = "https://irsa.ipac.caltech.edu/simulated/SIA"
+Irsa.tap_url = "https://irsa.ipac.caltech.edu/simulated/TAP"
 
-    """
-    Retrieve MJD of a given pointing.
-
-    :param pointing: Pointing ID.
-    :type pointing: int
-    :param obseq_path: Path to obseq file Roman_TDS_obseq_11_6_23.fits.
-    :type obseq_path: str, optional
-    :return: MJD of specified pointing.
-    :rtype: float
-    """
-
-    with fits.open(obseq_path, fsspec_kwargs={"anon": True}) as obs:
-        obseq = Table(obs[1].data)
-    mjd = float(obseq['date'][int(pointing)])
-
-    return mjd
+OU_ROMAN_SIA_COLLECTION = 'simulated_roman_openuniverse2024'
 ```
 
 ## Define a module to create an animated gif from a collection of cutouts.
@@ -137,7 +135,7 @@ def animate_stamps(stamps, savepath, no_whitespace=True,
 # Read in the (simulated) Observation Sequence File.
 
 BUCKET_NAME = 'nasa-irsa-simulations'
-ROMAN_PREFIX = 'openuniverse2024/roman/preview'
+ROMAN_PREFIX = 'openuniverse2024/roman/full'
 
 ROMAN_TDS_PATH = f'{ROMAN_PREFIX}/RomanTDS'
 FILENAME = 'Roman_TDS_obseq_11_6_23.fits'
@@ -149,7 +147,7 @@ obseq = pd.DataFrame(obseq_hdu[1].data)
 print(obseq)
 ```
 
-## What is the spatial and temporal coverage of the openuniverse2024 Roman TDS data preview?
+## What is the spatial and temporal coverage of the openuniverse2024 Roman TDS?
 
 ```{code-cell} ipython3
 # Find the ranges of RA, Dec, and date listed in the observation sequence file.
@@ -165,12 +163,17 @@ print("mjd_min, mjd_max:", mjd_min, mjd_max)
 
 ## Read in the Supernova Analysis (SNANA) file.
 
+The transient catalogs are split by HEALPix sky region (nside=32, RING ordering), with the region index in the filename. We convert the center of the Roman TDS into that index rather than guessing at the file name.
+
 ```{code-cell} ipython3
-parquet_file = f's3://{BUCKET_NAME}/{ROMAN_PREFIX}/roman_rubin_cats_v1.1.2_faint/snana_10307.parquet'
+# The Roman Time-Domain Survey is centered near the LSST ELAIS-S1 Deep Drilling Field.
+region = hpgeom.angle_to_pixel(32, 9.45, -44.02, lonlat=True, nest=False)
+
+parquet_file = f's3://{BUCKET_NAME}/{ROMAN_PREFIX}/roman_rubin_cats_v1.1.2_faint/snana_{region}.parquet'
 transients = pd.read_parquet(parquet_file, filesystem=s3)
 ```
 
-## Let's find a relatively nearby SN Ia that lies within the region of the data preview.
+## Let's find a relatively nearby SN Ia that the survey actually watched go off.
 
 ```{code-cell} ipython3
 #List the unique models in the SNANA file.
@@ -186,55 +189,95 @@ print('Number of SN1a in SNANA file: ', len(sn1a))
 ```
 
 ```{code-cell} ipython3
-# Choose the SNIa that overlap with the spatial extent of the OpenUniverse2024 Roman TDS data preview.
+# Choose the SNIa that overlap with the spatial and temporal extent of the survey.
 ra_mask = np.logical_and(sn1a['ra'] > ra_min, sn1a['ra'] < ra_max)
 dec_mask = np.logical_and(sn1a['dec'] > dec_min, sn1a['dec'] < dec_max)
 mjd_mask = np.logical_and(sn1a['start_mjd'] > mjd_min, sn1a['end_mjd'] < mjd_max)
 all_mask = np.logical_and.reduce((ra_mask,dec_mask,mjd_mask))
-preview_sn1a = sn1a[all_mask]
-print('Number of SNIa in OpenUniverse2024 data preview:', len(preview_sn1a))
+covered_sn1a = sn1a[all_mask]
+print('Number of SNIa within the survey:', len(covered_sn1a))
 ```
 
 ```{code-cell} ipython3
-# Choose the SNIa in the data preview that are nearby, at redshifts less than 0.7.
-nearby_preview_sn1a = preview_sn1a[preview_sn1a['z_CMB'] < 0.7]
-print('Number of nearby SNIa in OpenUniverse2024 data preview:', len(nearby_preview_sn1a))
+# Choose the SNIa that are nearby, at redshifts less than 0.5, so they are bright enough
+# to stand out clearly against their host galaxy.
+nearby_sn1a = covered_sn1a[covered_sn1a['z_CMB'] < 0.5]
+print('Number of nearby SNIa:', len(nearby_sn1a))
 ```
 
+A supernova is only worth animating if Roman happened to be looking at that patch of sky while it was bright. The catalog records the date each one peaks in `peak_mjd`, and the survey visits any given field in bursts rather than continuously, so we pick an object whose peak falls inside a well-visited stretch of the survey.
+
 ```{code-cell} ipython3
-# Let's choose SN 20000808.
-oid = 20000808
-chosen_object = nearby_preview_sn1a[nearby_preview_sn1a['id'] == oid]
-ra = chosen_object.get('ra')
-dec = chosen_object.get('dec')
-ra, dec = 9.619282, -44.313894
+# Let's choose SN 20131477, which peaks while its field is being visited regularly.
+oid = 20131477
+chosen_object = nearby_sn1a[nearby_sn1a['id'] == oid].iloc[0]
+
+ra, dec = chosen_object['ra'], chosen_object['dec']
+peak_mjd = chosen_object['peak_mjd']
 coord = SkyCoord(ra*u.deg, dec*u.deg)
+
+print(f"SN {oid}: RA={ra:.6f}, Dec={dec:.6f}, z={chosen_object['z_CMB']:.3f}, peaks at MJD {peak_mjd:.1f}")
 ```
 
-## Read in the auxiliary file that lists the simulated Roman TDS images covering the chosen SNIa.
+## Ask IRSA which simulated Roman images cover the chosen SNIa.
+
+We hand the position to IRSA's image search, which returns one row per image along with the time it was taken and where the file lives in the cloud.
 
 ```{code-cell} ipython3
-# The auxiliary file contains all the images this thing is in.
-# If you need to download this file, see https://irsa.ipac.caltech.edu/docs/notebooks/.
-csvfile = './openuniverse2024_roman_demodata_20000808_instances.csv'
-instances = pd.read_csv(csvfile, usecols=['filter','pointing','sca'])
-instances
+sia_results = Irsa.query_sia(pos=(coord, 1 * u.arcsec),
+                             collection=OU_ROMAN_SIA_COLLECTION)
+
+print(f"Images covering this position: {len(sia_results)}")
 ```
 
-## Create cutouts of the chosen SNIa in the band of your choice.
+That covers every band and both Roman surveys, so we narrow it down to the Time Domain Survey images in a single band.
 
 ```{code-cell} ipython3
 band = 'R062'
-instances = instances[instances['filter'] == band]
+
+is_tds = np.array(['TDS_simple_model' in str(obs_id) for obs_id in sia_results['obs_id']])
+is_band = np.char.strip(np.array(sia_results['energy_bandpassname'], dtype=str)) == band
+
+instances = sia_results[is_tds & is_band]
+instances.sort('t_min')
+
+print(f"{band} images covering SN {oid}: {len(instances)}")
 ```
 
+Finally we keep only the epochs around the peak. Frames from years before the explosion would add nothing to the movie beyond download time, so we take a window that starts shortly before the supernova appears and runs until it has faded.
+
 ```{code-cell} ipython3
-#Make the cutouts; this will take a couple of minutes.
+epoch_mjd = np.asarray(instances['t_min'], dtype=float)
+in_window = (epoch_mjd >= peak_mjd - 40) & (epoch_mjd <= peak_mjd + 80)
+
+instances = instances[in_window]
+epoch_mjd = epoch_mjd[in_window]
+
+print(f"Epochs to animate: {len(instances)}, "
+      f"spanning MJD {epoch_mjd.min():.1f} to {epoch_mjd.max():.1f}")
+```
+
+The cloud location of each image arrives as a JSON string, which we unpack into an S3 path.
+
+```{code-cell} ipython3
+def get_s3_fpath(cloud_access):
+    """Extract the S3 URI from the cloud_access JSON string in an image search result."""
+    cloud_info = json.loads(cloud_access)['aws']
+    return f"s3://{cloud_info['bucket_name']}/{cloud_info['key']}"
+
+image_paths = [get_s3_fpath(row['cloud_access']) for row in instances]
+image_paths[:3]
+```
+
+## Create cutouts of the chosen SNIa.
+
+Roman's focal plane sits at a different angle on the sky at each visit, so the same patch of sky arrives rotated differently in every image. Before the frames can be stacked into a movie we rotate each one so that north points the same way throughout. The rotation angle is recorded in the header, and detectors in every third slot are mounted flipped, which we correct for as well.
+
+```{code-cell} ipython3
+#Make the cutouts; this will take a few minutes.
 stamps = []
 mjd = []
-for i, row in enumerate(instances.itertuples()):
-    band, pointing, sca = row[1], row[2], row[3]
-    imgpath = f's3://{BUCKET_NAME}/{ROMAN_TDS_PATH}/images/simple_model/{band}/{pointing}/Roman_TDS_simple_model_{band}_{pointing}_{sca}.fits.gz'
+for imgpath, epoch in zip(image_paths, epoch_mjd):
     print(imgpath)
     with fits.open(imgpath, fsspec_kwargs={"anon": True}) as hdu:
         img = hdu[1].data
@@ -246,10 +289,10 @@ for i, row in enumerate(instances.itertuples()):
         CDmat = np.array([header['CD1_1'], header['CD1_2'],
                           header['CD2_1'], header['CD2_2']]).reshape(2,2)
 
-        orientation = hdu[0].header['ORIENTAT']
+        orientation = header['ORIENTAT']
 
         # These chips are "flipped".
-        if sca % 3 == 0:
+        if header['SCA_NUM'] % 3 == 0:
             orientation += 180
 
         # Build rotation matrix.
@@ -274,7 +317,6 @@ for i, row in enumerate(instances.itertuples()):
 
         # Rotate the image.
         rot_img = rotate(img,angle=orientation,reshape=False,cval=np.nan)
-        hdu[1].data = rot_img
 
         rot_wcs = WCS(header)
 
@@ -282,23 +324,27 @@ for i, row in enumerate(instances.itertuples()):
             # Make cutout around SN Ia location.
             cutout = Cutout2D(rot_img,coord,100,wcs=rot_wcs,mode='partial')
             stamps.append(cutout.data)
-            mjd.append(get_mjd(pointing))
+            mjd.append(epoch)
         except NoOverlapError:
             pass
+
+print(f"Collected {len(stamps)} cutouts")
 ```
 
 ## Make an animated gif out of the cutouts.
 
+Watch the supernova brighten near the middle of the sequence and fade away again.
+
 ```{code-cell} ipython3
 savepath = f'SN{oid}.gif'
 savepath
-animate_stamps(stamps, savepath, labels=mjd)
+animate_stamps(stamps, savepath, labels=[f'MJD {m:.1f}' for m in mjd])
 ```
 
 ***
 
 ## About this notebook
 
-**Updated:** 2024-06-10
+**Updated:** 2026-08-05
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
