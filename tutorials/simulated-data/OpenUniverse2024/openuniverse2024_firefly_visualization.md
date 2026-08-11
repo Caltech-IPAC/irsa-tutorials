@@ -1,4 +1,8 @@
 ---
+authors:
+- name: Jaladh Singhal
+- name: Vandana Desai
+- name: IRSA Team
 jupytext:
   text_representation:
     extension: .md
@@ -6,13 +10,9 @@ jupytext:
     format_version: 0.13
     jupytext_version: 1.16.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
   name: python3
-authors:
-  - name: Jaladh Singhal
-  - name: Vandana Desai
-  - name: IRSA Team
+  display_name: python3
+  language: python
 ---
 
 # Using Firefly to Explore OpenUniverse2024 Simulated Roman and Rubin Images
@@ -25,7 +25,7 @@ By the end of this tutorial, you will:
 
 - Learn how to access cloud-hosted Roman and Rubin simulated images.
 
-- Learn how to locate a Roman coadd block from a sky position, and how to find Rubin images covering that position with the IRSA Simple Image Access (SIA) service.
+- Learn how to find the Roman and Rubin images covering a sky position with the IRSA Simple Image Access (SIA) service.
 
 - Learn how to launch an interactive Firefly instance inside JupyterLab.
 
@@ -45,7 +45,7 @@ OpenUniverse2024 is a project to simulate spatially overlapping imaging surveys 
 - Overlapping Roman Wide-Area Survey (WAS) in the same region
 - A deep-field calibration region of the Roman WAS in the same region
 
-This tutorial works with the full simulation, which covers the entire survey footprint. More information about the dataset can be found at [IRSA's holding of this dataset](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html), and the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) describes how the full simulation differs from the smaller preview subset that is also available.
+This tutorial works with the full simulation, which covers the entire survey footprint. More information about the dataset can be found at [IRSA's holding of this dataset](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html), and the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) describes how the simulation was produced.
 
 Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information on Firefly can be found [here](https://github.com/Caltech-IPAC/firefly/blob/dev/README.md).
 
@@ -71,12 +71,11 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 - json for reading the cloud location returned by the image search
 - firefly_client.FireflyClient for using the Firefly python client
 - astropy.nddata.Cutout2D for making image cutouts
-- reproject.reproject_interp to convert Roman coadds from STG to TAN projection
 - io.BytesIO for writing a fits file to an in-memory stream
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy matplotlib firefly_client reproject astroquery hpgeom
+# !pip install numpy astropy matplotlib firefly_client astroquery hpgeom
 ```
 
 ```{code-cell} ipython3
@@ -92,7 +91,6 @@ import hpgeom
 import json
 from firefly_client import FireflyClient
 from astropy.nddata import Cutout2D
-from reproject import reproject_interp
 from io import BytesIO
 ```
 
@@ -100,12 +98,11 @@ from io import BytesIO
 
 The OpenUniverse2024 data are hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon's Simple Storage Service (s3) buckets, and you need to know some information about those buckets. OpenUniverse2024 contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.
 
-The two telescopes need two different approaches. The Roman coadds sit on a fixed grid of sky positions, so once we know the grid we can work out a file path ourselves. The Rubin images are individual visits scattered across the sky, so instead we ask IRSA's Simple Image Access (SIA) service which ones cover the position we care about. We set up both routes here.
+Both telescopes are reached the same way. Neither survey stores its images by sky position, so which file covers a given patch of sky is not something you can work out from a file path. Instead we ask IRSA's Simple Image Access (SIA) service, which answers exactly that question for Roman and Rubin alike.
 
 ```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-simulations"
 OU_PREFIX = "openuniverse2024"
-ROMAN_COADD_PATH = f"{OU_PREFIX}/roman/full/RomanWAS/images/coadd"
 TRUTH_FILES_PATH = f"{OU_PREFIX}/roman/full/roman_rubin_cats_v1.1.2_faint"
 ```
 
@@ -115,141 +112,74 @@ TRUTH_FILES_PATH = f"{OU_PREFIX}/roman/full/roman_rubin_cats_v1.1.2_faint"
 Irsa.sia_url = "https://irsa.ipac.caltech.edu/simulated/SIA"
 Irsa.tap_url = "https://irsa.ipac.caltech.edu/simulated/TAP"
 
+OU_ROMAN_SIA_COLLECTION = "simulated_roman_openuniverse2024"
 OU_RUBIN_SIA_COLLECTION = "simulated_rubin_openuniverse2024"
 
 # A small radius is all we need, since we only want images containing a given point.
 SEARCH_RADIUS = 1 * u.arcsec
 ```
 
-## 2. Roman Coadds
+## 2. Roman Images
 
-The Nancy Grace Roman Space Telescope will carry out a wide-area survey (WAS) in the near infrared. OpenUniverse2024 includes coadded mosaics of simulated WAS data, created with the IMCOM algorithm (Rowe et al. 2011). Bands include F184, H158, J129, K213, Y106. In this section, we define some functions that make it convenient to retrieve a given cloud-hosted simulated Roman coadd based on position and filter.
+The Nancy Grace Roman Space Telescope will carry out a wide-area survey (WAS) in the near infrared. OpenUniverse2024 simulates that survey as individual exposures, each covering one detector's worth of sky. Bands include F184, H158, J129, K213, W146, Y106.
 
-+++
-
-### Describe the grid of Roman simulated "blocks"
-
-The simulated Roman coadds are arranged in blocks, as described in Hirata et al. 2024. Rather than listing the position of every block, we can describe the entire grid with a handful of numbers, because all 1296 blocks share one projection centered on the survey and differ only in where that center falls within each block. These values are recorded in the header of every coadd file, and we check them against a real header once we have opened one.
-
-```{code-cell} ipython3
-SURVEY_CRVAL = (9.55, -44.1)         # deg, the projection center shared by every block
-PIXEL_SCALE = 1.0850694444444e-05    # deg/pixel
-BLOCK_NPIX = 2688                    # pixels along each side of a block
-BLOCK_STEP = 2560                    # pixel offset between the centers of adjacent blocks
-N_BLOCKS = 36                        # the survey is a 36 x 36 grid of blocks
-REF_BLOCK = 18                       # the block whose CRPIX sits at the survey center
-REF_CRPIX = 64.5                     # that block's CRPIX, in the 1-based FITS convention
-```
-
-Each block is wider than the spacing between blocks, so neighbors overlap slightly rather than butting up against each other.
-
-```{code-cell} ipython3
-block_size = (BLOCK_NPIX * PIXEL_SCALE * u.deg).to(u.arcsec)
-block_spacing = (BLOCK_STEP * PIXEL_SCALE * u.deg).to(u.arcsec)
-
-print(f"Each block is {block_size:.1f} across, laid down every {block_spacing:.1f}")
-```
-
-### Define a function that returns the WCS of any block
-
-Because the blocks differ only in their CRPIX, we can write down the WCS of any block without opening its file.
-
-```{code-cell} ipython3
-def block_wcs(col, row):
-    """
-    Build the WCS of the Roman WAS coadd block in a given column and row.
-
-    Parameters
-    ----------
-    col, row : int
-        Block indices, each running from 0 to 35.
-
-    Returns
-    -------
-    astropy.wcs.WCS
-        The WCS of that block.
-    """
-    w = wcs.WCS(naxis=2)
-    w.wcs.ctype = ["RA---STG", "DEC--STG"]
-    w.wcs.crval = list(SURVEY_CRVAL)
-    w.wcs.cdelt = [-PIXEL_SCALE, PIXEL_SCALE]
-    w.wcs.crpix = [REF_CRPIX - (col - REF_BLOCK) * BLOCK_STEP,
-                   REF_CRPIX - (row - REF_BLOCK) * BLOCK_STEP]
-    w.array_shape = (BLOCK_NPIX, BLOCK_NPIX)
-    return w
-```
-
-### Define a function that returns the block containing a given sky position
-
-To find the block holding a position, we express that position in the pixel grid of the reference block, then count how many block widths it lands away from that block's center.
-
-```{code-cell} ipython3
-def find_block(coord):
-    """
-    Find the Roman WAS coadd block that contains a sky position.
-
-    Parameters
-    ----------
-    coord : astropy.coordinates.SkyCoord
-        The position of interest.
-
-    Returns
-    -------
-    tuple of int
-        The (column, row) of the block containing that position.
-    """
-    x, y = block_wcs(REF_BLOCK, REF_BLOCK).world_to_pixel(coord)
-    block_center = (BLOCK_NPIX - 1) / 2
-
-    col = REF_BLOCK + int(np.round((x - block_center) / BLOCK_STEP))
-    row = REF_BLOCK + int(np.round((y - block_center) / BLOCK_STEP))
-
-    if not (0 <= col < N_BLOCKS and 0 <= row < N_BLOCKS):
-        raise ValueError(f"{coord.to_string('hmsdms')} is not covered by the "
-                         "OpenUniverse2024 simulated Roman coadds")
-
-    return col, row
-```
-
-### Define a function that retrieves a Roman simulated coadd given a sky position and filter.
+The survey stores those exposures by pointing and detector rather than by sky position, so in this section we define functions that ask the image search which exposure covers a position, and then read it.
 
 +++
 
-Each of the cloud-hosted simulated Roman coadds can be accessed via a S3 filepath. This function returns the access path for the simulated Roman coadd that includes a specified position on the sky and desired filter.
+### Define a function that returns the file path of a Roman image given a sky position and filter.
+
+The Roman collection holds both the Wide-Area Survey and the Time Domain Survey, so we keep only the WAS exposures and then only the band we want. Many exposures cover any given position, so we sort by observation time and take the earliest; that keeps the notebook reproducible from one run to the next.
 
 ```{code-cell} ipython3
-def get_roman_coadd_fpath(coord, filter):
-    col, row = find_block(coord)
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
+def get_roman_image_fpath(coord, filter):
+    results = Irsa.query_sia(pos=(coord, SEARCH_RADIUS),
+                             collection=OU_ROMAN_SIA_COLLECTION)
 
-    # Construct the coadd filename from the chosen filter, column, and row.
-    coadd_fname_root = f"prod_{filter[0]}_{col:02d}_{row:02d}_map.fits.gz"
-    coadd_fpath = f"{BUCKET_NAME}/{ROMAN_COADD_PATH}/{filter}/{coadd_fname_root}"
-    return coadd_fpath
+    in_was = results[['WAS_simple_model' in str(r['obs_id']) for r in results]]
+    in_band = in_was[[str(r['energy_bandpassname']).strip() == filter
+                      for r in in_was]]
+    if len(in_band) == 0:
+        raise ValueError(f"No Roman WAS {filter}-band images cover "
+                         f"{coord.to_string('hmsdms')}")
+
+    in_band.sort('t_min')
+    cloud_info = json.loads(in_band['cloud_access'][0])['aws']
+    return f"{cloud_info['bucket_name']}/{cloud_info['key']}"
 ```
 
-Now we prefix that path with `s3://` and open it with astropy.
+### Define a function that retrieves a Roman simulated image given a sky position and filter.
 
-We use [`.section`](https://docs.astropy.org/en/stable/io/fits/usage/cloud.html#subsetting-fits-files-hosted-in-amazon-s3-cloud-storage) to pull out just the science plane as a 2D `numpy.array`, so the full 15-plane cube is never assembled in memory, and we take the WCS from the fits header as an `astropy.wcs.WCS` object. The function below returns a dictionary of both, along with the header itself so we can look at it later.
-
-A note on speed: `.section` can also cut down how much of a cloud-hosted file travels across the network, but only when the file can be read out of order. These coadds are gzipped, and a compressed stream has to be read from the beginning, so astropy works through the whole file to reach the plane we want. Expect each of these reads to take twenty to thirty seconds.
+Now we prefix that path with `s3://` and open it with astropy. The science image sits in the first extension, and we take the WCS from the same header as an `astropy.wcs.WCS` object. The function below returns a dictionary of both, along with the header itself so we can look at it later.
 
 ```{code-cell} ipython3
-def get_roman_coadd(coord, filter):
-    # retrive fits file of block/tile from the coadd mosiac
-    coadd_s3_fpath = get_roman_coadd_fpath(coord, filter)
-    coadd_s3_uri = f"s3://{coadd_s3_fpath}"
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
+def get_roman_image(coord, filter):
+    image_s3_fpath = get_roman_image_fpath(coord, filter)
 
-    with fits.open(coadd_s3_uri, fsspec_kwargs={"anon": True}) as hdul:
-        # retrieve science data from coadd fits
-        coadd_data = hdul[0].section[0, 0, :, :]  # has (1, 15, 2688, 2688) shape, with 0th layer in the cube as science image
+    with fits.open(f"s3://{image_s3_fpath}", fsspec_kwargs={"anon": True}) as hdul:
+        # retrieve science data, which sits in the first extension
+        image_data = hdul[1].data
 
         # make wcs using header
-        coadd_wcs = wcs.WCS(hdul[0].header, naxis=2)
+        image_wcs = wcs.WCS(hdul[1].header)
 
-        return {'data': coadd_data, 'wcs': coadd_wcs, 'header': hdul[0].header}
+        # hand back the path too, so later cells can reuse it instead of
+        # asking the image search for it a second time
+        return {'data': image_data, 'wcs': image_wcs, 'header': hdul[1].header,
+                'fpath': image_s3_fpath}
 ```
 
-### Inspect a simulated Roman Coadd
+### Inspect a simulated Roman image
 
 +++
 
@@ -257,116 +187,89 @@ Choose a filter and a position within the survey footprint
 
 ```{code-cell} ipython3
 coord = SkyCoord(ra=9.6055383, dec=-44.1895542, unit="deg")
-filter_roman = 'H158' #F184, H158, J129, K213, and Y106 are available
+filter_roman = 'H158' #F184, H158, J129, K213, W146, and Y106 are available
 ```
+
+Retrieve the data and header information from the simulated Roman image corresponding to the chosen position and filter.
 
 ```{code-cell} ipython3
-print("This position falls in block (column, row):", find_block(coord))
+image_roman = get_roman_image(coord, filter_roman)
 ```
 
-Retrieve the data and header information from the simulated Roman coadd corresponding to the chosen position and filter.
-
-```{code-cell} ipython3
-coadd_roman = get_roman_coadd(coord, filter_roman)
-```
-
-With a real header in hand, we can confirm that the grid description above reproduces it exactly.
-
-```{code-cell} ipython3
-predicted = block_wcs(*find_block(coord))
-
-print("CRPIX from the file:", coadd_roman['header']['CRPIX1'], coadd_roman['header']['CRPIX2'])
-print("CRPIX from our grid:", *predicted.wcs.crpix)
-```
-
-### Understand the size of a simulated Roman coadd.
+### Understand the size of a simulated Roman image.
 
 ```{code-cell} ipython3
 # Number of pixels (Y, X)
-coadd_roman['data'].shape
+image_roman['data'].shape
 ```
 
 ```{code-cell} ipython3
 # Pixel size (scale Y, scale X) [degrees/pixel]
-coadd_roman['wcs'].proj_plane_pixel_scales()
+image_roman['wcs'].proj_plane_pixel_scales()
 ```
 
 ```{code-cell} ipython3
-# Coadd size (FOV Y, FOV X)
+# Image size (FOV Y, FOV X)
 [(num * size).to('arcsec') for num, size in zip(
-    coadd_roman['data'].shape, coadd_roman['wcs'].proj_plane_pixel_scales())]
+    image_roman['data'].shape, image_roman['wcs'].proj_plane_pixel_scales())]
 ```
 
-The field of view of Roman coadd is ~100 arcsec.
+The field of view of a Roman exposure is ~450 arcsec, at a pixel scale of ~0.11 arcsec.
 
 +++
 
-### Look at everything else the coadd file contains
+### Look at everything else the image file contains
 
-So far we have read a single plane out of the primary HDU, but each coadd file carries a good deal more than the science image. Listing the extensions shows the full picture. Finding each extension means walking past the one before it, so this cell has to work through the entire compressed file and takes a few seconds.
+So far we have read the science image, but each exposure carries more than that. Listing the extensions shows the full picture.
 
 ```{code-cell} ipython3
-with fits.open(f"s3://{get_roman_coadd_fpath(coord, filter_roman)}",
+with fits.open(f"s3://{image_roman['fpath']}",
                fsspec_kwargs={"anon": True}) as hdul:
     hdul.info()
 ```
 
-The Primary HDU for the coadded image is a cube with 15 layers, i.e., its shape is 1x15x2688x2688. The layers are as follows:
+Each file holds a primary header carrying the observation metadata but no pixels, followed by three 4088x4088 planes:
 
-0 = simulated "Science" image (Roman+Rubin simulation, units of e/(0.11 arcsec)^2/exposure)
+SCI = the simulated science image, in electrons per second
 
-1 = lab noise: based on dark frames from the April 2023 test, masked at 3 e/p/s. Units: e/(0.11 arcsec)^2/s
+ERR = the estimated uncertainty on each science pixel
 
-2 = GalSim stars, on HEALPix resolution 14 grid, normalized to total flux of 1
-
-3 = noisy stars, on HEALPix resolution 14 grid, normalized to total flux of 2.4e5 e with self-Poisson noise, including 86 e^2/input pixel background variance
-
-4 = stars, on HEALPix resolution 14 grid, total flux 1, but on in only one of the passes (to test transient response)
-
-5 = stars, on HEALPix resolution 14 grid, with total flux that varies by 5% from center to edge of the focal plane (to test what happens when the filter bandpass varies; 5% is highly exaggerated)
-
-6 = GalSim extended objects, on HEALPix resolution 14 grid, right now exponential profiles. The scale radius is log-distributed between 0.125 and 0.500 arcsec, and the ellipticity (g1,g2) is uniformly distributed in the disc of radius 0.5, i.e., g1^2+g2^2<0.5^2.
-
-7,8,9 = same objects as layer 6, but with applied shear of 0.02. The shear orientations are spaced by 60° in tangent vector space, so that in the (g1,g2)-space they are spaced by 120° and can be used for finite differences. Specifically, the directions are: layer 7 -> in East-West direction (shear PA = 270°). (g1,g2) = (0.02,0) layer 8 -> in NNW-SSE direction (shear PA = 330°). (g1,g2) = (-0.02/2,0.02√3/2) layer 9 -> in NNE-SSW direction (shear PA = 30°). (g1,g2) = (-0.02/2,-0.02√3/2)
-
-10 = coadded 1/f noise map, normalized to variance per ln f of 1
-
-11,12,13,14 = coadded white noise maps, different seeds, normalized to variance of 1 in each input pixel
-
-The remaining HDUs contain additional information:
-
-CONFIG = the configuration file
-
-INDATA = the input images used, as a binary table. The columns are: obsid (int32) -> observation ID sca (int16) -> SCA (1 through 18, inclusive) ra (float64) -> right ascension of pointing center in degrees dec (float64) -> declination of pointing center in degrees pa (float64) -> position angle of pointing in degrees valid (logical) -> input science data file is valid (should be True)
-
-INWEIGHT = the mean input weights for how much each 1.25x1.25 arcsec postage stamp depends on each input exposure. The shape is 1 x Nin x 84 x 84, where Nin is the number of input images listed in INDATA. Note that each postage stamp is 32 output pixels, so 84x32=2688.
-
-If summed on axis 1, this will normally be something close to 1. Deviations of ~10% are common, due to plate scale variations and the normalization issues introduced by diffraction spikes.
-
-INWTFLAT = a reshape of INWEIGHT suitable for display as a single image in a viewer such as DS9. The contributions from the Nin input exposures are rearranged into a 1 x 84 x (N_in*84) array.
-
-FIDELITY, SIGMA, INWTSUM, EFFCOVER = maps of U_alpha/C, S_alpha, sum_i T_{alpha i}, and the effective coverage as rescaled int16 maps. See Rowe et al. (2011) for details on the definitions of these quantities. The comment in the 'UNIT' keyword indicates how to rescale these.
+DQ = the data quality mask, flagging pixels that should not be trusted
 
 +++
 
 ### Use the WCS from the Roman simulated header to convert the specified coordinate into a pixel position.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def coord_to_xy(w, coord):
     return w.world_to_array_index(coord)[::-1] #reverse since 0th axis is y, 1st axis is x
+```
 
-coord_arr_idx = coord_to_xy(coadd_roman['wcs'], coord)
+```{code-cell} ipython3
+coord_arr_idx = coord_to_xy(image_roman['wcs'], coord)
 coord_arr_idx
 ```
 
-### Use matplotlib imshow to create a static visualization of the Roman simulated coadd and overplot the selected position.
+### Use matplotlib imshow to create a static visualization of the Roman simulated image and overplot the selected position.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def stretch_color(data, clipPercent):
     return np.percentile(data, (0 + clipPercent, 100 - clipPercent))
+```
 
-plt.imshow(coadd_roman['data'], origin='lower', 
-           clim=stretch_color(coadd_roman['data'], 1)
+```{code-cell} ipython3
+plt.imshow(image_roman['data'], origin='lower', 
+           clim=stretch_color(image_roman['data'], 1)
            )
 
 plt.plot(*coord_arr_idx, 'r+', markersize=15)
@@ -374,7 +277,7 @@ plt.plot(*coord_arr_idx, 'r+', markersize=15)
 
 ## 3. Rubin Images
 
-OpenUniverse2024 includes simulated Rubin images in the following filters: u, g, r, i, z, y. These are individual visits rather than a fixed grid of mosaics, so instead of building a path we let the SIA service tell us which images cover our position. In this section, we define functions that retrieve a Rubin image for a chosen position and filter, returning data in the same structure as the functions we defined above for Roman.
+OpenUniverse2024 includes simulated Rubin images in the following filters: u, g, r, i, z, y. As with Roman, these are stored by visit and detector rather than by sky position, so we again let the SIA service tell us which images cover our position. In this section, we define functions that retrieve a Rubin image for a chosen position and filter, returning data in the same structure as the functions we defined above for Roman.
 
 +++
 
@@ -383,23 +286,43 @@ OpenUniverse2024 includes simulated Rubin images in the following filters: u, g,
 The image search returns one row per image, with the cloud location of each tucked inside a `cloud_access` JSON string. Many visits cover any given position, so we sort by observation time and take the earliest; that keeps the notebook reproducible from one run to the next.
 
 ```{code-cell} ipython3
-def get_rubin_image_fpath(coord, filter):
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
+def get_rubin_image_fpaths(coord, filters):
+    # One search covers every band, so ask once and sort the results out by band
+    # afterwards rather than searching again for each one.
     results = Irsa.query_sia(pos=(coord, SEARCH_RADIUS),
                              collection=OU_RUBIN_SIA_COLLECTION)
 
-    # Band names come back like "r_57", so compare only the part before the underscore.
-    in_band = results[[str(r['energy_bandpassname']).split('_')[0] == filter
-                       for r in results]]
-    if len(in_band) == 0:
-        raise ValueError(f"No Rubin {filter}-band images cover "
-                         f"{coord.to_string('hmsdms')}")
+    fpaths = {}
+    for filter in filters:
+        # Band names come back like "r_57", so compare only the part before the underscore.
+        in_band = results[[str(r['energy_bandpassname']).split('_')[0] == filter
+                           for r in results]]
+        if len(in_band) == 0:
+            raise ValueError(f"No Rubin {filter}-band images cover "
+                             f"{coord.to_string('hmsdms')}")
 
-    in_band.sort('t_min')
-    cloud_info = json.loads(in_band['cloud_access'][0])['aws']
-    return f"{cloud_info['bucket_name']}/{cloud_info['key']}"
+        in_band.sort('t_min')
+        cloud_info = json.loads(in_band['cloud_access'][0])['aws']
+        fpaths[filter] = f"{cloud_info['bucket_name']}/{cloud_info['key']}"
+
+    return fpaths
+
+
+def get_rubin_image_fpath(coord, filter):
+    return get_rubin_image_fpaths(coord, [filter])[filter]
 ```
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def get_rubin_image(coord, filter):
     image_s3_fpath = get_rubin_image_fpath(coord, filter)
 
@@ -410,7 +333,9 @@ def get_rubin_image(coord, filter):
         # make wcs using header
         image_wcs = wcs.WCS(hdul[1].header)
 
-        return {'data': image_data, 'wcs': image_wcs}
+        # hand back the path too, so later cells can reuse it instead of
+        # asking the image search for it a second time
+        return {'data': image_data, 'wcs': image_wcs, 'fpath': image_s3_fpath}
 ```
 
 ### Inspect a simulated Rubin image
@@ -442,7 +367,7 @@ image_rubin['wcs'].proj_plane_pixel_scales()
     image_rubin['data'].shape, image_rubin['wcs'].proj_plane_pixel_scales())]
 ```
 
-A single Rubin detector covers a far larger patch of sky than one Roman coadd block, at a coarser pixel scale.
+A single Rubin detector covers a somewhat larger patch of sky than one Roman exposure, at roughly twice the pixel scale.
 
 +++
 
@@ -460,6 +385,11 @@ plt.plot(*coord_to_xy(image_rubin['wcs'], coord), 'r+', markersize=15)
 Since the OpenUniverse2024 data is available through a public S3 bucket, we can access a given S3 file using HTTPS URL as follows:
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def https_url(s3_fpath):
     s3_fpath_without_bucket = s3_fpath.split('/', 1)[1]
     return f"https://{BUCKET_NAME}.s3.amazonaws.com/{s3_fpath_without_bucket}"
@@ -468,7 +398,7 @@ def https_url(s3_fpath):
 Let's generate URL for the Rubin image we plotted above. Clicking on the returned URL will allow you to download this image locally.
 
 ```{code-cell} ipython3
-image_s3_fpath_rubin = get_rubin_image_fpath(coord, filter_rubin)
+image_s3_fpath_rubin = image_rubin['fpath']
 https_url(image_s3_fpath_rubin)
 ```
 
@@ -485,7 +415,7 @@ cutout_size = 50*u.arcsec
 ### Create the cutouts
 
 ```{code-cell} ipython3
-cutout_roman = Cutout2D(coadd_roman['data'], coord, size=cutout_size, wcs=coadd_roman['wcs'])
+cutout_roman = Cutout2D(image_roman['data'], coord, size=cutout_size, wcs=image_roman['wcs'])
 cutout_rubin = Cutout2D(image_rubin['data'], coord, size=cutout_size, wcs=image_rubin['wcs'])
 ```
 
@@ -513,7 +443,7 @@ plt.tight_layout(rect=[0, 0, 1, 0.97])
 
 ## 5. Use Firefly to interactively identify a blended source
 
-Clearly, the simulated Roman coadd has higher spatial resolution than the simulated Rubin image. Let's try to locate blended objects to compare in the simulated Rubin and Roman images. We will use Firefly's interactive visualization to make this task easier.
+The simulated Roman exposure has finer pixels and a sharper point spread function than the simulated Rubin image. Let's try to locate blended objects to compare in the simulated Rubin and Roman images. We will use Firefly's interactive visualization to make this task easier.
 
 +++
 
@@ -544,37 +474,28 @@ fc.show_fits(url=https_url(image_s3_fpath_rubin),
              )
 ```
 
-### Use ds9 region syntax to overplot the simulated Roman image blocks on the interactive display
+### Use ds9 region syntax to outline the Roman exposure on the interactive display
 
 The Firefly client includes several methods related to controlling ds9 region overlays. To 
 overlay a region layer on the loaded FITS images, we can use [`overlay_region_layer`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer).
 
 Region data is defined in ds9 region syntax that can be found [here](https://ds9.si.edu/doc/ref/region.html).
 
-Drawing all 1296 blocks would clutter the display, so we outline only the ones in the neighborhood of our target. Their centers come straight from the WCS of each block.
+The Rubin visit on display covers more sky than the Roman exposure does, so it is worth seeing where the Roman data actually falls. The corners of the Roman exposure come straight from its WCS, and we draw them as a polygon.
 
 ```{code-cell} ipython3
-def block_center(col, row):
-    """Sky position of the center of a given coadd block."""
-    return block_wcs(col, row).pixel_to_world((BLOCK_NPIX - 1) / 2,
-                                              (BLOCK_NPIX - 1) / 2)
-
-col, row = find_block(coord)
-nearby_blocks = [(c, r)
-                 for c in range(max(col - 3, 0), min(col + 4, N_BLOCKS))
-                 for r in range(max(row - 3, 0), min(row + 4, N_BLOCKS))]
+roman_corners = image_roman['wcs'].calc_footprint()
+roman_corners
 ```
 
 ```{code-cell} ipython3
-# mark the roman coadd blocks as boxes
-roman_regions = [
-    f'icrs;box {center.ra.deg}d {center.dec.deg}d {block_size.value}" {block_size.value}" 0d'
-    for center in (block_center(c, r) for c, r in nearby_blocks)
-]
+# outline the Roman exposure as a polygon
+corner_coords = ' '.join(f'{ra}d {dec}d' for ra, dec in roman_corners)
+roman_regions = [f'icrs;polygon {corner_coords} # text={{Roman {filter_roman}}}']
 
 roman_regions_id = 'roman_regions'
 fc.overlay_region_layer(region_data=roman_regions,
-                        title='Roman Mosiac', 
+                        title='Roman exposure', 
                         region_layer_id=roman_regions_id)
 ```
 
@@ -594,7 +515,7 @@ You can view the coordinates of your mouse pointer at the bottom left of the dis
 We have provided an example. You can change this based on your interests.
 
 ```{code-cell} ipython3
-coords_of_interest = SkyCoord('0h38m25.35s -44d00m10.1s', frame='icrs') # located and copied through UI
+coords_of_interest = SkyCoord('0h38m40.26s -44d04m22.26s', frame='icrs') # located and copied through UI
 coords_of_interest
 ```
 
@@ -613,17 +534,21 @@ fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 
 ## 6. Plot cutouts of the identified blended source
 
+Two catalog sources sit 1.22 arcsec apart at this position. Roman separates them; Rubin merges them into one extended blob. Note that the Rubin image is a single visit, so faint detail washes out into the noise.
+
+The two cutouts are plotted in their own pixel frames, and because each telescope was pointed independently, north falls about 30 degrees apart between the panels. We leave them unrotated here, so expect the pair to appear tilted relative to each other rather than aligned.
+
 ```{code-cell} ipython3
-coadd_roman = get_roman_coadd(coords_of_interest, filter_roman)
+image_roman = get_roman_image(coords_of_interest, filter_roman)
 image_rubin = get_rubin_image(coords_of_interest, filter_rubin)
 ```
 
 ```{code-cell} ipython3
-cutout_size = 20*u.arcsec
+cutout_size = 8*u.arcsec
 ```
 
 ```{code-cell} ipython3
-cutout_roman = Cutout2D(coadd_roman['data'], coords_of_interest, size=cutout_size, wcs=coadd_roman['wcs'])
+cutout_roman = Cutout2D(image_roman['data'], coords_of_interest, size=cutout_size, wcs=image_roman['wcs'])
 cutout_rubin = Cutout2D(image_rubin['data'], coords_of_interest, size=cutout_size, wcs=image_rubin['wcs'])
 ```
 
@@ -635,13 +560,12 @@ axs[0].imshow(cutout_roman.data, origin='lower',
               )
 axs[0].set_title(f"ROMAN in filter {filter_roman}")
 
-# Let's also encircle the blended source we identified 
+# Let's also encircle the blended source we identified. The circle is 2 arcsec across
+# on both panels, so the two cutouts can be compared directly despite their different
+# pixel scales.
+roman_scale = cutout_roman.wcs.proj_plane_pixel_scales()[0].to(u.arcsec).value
 axs[0].add_patch(patches.Circle(coord_to_xy(cutout_roman.wcs, coords_of_interest), 
-                                radius=50, color='r', fill=False, linewidth=2))
-# and a bonus blended source that is close to it
-other_coords = SkyCoord(coords_of_interest.ra-9.2*u.arcsec, coords_of_interest.dec+5*u.arcsec)
-axs[0].add_patch(patches.Circle(coord_to_xy(cutout_roman.wcs, other_coords),
-                                radius=36, color='cyan', fill=False, linewidth=2))
+                                radius=2/roman_scale, color='r', fill=False, linewidth=2))
 
 
 axs[1].imshow(cutout_rubin.data, origin='lower', 
@@ -650,10 +574,9 @@ axs[1].imshow(cutout_rubin.data, origin='lower',
 axs[1].set_title(f"RUBIN in filter {filter_rubin}")
 
 # Let's also encircle the source we identified 
+rubin_scale = cutout_rubin.wcs.proj_plane_pixel_scales()[0].to(u.arcsec).value
 axs[1].add_patch(patches.Circle(coord_to_xy(cutout_rubin.wcs, coords_of_interest),
-                                radius=10, color='r', fill=False, linewidth=2))
-axs[1].add_patch(patches.Circle(coord_to_xy(cutout_rubin.wcs, other_coords),
-                                radius=8, color='cyan', fill=False, linewidth=2))
+                                radius=2/rubin_scale, color='r', fill=False, linewidth=2))
 
 
 fig.suptitle(f"Cutouts at ({coords_of_interest.ra:6f}, {coords_of_interest.dec:6f}) with {cutout_size} size", fontsize=14);
@@ -695,8 +618,6 @@ footprint = image_rubin['wcs'].calc_footprint()
 ra_bounds = (footprint[:, 0].min(), footprint[:, 0].max())
 dec_bounds = (footprint[:, 1].min(), footprint[:, 1].max())
 ```
-
-+++
 
 You can visualize catalogs interactively with Firefly using [`show_table`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table). This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we've already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.
 
@@ -754,8 +675,9 @@ We already have a Rubin image with the catalog overlaid, let's make a 3 color im
 
 ```{code-cell} ipython3
 image_ff_id_rubin_3color = 'rubin-image-3color'
+rubin_rgb_fpaths = get_rubin_image_fpaths(coord, RUBIN_RGB_FILTERS)
 threeC = [
-    dict(url=https_url(get_rubin_image_fpath(coord, filter_name)),
+    dict(url=https_url(rubin_rgb_fpaths[filter_name]),
          Title="Rubin 3 color")
     for filter_name in RUBIN_RGB_FILTERS
 ]
@@ -780,39 +702,26 @@ point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id)
 ```
 
-## 8. Plot 3-color Roman coadd containing your region of interest
-Let's inspect WCS of Roman coadd first
+## 8. Plot 3-color Roman image containing your region of interest
+Let's inspect WCS of the Roman image first
 
 ```{code-cell} ipython3
-coadd_roman['wcs']
+image_roman['wcs']
 ```
 
-### Prepare Roman coadds for displaying in Firefly
+### Prepare Roman images for displaying in Firefly
 
-Roman coadds have STG projection which cannot be read by Firefly yet. Firefly can display any FITS image but it needs to read the WCS for overlaying catalogs and other interactive features. So unlike the Rubin 3 color image where we directly passed URLs to Firefly, we will read Roman coadd files in Python, reproject them from STG to TAN, and write them back to FITS to pass them to Firefly.
-
-Let's first define functions to do so:
+The Roman exposures are gzipped on S3, so rather than hand Firefly a URL as we did for Rubin, we read each one in Python and pass it up as an in-memory FITS file.
 
 ```{code-cell} ipython3
-def reproject_to_TAN(coadd_roman):
-    # Define a new WCS with TAN projection (in CTYPE key)
-    output_wcs = coadd_roman['wcs'].deepcopy()
-    output_wcs.wcs.ctype = [ctype.replace('STG', 'TAN') for ctype in coadd_roman['wcs'].wcs.ctype]
-    
-    # Use reproject to convert a given data and wcs, to a desired wcs and shape
-    reprojected_data, _ = reproject_interp(
-        (coadd_roman['data'], coadd_roman['wcs']),
-        output_projection=output_wcs,
-        shape_out=coadd_roman['data'].shape
-    )
-
-    return {'data': reprojected_data, 'wcs': output_wcs}
-```
-
-```{code-cell} ipython3
-def get_fits_stream(coadd_roman):
-    # Create a FITS PrimaryHDU object with the coadd data
-    hdu = fits.PrimaryHDU(data=coadd_roman['data'], header=coadd_roman['wcs'].to_header())
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
+def get_fits_stream(image_roman):
+    # Create a FITS PrimaryHDU object with the image data
+    hdu = fits.PrimaryHDU(data=image_roman['data'], header=image_roman['wcs'].to_header())
 
     # Write the HDU to the in-memory stream (to save I/O time)
     fits_stream = BytesIO()
@@ -822,29 +731,23 @@ def get_fits_stream(coadd_roman):
     return fits_stream
 ```
 
-Then we perform all 3 operations we mentioned above for the RGB filters of Roman. This reads another coadd for each band, so the cell takes a couple of minutes:
+Then we read one exposure per RGB filter and turn each into a stream:
 
 ```{code-cell} ipython3
-coadds_rgb = []
-coadds_rgb_reprojected = []
-coadds_rgb_fits_stream = []
+images_rgb = []
+images_rgb_fits_stream = []
 
 for filter_name in ROMAN_RGB_FILTERS:
     print(f'\nFILTER: {filter_name}')
-    print('Retrieving Roman coadd...')
-    coadd_roman = get_roman_coadd(high_z_gal_coords, filter_name)
-    coadds_rgb.append(coadd_roman)
+    print('Retrieving Roman image...')
+    image_roman = get_roman_image(high_z_gal_coords, filter_name)
+    images_rgb.append(image_roman)
 
-    print('Reprojecting to TAN...')
-    coadd_roman_reprojected = reproject_to_TAN(coadd_roman)
-    coadds_rgb_reprojected.append(coadd_roman_reprojected)
-
-    print('Writing back to fits stream...')
-    coadd_roman_fits_stream = get_fits_stream(coadd_roman_reprojected)
-    coadds_rgb_fits_stream.append(coadd_roman_fits_stream)
+    print('Writing to fits stream...')
+    images_rgb_fits_stream.append(get_fits_stream(image_roman))
 ```
 
-### Use Firefly's show_fits_3color to create a 3 color image of Roman coadds
+### Use Firefly's show_fits_3color to create a 3 color image of Roman images
 
 Now we upload each fits stream (in-memory fits file) to firefly using [`upload_fits_data()`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data) and prepare color params to pass to the [`show_fits_3color()`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color).
 
@@ -852,17 +755,17 @@ Now we upload each fits stream (in-memory fits file) to firefly using [`upload_f
 three_color_params = [
     {
         'file': fc.upload_fits_data(fits_stream),
-        'Title': "Roman Coadd 3 color"
-    } for fits_stream in coadds_rgb_fits_stream]
+        'Title': "Roman 3 color"
+    } for fits_stream in images_rgb_fits_stream]
 ```
 
 ```{code-cell} ipython3
-coadd_ff_id_roman_3color = 'roman-coadd-3color-high_z_gal'
+image_ff_id_roman_3color = 'roman-3color-high_z_gal'
 fc.show_fits_3color(three_color_params=three_color_params,
-                    plot_id=coadd_ff_id_roman_3color)
+                    plot_id=image_ff_id_roman_3color)
 ```
 
-We can see 3 color image of Roman coadd containing the high-redshift galaxy sources. Try panning and zomming out, you can notice it spans over one block compared to the Rubin image which is much larger.
+We can see a 3 color image of the Roman exposures containing the high-redshift galaxy sources. Try panning and zooming out; you can notice it covers a smaller patch of sky than the Rubin image.
 
 ### Use Firefly's pan/zoom/align methods to locate high redshift sources
 Now, let's pan & zoom to the region where we located high-redshift galaxy sources. Also align & lock all images being displayed by WCS. For these operations we use these 3 methods (click on them to see their documentation):
@@ -871,8 +774,8 @@ Now, let's pan & zoom to the region where we located high-redshift galaxy source
 - [`align_images`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images)
 
 ```{code-cell} ipython3
-fc.set_pan(plot_id=coadd_ff_id_roman_3color, x=high_z_gal_coords.ra.deg, y=high_z_gal_coords.dec.deg, coord='j2000')
-fc.set_zoom(plot_id=coadd_ff_id_roman_3color, factor=1)
+fc.set_pan(plot_id=image_ff_id_roman_3color, x=high_z_gal_coords.ra.deg, y=high_z_gal_coords.dec.deg, coord='j2000')
+fc.set_zoom(plot_id=image_ff_id_roman_3color, factor=1)
 fc.align_images(lock_match=True)
 ```
 
@@ -881,7 +784,7 @@ fc.align_images(lock_match=True)
 The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
 ```{code-cell} ipython3
-fc.set_stretch(plot_id=coadd_ff_id_roman_3color, stype='sigma', algorithm='squared', 
+fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='squared', 
                band='ALL', lower_value=-2, upper_value=10)
 ```
 
