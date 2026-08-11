@@ -82,11 +82,11 @@ import itertools
 
 ## 1. Explore the OpenUniverse2024 data directories
 
-This section of the tutorial demonstrates how to explore the OpenUniverse2024 data directories directly on S3 and inspect simulated Roman and Rubin images without downloading large datasets locally. It establishes a connection to the public NASA IRSA simulations bucket using s3fs, defines key directory paths for the full Roman and Rubin simulations (not the preview subsets), and illustrates how to browse image files for a selected band and pointing. The accompanying functions — summarize_fits_files() and show_gallery() — provide tools for quickly summarizing FITS file metadata (e.g., number of extensions, pointing information, pixel scale) and for visualizing a small gallery of example images from the chosen directory.
+This section of the tutorial demonstrates how to explore the OpenUniverse2024 data directories directly on S3 and inspect simulated Roman and Rubin images without downloading large datasets locally. It establishes a connection to the public NASA IRSA simulations bucket using s3fs, defines key directory paths for the full Roman and Rubin simulations, and illustrates how to browse image files for a selected band and pointing. The accompanying functions — summarize_fits_files() and show_gallery() — provide tools for quickly summarizing FITS file metadata (e.g., number of extensions, pointing information, pixel scale) and for visualizing a small gallery of example images from the chosen directory.
 
 In the prefix you will see that we choose "simple_model" simulations and not "truth" simulations because the simple_model images are the ones with noise and real effects, while "Truth" are noise free, perfect images.
 
-Also in the prefix you will see that we choose the full simulation, not the preview simulation for both Roman and Rubin. Differences between the "full" and "preview" simulations are clarified in the [this](https://arxiv.org/abs/2501.05632) publication
+The prefix also selects the full simulation, which covers the entire survey footprint, for both Roman and Rubin. The [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) describes how the simulation was produced.
 
 ```{code-cell} ipython3
 # Setup
