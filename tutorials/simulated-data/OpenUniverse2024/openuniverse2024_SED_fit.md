@@ -713,7 +713,7 @@ def plot_many_seds(df, rubin_bands, roman_bands, n_galaxies=10, loglog=False):
 plot_many_seds(df_scaled, rubin_bands, roman_bands, n_galaxies=50, loglog=True)
 ```
 
-+++ {"jupyter": {"source_hidden": true}}
++++
 
 ## 3. SED fitting
 In this section we will use [Prospector](https://prospect.readthedocs.io/en/stable/index.html), a Bayesian SED fitting code built on [FSPS](https://dfm.io/python-fsps/current/), to infer stellar population parameters for our galaxies by fitting their SEDs.  We choose Prospector because it is an open-source, powerful, yet flexible package to infer stellar population properties that is widely used in the community.

@@ -87,6 +87,11 @@ OU_ROMAN_SIA_COLLECTION = 'simulated_roman_openuniverse2024'
 ## Define a module to create an animated gif from a collection of cutouts.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def animate_stamps(stamps, savepath, no_whitespace=True,
                    labels=[],labelxy=(0.05,0.95),
                    **kwargs):
@@ -268,11 +273,18 @@ print(f"Epochs to animate: {len(instances)}, "
 The cloud location of each image arrives as a JSON string, which we unpack into an S3 path.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def get_s3_fpath(cloud_access):
     """Extract the S3 URI from the cloud_access JSON string in an image search result."""
     cloud_info = json.loads(cloud_access)['aws']
     return f"s3://{cloud_info['bucket_name']}/{cloud_info['key']}"
+```
 
+```{code-cell} ipython3
 image_paths = [get_s3_fpath(row['cloud_access']) for row in instances]
 image_paths[:3]
 ```
