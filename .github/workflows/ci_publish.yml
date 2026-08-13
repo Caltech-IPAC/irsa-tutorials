@@ -45,7 +45,16 @@ jobs:
           path: _build/execute
           key: JB-output-${{ github.run_id }}
           restore-keys: |
-            JB-output-
+            JB-output
+
+      - name: Using build reference cache (for e.g. DOI, etc)
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: _build/cache
+          key: JB-reference-${{ github.run_id }}
+          restore-keys: |
+            JB-reference
 
       - name: Execute notebooks while building HTMLs
         run: tox -e py312-buildhtml
