@@ -45,7 +45,7 @@ jobs:
           path: _build/execute
           key: JB-output-${{ github.run_id }}
           restore-keys: |
-            JB-output-
+            JB-output
 
       - name: Using build reference cache (for e.g. DOI, etc)
         if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
