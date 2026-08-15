@@ -11,7 +11,6 @@ kernelspec:
   language: python
   name: python3
 authors:
-  - name: IRSA Data Science Team
   - name: Vandana Desai
   - name: Jessica Krick
   - name: Troy Raen
@@ -90,21 +89,7 @@ If you are new to the DC2 catalog, we recommend that you start with ``cosmodc2mo
 tablename = 'cosmodc2mockv1_heavy'
 ```
 
-## 3. What is the default maximum number of rows returned by the service?
-
-This service will return a maximum of 2 billion rows by default.
-
-```{code-cell} ipython3
-service.maxrec
-```
-
-This default maximum can be changed, and there is no hard upper limit to what it can be changed to.
-
-```{code-cell} ipython3
-print(service.hardlimit)
-```
-
-## 4. List the columns in the chosen table
+## 3. List the columns in the chosen table
 
 This table contains 301 columns.
 
@@ -120,7 +105,7 @@ for col in columns:
     print(f'{f"{col.name}":30s}  {col.description}')
 ```
 
-## 5. Retrieve a list of galaxies within a small area
+## 4. Retrieve a list of galaxies within a small area
 
 Since we know that cosmoDC2 is a large catalog, we can start with a spatial search over a small square area. The ADQL that is needed for the spatial constraint is shown below.  We then show how to make a redshift histogram of the sample generated.
 
@@ -161,7 +146,7 @@ We can see form this plot that the simulated galaxies go out to z = 3.
 
 +++
 
-## 6. Visualize galaxy colors: redshift search
+## 5. Visualize galaxy colors: redshift search
 
 First, we'll do a narrow redshift cut with no spatial constraint.  Then, from that redshift sample we will visualize the galaxy main sequence at z = 2.0.
 
@@ -196,7 +181,7 @@ plt.xlabel('LSST Mag r')
 plt.ylabel('LSST rest-frame g-r color')
 ```
 
-## 7. Suggestions for further queries:
+## 6. Suggestions for further queries:
 TAP queries are extremely powerful and provide flexible ways to explore large catalogs like CosmoDC2, including spatial searches, photometric selections, cross-matching, and more.
 However, many valid ADQL queries can take minutes or longer to complete due to the size of the catalog, so we avoid running those directly in this tutorial.
 Instead, the examples here have so far focused on fast, lightweight queries that illustrate the key concepts without long wait times.
@@ -262,7 +247,7 @@ ORDER BY mag_r_lsst ASC
 
 ## About this notebook
 
-**Updated:** 2025-12-16
+**Updated:** 2026-08-14
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
