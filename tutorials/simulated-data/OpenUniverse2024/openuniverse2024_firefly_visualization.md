@@ -8,7 +8,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.5
+    jupytext_version: 1.16.3
 kernelspec:
   name: python3
   display_name: python3
@@ -76,7 +76,7 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-!pip install numpy astropy matplotlib firefly_client astroquery hpgeom reproject
+# !pip install numpy astropy matplotlib firefly_client astroquery hpgeom reproject
 ```
 
 ```{code-cell} ipython3
@@ -586,10 +586,10 @@ You also need a Firefly server to communicate with your Firefly Python client. I
 
 ```{code-cell} ipython3
 # Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
-fc = FireflyClient.make_lab_client()
+# fc = FireflyClient.make_lab_client()
 
 # Uncomment for contexts other than above 
-#fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 
 fc.reinit_viewer() # to clean the state, if this cell ran earlier
 ```
@@ -982,6 +982,6 @@ fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='squar
 
 ## About This Notebook
 
-**Updated:** 2026-08-11
+**Updated:** 2026-08-14
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
