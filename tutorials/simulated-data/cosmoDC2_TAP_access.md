@@ -11,7 +11,6 @@ kernelspec:
   language: python
   name: python3
 authors:
-  - name: IRSA Data Science Team
   - name: Vandana Desai
   - name: Jessica Krick
   - name: Troy Raen
@@ -248,7 +247,7 @@ ORDER BY mag_r_lsst ASC
 
 ## About this notebook
 
-**Updated:** 2025-12-16
+**Updated:** 2026-08-14
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
 
