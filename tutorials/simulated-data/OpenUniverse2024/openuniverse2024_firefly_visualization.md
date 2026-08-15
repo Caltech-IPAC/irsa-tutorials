@@ -76,7 +76,7 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy matplotlib firefly_client astroquery hpgeom reproject
+# !pip install numpy astropy s3fs matplotlib firefly_client astroquery hpgeom reproject
 ```
 
 ```{code-cell} ipython3
