@@ -31,13 +31,15 @@ project:
           file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
         - title: Galaxy Clusters
           file: tutorials/euclid/euclid_clusters_tutorial.md
-        - title: 'Merged Objects Catalog: Introduction'
-          file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
-        - title: 'Merged Objects Catalog: Magnitudes'
-          file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+        - title: Merged Objects HATS Catalog
+          children:
+            - title: Introduction
+              file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
+            - title: Magnitudes
+              file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
         - title: Euclid Cloud Access
           file: tutorials/euclid/euclid-cloud-access.md
-        - title: Early Release Observations (ERO) - Star Clusters
+        - title: ERO Star Clusters
           file: tutorials/euclid/Euclid_ERO.md
     - title: WISE
       file: tutorials/wise/wise.md
