@@ -42,34 +42,30 @@
   file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
   section: Euclid
   description: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
-- title: OpenUniverse2024 Visualization
-  file: tutorials/simulated-data/OpenUniverse2024/OpenUniverse2024Preview_Firefly.md
+- title: Firefly Visualization
+  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_firefly_visualization.md
   section: Simulated Data
-  description: Use Firefly to get an overview of survey structure and visualize content.
+  description: Use Firefly to explore the structure of the OpenUniverse2024 Roman and Rubin simulations and visualize their content.
 - title: CosmoDC2 Data Access
   file: tutorials/simulated-data/cosmoDC2_TAP_access.md
   section: Simulated Data
   description: Access, query, and visualize the CosmoDC2 catalog.
-- title: OpenUniverse2024 Quickstart
+- title: Quickstart
   file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_quickstart.md
   section: Simulated Data
   description: Access OpenUniverse2024 Roman and Rubin images and catalogs.
-- title: OpenUniverse2024 TDE Light Curve
+- title: TDE Light Curve
   file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_TDE_light_curve.md
   section: Simulated Data
-  description: Locate a simulated TDE, retrieve Roman images, and build a multi-epoch light curve.
-- title: OpenUniverse2024 SED Fitting
+  description: Locate a simulated TDE in OpenUniverse2024, retrieve Roman images, and build a multi-epoch light curve.
+- title: SED Fitting
   file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_SED_fit.md
   section: Simulated Data
-  description: Fit spectral energy distributions for supernova host galaxies using Prospector.
-- title: OpenUniverse2024 Time Domain
-  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_timedomainsurvey.md
+  description: Fit spectral energy distributions for OpenUniverse2024 supernova host galaxies using Prospector.
+- title: Roman TDS Supernova
+  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_tds_supernova.md
   section: Simulated Data
-  description: Access and analyze the simulated time-domain OpenUniverse2024 survey.
-- title: OpenUniverse2024 Roman Coadds
-  file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_simulated_wideareasurvey.md
-  section: Simulated Data
-  description: Access OpenUniverse2024 wide-area simulated survey data.
+  description: Explore the OpenUniverse2024 Roman Time Domain Survey observation sequence and animate a simulated SN Ia across epochs.
 - title: Roman HLSS Number Density
   file: tutorials/simulated-data/roman_hlss_number_density.md
   section: Simulated Data

@@ -36,7 +36,7 @@ This tutorial is a focused introduction to data access only. It covers the three
 2. **Parquet catalogs** — transient (SNANA), galaxy, and galaxy-flux tables, indexed by HEALPix sky region
 3. **Image search via SIA** — querying which images cover a given sky position using astroquery and the IRSA Simple Image Access service
 
-No astrophysical analysis is performed here. For science workflows that build on these access patterns, see the [TDE Light Curve](TDE_light_curve) and [SED Fitting](SED_fit) tutorials in this repository.
+No astrophysical analysis is performed here. For science workflows that build on these access patterns, see the [TDE Light Curve](openuniverse2024_TDE_light_curve) and [SED Fitting](openuniverse2024_SED_fit) tutorials in this repository.
 
 ### Instructions
 
@@ -77,7 +77,7 @@ from astropy.io import fits
 
 The OpenUniverse2024 data live on the cloud in a public AWS S3 bucket and can be accessed anonymously using `s3fs`. This section shows how to establish that connection, navigate the directory tree, and inspect the contents of a FITS image file.
 
-In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint; a smaller `preview` subset is also available. See the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) for details on the differences. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
+In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint. See the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) for details on how it was produced. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
 
 ```{code-cell} ipython3
 # Create an anonymous (public read-only) connection to the NASA IRSA S3 bucket.
@@ -130,6 +130,11 @@ Let's display a gallery of example images to get a sense of the data.
 Note this gallery can take about a minute to build.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def show_gallery(files, max_images=9):
     """
     Display a gallery of FITS images.
@@ -205,10 +210,15 @@ print("Galaxy flux file: ", gal_flux_path)
 
 ### 2.1 Inspect the SNANA Transient Catalog
 
-`inspect_parquet_columns()` reads only the Parquet metadata footer to print the row count and column names — no data is loaded into memory.
+`inspect_parquet_files()` reads only the Parquet metadata footer to print the row count and column names — no data is loaded into memory.
 We use it here for the SNANA catalog and repeat it for the galaxy info and flux catalogs below.
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def inspect_parquet_files(s3_path, *, region='us-east-1'):
     """
     Print the structure of a Parquet file on S3 without reading its data.
@@ -305,6 +315,11 @@ OU_RUBIN_SIA_COLLECTION = 'simulated_rubin_openuniverse2024'
 ```
 
 ```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
 def get_s3_fpath(cloud_access):
     """Extract the S3 URI from the cloud_access JSON string in an SIA result."""
     cloud_info = json.loads(cloud_access)
