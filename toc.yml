@@ -14,12 +14,12 @@ project:
           file: tutorials/spherex/spherex_psf.md
         - title: Source Discovery Tool
           file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
-        - title: Mosaic Cubes
+        - title: Mosaic Cube
           file: tutorials/spherex/spherex_mosaic.md
     - title: Euclid
       file: tutorials/euclid/euclid.md
       children:
-        - title: MER Mosaics
+        - title: MER Image Mosaics
           file: tutorials/euclid/1_Euclid_intro_MER_images.md
         - title: SIR 1D Spectra
           file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
@@ -37,7 +37,7 @@ project:
               file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
             - title: Magnitudes
               file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
-        - title: Cloud Access
+        - title: Euclid Cloud Access
           file: tutorials/euclid/euclid-cloud-access.md
         - title: ERO Star Clusters
           file: tutorials/euclid/Euclid_ERO.md
@@ -46,9 +46,9 @@ project:
       children:
         - title: AllWISE Images
           file: tutorials/wise/sia_allwise_atlas.md
-        - title: AllWISE Catalog
+        - title: AllWISE Source Catalog
           file: tutorials/wise/wise-allwise-catalog-demo.md
-        - title: NEOWISE Firefly
+        - title: NEOWISE Solar System Objects
           file: tutorials/wise/NEOWISE_light_curve_demo.md
         - title: NEOWISE Strategies
           file: tutorials/wise/neowise-source-table-strategies.md
@@ -88,7 +88,7 @@ project:
       children:
         - title: Cloud Access
           file: tutorials/techniques-and-tools/cloud-access-intro.md
-        - title: LSDB HATS
+        - title: HATS with LSDB
           file: tutorials/techniques-and-tools/irsa-hats-with-lsdb.md
         - title: Moving Object Searches
           file: tutorials/techniques-and-tools/MOST_queries.md
