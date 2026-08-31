@@ -28,7 +28,7 @@ By the end of this tutorial, you will be able to:
 
 ## Introduction
 
-The [OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulation suite delivers ~70 deg² of matched optical/infrared imagery for both the LSST Wide-Fast-Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, producing roughly 400 TB of publicly available synthetic imaging and catalogs. All data are stored in the cloud (AWS S3) and can be accessed anonymously without any credentials.
+The [OpenUniverse2024](https://doi.org/10.1093/mnras/staf1833) simulation suite delivers ~70 deg² of matched optical/infrared imagery for both the LSST Wide-Fast-Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, producing roughly 400 TB of publicly available synthetic imaging and catalogs. All data are stored in the cloud (AWS S3) and can be accessed anonymously without any credentials.
 
 This tutorial is a focused introduction to data access only. It covers the three main categories:
 
@@ -77,7 +77,7 @@ from astropy.io import fits
 
 The OpenUniverse2024 data live on the cloud in a public AWS S3 bucket and can be accessed anonymously using `s3fs`. This section shows how to establish that connection, navigate the directory tree, and inspect the contents of a FITS image file.
 
-In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint. See the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) for details on how it was produced. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
+In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint. See the [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) for details on how it was produced. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
 
 ```{code-cell} ipython3
 # Create an anonymous (public read-only) connection to the NASA IRSA S3 bucket.
@@ -400,4 +400,4 @@ This tutorial was developed with the assistance of AI tools
 
 - [Astropy Collaboration et al., 2022](https://arxiv.org/abs/2206.14220)
 
-- [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
+- [OpenUniverse et al., 2025](https://doi.org/10.1093/mnras/staf1833)

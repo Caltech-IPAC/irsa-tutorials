@@ -25,6 +25,7 @@ fsspec
 sep>=1.4
 h5py
 requests
+ipython
 scikit-learn
 gdown
 astro-sedpy

@@ -28,7 +28,7 @@ By the end of this tutorial, you will be able to :
 
 ## Introduction
 
-The [OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies.
+The [OpenUniverse2024](https://doi.org/10.1093/mnras/staf1833) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies.
 It incorporates the updated “Diffsky” extragalactic model, extended transient modeling across optical/IR wavelengths, and realistic telescope/instrument effects, producing roughly 400 TB of publicly available synthetic imaging and catalogs.
 The goal of this project is to enable cross-collaboration and maximize science return from next-generation cosmological surveys by providing a consistent simulated sky observed by multiple observatories.
 
@@ -86,7 +86,7 @@ This section of the tutorial demonstrates how to explore the OpenUniverse2024 da
 
 In the prefix you will see that we choose "simple_model" simulations and not "truth" simulations because the simple_model images are the ones with noise and real effects, while "Truth" are noise free, perfect images.
 
-The prefix also selects the full simulation, which covers the entire survey footprint, for both Roman and Rubin. The [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) describes how the simulation was produced.
+The prefix also selects the full simulation, which covers the entire survey footprint, for both Roman and Rubin. The [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) describes how the simulation was produced.
 
 ```{code-cell} ipython3
 # Setup
@@ -908,4 +908,4 @@ This tutorial was developed with the assistance of AI tools
 
 - [Virtanen et al., 2020](https://www.nature.com/articles/s41592-019-0686-2); DOI: 10.1038/s41592-019-0686-2.
 
-- [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
+- [OpenUniverse et al., 2025](https://doi.org/10.1093/mnras/staf1833)

@@ -7,7 +7,7 @@ These tutorials are designed to help users get started with accessing, visualizi
 
 ## OpenUniverse2024
 
-[OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulates the overlapping imaging surveys to be carried out by the Nancy Grace Roman Space Telescope and the Vera C. Rubin Observatory, covering roughly 70 square degrees of matched optical and infrared sky.
+[OpenUniverse2024](https://doi.org/10.1093/mnras/staf1833) simulates the overlapping imaging surveys to be carried out by the Nancy Grace Roman Space Telescope and the Vera C. Rubin Observatory, covering roughly 70 square degrees of matched optical and infrared sky.
 Start with the Quickstart tutorial, which introduces the directory layout, the parquet catalogs, and the image search that the other tutorials build on.
 
 ```{notebook-gallery} notebook_metadata.yml

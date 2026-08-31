@@ -45,7 +45,7 @@ OpenUniverse2024 is a project to simulate spatially overlapping imaging surveys 
 - Overlapping Roman Wide-Area Survey (WAS) in the same region
 - A deep-field calibration region of the Roman WAS in the same region
 
-This tutorial works with the full simulation, which covers the entire survey footprint. More information about the dataset can be found at [IRSA's holding of this dataset](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html), and the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) describes how the simulation was produced.
+This tutorial works with the full simulation, which covers the entire survey footprint. More information about the dataset can be found at [IRSA's holding of this dataset](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html), and the [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) describes how the simulation was produced.
 
 Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information on Firefly can be found [here](https://github.com/Caltech-IPAC/firefly/blob/dev/README.md).
 
@@ -73,6 +73,7 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 - astropy.nddata.Cutout2D for making image cutouts
 - reproject.reproject_interp for rotating cutouts so both telescopes' panels point the same way
 - io.BytesIO for writing a fits file to an in-memory stream
+- warnings for silencing the harmless FITS WCS warnings
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
@@ -94,6 +95,11 @@ from firefly_client import FireflyClient
 from astropy.nddata import Cutout2D
 from reproject import reproject_interp
 from io import BytesIO
+import warnings
+
+# Filter out the FITSFixedWarning, which is consequenceless and gets thrown every time you deal with a WCS
+# in a Roman openuniverse simulated image using astropy.
+warnings.simplefilter('ignore', category=wcs.FITSFixedWarning)
 ```
 
 ## 1. Learn where the OpenUniverse2024 data are hosted in the cloud
@@ -280,7 +286,10 @@ coord_arr_idx
 
 ### Use matplotlib imshow to create a static visualization of the Roman simulated image and overplot the selected position.
 
-Each telescope points independently, so neither survey's images arrive with north pointing up: this Roman exposure is turned about 170 degrees from north, and the Rubin visit in the next section about 160 degrees. Every figure in this notebook is therefore resampled onto a north-up grid before plotting, so that all of them, and both telescopes, can be read the same way. The rotation leaves the frame tilted inside a slightly larger box, with empty wedges in the corners.
+Each telescope points independently, so neither survey's images arrive with north pointing up: this Roman exposure is turned about 170 degrees from north, and the Rubin visit in the next section about 160 degrees.
+Every figure in this notebook is therefore resampled onto a north-up grid before plotting, so that all of them, and both telescopes, can be read the same way.
+The target grid is a plain gnomonic (TAN) one, so the SIP distortion carried by the exposure headers is resampled away along with the rotation.
+The rotation leaves the frame tilted inside a slightly larger box, with empty wedges in the corners.
 
 ```{code-cell} ipython3
 ---
@@ -502,7 +511,8 @@ image_rubin['wcs'].proj_plane_pixel_scales()
     image_rubin['data'].shape, image_rubin['wcs'].proj_plane_pixel_scales())]
 ```
 
-A single Rubin detector covers a somewhat larger patch of sky than one Roman exposure, at roughly twice the pixel scale.
+The field of view of a Rubin detector is ~800 arcsec, at a pixel scale of ~0.2 arcsec.
+A single Rubin detector therefore covers nearly twice the sky of one Roman exposure, at roughly twice the pixel scale.
 
 +++
 
@@ -680,7 +690,8 @@ You can view the coordinates of your mouse pointer at the bottom left of the dis
 
 ### Copy the coordinates from the coordinate display to the Python notebook
 
-The position we have been using since Section 2 is the one marked below, so by default we carry it forward. Paste a position of your own here instead to compare a different target.
+Paste the position you copied from the display here.
+If you skip this, the notebook falls back to the position it has used since Section 2, which the cutouts below are described against.
 
 ```{code-cell} ipython3
 coords_of_interest = coord  # or e.g. SkyCoord('0h38m28.92s -44d03m51.01s', frame='icrs')
@@ -718,7 +729,8 @@ cutout_size = 8*u.arcsec
 ```
 
 ```{code-cell} ipython3
-# As in section 4, cut oversized and then rotate both to north up.
+# As in section 4, cut 1.5x oversized so the rotation has data for the corners,
+# then resample down onto the cutout_size grid that gets displayed.
 cutout_roman = Cutout2D(image_roman['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_roman['wcs'])
 cutout_rubin = Cutout2D(image_rubin['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_rubin['wcs'])
 
@@ -826,7 +838,9 @@ For each row in the table you can notice a marker in the image. Selecting a row 
 
 ### Use Firefly's apply_table_filters to show only high-redshift galaxies
 
-High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>2.5 galaxies. Notice how the table display and image overlay change. Notice how the chart becomes a scatterplot from a heatmap because the sources reduce. You can remove this filter or add new ones through the GUI.
+High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>2.5 galaxies.
+Notice how the table display and the image overlay change as the sample shrinks.
+You can remove this filter or add new ones through the GUI.
 
 For filtering, we will use [`apply_table_filters`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.apply_table_filters) method on the galaxy table we loaded above.
 

@@ -43,7 +43,7 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy astroquery hpgeom
+# !pip install astropy matplotlib numpy pandas pyarrow s3fs scipy astroquery hpgeom ipython
 ```
 
 ```{code-cell} ipython3
@@ -82,62 +82,6 @@ Irsa.sia_url = "https://irsa.ipac.caltech.edu/simulated/SIA"
 Irsa.tap_url = "https://irsa.ipac.caltech.edu/simulated/TAP"
 
 OU_ROMAN_SIA_COLLECTION = 'simulated_roman_openuniverse2024'
-```
-
-## Define a module to create an animated gif from a collection of cutouts.
-
-```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
-tags: [hide-cell]
----
-def animate_stamps(stamps, savepath, no_whitespace=True,
-                   labels=[],labelxy=(0.05,0.95),
-                   **kwargs):
-    """
-    Make an animation of a sequence of image stamps.
-
-    :param stamps: Must be in chronological order.
-    :type stamps: List of stamps from get_stamps or get_object_instances.
-    :param savepath: Path to save gif.
-    :type savepath: str
-    """
-
-    if no_whitespace:
-        with_whitespace = np.invert(np.any((np.isnan(np.array(stamps))), axis=(1,2))) # NOTE: Your first axis (first indexing value) should return one stamp. e.g. stamps[0] is the first stamp.
-        idx_whitespace = np.where(with_whitespace)[0]
-        stamps = np.array(stamps)[idx_whitespace]
-        if len(labels) != 0:
-            labels = np.array(labels)[idx_whitespace]
-
-    fig, ax = plt.subplots(figsize=(5,5))
-    fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
-    plt.xticks([])
-    plt.yticks([])
-
-    im = ax.imshow(stamps[0], animated=True)
-
-    if len(labels) != 0:
-        txt = ax.text(labelxy[0],labelxy[1],labels[0],animated=True,color='white',transform=ax.transAxes,va='top',ha='left',**kwargs)
-
-    def animate(i):
-        im.set_array(stamps[i])
-        if len(labels) != 0:
-            txt.set_text(labels[i])
-
-            return [im] + [txt]
-        else:
-            return [im]
-
-    writer = animation.PillowWriter()
-    anim = animation.FuncAnimation(fig, animate, interval=600, frames=len(stamps))
-    anim.save(savepath, writer=writer)
-
-    # Close the figure so the notebook does not also print a static copy of the first frame,
-    # and hand the animation back so it can be displayed with playback controls.
-    plt.close(fig)
-    return anim
 ```
 
 ## Read in the Observation Sequence File to learn more about the "observations" that make up the simulated Roman Time Domain Survey.
@@ -349,6 +293,61 @@ for imgpath, epoch in zip(image_paths, epoch_mjd):
             pass
 
 print(f"Collected {len(stamps)} cutouts")
+```
+
+## Define a module to create an animated gif from a collection of cutouts.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+tags: [hide-cell]
+---
+def animate_stamps(stamps, savepath, no_whitespace=True,
+                   labels=[],labelxy=(0.05,0.95)):
+    """
+    Make an animation of a sequence of image stamps.
+
+    :param stamps: Must be in chronological order.
+    :type stamps: List of stamps from get_stamps or get_object_instances.
+    :param savepath: Path to save gif.
+    :type savepath: str
+    """
+
+    if no_whitespace:
+        with_whitespace = np.invert(np.any((np.isnan(np.array(stamps))), axis=(1,2))) # NOTE: Your first axis (first indexing value) should return one stamp. e.g. stamps[0] is the first stamp.
+        idx_whitespace = np.where(with_whitespace)[0]
+        stamps = np.array(stamps)[idx_whitespace]
+        if len(labels) != 0:
+            labels = np.array(labels)[idx_whitespace]
+
+    fig, ax = plt.subplots(figsize=(5,5))
+    fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
+    plt.xticks([])
+    plt.yticks([])
+
+    im = ax.imshow(stamps[0], animated=True)
+
+    if len(labels) != 0:
+        txt = ax.text(labelxy[0],labelxy[1],labels[0],animated=True,color='white',transform=ax.transAxes,va='top',ha='left')
+
+    def animate(i):
+        im.set_array(stamps[i])
+        if len(labels) != 0:
+            txt.set_text(labels[i])
+
+            return [im] + [txt]
+        else:
+            return [im]
+
+    writer = animation.PillowWriter()
+    anim = animation.FuncAnimation(fig, animate, interval=600, frames=len(stamps))
+    anim.save(savepath, writer=writer)
+
+    # Close the figure so the notebook does not also print a static copy of the first frame,
+    # and hand the animation back so it can be displayed with playback controls.
+    plt.close(fig)
+    return anim
 ```
 
 ## Make an animated gif out of the cutouts.
