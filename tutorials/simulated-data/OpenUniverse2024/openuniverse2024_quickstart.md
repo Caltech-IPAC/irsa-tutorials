@@ -77,7 +77,9 @@ from astropy.io import fits
 
 The OpenUniverse2024 data live on the cloud in a public AWS S3 bucket and can be accessed anonymously using `s3fs`. This section shows how to establish that connection, navigate the directory tree, and inspect the contents of a FITS image file.
 
-In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint. See the [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) for details on how it was produced. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
+In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free.
+The `full` simulation covers the complete survey footprint. See the [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) for details on how it was produced.
+A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
 
 ```{code-cell} ipython3
 # Create an anonymous (public read-only) connection to the NASA IRSA S3 bucket.

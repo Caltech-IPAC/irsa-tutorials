@@ -162,7 +162,10 @@ print('Number of nearby SNIa:', len(nearby_sn1a))
 
 A supernova is only worth animating if Roman happened to be looking at that patch of sky while it was bright. The catalog records the date each one peaks in `peak_mjd`, and the survey visits any given field in bursts rather than continuously, so we pick an object whose peak falls inside a well-visited stretch of the survey.
 
-The cuts above cannot check this for us: they confirm a supernova went off somewhere inside the survey's footprint and date range, not that the telescope was pointed at it at the time. If you change `oid` to explore a different object, compare the dates it was bright, `start_mjd` through `end_mjd`, against the dates Roman actually visited its position, which arrive as the `t_min` column of the image search a few cells below. Objects that pass every cut here but were only observed long before or after they erupted are common; for those, the epoch window a few cells below comes back empty and the notebook cannot build an animation at all.
+The cuts above cannot check this for us.
+They confirm that a supernova went off somewhere inside the survey's footprint and date range, not that the telescope was pointed at it while it was bright.
+That combination is common, and when it happens the epoch window below comes back empty and there is nothing to animate.
+So if you change `oid` to explore a different object, check that the dates it was bright (`start_mjd` to `end_mjd`) overlap the dates Roman visited its position (the `t_min` column of the image search below).
 
 ```{code-cell} ipython3
 # Let's choose SN 20131477, which peaks while its field is being visited regularly.
