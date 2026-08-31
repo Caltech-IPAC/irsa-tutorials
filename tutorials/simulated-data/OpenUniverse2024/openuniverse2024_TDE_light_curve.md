@@ -297,6 +297,7 @@ jupyter:
 tags: [hide-cell]
 ---
 def get_s3_fpath(cloud_access):
+    """Extract the S3 URI from the cloud_access JSON string in an SIA result."""
     cloud_info = json.loads(cloud_access) # converts str to dict
     bucket_name = cloud_info['aws']['bucket_name']
     key = cloud_info['aws']['key']

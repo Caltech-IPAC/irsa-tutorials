@@ -305,13 +305,25 @@ tags: [hide-cell]
 ---
 def animate_stamps(stamps, savepath, no_whitespace=True,
                    labels=[],labelxy=(0.05,0.95)):
-    """
-    Make an animation of a sequence of image stamps.
+    """Make an animation of a sequence of image stamps.
 
-    :param stamps: Must be in chronological order.
-    :type stamps: List of stamps from get_stamps or get_object_instances.
-    :param savepath: Path to save gif.
-    :type savepath: str
+    Parameters
+    ----------
+    stamps : list of `~numpy.ndarray`
+        Image stamps, in chronological order.
+    savepath : str
+        Path to save the gif to.
+    no_whitespace : bool, optional
+        Drop any stamp that is entirely NaN, along with its label.
+    labels : list of str, optional
+        Per-frame text, drawn in the corner of each frame.
+    labelxy : tuple of float, optional
+        Position of the label, in axes fractions.
+
+    Returns
+    -------
+    `~matplotlib.animation.FuncAnimation`
+        The animation, for displaying with playback controls.
     """
 
     if no_whitespace:
