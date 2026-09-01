@@ -8,11 +8,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.3
+    jupytext_version: 1.19.3
 kernelspec:
-  name: python3
-  display_name: python3
+  display_name: irsa-tutorials
   language: python
+  name: python3
 ---
 
 # Using Firefly to Explore OpenUniverse2024 Simulated Roman and Rubin Images
@@ -592,14 +592,14 @@ Static cutouts only help once you know where to look. Choosing a position worth 
 ### Launch and initialize Firefly
 There are two ways to initialize a Firefly client from Python, depending on whether you're running the notebook in JupyterLab or not. Assuming you have `jupyter-firefly-extensions` set up in your environment as explained [here](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md), you can use `make_lab_client()` in JupyterLab, which will open the Firefly viewer in a new tab within the Lab. Otherwise, you can use `make_client()` in a Jupyter Notebook (or even a Python shell), which will open the Firefly viewer in a new web browser tab.
 
-You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: the IRSA Viewer (https://irsa.ipac.caltech.edu/irsaviewer). However, you can also run a local Firefly server via a [Firefly Docker image](https://hub.docker.com/r/ipac/firefly) and access it at `http://localhost:8080/firefly`. The URL of the Firefly server is read by both `make_client()` and `make_lab_client()` through the environment variable `FIREFLY_URL`. However, `make_client()` also allows you to pass the URL directly as the `url` parameter.
+You also need a Firefly server to communicate with your Firefly Python client. In this notebook, we use a public Firefly server: https://irsacloud.ipac.caltech.edu/firefly. However, you can also run a local Firefly server via a [Firefly Docker image](https://hub.docker.com/r/ipac/firefly) and access it at `http://localhost:8080/firefly`. The URL of the Firefly server is read by both `make_client()` and `make_lab_client()` through the environment variable `FIREFLY_URL`. However, `make_client()` also allows you to pass the URL directly as the `url` parameter.
 
 ```{code-cell} ipython3
 # Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
 # fc = FireflyClient.make_lab_client()
 
 # Uncomment for contexts other than above 
-fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+fc = FireflyClient.make_client(url="https://irsacloud.ipac.caltech.edu/firefly")
 
 fc.reinit_viewer() # to clean the state, if this cell ran earlier
 ```
@@ -639,13 +639,13 @@ https_url(image_s3_fpath_rubin)
 
 ### Send the simulated Rubin image to Firefly using show_fits.
 
-For displaying the FITS image of the Rubin visit in Firefly, we use [`show_fits`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits):
+For displaying the FITS image of the Rubin visit in Firefly, we use [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image):
 
 ```{code-cell} ipython3
 image_ff_id_rubin = 'rubin-image-filter-r'
-fc.show_fits(url=https_url(image_s3_fpath_rubin),
-             plot_id=image_ff_id_rubin,
-             Title="Rubin Image"
+fc.show_fits_image(file_input=https_url(image_s3_fpath_rubin),
+                   plot_id=image_ff_id_rubin,
+                   Title="Rubin Image"
              )
 ```
 
@@ -666,7 +666,7 @@ roman_corners
 ```{code-cell} ipython3
 # outline the Roman exposure as a polygon
 corner_coords = ' '.join(f'{ra}d {dec}d' for ra, dec in roman_corners)
-roman_regions = [f'icrs;polygon {corner_coords} # text={{Roman {filter_roman}}}']
+roman_regions = [f'icrs;polygon {corner_coords} # text={{Roman {filter_roman}}} color=yellow']
 
 roman_regions_id = 'roman_regions'
 # Name the plot explicitly. Without plot_id the layer goes to whichever plot is
@@ -707,7 +707,7 @@ We can now use this [astropy `SkyCoord` object](https://docs.astropy.org/en/stab
 For this we use the id of the region layer we defined above, and add more region data using [`add_region_data`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data).
 
 ```{code-cell} ipython3
-point_region = f'icrs;point {coords_of_interest.ra.value}d {coords_of_interest.dec.value}d # point=cross 15 text={{Source of interest}}'
+point_region = f'icrs;point {coords_of_interest.ra.value}d {coords_of_interest.dec.value}d # point=cross 15 text={{Source of interest}} color=lime'
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
                    plot_id=image_ff_id_rubin)
 ```
@@ -818,7 +818,7 @@ cat_filters
 ```
 
 ```{code-cell} ipython3
-fc.show_table(url=https_url(pointsource_cat_path),
+fc.show_table(file_input=https_url(pointsource_cat_path),
               title='Stars Catalog',
               tbl_id='stars_cat',
               filters=" AND ".join(cat_filters))
@@ -828,7 +828,7 @@ fc.show_table(url=https_url(pointsource_cat_path),
 gal_cat_tbl_id = 'galaxy_cat'
 
 # may take ~1.25min, because galaxy catalog is a big file
-fc.show_table(url=https_url(galaxy_cat_path),
+fc.show_table(file_input=https_url(galaxy_cat_path),
               title='Galaxy Catalog',
               tbl_id=gal_cat_tbl_id,
               filters=" AND ".join(cat_filters))
@@ -888,7 +888,7 @@ high_z_gal_coords
 
 ```{code-cell} ipython3
 # let's also mark it in our region layer, so that it's easy to pinpoint later
-point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec.value}d # point=cross 15 text={{z>2.5 mock galaxies}}'
+point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec.value}d # point=cross 15 text={{z>2.5 mock galaxies}} color=cyan'
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
                    plot_id=image_ff_id_rubin)
 ```
