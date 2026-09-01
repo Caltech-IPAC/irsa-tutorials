@@ -28,7 +28,7 @@ By the end of this tutorial, you will be able to :
 
 ## Introduction
 
-The [OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies.
+The [OpenUniverse2024](https://doi.org/10.1093/mnras/staf1833) simulation suite delivers ~70 deg² of matched optical/infrared imagery designed for both the LSST Wide‑Fast‑Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, enabling joint survey planning and multi-wavelength systematics studies.
 It incorporates the updated “Diffsky” extragalactic model, extended transient modeling across optical/IR wavelengths, and realistic telescope/instrument effects, producing roughly 400 TB of publicly available synthetic imaging and catalogs.
 The goal of this project is to enable cross-collaboration and maximize science return from next-generation cosmological surveys by providing a consistent simulated sky observed by multiple observatories.
 
@@ -82,11 +82,11 @@ import itertools
 
 ## 1. Explore the OpenUniverse2024 data directories
 
-This section of the tutorial demonstrates how to explore the OpenUniverse2024 data directories directly on S3 and inspect simulated Roman and Rubin images without downloading large datasets locally. It establishes a connection to the public NASA IRSA simulations bucket using s3fs, defines key directory paths for the full Roman and Rubin simulations (not the preview subsets), and illustrates how to browse image files for a selected band and pointing. The accompanying functions — summarize_fits_files() and show_gallery() — provide tools for quickly summarizing FITS file metadata (e.g., number of extensions, pointing information, pixel scale) and for visualizing a small gallery of example images from the chosen directory.
+This section of the tutorial demonstrates how to explore the OpenUniverse2024 data directories directly on S3 and inspect simulated Roman and Rubin images without downloading large datasets locally. It establishes a connection to the public NASA IRSA simulations bucket using s3fs, defines key directory paths for the full Roman and Rubin simulations, and illustrates how to browse image files for a selected band and pointing. The accompanying functions — summarize_fits_files() and show_gallery() — provide tools for quickly summarizing FITS file metadata (e.g., number of extensions, pointing information, pixel scale) and for visualizing a small gallery of example images from the chosen directory.
 
 In the prefix you will see that we choose "simple_model" simulations and not "truth" simulations because the simple_model images are the ones with noise and real effects, while "Truth" are noise free, perfect images.
 
-Also in the prefix you will see that we choose the full simulation, not the preview simulation for both Roman and Rubin. Differences between the "full" and "preview" simulations are clarified in the [this](https://arxiv.org/abs/2501.05632) publication
+The prefix also selects the full simulation, which covers the entire survey footprint, for both Roman and Rubin. The [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) describes how the simulation was produced.
 
 ```{code-cell} ipython3
 # Setup
@@ -297,6 +297,7 @@ jupyter:
 tags: [hide-cell]
 ---
 def get_s3_fpath(cloud_access):
+    """Extract the S3 URI from the cloud_access JSON string in an SIA result."""
     cloud_info = json.loads(cloud_access) # converts str to dict
     bucket_name = cloud_info['aws']['bucket_name']
     key = cloud_info['aws']['key']
@@ -908,4 +909,4 @@ This tutorial was developed with the assistance of AI tools
 
 - [Virtanen et al., 2020](https://www.nature.com/articles/s41592-019-0686-2); DOI: 10.1038/s41592-019-0686-2.
 
-- [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
+- [OpenUniverse et al., 2025](https://doi.org/10.1093/mnras/staf1833)

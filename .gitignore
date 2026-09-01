@@ -17,6 +17,7 @@ downloaded_hdf5_files/
 *.ecsv
 *.fits
 *.gzip
+*.h5
 *.jpg
 *.jpeg
 *.log
@@ -53,3 +54,8 @@ _build/
 
 #pycache
 __pycache__
+
+# Local working notes, not part of the tutorials
+CLAUDE.md
+OU_PR_REVIEW.md
+PR_DESCRIPTION.md

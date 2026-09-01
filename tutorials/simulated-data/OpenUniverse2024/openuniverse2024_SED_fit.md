@@ -209,9 +209,16 @@ def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file, *, region
     sn_df = pq.read_table(sn_flux_file, filesystem=fs).to_pandas()
     print(f"  Loaded {len(sn_df)} SN entries")
 
-    # Load galaxy flux and info tables
+    # Load galaxy flux and info tables. The flux table is all fluxes and we want
+    # every band, but the info table carries a lot of shape and shear columns we
+    # never touch, so we ask Parquet for just the three we do use. That leaves
+    # about a sixth of the data to pull across and hold in memory.
     gal_flux = pq.read_table(galaxy_flux_file, filesystem=fs).to_pandas()
-    gal_info = pq.read_table(galaxy_info_file, filesystem=fs).to_pandas()
+    gal_info = pq.read_table(
+        galaxy_info_file,
+        filesystem=fs,
+        columns=["galaxy_id", "redshift", "um_source_galaxy_obs_sm"],
+    ).to_pandas()
 
     # Join host-galaxy flux and info tables on galaxy_id
     gal_joined = gal_flux.merge(gal_info, on="galaxy_id", how="inner")
@@ -706,7 +713,7 @@ def plot_many_seds(df, rubin_bands, roman_bands, n_galaxies=10, loglog=False):
 plot_many_seds(df_scaled, rubin_bands, roman_bands, n_galaxies=50, loglog=True)
 ```
 
-+++ {"jupyter": {"source_hidden": true}}
++++
 
 ## 3. SED fitting
 In this section we will use [Prospector](https://prospect.readthedocs.io/en/stable/index.html), a Bayesian SED fitting code built on [FSPS](https://dfm.io/python-fsps/current/), to infer stellar population parameters for our galaxies by fitting their SEDs.  We choose Prospector because it is an open-source, powerful, yet flexible package to infer stellar population properties that is widely used in the community.
