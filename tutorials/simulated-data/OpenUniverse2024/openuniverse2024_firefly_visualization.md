@@ -643,9 +643,9 @@ image_s3_fpath_rubin = image_rubin['fpath']
 https_url(image_s3_fpath_rubin)
 ```
 
-### Send the simulated Rubin & Roman images to Firefly using show_fits.
+### Send the simulated Rubin image to Firefly using show_fits_image
 
-For displaying the FITS image of the Rubin & Roman visits in Firefly, we use [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image):
+For displaying the FITS image of the Rubin visit in Firefly, we use [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image):
 
 ```{code-cell} ipython3
 image_ff_id_rubin = 'rubin-image-filter-r'
@@ -655,20 +655,6 @@ fc.show_fits_image(file_input=https_url(image_s3_fpath_rubin),
              )
 ```
 
-```{code-cell} ipython3
-image_ff_id_roman = 'roman-image-filter-h158'
-fc.show_fits_image(file_input=https_url(image_roman['fpath']),
-                   plot_id=image_ff_id_roman,
-                   Title=f"Roman {filter_roman}"
-             )
-```
-
-Now that both images are on display, let's align & lock them by WCS using [`align_images`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images) method so that panning or zooming one moves the other in sync.
-
-```{code-cell} ipython3
-fc.align_images(lock_match=True)
-```
-
 ### Use ds9 region syntax to outline the Roman exposure on the interactive display
 
 The Firefly client includes several methods related to controlling ds9 region overlays. To 
@@ -676,7 +662,7 @@ overlay a region layer on the loaded FITS images, we can use [`overlay_region_la
 
 Region data is defined in ds9 region syntax that can be found [here](https://ds9.si.edu/doc/ref/region.html).
 
-The Rubin visit on display covers more sky than the Roman exposure does, so it is worth seeing where the Roman data actually falls. The corners of the Roman exposure come straight from its WCS, and we draw them as a polygon.
+The Rubin visit on display covers more sky than the Roman exposure does, so it is worth seeing where the Roman footprint falls. The corners of the Roman exposure come straight from its WCS, and we draw them as a polygon.
 
 ```{code-cell} ipython3
 roman_footprint = image_roman['wcs'].calc_footprint()
@@ -696,6 +682,26 @@ fc.overlay_region_layer(region_data=roman_regions,
                         region_layer_id=roman_regions_id,
                         plot_id=image_ff_id_rubin)
 ```
+
+### Send the simulated Roman image to Firefly and align it with Rubin
+
+Now let's pull up the Roman exposure itself, using the same [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image) method:
+
+```{code-cell} ipython3
+image_ff_id_roman = 'roman-image-filter-h158'
+fc.show_fits_image(file_input=https_url(image_roman['fpath']),
+                   plot_id=image_ff_id_roman,
+                   Title=f"Roman {filter_roman}"
+             )
+```
+
+Also align & lock it with the Rubin display by WCS using [`align_images`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images) so that panning or zooming one moves the other in sync.
+
+```{code-cell} ipython3
+fc.align_images(lock_match=True)
+```
+
+You can pan and zoom around the image display in the Firefly UI. Try zooming out the outlined Roman region and see how it sits within the wider Rubin field around it.
 
 ## 6. Use Firefly to overlay sources on the images
 Let's inspect the properties of sources within the Roman footprint we outlined above. For this we will use the input truth files present in S3 bucket.
@@ -949,7 +955,7 @@ fc.align_images(lock_match=True)
 
 ### Use Firefly's set_stretch method to change the stretch of the image display via Python
 
-The image has a lot of noise that obscures our sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that linear stretch from -1 to 30 sigma highlights the colors of our sources better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
+Even zoomed in on our source of interest, the background still looks noisy. You can use the Firefly GUI to change the stretch of the image display. We identify that linear stretch from -1 to 30 sigma highlights the colors of our source better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
 ```{code-cell} ipython3
 fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='linear', 
