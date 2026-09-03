@@ -1,6 +1,7 @@
 ---
 authors:
 - name: Jaladh Singhal
+- name: Jessica Krick
 - name: Vandana Desai
 - name: IRSA Team
 jupytext:
@@ -889,7 +890,7 @@ def get_roman_fpaths_at_center(image, filters):
     ny, nx = image['data'].shape
     center = image['wcs'].pixel_to_world((nx - 1) / 2.0, (ny - 1) / 2.0)
 
-    # One search covers every band, so ask once and  rather than searching again for each filter.
+    # One search covers every band, so ask once rather than searching again for each filter
     results = Irsa.query_sia(pos=(center, SEARCH_RADIUS),
                              collection=OU_ROMAN_SIA_COLLECTION)
     in_was = results[['WAS_simple_model' in str(r['obs_id']) for r in results]]
