@@ -178,9 +178,11 @@ def get_roman_image(coord, filter):
     if len(in_band) == 0:
         raise ValueError(f"No Roman WAS {filter}-band images cover "
                          f"{coord.to_string('hmsdms')}")
-
+    
     in_band.sort('t_min')
-    cloud_info = json.loads(in_band['cloud_access'][0])['aws']
+    selected_image = in_band[0]
+
+    cloud_info = json.loads(selected_image['cloud_access'])['aws']
     image_s3_fpath = f"{cloud_info['bucket_name']}/{cloud_info['key']}"
 
     with fits.open(f"s3://{image_s3_fpath}", fsspec_kwargs={"anon": True}) as hdul:
@@ -384,7 +386,7 @@ plt.imshow(roman_display, origin='lower',
            clim=stretch_color(roman_display, 1)
            )
 
-plt.plot(*coord_to_xy(roman_display_wcs, coord), 'o', mfc='none', mec='r',
+plt.plot(*coord_to_xy(roman_display_wcs, coord), '+', mfc='none', mec='r',
          markersize=15, markeredgewidth=2)
 plt.axis('off')
 ```
@@ -527,12 +529,12 @@ plt.imshow(rubin_display, origin='lower',
            clim=stretch_color(rubin_display, 1)
            )
 
-plt.plot(*coord_to_xy(rubin_display_wcs, coord), 'o', mfc='none', mec='r',
+plt.plot(*coord_to_xy(rubin_display_wcs, coord), '+', mfc='none', mec='r',
          markersize=15, markeredgewidth=2)
 plt.axis('off')
 ```
 
-## 4. Compare simulated Roman and Rubin cutouts for a selected position
+## 4. Compare simulated Roman and Rubin cutouts
 
 +++
 
@@ -561,7 +563,7 @@ roman_data, roman_wcs = north_up(cutout_roman.data, cutout_roman.wcs, cutout_siz
 rubin_data, rubin_wcs = north_up(cutout_rubin.data, cutout_rubin.wcs, cutout_size)
 ```
 
-### Use matplotlib imshow to plot static side-by-side comparisons of the cutouts
+### Plot static side-by-side comparisons of the cutouts using matplotlib
 
 ```{code-cell} ipython3
 fig, axs = plt.subplots(1, 2, figsize=(12, 6))
@@ -585,7 +587,7 @@ Both panels cover the same patch of sky, at the same size and with north up in e
 
 ## 5. Use Firefly to interactively explore the images
 
-Static cutouts only help once you know where to look. Choosing a position worth comparing means exploring the image interactively, and for that we hand it to Firefly. In this section we display the simulated Rubin visit, outline the area the Roman exposure covers, and pan and zoom around it to pick out a target.
+Static cutouts only help once you know where to look. **Choosing a position worth comparing means exploring the image interactively**, and for that we hand it to Firefly.
 
 +++
 
@@ -626,6 +628,9 @@ def https_url(s3_fpath):
     str
         HTTPS URL for the same file.
     """
+    if s3_fpath is None:
+        return None
+    
     s3_fpath_without_bucket = s3_fpath.split('/', 1)[1]
     return f"https://{BUCKET_NAME}.s3.amazonaws.com/{s3_fpath_without_bucket}"
 ```
@@ -637,16 +642,30 @@ image_s3_fpath_rubin = image_rubin['fpath']
 https_url(image_s3_fpath_rubin)
 ```
 
-### Send the simulated Rubin image to Firefly using show_fits.
+### Send the simulated Rubin & Roman images to Firefly using show_fits.
 
-For displaying the FITS image of the Rubin visit in Firefly, we use [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image):
+For displaying the FITS image of the Rubin & Roman visits in Firefly, we use [`show_fits_image`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_image):
 
 ```{code-cell} ipython3
 image_ff_id_rubin = 'rubin-image-filter-r'
 fc.show_fits_image(file_input=https_url(image_s3_fpath_rubin),
                    plot_id=image_ff_id_rubin,
-                   Title="Rubin Image"
+                   Title=f"Rubin {filter_rubin}"
              )
+```
+
+```{code-cell} ipython3
+image_ff_id_roman = 'roman-image-filter-h158'
+fc.show_fits_image(file_input=https_url(image_roman['fpath']),
+                   plot_id=image_ff_id_roman,
+                   Title=f"Roman {filter_roman}"
+             )
+```
+
+[update] align & lock by wcs
+
+```{code-cell} ipython3
+fc.align_images(lock_match=True)
 ```
 
 ### Use ds9 region syntax to outline the Roman exposure on the interactive display
@@ -659,13 +678,13 @@ Region data is defined in ds9 region syntax that can be found [here](https://ds9
 The Rubin visit on display covers more sky than the Roman exposure does, so it is worth seeing where the Roman data actually falls. The corners of the Roman exposure come straight from its WCS, and we draw them as a polygon.
 
 ```{code-cell} ipython3
-roman_corners = image_roman['wcs'].calc_footprint()
-roman_corners
+roman_footprint = image_roman['wcs'].calc_footprint()
+roman_footprint
 ```
 
 ```{code-cell} ipython3
 # outline the Roman exposure as a polygon
-corner_coords = ' '.join(f'{ra}d {dec}d' for ra, dec in roman_corners)
+corner_coords = ' '.join(f'{ra}d {dec}d' for ra, dec in roman_footprint)
 roman_regions = [f'icrs;polygon {corner_coords} # text={{Roman {filter_roman}}} color=yellow']
 
 roman_regions_id = 'roman_regions'
@@ -677,100 +696,7 @@ fc.overlay_region_layer(region_data=roman_regions,
                         plot_id=image_ff_id_rubin)
 ```
 
-### Use Firefly's pan and zoom capabilities to locate a region of interest
-
-You can view the coordinates of your mouse pointer at the bottom left of the display window. To copy the coordinates for a specific coordinate:
-
-- Toggle the "Click Lock" to "on" in the bottom right of the image display.
-- Click on the position of interest, and notice that the coordinate display is now frozen.
-- Click on "EQ-J2000", the coordinate label in the bottom left of the image display. The pop-up that opens lets you choose the coordinate system, and the format used when copying — pick the Python format so the value can be pasted straight into a `SkyCoord`.
-- Close the pop-up and click the small clipboard icon next to the coordinate readout.
-
-+++
-
-### Copy the coordinates from the coordinate display to the Python notebook
-
-Paste the position you copied from the display here.
-If you skip this, the notebook falls back to the position it has used since Section 2, which the cutouts below are described against.
-
-```{code-cell} ipython3
-coords_of_interest = coord  # or e.g. SkyCoord('0h38m28.92s -44d03m51.01s', frame='icrs')
-coords_of_interest
-```
-
-We can now use this [astropy `SkyCoord` object](https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord) to compare our images.
-
-+++
-
-### Use ds9 region syntax to overplot the selected position
-
-For this we use the id of the region layer we defined above, and add more region data using [`add_region_data`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data).
-
-```{code-cell} ipython3
-point_region = f'icrs;point {coords_of_interest.ra.value}d {coords_of_interest.dec.value}d # point=cross 15 text={{Source of interest}} color=lime'
-fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
-                   plot_id=image_ff_id_rubin)
-```
-
-## 6. Plot cutouts of the identified source
-
-This is a small group of galaxies, with a close neighbour 2.7 arcsec away. Roman shows them as separate objects; in Rubin they sit at the level of the noise. The Rubin image is a single visit rather than a stack, so faint sources like these are simply not detected in it, which is worth keeping in mind when comparing the two panels below.
-
-```{code-cell} ipython3
-# The images from Sections 2 and 3 already cover the default position, so only
-# re-read if you pasted a different one above.
-if coords_of_interest.separation(coord) > 0*u.arcsec:
-    image_roman = get_roman_image(coords_of_interest, filter_roman)
-    image_rubin = get_rubin_image(coords_of_interest, filter_rubin)
-```
-
-```{code-cell} ipython3
-cutout_size = 8*u.arcsec
-```
-
-```{code-cell} ipython3
-# As in section 4, cut 1.5x oversized so the rotation has data for the corners,
-# then resample down onto the cutout_size grid that gets displayed.
-cutout_roman = Cutout2D(image_roman['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_roman['wcs'])
-cutout_rubin = Cutout2D(image_rubin['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_rubin['wcs'])
-
-roman_data, roman_wcs = north_up(cutout_roman.data, cutout_roman.wcs, cutout_size)
-rubin_data, rubin_wcs = north_up(cutout_rubin.data, cutout_rubin.wcs, cutout_size)
-```
-
-```{code-cell} ipython3
-fig, axs = plt.subplots(1, 2, figsize=(12, 6))
-
-axs[0].imshow(roman_data, origin='lower', 
-              clim=stretch_color(roman_data, .5)
-              )
-axs[0].set_title(f"ROMAN in filter {filter_roman}")
-
-# Let's also encircle the source we identified. The circle is 2 arcsec across
-# on both panels, so the two cutouts can be compared directly despite their different
-# pixel scales.
-roman_scale = roman_wcs.proj_plane_pixel_scales()[0].to(u.arcsec).value
-axs[0].add_patch(patches.Circle(coord_to_xy(roman_wcs, coords_of_interest), 
-                                radius=2/roman_scale, color='r', fill=False, linewidth=2))
-
-
-axs[1].imshow(rubin_data, origin='lower', 
-              clim=stretch_color(rubin_data, .5)
-              )
-axs[1].set_title(f"RUBIN in filter {filter_rubin}")
-
-# Let's also encircle the source we identified 
-rubin_scale = rubin_wcs.proj_plane_pixel_scales()[0].to(u.arcsec).value
-axs[1].add_patch(patches.Circle(coord_to_xy(rubin_wcs, coords_of_interest),
-                                radius=2/rubin_scale, color='r', fill=False, linewidth=2))
-
-
-fig.suptitle(f"Cutouts at ({coords_of_interest.ra:6f}, {coords_of_interest.dec:6f}) with {cutout_size} size", fontsize=14);
-plt.tight_layout(rect=[0, 0, 1, 0.97])
-# plt.savefig("plot.pdf", bbox_inches='tight', pad_inches=0.2)
-```
-
-## 7. Use Firefly to visualize the OpenUniverse2024 catalogs
+## 6. Use Firefly to overlay sources on the images
 Let's inspect the properties of sources in the Rubin image. For this we will use the input truth files present in S3 bucket.
 
 OpenUniverse2024 includes the input truth files that were used to create the simulated images. These files are in Parquet and HDF5 format, and include information about the properties of galaxies, stars, and transients.
@@ -801,10 +727,9 @@ galaxy_cat_path
 Each catalog spans a whole HEALPix region, which is much larger than the image we are looking at, so we filter the table down to the sky area the Rubin image actually covers. (Note: you can remove filters through the table UI if you wish to see the entire data)
 
 ```{code-cell} ipython3
-# Bound the catalogs by the footprint of the Rubin image we sent to Firefly.
-footprint = image_rubin['wcs'].calc_footprint()
-ra_bounds = (footprint[:, 0].min(), footprint[:, 0].max())
-dec_bounds = (footprint[:, 1].min(), footprint[:, 1].max())
+# Bound the catalogs by the footprint of the Roman image we sent to Firefly.
+ra_bounds = (roman_footprint[:, 0].min(), roman_footprint[:, 0].max())
+dec_bounds = (roman_footprint[:, 1].min(), roman_footprint[:, 1].max())
 ```
 
 You can visualize catalogs interactively with Firefly using [`show_table`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table). This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we've already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Rubin image and what the redshift distribution of these galaxies is.
@@ -836,9 +761,9 @@ fc.show_table(file_input=https_url(galaxy_cat_path),
 
 For each row in the table you can notice a marker in the image. Selecting a row or marker changes the corresponding marker or row, respectively. You can click on "Details" tab in the UI to show properties of each source selected in image/table.
 
-### Use Firefly's apply_table_filters to show only high-redshift galaxies
+### Use Firefly's apply_table_filters to show sources of interest
 
-High redshift galaxies are the most interesting, so let's filter the table we sent to Firefly to only include z>2.5 galaxies.
+[update] apparent physical size of a galaxy's disk component is the most interesting to plot, so let's filter the table we sent to Firefly to only include z>2.5 galaxies.
 Notice how the table display and the image overlay change as the sample shrinks.
 You can remove this filter or add new ones through the GUI.
 
@@ -846,63 +771,97 @@ For filtering, we will use [`apply_table_filters`](https://caltech-ipac.github.i
 
 ```{code-cell} ipython3
 fc.apply_table_filters(tbl_id=gal_cat_tbl_id,
-                       filters=" AND ".join(cat_filters+['"redshift" > 2.5']))
+                       filters=" AND ".join(cat_filters+['"diskHalfLightRadiusArcsec" > 1']))
 ```
 
 You can play with the filters directly from the UI as well. Try removing adding more filters in the tables and see how markers change.
 
 +++
 
-### Use Firefly's show_fits_3color to create a 3 color image of the simulated Rubin images
+## 7. Identify a region of interest to compare cutouts
+
+[update] This is a small group of galaxies, with a close neighbour 2.7 arcsec away. Roman shows them as separate objects; in Rubin they sit at the level of the noise. The Rubin image is a single visit rather than a stack, so faint sources like these are simply not detected in it, which is worth keeping in mind when comparing the two panels below.
+
++++
+
+### Use Firefly's pan/zoom/align capabilities to locate a region of interest
+
+You can view the coordinates of your mouse pointer at the bottom left of the display window. To copy the coordinates for a specific coordinate:
+
+- Toggle the "Click Lock" to "on" in the bottom right of the image display.
+- Click on the position of interest, and notice that the coordinate display is now frozen.
+- Click on "EQ-J2000", the coordinate label in the bottom left of the image display. The pop-up that opens lets you choose the coordinate system, and the format used when copying — pick the Python format so the value can be pasted straight into a `SkyCoord`.
+- Close the pop-up and click the small clipboard icon next to the coordinate readout.
+
++++
+
+### Copy the coordinates from the coordinate display to the Python notebook
+
+Paste the position you copied from the display here.
+We picked a location where some galaxies cluster together in Roman image but are barely visible in the Rubin image.
 
 ```{code-cell} ipython3
-# [R, G, B]
-ROMAN_RGB_FILTERS = ['H158', 'J129', 'Y106']
-RUBIN_RGB_FILTERS = ['r', 'g', 'u']
+coords_of_interest = SkyCoord('0h38m36.18s -44d00m12.3s', frame='icrs') # pasted from the UI
+coords_of_interest
 ```
 
-We already have a Rubin image with the catalog overlaid, let's make a 3 color image to see colors of marked objects more clearly. For this we will use [`show_fits_3color`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color) method:
+We can now use this [astropy `SkyCoord` object](https://docs.astropy.org/en/stable/api/astropy.coordinates.SkyCoord.html#astropy.coordinates.SkyCoord) to compare our images. Let's also define the size of the region we are interested in, which will be used to create cutouts from the images:
 
 ```{code-cell} ipython3
-image_ff_id_rubin_3color = 'rubin-image-3color'
-rubin_rgb_fpaths = get_rubin_image_fpaths(coord, RUBIN_RGB_FILTERS)
-threeC = [
-    dict(url=https_url(rubin_rgb_fpaths[filter_name]),
-         Title="Rubin 3 color")
-    for filter_name in RUBIN_RGB_FILTERS
-]
-
-fc.show_fits_3color(three_color_params=threeC,
-                    plot_id=image_ff_id_rubin_3color)
+cutout_size = 48*u.arcsec
 ```
 
-### Use Firefly's interactivity to identify a region of interest 
+### Use ds9 region syntax to overplot the selected position
 
-For example, we found a region of the sky that seems to have a high number of high redshift sources and we copy it from the image display:
-
-```{code-cell} ipython3
-# located and copied through UI
-high_z_gal_coords = SkyCoord('0h38m28.62s -44d00m50.52s', frame='icrs')
-high_z_gal_coords
-```
+For this we use the id of the region layer we defined above, and add more region data using [`add_region_data`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.add_region_data).
 
 ```{code-cell} ipython3
-# let's also mark it in our region layer, so that it's easy to pinpoint later
-point_region = f'icrs;point {high_z_gal_coords.ra.value}d {high_z_gal_coords.dec.value}d # point=cross 15 text={{z>2.5 mock galaxies}} color=cyan'
+point_region = (f'icrs;circle {coords_of_interest.ra.value}d {coords_of_interest.dec.value}d {cutout_size.to(u.deg).value} '
+                f'# text={{Region of interest}} color=cyan width=2')
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
                    plot_id=image_ff_id_rubin)
 ```
 
-## 8. Plot 3-color Roman image containing your region of interest
-Let's inspect WCS of the Roman image first
+### Plot static side-by-side comparisons of the cutouts using matplotlib
+
+[update] now that we...
 
 ```{code-cell} ipython3
-image_roman['wcs']
+# As in section 4, cut 1.5x oversized so the rotation has data for the corners,
+# then resample down onto the cutout_size grid that gets displayed.
+cutout_roman = Cutout2D(image_roman['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_roman['wcs'])
+cutout_rubin = Cutout2D(image_rubin['data'], coords_of_interest, size=1.5*cutout_size, wcs=image_rubin['wcs'])
+
+roman_data, roman_wcs = north_up(cutout_roman.data, cutout_roman.wcs, cutout_size)
+rubin_data, rubin_wcs = north_up(cutout_rubin.data, cutout_rubin.wcs, cutout_size)
 ```
 
-### Prepare Roman images for displaying in Firefly
+```{code-cell} ipython3
+fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
-The Roman exposures are gzipped on S3, so rather than hand Firefly a URL as we did for Rubin, we read each one in Python and pass it up as an in-memory FITS file.
+axs[0].imshow(roman_data, origin='lower', 
+              clim=stretch_color(roman_data, .5)
+              )
+axs[0].set_title(f"ROMAN in filter {filter_roman}")
+
+axs[1].imshow(rubin_data, origin='lower', 
+              clim=stretch_color(rubin_data, .5)
+              )
+axs[1].set_title(f"RUBIN in filter {filter_rubin}")
+
+fig.suptitle(f"Cutouts at ({coords_of_interest.ra:6f}, {coords_of_interest.dec:6f}) with {cutout_size} size", fontsize=14);
+plt.tight_layout(rect=[0, 0, 1, 0.97])
+```
+
+## 8. Use Firefly to visualize your region in 3-color
+[update] Firefly also allows creating false-color images from multiple bands. Since simulated Roman images have better exposure, let's use it for creating a 3-color image. We are using following bands:
+
+```{code-cell} ipython3
+ROMAN_RGB_FILTERS = ['H158', 'J129', 'Y106']
+```
+
+### [update] Retrieve Roman images in the 3 bands that closely overlap
+`image_roman` is the H158 exposure covering `coords_of_interest` from Section 7. Roman's WAS filters aren't tiled identically, so rather than searching each RGB filter around `coords_of_interest` again, we search around the center of this exposure itself, which keeps the 3 filters closely aligned.
 
 ```{code-cell} ipython3
 ---
@@ -910,61 +869,63 @@ jupyter:
   source_hidden: true
 tags: [hide-cell]
 ---
-def get_fits_stream(image_roman):
-    """Write an image to an in-memory FITS file for handing to Firefly.
+def get_roman_fpaths_at_center(image, filters):
+    """Find the Roman WAS exposures in other filters closest to an image's center.
 
     Parameters
     ----------
-    image_roman : dict
-        Image dictionary with ``'data'`` and ``'wcs'`` keys, as returned by
-        `get_roman_image`.
+    image : dict
+        Image dictionary as returned by `get_roman_image`, whose center
+        defines the search position.
+    filters : list of str
+        Roman bandpass names to look up at that position, e.g. ``['H158', 'J129', 'Y106']``.
 
     Returns
     -------
-    `~io.BytesIO`
-        FITS file positioned at the start, ready to be read.
+    dict
+        Filter name to S3 path of the closest exposure, or ``None`` for a
+        filter with no WAS exposure covering the center.
     """
-    # Create a FITS PrimaryHDU object with the image data
-    hdu = fits.PrimaryHDU(data=image_roman['data'], header=image_roman['wcs'].to_header())
+    ny, nx = image['data'].shape
+    center = image['wcs'].pixel_to_world((nx - 1) / 2.0, (ny - 1) / 2.0)
 
-    # Write the HDU to the in-memory stream (to save I/O time)
-    fits_stream = BytesIO()
-    hdu.writeto(fits_stream, overwrite=True)
-    fits_stream.seek(0) # to bring reading pointer to the beginning of file
+    # One search covers every band, so ask once and  rather than searching again for each filter.
+    results = Irsa.query_sia(pos=(center, SEARCH_RADIUS),
+                             collection=OU_ROMAN_SIA_COLLECTION)
+    in_was = results[['WAS_simple_model' in str(r['obs_id']) for r in results]]
 
-    return fits_stream
-```
+    # Sort by distance to the center of the image
+    image_centers = SkyCoord(in_was['s_ra'], in_was['s_dec'], unit='deg')
+    in_was['dist_to_center'] = center.separation(image_centers).deg
+    in_was.sort('dist_to_center')
 
-Then we read one exposure per RGB filter and turn each into a stream:
+    # Sorted by distance, so the first row seen for a filter is the closest exposure for that filter
+    fpaths = {}
+    for row in in_was:
+        band = str(row['energy_bandpassname']).strip()
+        if band in filters and band not in fpaths:
+            cloud_info = json.loads(row['cloud_access'])['aws']
+            fpaths[band] = f"{cloud_info['bucket_name']}/{cloud_info['key']}"
 
-```{code-cell} ipython3
-images_rgb = []
-images_rgb_fits_stream = []
-
-for filter_name in ROMAN_RGB_FILTERS:
-    print(f'\nFILTER: {filter_name}')
-    print('Retrieving Roman image...')
-    image_roman = get_roman_image(high_z_gal_coords, filter_name)
-    images_rgb.append(image_roman)
-
-    print('Writing to fits stream...')
-    images_rgb_fits_stream.append(get_fits_stream(image_roman))
-```
-
-### Use Firefly's show_fits_3color to create a 3 color image of Roman images
-
-Now we upload each fits stream (in-memory fits file) to firefly using [`upload_fits_data()`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.upload_fits_data) and prepare color params to pass to the [`show_fits_3color()`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_fits_3color).
-
-```{code-cell} ipython3
-three_color_params = [
-    {
-        'file': fc.upload_fits_data(fits_stream),
-        'Title': "Roman 3 color"
-    } for fits_stream in images_rgb_fits_stream]
+    return {filter: fpaths.get(filter) for filter in filters}
 ```
 
 ```{code-cell} ipython3
-image_ff_id_roman_3color = 'roman-3color-high_z_gal'
+roman_fpaths = get_roman_fpaths_at_center(image_roman, ROMAN_RGB_FILTERS)
+roman_fpaths
+```
+
+```{code-cell} ipython3
+image_roman['fpath'] == roman_fpaths['H158']
+```
+
+```{code-cell} ipython3
+three_color_params = [{
+    'URL': https_url(roman_fpaths[filter_roman]),
+    'Title': "Roman 3 color"
+} for filter_roman in ROMAN_RGB_FILTERS]
+
+image_ff_id_roman_3color = 'roman-3color'
 fc.show_fits_3color(three_color_params=three_color_params,
                     plot_id=image_ff_id_roman_3color)
 ```
@@ -972,30 +933,30 @@ fc.show_fits_3color(three_color_params=three_color_params,
 We can see a 3 color image of the Roman exposures containing the high-redshift galaxy sources. Try panning and zooming out; you can notice it covers a smaller patch of sky than the Rubin image.
 
 ### Use Firefly's pan/zoom/align methods to locate high redshift sources
-Now, let's pan & zoom to the region where we located high-redshift galaxy sources. Also align & lock all images being displayed by WCS. For these operations we use these 3 methods (click on them to see their documentation):
+[update] Now, let's pan & zoom to the region where we located high-redshift galaxy sources. Also align & lock all images being displayed by WCS. For these operations we use these 3 methods (click on them to see their documentation):
 - [`set_pan`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_pan)
 - [`set_zoom`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_zoom)
 - [`align_images`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.align_images)
 
 ```{code-cell} ipython3
-fc.set_pan(plot_id=image_ff_id_roman_3color, x=high_z_gal_coords.ra.deg, y=high_z_gal_coords.dec.deg, coord='j2000')
-fc.set_zoom(plot_id=image_ff_id_roman_3color, factor=1)
+fc.set_pan(plot_id=image_ff_id_roman_3color, x=coords_of_interest.ra.deg, y=coords_of_interest.dec.deg, coord='j2000')
+fc.set_zoom(plot_id=image_ff_id_roman_3color, factor=0.5)
 fc.align_images(lock_match=True)
 ```
 
 ### Use Firefly's set_stretch method to change the stretch of the image display via Python
 
-The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
+[update] The image has a lot of noise that obscures our high redshift sources of interest. You can use the Firefly GUI to change the stretch of the image display. We identify that squared stretch from -2 to 10 sigma highlights the colors of our sources better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
 ```{code-cell} ipython3
-fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='squared', 
-               band='ALL', lower_value=-2, upper_value=10)
+fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='linear', 
+               band='ALL', lower_value=-1, upper_value=30)
 ```
 
 ***
 
 ## About This Notebook
 
-**Updated:** 2026-08-14
+**Updated:** 2026-09-02
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
