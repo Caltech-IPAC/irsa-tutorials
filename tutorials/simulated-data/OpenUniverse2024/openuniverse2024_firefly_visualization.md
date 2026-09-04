@@ -48,9 +48,9 @@ OpenUniverse2024 is a project to simulate spatially overlapping imaging surveys 
 
 This tutorial works with the full simulation, which covers the entire survey footprint. More information about the dataset can be found at [IRSA's holding of this dataset](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html), and the [OpenUniverse2024 paper](https://doi.org/10.1093/mnras/staf1833) describes how the simulation was produced.
 
-Firefly is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives. More information on Firefly can be found [here](https://github.com/Caltech-IPAC/firefly/blob/dev/README.md).
-In addition to being used to make web applications, Firefly can be used from Python. More information on Firefly Python client can be found [here](https://caltech-ipac.github.io/firefly_client/usage/index.html).
-The Firefly JupyterLab Extension makes it particularly easy to use Firefly to efficiently visualize cloud-hosted astronomical data using JupyterLab instances running locally or on cloud. More information on Firefly JupyterLab Extension can be found [here](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md).
+[Firefly](https://github.com/Caltech-IPAC/firefly/blob/dev/README.md) is an open-source web-based UI library for astronomical data archive access and visualization developed at Caltech and used by multiple space- and ground-based astrophysics archives.
+In addition to being used to make web applications, Firefly can be used from Python via [Firefly Python client](https://caltech-ipac.github.io/firefly_client/usage/index.html).
+The [Firefly JupyterLab Extension](https://github.com/Caltech-IPAC/jupyter_firefly_extensions/blob/master/README.md) makes it particularly easy to use Firefly to efficiently visualize cloud-hosted astronomical data using JupyterLab instances running locally or on cloud.
 
 If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart) tutorial introduces the directory layout, the parquet catalogs, and the SIA image search that this notebook builds on.
 
