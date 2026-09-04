@@ -113,7 +113,7 @@ We also configure IRSA's Simple Image Access (SIA) service here, which later sec
 ```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-simulations"
 OU_PREFIX = "openuniverse2024"
-  # The input "truth" catalogs of galaxy, star, and transient properties that the images were simulated from.
+# The input "truth" catalogs of galaxy, star, and transient properties that the images were simulated from.
 TRUTH_FILES_PATH = f"{OU_PREFIX}/roman/full/roman_rubin_cats_v1.1.2_faint"
 ```
 
@@ -707,7 +707,7 @@ Also align & lock it with the Rubin display by WCS using [`align_images`](https:
 fc.align_images(lock_match=True)
 ```
 
-You can pan and zoom around the image display in the Firefly UI. Try zooming out the outlined Roman region and see how it sits within the wider Rubin field around it.
+You can pan and zoom around the image display using the same controls as Google Maps or similar map apps (scroll/pinch to zoom, drag to pan, or the magnifying glass icons in the upper left). Try zooming out from the outlined Roman region and see how it sits within the wider Rubin field around it.
 
 ## 6. Use Firefly to overlay sources on the images
 Let's inspect the properties of sources within the Roman footprint we outlined above. For this we will use the input truth files present in S3 bucket.
@@ -737,23 +737,22 @@ galaxy_cat_path
 
 ### Use Firefly's show_table to overlay the catalogs on the interactive image
 
-Each catalog spans a whole HEALPix region, which is much larger than the image we are looking at, so we filter the table down to the sky area the Roman exposure actually covers. (Note: you can remove filters through the table UI if you wish to see the entire data)
+Each catalog spans a whole HEALPix region, which is much larger than the image we are looking at. So before displaying the table, we filter it down to the sky area the Roman exposure actually covers. (Note: you can remove filters through the table UI if you wish to see the entire data)
 
 ```{code-cell} ipython3
 # Bound the catalogs by the footprint of the Roman image we sent to Firefly.
 ra_bounds = (roman_footprint[:, 0].min(), roman_footprint[:, 0].max())
 dec_bounds = (roman_footprint[:, 1].min(), roman_footprint[:, 1].max())
-```
 
-You can visualize catalogs interactively with Firefly using [`show_table`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table). This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we've already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Roman exposure and what the redshift distribution of these galaxies is.
-
-```{code-cell} ipython3
+# Define the filters to apply
 cat_filters = [
     f'("ra" >= {ra_bounds[0]} AND "ra" <= {ra_bounds[1]})', 
     f'("dec" >= {dec_bounds[0]} AND "dec" <= {dec_bounds[1]})'
 ]
 cat_filters
 ```
+
+You can visualize catalogs interactively with Firefly using [`show_table`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.show_table). This capability can take many parameters. Here we will simply send our catalog to Firefly so that we can (a) see an interactive table; (b) see this table plotted over the image that we've already sent; and (c) use the GUI to quickly create exploratory plots. See if you can use the GUI to quickly determine approximately how many galaxies cover the Roman exposure and what the redshift distribution of these galaxies is.
 
 ```{code-cell} ipython3
 fc.show_table(file_input=https_url(pointsource_cat_path),
