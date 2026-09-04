@@ -107,11 +107,13 @@ warnings.simplefilter('ignore', category=wcs.FITSFixedWarning)
 
 The OpenUniverse2024 data are hosted in the cloud via Amazon Web Services (AWS). To access these data, you need to create a client to read data from Amazon's Simple Storage Service (s3) buckets, and you need to know some information about those buckets. OpenUniverse2024 contains simulations of the Roman Wide-Area Survey (WAS) and the Roman Time Domain Survey (TDS). In this tutorial, we will focus on the WAS.
 
-We ask IRSA's Simple Image Access (SIA) service to locate both the Roman and Rubin images by coordinate.
+We also configure IRSA's Simple Image Access (SIA) service here, which later sections use to
+  locate the Roman and Rubin images covering a coordinate.
 
 ```{code-cell} ipython3
 BUCKET_NAME = "nasa-irsa-simulations"
 OU_PREFIX = "openuniverse2024"
+  # The input "truth" catalogs of galaxy, star, and transient properties that the images were simulated from.
 TRUTH_FILES_PATH = f"{OU_PREFIX}/roman/full/roman_rubin_cats_v1.1.2_faint"
 ```
 
@@ -521,7 +523,9 @@ A single Rubin detector therefore covers nearly twice the sky of one Roman expos
 
 ### Use matplotlib imshow to create a static visualization of the Rubin simulated image and overplot the selected position.
 
-The two full-frame figures do not cover the same patch of sky. Each is centered on its own exposure and sized to its own field of view, so the Rubin panel is nearly twice as wide on the sky as the Roman one. What they share is the marked position, which falls inside both.
+The Rubin figure below covers a different patch of sky than the Roman figure in Section 2. 
+Each is centered on its own exposure and sized to its own field of view, so the Rubin panel is nearly twice as wide on the sky as the Roman one. 
+What they share is the marked position, which falls inside both.
 
 ```{code-cell} ipython3
 rubin_display, rubin_display_wcs = full_frame_north_up(image_rubin)
@@ -536,6 +540,8 @@ plt.axis('off')
 ```
 
 ## 4. Compare simulated Roman and Rubin cutouts
+
+To compare the two telescopes' images on equal terms we trim each full frame down to the same patch of sky with [`Cutout2D`](https://docs.astropy.org/en/stable/api/astropy.nddata.Cutout2D.html), which extracts a rectangular region centered on a sky position and returns an updated WCS along with the pixels, so the trimmed image still knows where it sits on the sky.
 
 +++
 
@@ -636,7 +642,7 @@ def https_url(s3_fpath):
     return f"https://{BUCKET_NAME}.s3.amazonaws.com/{s3_fpath_without_bucket}"
 ```
 
-Let's generate URL for the Rubin image we plotted above. Clicking on the returned URL will allow you to download this image locally.
+Let's generate URL for the Rubin image we plotted above. Clicking on the returned URL will allow you to download this image locally, but this is not required for the rest of the tutorial.
 
 ```{code-cell} ipython3
 image_s3_fpath_rubin = image_rubin['fpath']
@@ -781,7 +787,7 @@ fc.apply_table_filters(tbl_id=gal_cat_tbl_id,
                        filters=" AND ".join(cat_filters+['"diskHalfLightRadiusArcsec" > 1']))
 ```
 
-You can play with the filters directly from the UI as well. Try removing adding more filters in the tables and see how markers change.
+You can play with the filters directly from the UI as well. Try removing or adding more filters in the tables and see how markers change.
 
 +++
 
@@ -828,6 +834,9 @@ point_region = (f'icrs;circle {coords_of_interest.ra.value}d {coords_of_interest
 fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
                    plot_id=image_ff_id_rubin)
 ```
+
+
+You should now see a circular region around your target of interest in both the Rubin and Roman images in Firefly. 
 
 ### Plot static side-by-side comparisons of the cutouts using matplotlib
 
