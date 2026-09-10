@@ -30,6 +30,8 @@ scikit-learn
 gdown
 astro-sedpy
 astro-prospector
+dynesty<2.0.0
+fsps
 seaborn
 regions
 # For supporting myst-based notebooks, lower pin as we need a bugfix from that release
