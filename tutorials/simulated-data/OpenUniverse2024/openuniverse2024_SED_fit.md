@@ -69,7 +69,7 @@ starttime = time.time()
 # %pip install numpy pandas h5py matplotlib seaborn pyarrow gdown
 # FSPS + Prospector + SEDPY+ dynasty are required for SED modeling
 # If you have trouble installing FSPS, you can skip SED modeling.
-# %pip install astro-prospector astro-sedpy "dynesty<2.0.0" fsps
+# %pip install astro-prospector astro-sedpy "dynesty<2.0.0" fsps pyarrow gdown
 ```
 
 ```{code-cell} ipython3
