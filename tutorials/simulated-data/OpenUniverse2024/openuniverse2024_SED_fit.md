@@ -1212,7 +1212,10 @@ If you are sure you want to run this section yourself, change the RUN_FITS varia
 
 This notebook uses [FSPS](https://github.com/cconroy20/fsps) to fit SEDs.
 You will need to download this repo and set the path correcly. The full size will a few GBs.
-The following cell will have some simple git commands that does the downloading, uncomment these or otherwise follow the instructuions on the FSPS link instead.
+The following cell will have some simple commands to do the downloading and basic setup. 
+Please uncomment these lines or otherwise follow the instructions on the FSPS link instead.
+
+Fornax users can ignore this cell altogether, both the data and the environment variable is set up for the IRSA environment. 
 
 ```{code-cell} ipython3
 #if RUN_FITS:
