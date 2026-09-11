@@ -69,7 +69,7 @@ starttime = time.time()
 # %pip install numpy pandas h5py matplotlib seaborn pyarrow gdown
 # FSPS + Prospector + SEDPY+ dynasty are required for SED modeling
 # If you have trouble installing FSPS, you can skip SED modeling.
-# %pip install astro-prospector astro-sedpy "dynesty<2.0.0" fsps
+# %pip install astro-prospector astro-sedpy "dynesty<2.0.0" fsps pyarrow gdown
 ```
 
 ```{code-cell} ipython3
@@ -194,7 +194,7 @@ def assemble_SN_data(sn_flux_file, galaxy_flux_file, galaxy_info_file, *, region
     galaxy_info_file : str
         S3 path to the corresponding galaxy info parquet (physical parameters).
     region : str, optional
-        S3 region, default to 'us-east-1' where Fornax is located.        
+        S3 region, default to 'us-east-1' where Fornax is located.
 
     Returns
     -------
@@ -738,8 +738,8 @@ Choose this option if you:
 - do not need to change the fitting configuration
 ---
 
-Both paths produce the same variables — `df_small`, `obs_list`, and `outputs` — so all of the downstream analysis and plotting cells will work identically.  
-If you are following this notebook for the first time, start with **Option B** by leaving `RUN_FITS = FALSE`to get a sense of the workflow, and come back later to experiment with **Option A** when you are ready to explore the full fitting process.
+Both paths produce the same variables — `df_small`, `obs_list`, and `outputs` — so all of the downstream analysis and plotting cells will work identically.
+If you are following this notebook for the first time, start with **Option B** by leaving `RUN_FITS = False`to get a sense of the workflow, and come back later to experiment with **Option A** when you are ready to explore the full fitting process.
 
 ---
 
@@ -1200,39 +1200,50 @@ obs_list[0]
 +++
 
 :::{caution}
-This step runs Prospector on a small subset of galaxies and writes a new `sn_fits.h5` file.  It can take **30+ minutes** depending on machine and number of CPUs.  If you only want to explore results, **skip this step** and go to **3B** below.  If you are sure you want to run this section yourself, change the RUN_FITS variable below to "True"
+This step runs Prospector on a small subset of galaxies and writes a new `sn_fits.h5` file.
+
+It can take **30+ minutes** depending on machine and number of CPUs.
+If you only want to explore results, **skip this step** and go to **3B** below.
+
+If you are sure you want to run this section yourself, change the RUN_FITS variable "True".
 :::
 
+#### FSPS installation and setup
+
+This notebook uses [FSPS](https://github.com/cconroy20/fsps) to fit SEDs.
+You will need to download this repo and set the path correcly. The full size will a few GBs.
+The following cell will have some simple commands to do the downloading and basic setup. 
+Please uncomment these lines or otherwise follow the instructions on the FSPS link instead.
+
+Fornax users can ignore this cell altogether, both the data and the environment variable is set up for the IRSA environment. 
+
 ```{code-cell} ipython3
-# This notebook uses [FSPS](https://github.com/cconroy20/fsps) to fit SEDs.
-#FSPS requires installation which includes cloning that repo to get the data files.
-#This repo ([irsa-tutorials](https://github.com/Caltech-IPAC/irsa-tutorials/)) includes FSPS as a submodule to make things a little easier.
-#If you have cloned this repo, running the following cell will complete the setup.
-#If not, either clone this repo and then run the cell or else follow the full instructions at the FSPS link instead.
+#if RUN_FITS:
+#
+#    # Download the FSPS repository if not already available (only needed once).
+#    !git clone --depth=1 https://github.com/cconroy20/fsps
+#
+#    # Set the environment variable pointing to the cloned fsps directory.
+#    from pathlib import Path
+#    os.environ["SPS_HOME"] = f"{Path().cwd() / 'fsps'}"
+```
 
+Now that the the data is downloaded and path is properly set, do the import and verifications:
+
+```{code-cell} ipython3
 if RUN_FITS:
-
-    # Clone FSPS if not already available (only needed once).
-    # FSPS contains stellar population synthesis libraries used by Prospector.
-    # The first time this is run it will clone the FSPS repo and
-    # download more than 1 GB of code and data files.
-    # Idempotent unless there is a new FSPS commit in this repo (expect rarely).
-    !git submodule update --init
-
-    # Set the environment variable pointing to the cloned fsps directory.
-    from pathlib import Path
-    os.environ["SPS_HOME"] = f"{Path().cwd() / 'fsps'}"
-
-    # Now import fsps cleanly
-    import fsps, prospect.sources.galaxy_basis as gb  #some hack required because of a bug in prospector
+    import fsps
+    import prospect.sources.galaxy_basis as gb
     gb.fsps = fsps  # inject fsps into the module namespace
 
-    #verify this setup worked
+    # verify this setup worked
     sp = fsps.StellarPopulation()
     print("Available FSPS libraries:", sp.libraries)
     from prospect.models import SpecModel
     from prospect.fitting import lnprobfn, fit_model
 ```
+
+#### Running the fits
 
 ```{code-cell} ipython3
 if RUN_FITS:
