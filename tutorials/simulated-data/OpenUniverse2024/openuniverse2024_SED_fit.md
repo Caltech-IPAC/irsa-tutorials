@@ -1215,14 +1215,14 @@ You will need to download this repo and set the path correcly. The full size wil
 The following cell will have some simple git commands that does the downloading, uncomment these or otherwise follow the instructuions on the FSPS link instead.
 
 ```{code-cell} ipython3
-if RUN_FITS:
-
-    # Download the FSPS repository if not already available (only needed once).
-    !git clone --depth=1 https://github.com/cconroy20/fsps
-
-    # Set the environment variable pointing to the cloned fsps directory.
-    from pathlib import Path
-    os.environ["SPS_HOME"] = f"{Path().cwd() / 'fsps'}"
+#if RUN_FITS:
+#
+#    # Download the FSPS repository if not already available (only needed once).
+#    !git clone --depth=1 https://github.com/cconroy20/fsps
+#
+#    # Set the environment variable pointing to the cloned fsps directory.
+#    from pathlib import Path
+#    os.environ["SPS_HOME"] = f"{Path().cwd() / 'fsps'}"
 ```
 
 Now that the the data is downloaded and path is properly set, do the import and verifications:
