@@ -278,38 +278,45 @@ else:
     print("ePSF loaded.")
 ```
 
-```{code-cell} ipython3
-### CURRENTLY, THE IMAGES ON IRSA DO NOT HAVE THE EPSF. FOR TESTING, WE LOAD A 
-## IMAGE MANUALLY. NEED TO PUT THIS ON IRSA SERVER LATER FOR DOWNLOAD!!!
-with fits.open("./data/level2_2025W17_4B_0238_2D3_spx_l2b-v26-2026-196.fits") as hdul:
-    image_hdul = copy.deepcopy(hdul)
-```
-
 ### 5.2 Obtaining the old PSF (versions $<$ 7.0)
 
 We advice the users **not** to use the older PSFs, which are stored in the `PSF` layer in the FITS file of the older (versions $<$ 7.0) LVF images.
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
 
 ```{note}
-Eventually, after the reprocessing of the data products, the older version LVF images will be replaced by newer versions. Generally, we advise to download the newest images (which also contain improved flagging and calibrations). However, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs. 
+Eventually, after the reprocessing of the data products, the older version LVF images will be replaced by newer versions. Generally, we advise to download the newest images (which also contain improved flagging and calibrations). However, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images.
 ```
 
-For this, we first have to figure out the detector on which the image was taken.
+For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).
 
 ```{code-cell} ipython3
 this_detector = image_hdul['IMAGE'].header["DETECTOR"]
 print(f"Detector is {this_detector}")
 ```
 
-Then load the calibration file for that detector. Note that each detector has one ePSF calibration file as for now we do not assume that the calibration changes as a function of time.
+Next, we load the calibration file for that detector. Note that each detector has one ePSF calibration file as for now we do not assume that the calibration changes as a function of time.
 The ePSF calibration file contains the same information which is also added to the newer version images.
 
-```{code-cell} ipython3
-### BECAUSE CURRENTLY THESE EPSF CALIBRATION PRODUCTS ARE NOT ONLINE, WE LOAD
-# THEM HERE MANUALLY. NEED TO PUT THESE FILES ON IRSA SERVER FOR LATER FOR DOWNLOAD!
-fn_calib = glob.glob(f"./data/epsf_D{this_detector}_spx_cal-epsf-*-2026-191.fits")[-1]
+The ePSF calibration files (together with other calibration files) are stored in the [SPHEREx s3 AWS bucket](https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/index.html).
+Specifically, the ePSF calibration files are stored in the respective release directory (e.g., `qr3/`) and the subsequent `epsf/` directory).
 
-with fits.open(fn_calib) as hdul:
+We first construct a dictionary linking the detectors with the most current ePSFs in this bucket.
+
+```{code-cell} ipython3
+ePSF_calibs = {
+    "1": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/1/epsf_D1_spx_cal-epsf-v1-2026-191.fits",
+    "2": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/2/epsf_D2_spx_cal-epsf-v1-2026-191.fits",
+    "3": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v2-2026-191/3/epsf_D3_spx_cal-epsf-v2-2026-191.fits",
+    "4": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/4/epsf_D4_spx_cal-epsf-v1-2026-191.fits",
+    "5": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/5/epsf_D5_spx_cal-epsf-v1-2026-191.fits",
+    "6": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/6/epsf_D6_spx_cal-epsf-v1-2026-191.fits"
+}
+```
+
+Now we can rad in the correct calibration product ePSF corresponding to the detector in which the image was taken.
+
+```{code-cell} ipython3
+with fits.open(ePSF_calibs[str(this_detector)]) as hdul:
     hdul.info()
     epsf_bintable = Table(hdul['EPSF'].data)
     epsf_header = hdul['EPSF'].header
@@ -317,7 +324,7 @@ with fits.open(fn_calib) as hdul:
 ```
 
 The calibration product contains the same `EPSF` extension as the SPHEREx LVF image files.
-In addition, the calibration products contains an `EPSF_MOSAIC` layer, which is *not* available in the LVF images. The ePSF mosaic allows a quick visualization at all the ePSFs on the detector.
+In addition, the calibration products contains an `EPSF_MOSAIC` layer, which is *not* available in the LVF images. The ePSF mosaic allows a quick visualization of all the ePSFs on the detector.
 
 ```{code-cell} ipython3
 fig = plt.figure(figsize=(16,10))
@@ -325,7 +332,7 @@ ax1 = fig.add_subplot(1,2,1)
 
 im1 = ax1.imshow(epsf_mosaic, origin='lower')
 ax1.set_xlabel("$x$")
-ax1.set_ylabel("$y")
+ax1.set_ylabel("$y$")
 plt.show()
 ```
 
@@ -627,8 +634,12 @@ plt.show()
 
 ## About this notebook
 
-**Updated:** 5 August 2026
+**Updated:** 17 September 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
 **Runtime:** Approximately 30 seconds.
+
+```{code-cell} ipython3
+
+```
