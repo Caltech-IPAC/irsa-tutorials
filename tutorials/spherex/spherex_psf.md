@@ -3,7 +3,7 @@ authors:
 - name: Vandana Desai
 - name: Jessica Krick
 - name: Andreas Faisst
-- name: "Brigitta Sip\u0151cz"
+- name: Brigitta Sipőcz
 - name: Troy Raen
 jupytext:
   text_representation:
@@ -359,10 +359,10 @@ epsf_header
 We now show some of the most important general information directly from the ePSF header.
 
 ```{code-cell} ipython3
-print(f"Oversampling in x: {epsf_header["OVSMPX"]}")
-print(f"Oversampling in y: {epsf_header["OVSMPY"]}")
-print(f"Size of the ePSF (oversampled): {epsf_header["TDIM11"]}")
-print(f"Number of ePSFs in total (= total number of zones): {epsf_header["NAXIS2"]}")
+print(f"Oversampling in x: {epsf_header['OVSMPX']}")
+print(f"Oversampling in y: {epsf_header['OVSMPY']}")
+print(f"Size of the ePSF (oversampled): {epsf_header['TDIM11']}")
+print(f"Number of ePSFs in total (= total number of zones): {epsf_header['NAXIS2']}")
 ```
 
 ```{note}
