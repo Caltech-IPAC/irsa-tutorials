@@ -42,7 +42,9 @@ SPHEREx is a NASA Astrophysics Medium Explorer mission that launched in March 20
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information about SPHEREx, the data releases, and the data products is available in the [SPHEREx Archive at IRSA User Guide](https://caltech-ipac.github.io/spherex-archive-documentation).
+
+This notebook can be used with both Quick Release 3 (QR3) and Quick Release 2 (QR2) data.
 
 +++
 
@@ -101,16 +103,17 @@ Query IRSA for a list of Spectral Image MEFs that overlap this position. We use 
 ```{tip}
 The IRSA SIA collections can be listed using using the ``list_collections`` method, we can filter on the ones containing "spherex" in the collection name:
 
-    Irsa.list_collections(filter='spherex')
+    Irsa.list_collections(servicetype='SIA', filter='spherex')
 ```
 
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-There are currently three collections available for the second Quick Release:
+There are currently four collections available:
 
+* `'spherex_qr3'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr3_deep'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 * `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr2_cal'` -- Quick Release 2 **Calibration files**
 * `'spherex_qr2_deep'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
