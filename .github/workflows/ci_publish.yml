@@ -20,6 +20,29 @@ env:
 
 jobs:
 
+  # We don't use the cache in cron but instead have this job to keep the cache alive.
+  keep_cache_alive:
+    if: github.event_name == 'schedule'
+    name: Keep JB2 caches alive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Using execution-output cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: _build/execute
+          key: JB-output-${{ github.run_id }}
+          restore-keys: |
+            JB-output
+
+      - name: Using build reference cache (for e.g. DOI, etc)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: _build/cache
+          key: JB-reference-${{ github.run_id }}
+          restore-keys: |
+            JB-reference
+
+
   publish_html:
     if: >-
       github.ref == 'refs/heads/main' &&
