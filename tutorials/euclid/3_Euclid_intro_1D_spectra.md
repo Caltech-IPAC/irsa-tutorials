@@ -41,7 +41,7 @@ By the end of this tutorial, you will:
 
 ## Introduction
 
-#This part is not needed to change
+%This part is not needed to change
 
 Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
 The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
