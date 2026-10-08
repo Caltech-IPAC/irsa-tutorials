@@ -33,7 +33,7 @@ authors:
 +++
 
 By the end of this tutorial, you will:
-- Understand the basic characteristics of Euclid Q1 SIR 1D spectra.
+- Understand the basic characteristics of Euclid DR1 SIR 1D spectra.
 - Examine the provided boolean masks
 - Make a simple plot of a Euclid spectrum.
 
