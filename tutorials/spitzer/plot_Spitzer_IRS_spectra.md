@@ -1,4 +1,6 @@
 ---
+authors:
+- name: Jessica Krick
 jupytext:
   text_representation:
     extension: .md
@@ -214,11 +216,9 @@ query_and_plot_spectra(coords)
 
 ## About this notebook
 
-**Authors:** IPAC Science Platform Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Vandana Desai
-
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
-**Updated:** 2026-01-13
+**Updated:** 2026-10-09
 
 **Runtime:** As of the date above, this notebook takes about 3 minutes to run to completion on a machine with 8GB RAM and 2 CPU.
 This runtime is heavily dependent on archive servers which means runtime will vary for users.
