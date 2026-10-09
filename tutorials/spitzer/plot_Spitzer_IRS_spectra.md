@@ -1,4 +1,6 @@
 ---
+authors:
+- name: Jessica Krick
 jupytext:
   text_representation:
     extension: .md
@@ -213,8 +215,6 @@ query_and_plot_spectra(coords)
 - [IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
-
-**Authors:** IPAC Science Platform Team, including Troy Raen, Brigitta Sipőcz, Jessica Krick, Andreas Faisst, Vandana Desai
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
