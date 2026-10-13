@@ -40,24 +40,22 @@ By the end of this tutorial, you will:
 +++
 
 ## Introduction
-
 <!-- This part is not needed to change-->
-
-Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with contributions from NASA.
 The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
-The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
-These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
+The Euclid mission provides space-based imaging and spectroscopy, complemented by ground-based imaging, to achieve these goals.
+These data will be archived by multiple global repositories, including IRSA, where they will support a wide range of astrophysical research.
 
-Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
-Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields.
 
-Among the data products included in the Q1 release are the 1D spectra created by the SIR Processing Function.
-This notebook provides an introduction to these SIR 1D spectra.
+Among the DR1 data products are the one-dimensional (1D) spectra extracted from NISP slitless spectroscopic observations by the SIR Processing Function.
+This notebook provides an introduction to the Euclid DR1 SIR 1D spectra.
 If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
 ## Imports
+<!-- This part is not needed to change-->
 
 ```{important}
 We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
