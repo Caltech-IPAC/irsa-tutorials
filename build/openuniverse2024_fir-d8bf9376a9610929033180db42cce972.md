@@ -76,7 +76,7 @@ If you are new to OpenUniverse2024, the [Quickstart](openuniverse2024_quickstart
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy s3fs matplotlib firefly_client astroquery hpgeom reproject
+# !pip install numpy astropy s3fs matplotlib firefly_client 'astroquery>=0.4.10' hpgeom reproject
 ```
 
 ```{code-cell} ipython3
@@ -179,7 +179,7 @@ def get_roman_image(coord, filter):
     if len(in_band) == 0:
         raise ValueError(f"No Roman WAS {filter}-band images cover "
                          f"{coord.to_string('hmsdms')}")
-    
+
     in_band.sort('t_min')
     selected_image = in_band[0]
 
@@ -383,7 +383,7 @@ def full_frame_north_up(image, binning=4):
 ```{code-cell} ipython3
 roman_display, roman_display_wcs = full_frame_north_up(image_roman)
 
-plt.imshow(roman_display, origin='lower', 
+plt.imshow(roman_display, origin='lower',
            clim=stretch_color(roman_display, 1)
            )
 
@@ -521,14 +521,14 @@ A single Rubin detector therefore covers nearly twice the sky of one Roman expos
 
 ### Use matplotlib imshow to create a static visualization of the Rubin simulated image and overplot the selected position.
 
-The Rubin figure below covers a different patch of sky than the Roman figure in Section 2. 
-Each is centered on its own exposure and sized to its own field of view, so the Rubin panel is nearly twice as wide on the sky as the Roman one. 
+The Rubin figure below covers a different patch of sky than the Roman figure in Section 2.
+Each is centered on its own exposure and sized to its own field of view, so the Rubin panel is nearly twice as wide on the sky as the Roman one.
 What they share is the marked position, which falls inside both.
 
 ```{code-cell} ipython3
 rubin_display, rubin_display_wcs = full_frame_north_up(image_rubin)
 
-plt.imshow(rubin_display, origin='lower', 
+plt.imshow(rubin_display, origin='lower',
            clim=stretch_color(rubin_display, 1)
            )
 
@@ -573,12 +573,12 @@ rubin_data, rubin_wcs = north_up(cutout_rubin.data, cutout_rubin.wcs, cutout_siz
 fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
 
-axs[0].imshow(roman_data, origin='lower', 
+axs[0].imshow(roman_data, origin='lower',
               clim=stretch_color(roman_data, .5)
               )
 axs[0].set_title(f"ROMAN in filter {filter_roman}")
 
-axs[1].imshow(rubin_data, origin='lower', 
+axs[1].imshow(rubin_data, origin='lower',
               clim=stretch_color(rubin_data, .5)
               )
 axs[1].set_title(f"RUBIN in filter {filter_rubin}")
@@ -604,7 +604,7 @@ You also need a Firefly server to communicate with your Firefly Python client. I
 # Uncomment when using within Jupyter Lab with jupyter_firefly_extensions installed
 # fc = FireflyClient.make_lab_client()
 
-# Uncomment for contexts other than above 
+# Uncomment for contexts other than above
 fc = FireflyClient.make_client(url="https://irsacloud.ipac.caltech.edu/firefly")
 
 fc.reinit_viewer() # to clean the state, if this cell ran earlier
@@ -634,7 +634,7 @@ def https_url(s3_fpath):
     """
     if s3_fpath is None:
         return None
-    
+
     s3_fpath_without_bucket = s3_fpath.split('/', 1)[1]
     return f"https://{BUCKET_NAME}.s3.amazonaws.com/{s3_fpath_without_bucket}"
 ```
@@ -660,7 +660,7 @@ fc.show_fits_image(file_input=https_url(image_s3_fpath_rubin),
 
 ### Use ds9 region syntax to outline the Roman exposure on the interactive display
 
-The Firefly client includes several methods related to controlling ds9 region overlays. To 
+The Firefly client includes several methods related to controlling ds9 region overlays. To
 overlay a region layer on the loaded FITS images, we can use [`overlay_region_layer`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.overlay_region_layer).
 
 Region data is defined in ds9 region syntax that can be found [here](https://ds9.si.edu/doc/ref/region.html).
@@ -681,7 +681,7 @@ roman_regions_id = 'roman_regions'
 # Name the plot explicitly. Without plot_id the layer goes to whichever plot is
 # active, which is not necessarily this one if cells are run out of order.
 fc.overlay_region_layer(region_data=roman_regions,
-                        title='Roman exposure', 
+                        title='Roman exposure',
                         region_layer_id=roman_regions_id,
                         plot_id=image_ff_id_rubin)
 ```
@@ -743,7 +743,7 @@ dec_bounds = (roman_footprint[:, 1].min(), roman_footprint[:, 1].max())
 
 # Define the filters to apply
 cat_filters = [
-    f'("ra" >= {ra_bounds[0]} AND "ra" <= {ra_bounds[1]})', 
+    f'("ra" >= {ra_bounds[0]} AND "ra" <= {ra_bounds[1]})',
     f'("dec" >= {dec_bounds[0]} AND "dec" <= {dec_bounds[1]})'
 ]
 cat_filters
@@ -832,7 +832,7 @@ fc.add_region_data(region_data=point_region, region_layer_id=roman_regions_id,
 ```
 
 
-You should now see a circular region around your target of interest in both the Rubin and Roman images in Firefly. 
+You should now see a circular region around your target of interest in both the Rubin and Roman images in Firefly.
 
 ### Plot static side-by-side comparisons of the cutouts using matplotlib
 
@@ -851,12 +851,12 @@ rubin_data, rubin_wcs = north_up(cutout_rubin.data, cutout_rubin.wcs, cutout_siz
 ```{code-cell} ipython3
 fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
-axs[0].imshow(roman_data, origin='lower', 
+axs[0].imshow(roman_data, origin='lower',
               clim=stretch_color(roman_data, .5)
               )
 axs[0].set_title(f"ROMAN in filter {filter_roman}")
 
-axs[1].imshow(rubin_data, origin='lower', 
+axs[1].imshow(rubin_data, origin='lower',
               clim=stretch_color(rubin_data, .5)
               )
 axs[1].set_title(f"RUBIN in filter {filter_rubin}")
@@ -963,7 +963,7 @@ fc.align_images(lock_match=True)
 Even zoomed in on our source of interest, the background still looks noisy. You can use the Firefly GUI to change the stretch of the image display. We identify that linear stretch from -1 to 30 sigma highlights the colors of our source better. You can also use the Firefly client's [`set_stretch`](https://caltech-ipac.github.io/firefly_client/api/firefly_client.FireflyClient.html#firefly_client.FireflyClient.set_stretch) to do this via Python. This is helpful for reproducibility and for scaling up to many images.
 
 ```{code-cell} ipython3
-fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='linear', 
+fc.set_stretch(plot_id=image_ff_id_roman_3color, stype='sigma', algorithm='linear',
                band='ALL', lower_value=-1, upper_value=30)
 ```
 

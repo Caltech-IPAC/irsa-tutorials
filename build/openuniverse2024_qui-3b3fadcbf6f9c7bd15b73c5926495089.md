@@ -56,7 +56,7 @@ This notebook is designed to be run sequentially from top to bottom. All code is
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy astropy s3fs photutils matplotlib pyarrow hpgeom astroquery
+# !pip install numpy astropy s3fs photutils matplotlib pyarrow pandas hpgeom astroquery
 ```
 
 ```{code-cell} ipython3
@@ -128,7 +128,7 @@ Each Roman TDS FITS file contains four extensions: a `primary` header with no da
 
 +++
 
-Let's display a gallery of example images to get a sense of the data. 
+Let's display a gallery of example images to get a sense of the data.
 Note this gallery can take about a minute to build.
 
 ```{code-cell} ipython3
