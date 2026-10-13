@@ -33,7 +33,7 @@ authors:
 +++
 
 By the end of this tutorial, you will:
-- Understand the basic characteristics of Euclid Q1 SPE catalogs.
+- Understand the basic characteristics of Euclid DR1 SPE catalogs.
 - Understand what SPE catalogs are available and how to view the columns in those catalogs.
 - How to query with ADQL in the SPE lines catalog to find strong H-alpha detections.
 - How to make a plot the detected line features over the 1D spectra.
