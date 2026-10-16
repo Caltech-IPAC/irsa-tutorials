@@ -46,7 +46,8 @@ The primary science goals of Euclid are to better understand the composition and
 The Euclid mission provides space-based imaging and spectroscopy, complemented by ground-based imaging, to achieve these goals.
 These data will be archived by multiple global repositories, including IRSA, where they will support a wide range of astrophysical research.
 
-Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields.
+Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields. Further information about Euclid DR1 can be found at: https://euclid.caltech.edu/page/euclid-dr1
+
 
 Among the DR1 data products are the one-dimensional (1D) spectra extracted from NISP slitless spectroscopic observations by the SIR Processing Function.
 This notebook provides an introduction to the Euclid DR1 SIR 1D spectra.
