@@ -24,7 +24,7 @@ authors:
   - name: Jessica Krick
 ---
 
-# Euclid Q1: SIR 1D Spectra
+# Euclid DR1: SIR 1D Spectra
 
 +++
 
