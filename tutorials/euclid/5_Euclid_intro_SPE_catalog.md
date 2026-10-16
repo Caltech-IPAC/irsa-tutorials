@@ -24,7 +24,7 @@ authors:
   - name: Jessica Krick
 ---
 
-# Euclid Q1: SPE Catalogs
+# Euclid DR1: SPE Catalogs
 
 +++
 
