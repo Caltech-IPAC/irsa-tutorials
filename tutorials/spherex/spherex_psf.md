@@ -58,7 +58,7 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy pyvo photutils
+# !pip install astropy matplotlib numpy astroquery photutils
 ```
 
 ```{code-cell} ipython3
@@ -73,11 +73,12 @@ from packaging.version import Version
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import pyvo
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.table import Table
+from astropy.visualization import quantity_support
 from astropy.wcs import WCS
+from astroquery.ipac.irsa import Irsa
 
 from photutils.psf import ImagePSF
 
@@ -85,6 +86,9 @@ from photutils.psf import ImagePSF
 # astropy's default timeout limit. Increase it.
 from astropy.utils.data import conf
 conf.remote_timeout = 120
+
+# Let matplotlib recognize astropy Quantities and auto-label axes with their units.
+quantity_support()
 ```
 
 ## 4. Get SPHEREx Cutout and Obtain Position on Parent Frame
@@ -104,8 +108,7 @@ To learn more about how to access SPHEREx spectral images and how to download cu
 ```
 
 ```{code-cell} ipython3
-ra = 305.59875000000005 * u.degree
-dec = 41.14888888888889 * u.degree
+coord = SkyCoord(ra=305.59875000000005 * u.degree, dec=41.14888888888889 * u.degree, frame="icrs")
 size = 0.01 * u.degree
 ```
 
@@ -114,11 +117,10 @@ Once we defined the coordinates of interest and the size of the cutout, we run a
 ```{code-cell} ipython3
 # TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
 # revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
+# Note: `Irsa.tap_url` must be set directly -- `astroquery.ipac.irsa.conf.tap_url` is only read
+# once when the module is first imported, so changing it afterward has no effect.
 IRSA_HOST = "https://irsatest.ipac.caltech.edu"
-
-# Define the service endpoint for IRSA's Table Access Protocol (TAP)
-# so that we can query SPHEREx metadata tables.
-service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
+Irsa.tap_url = f"{IRSA_HOST}/TAP"
 
 # Define a query that will search the appropriate SPHEREx metadata tables
 # for spectral images that cover the chosen coordinates of interest.
@@ -128,18 +130,18 @@ service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
 # selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    '{IRSA_HOST}/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
+    '{IRSA_HOST}/' || a.uri || '?center={coord.ra.deg},{coord.dec.deg}d&size={size.value}' AS uri,
     p.time_bounds_lower, p.energy_bandpassname, p.time_bounds_lower, p.time_bounds_upper, p.provenance_version
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
-WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
+WHERE 1 = CONTAINS(POINT('ICRS', {coord.ra.deg}, {coord.dec.deg}), p.poly)
         AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
 # Execute the query and return as an astropy Table.
 t1 = time.time()
-results = service.search(query)
+results = Irsa.query_tap(query)
 results = results.to_table()
 print("Time to do TAP query: {:2.2f} seconds.".format(time.time() - t1))
 print("Number of images found: {}".format(len(results)))
@@ -227,7 +229,7 @@ We do this by first determining the pixel $(x,y)$ coordinates of our coordinates
 
 ```{code-cell} ipython3
 wcs = WCS(cutout_header)
-xpix_cutout, ypix_cutout = wcs.world_to_pixel(SkyCoord(ra=ra, dec=dec))
+xpix_cutout, ypix_cutout = wcs.world_to_pixel(coord)
 
 print(f"Pixel values of coordinates of interest on cutout image: x = {xpix_cutout}, y = {ypix_cutout}")
 ```
@@ -493,11 +495,13 @@ ax2.set_ylabel("$y$ PSF zones")
 plt.colorbar(im2 , ax=ax2, label=r"$N_{\rm eff}$ (PSF effective area)")
         
 ## As a function of wavelength
-x = epsf_bintable["CWAVE"] # wavelength at the center of the PSF zone
+# CWAVE has no unit metadata in the FITS table, so attach the known unit (microns)
+# explicitly rather than relying on a hardcoded axis label string.
+wave = epsf_bintable["CWAVE"] * u.micrometer  # wavelength at the center of the PSF zone
 y = epsf_bintable["NEFF_MEAN"]
-ax3.scatter(x , y, c=z , marker="o", s=5)
+ax3.scatter(wave, y, c=z , marker="o", s=5)
 
-ax3.set_xlabel(r"Wavelength [$\mu m$]")
+ax3.set_xlabel(f"Wavelength [{wave.unit.to_string('latex_inline')}]")
 ax3.set_ylabel(r"$N_{\rm eff}$ (PSF effective area)")
 
 plt.show()
