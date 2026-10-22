@@ -153,20 +153,20 @@ output_notebook(resources=INLINE)
 ## 5. Initialize Ephemeral Query Parameters
 
 ```{attention}
-The query parameters below are valid as of **February 2026**, but will need to be updated as the mission proceeds.
+The query parameters below are valid as of **SPHEREx Data Release 1 (DR1), November 2026**, but will need to be updated as the mission proceeds.
 Specifically, the ephemeral query parameters _will_ change for future SPHEREx data releases.
 ```
 
 ```{code-cell} ipython3
 # General
-data_release = "qr2"
+data_release = "dr1"
 
 # Spectral image queries
 sia_collection = f"spherex_{data_release}"
 
 # Solid angle pixel map queries
 dataset_type="solid_angle_pixel_map"
-sapm_collection = "cal-sapm-v2-2025-164"
+sapm_collection = "cal-sapm-v3-2026-191"
 sapm_s3 = [
     f"nasa-irsa-spherex/{data_release}/{dataset_type}/{sapm_collection}/{k}/"\
     f"{dataset_type}_D{k}_spx_{sapm_collection}.fits" for k in range(1, 7)
@@ -194,7 +194,7 @@ results = Irsa.query_sia(pos=(coord, search_radius), collection=sia_collection)
 results_summary(results)
 ```
 
-Note that we have used the collection `spherex_qr2` in this case. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
+Note that we have used the collection `spherex_dr1` in this case. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
 +++
 
 ```{tip}
