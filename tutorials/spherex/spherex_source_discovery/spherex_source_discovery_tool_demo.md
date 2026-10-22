@@ -375,7 +375,7 @@ mask2 = np.zeros(flags_data2.shape) * np.nan
 mask2[(flags_data2 == 2097152) | (flags_data2 == 2) | (flags_data2 == 0)] = 1
 
 mask4 = np.zeros(flags_data4.shape) * np.nan
-mask4[(flags_data4 == 2097152) | (flags_data2 == 2) | (flags_data4 == 0)] = 1
+mask4[(flags_data4 == 2097152) | (flags_data4 == 2) | (flags_data4 == 0)] = 1
 ```
 
 Finally, we reproject the images and masks to the same pixel grid. We reproject D2 on D4. For this we use `reproject_exact()` (for flux conservation) and `reproject_interp()` (for mask) from the _reproject_ Python package.
