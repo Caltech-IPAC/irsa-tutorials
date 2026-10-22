@@ -47,7 +47,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -649,9 +649,13 @@ Note that the following procedure follows the one shown in the SPHEREx [Image Cu
 ```
 
 ```{code-cell} ipython3
+# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
+# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
+IRSA_HOST = "https://irsatest.ipac.caltech.edu"
+
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
 # so that we can query SPHEREx metadata tables.
-service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
+service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
 
 # Specify cutout size (approximately 60 pixels on a side)
 size = 0.1 * u.degree
@@ -660,13 +664,16 @@ size = 0.1 * u.degree
 # for spectral images that cover the chosen coordinates and match the
 # specified bandpass. Return the cutout data access URL and the time of observation.
 # Sort by observation time.
+# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
+# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={matched_stars['ra'][0]},{matched_stars['dec'][0]}d&size={size.value}' AS uri,
+    '{IRSA_HOST}/' || a.uri || '?center={matched_stars['ra'][0]},{matched_stars['dec'][0]}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {matched_stars['ra'][0]}, {matched_stars['dec'][0]}), p.poly)
+        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
@@ -704,7 +711,7 @@ def process_cutout(row, ra, dec, cache, retries=3, delay=5):
             with fits.open(row["uri"]) as hdulist:
                 # There are seven HDUs:
                 # 0 contains minimal metadata in the header and no data.
-                # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, PSF, WCS-WAVE
+                # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE
                 header = hdulist[1].header
 
                 # Fetch spatial and spectral WCS
