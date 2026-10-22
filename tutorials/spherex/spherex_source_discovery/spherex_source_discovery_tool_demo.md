@@ -805,8 +805,7 @@ Apply flagging to the extracted 1D-Spectrum.
 
 ```{code-cell} ipython3
 # Define bad photometry flags
-bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'PHANTOM', 'REFERENCE', 'NONFUNC', 'DICHROIC',
-             'MISSING_DATA', 'HOT', 'COLD', 'FULLSAMPLE', 'PHANMISS', 'NONLINEAR', 'PERSIST', 'OUTLIER']
+bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'NONFUNC', 'DICHROIC', 'MISSING_DATA', 'HOT', 'COLD', 'FULLSAMPLE', 'PHANMISS', 'NONLINEAR', 'PERSIST', 'OUTLIER']
 ap_rad = 3.0  # set your preferred aperture radius, from the `aperture_radii` list you specified above
 targ = 0  # pick index from `all_stars_band_phot` table
 wvl, bdw, abmags, abmag_errs, flx, var, n_bad = \

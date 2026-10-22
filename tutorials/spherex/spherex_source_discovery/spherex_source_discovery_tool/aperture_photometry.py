@@ -393,7 +393,11 @@ def build_phot_table(results_table: Table, matched_stars: pd.DataFrame, aperture
         var_img = hdus[hdu_idx_map["VARIANCE"]].data
         flags = hdus[hdu_idx_map["FLAGS"]].data
         flags_header = hdus[hdu_idx_map["FLAGS"]].header
-        flag_dict = {key[3:]: flags_header[key] for key in flags_header if key.startswith('MP_')}
+        # Map flag names to bit numbers. QR3 and later name bit n in MSKNnnnn;
+        # QR2 used MP_<name> = n.
+        flag_dict = {flags_header[key]: int(key[4:]) for key in flags_header if key.startswith('MSKN')}
+        if not flag_dict:
+            flag_dict = {key[3:]: flags_header[key] for key in flags_header if key.startswith('MP_')}
         flag_dict = dict(sorted(flag_dict.items(), key=lambda x: x[1]))
         flag_names = list(flag_dict.keys())
         flag_masks = {name: (flags & (1 << flag_dict[name])) > 0 for name in flag_names}
