@@ -104,22 +104,29 @@ Each row in the table corresponds to a single cutout and includes the data acces
 The results are sorted from oldest to newest.
 
 ```{code-cell} ipython3
+# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
+# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
+IRSA_HOST = "https://irsatest.ipac.caltech.edu"
+
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
 # so that we can query SPHEREx metadata tables.
-service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
+service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
 
 # Define a query that will search the appropriate SPHEREx metadata tables
 # for spectral images that cover the chosen coordinates and match the
 # specified bandpass. Return the cutout data access URL and the time of observation.
 # Sort by observation time.
+# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
+# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
+    '{IRSA_HOST}/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
         AND p.energy_bandpassname = '{bandpass}'
+        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
@@ -166,7 +173,7 @@ def process_cutout(row, ra, dec, cache):
     with fits.open(row["uri"], cache=cache) as hdulist:
         # There are seven HDUs:
         # 0 contains minimal metadata in the header and no data.
-        # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, PSF, WCS-WAVE
+        # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE
         header = hdulist[1].header
 
         # Compute pixel coordinates corresponding to cutout position.
