@@ -128,10 +128,15 @@ search_radius = 1.0 * u.arcsec
 Query the IRSA SSA service for spectra near this position
 
 ```{code-cell} ipython3
-ssa_result = Irsa.query_ssa(
+#=====This part to be updated once the dr1 becomes public====
+irsa_dev = IrsaClass()
+irsa_dev.ssa_url = "https://irsadev.ipac.caltech.edu/SSA"
+#============================================================
+
+ssa_result = irsa_dev.query_ssa(
     pos=coord,
     radius=search_radius,
-    collection=euclid_ssa_collection,
+    collection="euclid_dr1_DpdSirCombinedSpectra",
 )
 
 #check whether any spectra were found
