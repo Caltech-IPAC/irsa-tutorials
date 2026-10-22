@@ -44,7 +44,7 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 
 More information about SPHEREx, the data releases, and the data products is available in the [SPHEREx Archive at IRSA User Guide](https://caltech-ipac.github.io/spherex-archive-documentation).
 
-This notebook can be used with both Quick Release 3 (QR3) and Quick Release 2 (QR2) data.
+This notebook uses data from SPHEREx Data Release 1 (DR1).
 
 +++
 
@@ -109,15 +109,13 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-There are currently four collections available:
+The DR1 Spectral Image MEFs are available in two collections:
 
-* `'spherex_qr3'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr3_deep'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
-* `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr2_deep'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
+* `'spherex_dr1'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_dr1_deep'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
+results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_dr1')
 ```
 
 :::{note}
