@@ -112,21 +112,28 @@ size = 0.01 * u.degree
 Once we defined the coordinates of interest and the size of the cutout, we run a TAP query to gather all SPHEREx spectral images that cover the coordinates.
 
 ```{code-cell} ipython3
+# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
+# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
+IRSA_HOST = "https://irsatest.ipac.caltech.edu"
+
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
 # so that we can query SPHEREx metadata tables.
-service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
+service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
 
 # Define a query that will search the appropriate SPHEREx metadata tables
 # for spectral images that cover the chosen coordinates of interest.
 # Return the cutout data access URL and the time of observation.
 # Sort by observation time.
+# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
+# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
+    '{IRSA_HOST}/' || a.uri || '?center={ra.value},{dec.value}d&size={size.value}' AS uri,
     p.time_bounds_lower, p.energy_bandpassname, p.time_bounds_lower, p.time_bounds_upper, p.provenance_version
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {ra.value}, {dec.value}), p.poly)
+        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
@@ -180,7 +187,7 @@ for attempt in range(max_retries):
 hdul.info()
 ```
 
-The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+The downloaded SPHEREx image cutout contains a primary HDU plus 6 extensions (IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE), which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
 Let's also get the version of the image. The version is needed later to decide how to handle the PSF. For obtaining the version of the image, we define a handy function.
 
@@ -267,12 +274,14 @@ Note that the ePSFs are stored in the form of a binary table, which makes it str
 try:
     epsf_hdu = image_hdul["EPSF"]
 except KeyError:
+    epsf_in_image = False
     print(
         "This image does not contain the EPSF extension. "
         "It was likely created with an older version. "
-        "Please proceed to Section 5.2."
+        "Proceeding to Section 5.2."
     )
 else:
+    epsf_in_image = True
     epsf_bintable = Table(epsf_hdu.data)
     epsf_header = epsf_hdu.header
     print("ePSF loaded.")
@@ -290,8 +299,9 @@ Eventually, after the reprocessing of the data products, the older version LVF i
 For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).
 
 ```{code-cell} ipython3
-this_detector = image_hdul['IMAGE'].header["DETECTOR"]
-print(f"Detector is {this_detector}")
+if not epsf_in_image:
+    this_detector = image_hdul['IMAGE'].header["DETECTOR"]
+    print(f"Detector is {this_detector}")
 ```
 
 Next, we load the calibration file for that detector. Note that each detector has one ePSF calibration file as for now we do not assume that the calibration changes as a function of time.
@@ -303,37 +313,44 @@ Specifically, the ePSF calibration files are stored in the respective release di
 We first construct a dictionary linking the detectors with the most current ePSFs in this bucket.
 
 ```{code-cell} ipython3
-ePSF_calibs = {
-    "1": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/1/epsf_D1_spx_cal-epsf-v1-2026-191.fits",
-    "2": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/2/epsf_D2_spx_cal-epsf-v1-2026-191.fits",
-    "3": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v2-2026-191/3/epsf_D3_spx_cal-epsf-v2-2026-191.fits",
-    "4": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/4/epsf_D4_spx_cal-epsf-v1-2026-191.fits",
-    "5": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/5/epsf_D5_spx_cal-epsf-v1-2026-191.fits",
-    "6": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/6/epsf_D6_spx_cal-epsf-v1-2026-191.fits"
-}
+if not epsf_in_image:
+    ePSF_calibs = {
+        "1": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/1/epsf_D1_spx_cal-epsf-v1-2026-191.fits",
+        "2": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/2/epsf_D2_spx_cal-epsf-v1-2026-191.fits",
+        "3": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v2-2026-191/3/epsf_D3_spx_cal-epsf-v2-2026-191.fits",
+        "4": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/4/epsf_D4_spx_cal-epsf-v1-2026-191.fits",
+        "5": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/5/epsf_D5_spx_cal-epsf-v1-2026-191.fits",
+        "6": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/6/epsf_D6_spx_cal-epsf-v1-2026-191.fits"
+    }
 ```
 
-Now we can rad in the correct calibration product ePSF corresponding to the detector in which the image was taken.
+Now we can read in the correct calibration product ePSF corresponding to the detector in which the image was taken.
 
 ```{code-cell} ipython3
-with fits.open(ePSF_calibs[str(this_detector)]) as hdul:
-    hdul.info()
-    epsf_bintable = Table(hdul['EPSF'].data)
-    epsf_header = hdul['EPSF'].header
-    epsf_mosaic = hdul['EPSF_MOSAIC'].data
+if not epsf_in_image:
+    with fits.open(ePSF_calibs[str(this_detector)]) as hdul:
+        hdul.info()
+        epsf_bintable = Table(hdul['EPSF'].data)
+        epsf_header = hdul['EPSF'].header
+        epsf_mosaic = hdul['EPSF_MOSAIC'].data
+else:
+    print("ePSF was already loaded from the image in Section 5.1; skipping the calibration-file fallback.")
 ```
 
 The calibration product contains the same `EPSF` extension as the SPHEREx LVF image files.
 In addition, the calibration products contains an `EPSF_MOSAIC` layer, which is *not* available in the LVF images. The ePSF mosaic allows a quick visualization of all the ePSFs on the detector.
 
 ```{code-cell} ipython3
-fig = plt.figure(figsize=(16,10))
-ax1 = fig.add_subplot(1,2,1)
+if not epsf_in_image:
+    fig = plt.figure(figsize=(16,10))
+    ax1 = fig.add_subplot(1,2,1)
 
-im1 = ax1.imshow(epsf_mosaic, origin='lower')
-ax1.set_xlabel("$x$")
-ax1.set_ylabel("$y$")
-plt.show()
+    im1 = ax1.imshow(epsf_mosaic, origin='lower')
+    ax1.set_xlabel("$x$")
+    ax1.set_ylabel("$y$")
+    plt.show()
+else:
+    print("EPSF_MOSAIC is only available in the calibration product (Section 5.2), not in the LVF image itself.")
 ```
 
 ```{note}
