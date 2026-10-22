@@ -110,7 +110,7 @@ Irsa.list_collections(servicetype="ssa")
 ```
 
 ```{code-cell} ipython3
-euclid_ssa_collection = 'euclid_DpdSirCombinedSpectra'
+euclid_ssa_collection = 'euclid_dr1_DpdSirCombinedSpectra'
 ```
 
 ## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
