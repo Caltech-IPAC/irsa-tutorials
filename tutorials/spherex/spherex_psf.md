@@ -48,7 +48,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -187,7 +187,7 @@ for attempt in range(max_retries):
 hdul.info()
 ```
 
-The downloaded SPHEREx image cutout contains a primary HDU plus 6 extensions (IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE), which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+The downloaded SPHEREx image cutout contains a primary HDU plus 6 extensions (IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE), which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 Let's also get the version of the image. The version is needed later to decide how to handle the PSF. For obtaining the version of the image, we define a handy function.
 
