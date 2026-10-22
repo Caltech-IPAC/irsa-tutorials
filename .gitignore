@@ -55,6 +55,10 @@ _build/
 #pycache
 __pycache__
 
+# Local Python virtual environments
+.venv/
+venv/
+
 # Local working notes, not part of the tutorials
 CLAUDE.md
 OU_PR_REVIEW.md
