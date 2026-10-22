@@ -117,11 +117,12 @@ euclid_ssa_collection = 'euclid_DpdSirCombinedSpectra'
 
 ```{code-cell} ipython3
 coord = SkyCoord(
-    ra=269.7 * u.deg,
-    dec=66.0 * u.deg
+    ra=265.57990643 * u.deg,
+    dec=66.9992372 * u.deg,
+    frame="icrs"
 )
 
-search_radius = 5.0 * u.arcsec
+search_radius = 1.0 * u.arcsec
 ```
 
 Query the IRSA SSA service for spectra near this position
