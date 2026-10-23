@@ -25,11 +25,9 @@ authors:
 # Euclid DR1: MER Catalogs
 
 ```{danger} TODO before the DR1 release (remove this box when done)
-The notebook has not been run against DR1 yet: the IRSA Euclid database was still being indexed when the text was updated (2026-10-15). Once IRSA says the indexing is done:
+**1. Remove the cell that points `Irsa.tap_url` to irsadev, once DR1 is public on the production IRSA services, then re-run the notebook against production and check the outputs and the plot.**
 
-**1. Run the notebook against production IRSA TAP (the DR1 tables are listed there) and check the outputs and the plot.**
-
-**2. Check that the column names used in the queries (`ra`, `dec`, `flux_detection_total`, `vis_det`, the `flux_*_templfit` and `flux_vis_to_*_templfit` fluxes, `point_like_flag`, `point_like_prob`, `extended_prob`) still exist in DR1, and update the column count and highlights in the tip.**
+**2. The column names used in the query were checked against the irsadev TAP schema (2026-10-23). Re-check once the production tables are final.**
 
 **3. Confirm with IRSA which table holds the deep visits (single visits of the deep fields processed like wide survey data), and where the EMDS / HSC fields (HSC3, HSC4) ended up. Update the table descriptions below accordingly.**
 
@@ -91,7 +89,10 @@ MER processes the sky in tiles: **wide** tiles (tile IDs starting with `102`, ab
 identified by its sky patch; the ESA archive help puts them in wide mode, but Euclid MER says they should not be there),
 and where the EMDS / HSC fields (HSC3, HSC4: wide tiling but with EXT bands that need the MER deep catalog) ended up.
 Do not quote sky patch numbers until confirmed: the MER paper's "patch" numbers (44, 64, 71, 126) differ from the SkyPatch
-values given for Q1 (49 EDF-N, 58 EDF-F, 62 EDF-S). Once confirmed, add a bullet for the deep visits here. -->
+values given for Q1 (49 EDF-N, 58 EDF-F, 62 EDF-S). Once confirmed, add a bullet for the deep visits here.
+irsadev (2026-10-23) also has euclid_dr1_mer_catalogue_deep_survey_photometry and euclid_dr1_mer_catalogue_deep_mode_photometry
+(716 columns each); ask IRSA what they hold (EXT bands for the deep tiles?) and describe them here. -->
+
 
 The deep fields are covered by both the Deep Survey (deep tiles) and the wide tiling, so the same object can appear in more than one table, measured on data of different depth.
 Table 5 of Kümmel et al. (2026) lists all of the DR1 fields with their tiling and exposure times.
@@ -105,8 +106,11 @@ The most important ones for using the catalog are:
 
 * **The PSFs are no longer normalized to unit flux**, which corrects the large offsets seen in Q1 for bands with extended PSFs (such as Pan-STARRS i), but means that DR1 fluxes differ systematically from the Q1 ones. Colors measured with aperture (A-PHOT) or template-fitting (T-PHOT) photometry are largely unaffected.
 * **The Euclid NIR bands have offsets of a few to about 13 percent** with respect to Gaia, depending on the photometric method. The offsets are similar in the three NIR bands, so NIR colors are less affected than absolute magnitudes.
-* **Some tiles are only partially covered**, at the survey borders (see the `filling_factor` column) or in individual bands, for example after solar proton events. Requiring a detection in all bands therefore removes more sources than in Q1.
+* **Some tiles are only partially covered**, at the survey borders or in individual bands, for example after solar proton events. Requiring a detection in all bands therefore removes more sources than in Q1.
 * **Spurious sources**: `spurious_flag` is set for `spurious_prob > 0.5`, which has proven too aggressive; a threshold of 0.7 is suggested instead. The spurious probability is optimized for wide data.
+
+<!-- TODO: the MER paper points to a filling_factor column for partial coverage, but it is not in the irsadev tables
+as of 2026-10-23; mention it here if IRSA adds it. -->
 
 +++
 
@@ -126,6 +130,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from astroquery.ipac.irsa import Irsa
+```
+
+<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
+
+```{code-cell} ipython3
+# DR1 is not public yet, so we query IRSA's development server.
+Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
 ```
 
 ## 1. Download MER catalog from IRSA directly to this notebook
@@ -159,11 +170,11 @@ print(len(columns_info))
 columns_info
 ```
 
-<!-- TODO: update the column count and check that these highlights still exist in DR1. New DR1 columns worth
-highlighting: flux_radius, sersic_visnir_flags, sersic_ext_flags. -->
+<!-- TODO: flux_radius, sersic_visnir_flags, sersic_ext_flags (new DR1 columns in the MER paper) are not in the
+irsadev tables as of 2026-10-23; ask IRSA whether they will be added, and highlight them here if so. -->
 
 ```{tip}
-The Q1 MER catalog contains 476 columns, below are a few highlights:
+Each DR1 MER catalog table contains 480 columns, below are a few highlights:
 
 - object_id
 - flux_detection_total: the total (Kron) flux in the detection band
@@ -192,8 +203,7 @@ The cookbook gives an equivalent recipe with the aperture fluxes (`flux_X_nfwhm_
 
 We select VIS-detected objects and require all of these fluxes to be greater than 0, so the object is detected in all four Euclid MER mosaic images.
 
-<!-- TODO: check that flux_detection_total, vis_det and the flux_vis_to_*_templfit columns exist in DR1 with these names,
-check whether there is a DR1 version of the MER Photometry Cookbook and update the link, and confirm with MER whether
+<!-- TODO: check whether there is a DR1 version of the MER Photometry Cookbook and update the link, and confirm with MER whether
 they recommend the template-fitting or the aperture version of the recipe for DR1. -->
 
 ```{code-cell} ipython3
