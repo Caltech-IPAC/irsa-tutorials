@@ -204,7 +204,7 @@ plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL'
 plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
 
 plt.legend(loc='upper right')
-plt.ylim(-0.15, 0.25)
+plt.ylim(-0.10, 0.20)
 plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
