@@ -169,7 +169,8 @@ for attempt in range(max_retries):
             cutout_header = hdul['IMAGE'].header
             cutout = hdul['IMAGE'].data
         break
-    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead,
+            http.client.RemoteDisconnected):
         if attempt == max_retries - 1:
             raise
         time.sleep(10 * (attempt + 1))

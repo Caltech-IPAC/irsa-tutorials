@@ -216,7 +216,8 @@ def process_cutout_with_error_handling(row, coord, cache):
     '''
     try:
         process_cutout(row, coord, cache=cache)
-    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead,
+            http.client.RemoteDisconnected):
         # Transient read errors. Skip this cutout.
         row["hdus"] = None
 ```
