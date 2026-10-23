@@ -357,7 +357,7 @@ Now let's take a look at some header keywords that provide information about how
 spectral_image_header['L2 N_*']
 ```
 
-There are 14 flags in total. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in Table 8 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+There are 22 flags in total, defined in the FLAGS header (see section 9). Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -377,10 +377,12 @@ for keyword in keywords_to_print:
     print(f"{keyword}: {value}")
 ```
 
-Conveniently, the definitions of the flags are also provided in the FLAGS header.
+Conveniently, the definitions of the flags are also provided in the FLAGS header. For each bit number n, the keyword `MSKNnnnn` gives the flag name and `MSKDnnnn` gives its description.
 
 ```{code-cell} ipython3
-flags_header['MP*']
+for key in flags_header['MSKN*']:
+    bit = key[4:]
+    print(f"{int(bit):2d}  {flags_header[key]:<13} {flags_header['MSKD' + bit]}")
 ```
 
 Tip: In the Firefly visualization, if you are looking at the first extension (IMAGE), you can open up the layers icon (top right) to enable overlaying a visualization of the flags.
