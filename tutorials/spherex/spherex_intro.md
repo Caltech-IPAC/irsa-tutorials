@@ -183,7 +183,7 @@ You can see that the Level 2 Spectral Image files are multi-extension FITS files
 * **FLAGS:** A bitmap with per-pixel status and processing flags.
 * **VARIANCE:** A per-pixel estimate of the variance.
 * **ZODI:** An model of the zodiacal dust background signal. Note that this is not subtracted from the IMAGE extension.
-* **PSF:** An image cube (3D array) where each plane represents a Point Spread Function (PSF) for a cutout in over-sampled pixel space.
+* **EPSF:** A table of effective Point Spread Functions (ePSFs), one for each of 441 regions of the detector, in over-sampled pixel space.
 * **WCS-WAVE:** Spectral WCS lookup table that maps pixel coordinates to the central wavelength and bandwidth of each pixel.
 
 We will tour each extension in the sections below.
@@ -415,14 +415,14 @@ for keyword in keywords_to_print:
     print(f"{keyword}: {value}")
 ```
 
-## 12. Explore the fifth extension: PSF
+## 12. Explore the fifth extension: EPSF
 
-The fifth extension of the MEF contains 121 Point-spread functions (PSFs); each PSF is represented as a 101 x 101 image and all 121 are assembled together into a cube. Each of the 121 layers represents a "super-resolution" PSF estimate in a different region (defined by an 11x11 grid) of the detector. Each PSF is a two-dimensional array with size of 101 × 101 pixels. The PSFs are oversampled such that 10 PSF pixels cover the same spatial extent as one spectral image pixel (0.615 arcsec). Let's look at some specific header keywords for the PSF:
+The fifth extension of the MEF contains the effective Point Spread Function (ePSF), stored as a binary table. The detector is divided into a 21 x 21 grid of regions (each about 97 x 97 spectral image pixels), and each of the 441 rows of the table holds the ePSF for one region, along with that region's position on the detector (`XCENTER`, `YCENTER`) and its central wavelength and bandwidth (`CWAVE`, `CBAND`). Each ePSF is a 33 x 33 array, oversampled by a factor of 5 relative to the spectral image pixels (header keywords `OVSMPX` and `OVSMPY`). Unlike an optical PSF, the ePSF is a model of the pixel-convolved PSF: it predicts the pixel values of a point source at any sub-pixel position. The [SPHEREx ePSF tutorial](spherex_psf.md) shows how to find and use the ePSF for a given position. Let's look at some specific header keywords for the EPSF:
 
 ```{code-cell} ipython3
-psf_header = hdulist[5].header
+psf_header = hdulist["EPSF"].header
 
-keywords_to_print = ['EXTNAME', 'NAXIS1', 'NAXIS2', 'NAXIS3', 'BUNIT']
+keywords_to_print = ['EXTNAME', 'NAXIS2', 'DETECTOR', 'OVSMPX', 'OVSMPY']
 
 for keyword in keywords_to_print:
     value = psf_header.get(keyword, 'Keyword not found')
