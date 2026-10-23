@@ -117,8 +117,8 @@ euclid_ssa_collection = 'euclid_dr1_DpdSirCombinedSpectra'
 
 ```{code-cell} ipython3
 coord = SkyCoord(
-    ra=271.335 * u.deg,
-    dec=64.216 * u.deg,
+    ra=272.1469 * u.deg,
+    dec=67.6729 * u.deg,
     frame="icrs"
 )
 
