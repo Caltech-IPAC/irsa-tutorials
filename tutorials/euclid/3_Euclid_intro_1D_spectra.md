@@ -304,6 +304,101 @@ plt.ylim(-0.10, 0.20)
 plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
+## 6. Repeat Steps 2-4 for a different galaxy
+## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
+
+```{code-cell} ipython3
+coord = SkyCoord(
+    ra=270.7769 * u.deg,
+    dec=64.7781 * u.deg,
+    frame="icrs"
+)
+
+search_radius = 1.0 * u.arcsec
+```
+
+Query the IRSA SSA service for spectra near this position
+
+```{code-cell} ipython3
+#=====This part to be removed once the dr1 becomes public====
+irsa_dev = IrsaClass()
+irsa_dev.ssa_url = "https://irsadev.ipac.caltech.edu/SSA"
+#============================================================
+
+#===ssa_result = irsa_dev.query_ssa --> ssa_result = Irsa.query_ssa, once the dr1 becomes public==
+ssa_result = irsa_dev.query_ssa(
+    pos=coord,
+    radius=search_radius,
+    collection="euclid_dr1_DpdSirCombinedSpectra",
+)
+
+#check whether any spectra were found
+len(ssa_result)
+```
+
+Pull out the file name from the ``result`` table:
+
+```{code-cell} ipython3
+# Extract the single SSA result row
+row = ssa_result[0]  #in case there is more than one spectra in the search radius
+
+
+# Each SSA row provides a direct URL to the spectrum file
+spectrum_path = row["access_url"]
+spectrum_path
+```
+
+## 3. Read in the spectrum for only our specific object
+
+`spectrum_path` is a url that will return a VOTable containing the spectrum of our object.
+
+```{code-cell} ipython3
+spectrum = QTable.read(spectrum_path)
+```
+
+```{code-cell} ipython3
+spectrum
+```
+
+## 4. Plot the image of the extracted spectrum
+
+```{tip}
+As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
+```
+
+```{code-cell} ipython3
+quantity_support()
+```
+
+```{note}
+The 1D combined spectra table contains 6 columns, below are a few highlights:
+
+- WAVELENGTH is in Angstroms by default.
+- SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
+- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
+```
+
+We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
+
+```{code-cell} ipython3
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
+plt.ylabel('Mask value')
+plt.title('Values of MASK by flux bin')
+```
+
+We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
+
+```{code-cell} ipython3
+bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), color='black', label='Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
+
+plt.legend(loc='upper right')
+plt.ylim(-0.10, 0.20)
+plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
+```
 
 
 ## About this Notebook
