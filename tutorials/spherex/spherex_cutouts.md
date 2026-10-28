@@ -150,7 +150,7 @@ This function takes in a row of the catalog that we created above and does the f
 
 - It downloads the cutout
 - It computes the wavelength of the center pixel of the cutout (in micro-meters)
-- It keeps a copy of the cutout's original primary header and `VERSION` keyword, so that metadata from IBE is not lost when many cutouts are later combined into one MEF
+- It records the cutout's processing version (the `VERSION` keyword in its primary header), so that it is not lost when many cutouts are later combined into one MEF
 - It combines the image HDUs into a new HDU and adds it to the table row.
 
 Note that the values of the rows are being added in place.
@@ -189,10 +189,9 @@ def process_cutout(row, coord, cache):
         wavelength, bandwidth = spectral_wcs.pixel_to_world(x, y)
         row["central_wavelength"] = wavelength.to(u.micrometer).value
 
-        # IBE's primary header carries per-file metadata (e.g. VERSION) that isn't repeated
-        # in the extension headers. Keep a copy of it and the version string so they aren't
-        # silently dropped when we build the combined MEF below.
-        row["primary_header"] = hdulist[0].header.copy()
+        # The FITS primary header carries the processing version (VERSION), which isn't repeated
+        # in the extension headers. Keep it so it isn't silently dropped when we build the
+        # combined MEF below.
         row["version"] = hdulist[0].header.get("VERSION", "")
 
         # Collect the HDUs for this cutout and append the row's cutout_index to the EXTNAME.
@@ -226,7 +225,8 @@ def process_cutout_with_error_handling(row, coord, cache):
     '''
     try:
         process_cutout(row, coord, cache=cache)
-    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
+    except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead,
+            http.client.RemoteDisconnected):
         # Transient read errors. Skip this cutout.
         row["hdus"] = None
 ```
@@ -263,7 +263,6 @@ To learn more about the cache please read the [astropy cache management document
 results_table_serial = results.to_table()
 results_table_serial["cutout_index"] = range(1, len(results_table_serial) + 1)
 results_table_serial["central_wavelength"] = np.full(len(results_table_serial), np.nan)
-results_table_serial["primary_header"] = np.full(len(results_table_serial), None)
 results_table_serial["version"] = np.full(len(results_table_serial), "", dtype="U32")
 results_table_serial["hdus"] = np.full(len(results_table_serial), None)
 
@@ -295,7 +294,6 @@ Again, before running the cutout processing we define some place holders.
 results_table_parallel = results.to_table()
 results_table_parallel["cutout_index"] = range(1, len(results_table_parallel) + 1)
 results_table_parallel["central_wavelength"] = np.full(len(results_table_parallel), np.nan)
-results_table_parallel["primary_header"] = np.full(len(results_table_parallel), None)
 results_table_parallel["version"] = np.full(len(results_table_parallel), "", dtype="U32")
 results_table_parallel["hdus"] = np.full(len(results_table_parallel), None)
 
@@ -336,14 +334,10 @@ table_hdu.header["EXTNAME"] = "CUTOUT_INFO"
 ## 9. Create the final MEF
 
 Now, we create a primary HDU and combine it with the summary table HDU and the cutout image and wavelength HDUs to a final HDU list.
-A blank `fits.PrimaryHDU()` would silently drop IBE's per-file metadata (e.g. `VERSION`), so instead we base the primary header on the first cutout's -- the `version` column in `CUTOUT_INFO` above records each individual cutout's processing version in case they differ.
+The primary header is left blank because the cutouts generally come from different processing versions, so no single `VERSION` would be correct for all of them; the `version` column in `CUTOUT_INFO` above records each cutout's version.
 
 ```{code-cell} ipython3
-primary_hdu = fits.PrimaryHDU(header=results_table_parallel["primary_header"][0])
-primary_hdu.header["HISTORY"] = (
-    "Primary header copied from the first cutout in this MEF. "
-    "See the VERSION column in the CUTOUT_INFO table for each cutout's processing version."
-)
+primary_hdu = fits.PrimaryHDU()
 hdulist_list = [primary_hdu, table_hdu]
 hdulist_list.extend(hdu for fits_hdulist in results_table_parallel["hdus"] for hdu in fits_hdulist)
 combined_hdulist = fits.HDUList(hdulist_list)
