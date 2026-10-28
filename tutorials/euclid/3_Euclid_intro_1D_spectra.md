@@ -149,11 +149,15 @@ Pull out the file name from the ``result`` table:
 ```{code-cell} ipython3
 # Extract the single SSA result row
 row = ssa_result[0]  #in case there is more than one spectra in the search radius
+row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
 
 
 # Each SSA row provides a direct URL to the spectrum file
 spectrum_path = row["access_url"]
 spectrum_path
+
+spectrum_path_blue = row_blue["access_url"]
+spectrum_path_blue
 ```
 
 ## 3. Read in the spectrum for only our specific object
@@ -162,6 +166,7 @@ spectrum_path
 
 ```{code-cell} ipython3
 spectrum = QTable.read(spectrum_path)
+spectrum_blue = QTable.read(spectrum_path_blue)
 ```
 
 ```{code-cell} ipython3
@@ -189,7 +194,8 @@ The 1D combined spectra table contains 6 columns, below are a few highlights:
 We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
 
 ```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
 plt.ylabel('Mask value')
 plt.title('Values of MASK by flux bin')
 ```
@@ -198,13 +204,17 @@ We use the MASK column to create a boolean mask for values to ignore. We use the
 
 ```{code-cell} ipython3
 bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), color='black', label='Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linewidth=2.0)
 plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
+plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linewidth=2.0)
+plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
 
 plt.legend(loc='upper right')
-plt.ylim(-0.10, 0.20)
+plt.ylim(-0.05, 0.55)
 plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
@@ -245,11 +255,15 @@ Pull out the file name from the ``result`` table:
 ```{code-cell} ipython3
 # Extract the single SSA result row
 row = ssa_result[0]  #in case there is more than one spectra in the search radius
+row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
 
 
 # Each SSA row provides a direct URL to the spectrum file
 spectrum_path = row["access_url"]
 spectrum_path
+
+spectrum_path_blue = row_blue["access_url"]
+spectrum_path_blue
 ```
 
 ## 3. Read in the spectrum for only our specific object
@@ -258,6 +272,7 @@ spectrum_path
 
 ```{code-cell} ipython3
 spectrum = QTable.read(spectrum_path)
+spectrum_blue = QTable.read(spectrum_path_blue)
 ```
 
 ```{code-cell} ipython3
@@ -285,7 +300,8 @@ The 1D combined spectra table contains 6 columns, below are a few highlights:
 We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
 
 ```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
 plt.ylabel('Mask value')
 plt.title('Values of MASK by flux bin')
 ```
@@ -294,13 +310,17 @@ We use the MASK column to create a boolean mask for values to ignore. We use the
 
 ```{code-cell} ipython3
 bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), color='black', label='Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linewidth=2.0)
 plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
+plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linewidth=2.0)
+plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
 
 plt.legend(loc='upper right')
-plt.ylim(-0.10, 0.20)
+plt.ylim(-0.05, 0.55)
 plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
@@ -341,11 +361,15 @@ Pull out the file name from the ``result`` table:
 ```{code-cell} ipython3
 # Extract the single SSA result row
 row = ssa_result[0]  #in case there is more than one spectra in the search radius
+row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
 
 
 # Each SSA row provides a direct URL to the spectrum file
 spectrum_path = row["access_url"]
 spectrum_path
+
+spectrum_path_blue = row_blue["access_url"]
+spectrum_path_blue
 ```
 
 ## 3. Read in the spectrum for only our specific object
@@ -354,6 +378,7 @@ spectrum_path
 
 ```{code-cell} ipython3
 spectrum = QTable.read(spectrum_path)
+spectrum_blue = QTable.read(spectrum_path_blue)
 ```
 
 ```{code-cell} ipython3
@@ -381,7 +406,8 @@ The 1D combined spectra table contains 6 columns, below are a few highlights:
 We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
 
 ```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'])
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
 plt.ylabel('Mask value')
 plt.title('Values of MASK by flux bin')
 ```
@@ -390,13 +416,17 @@ We use the MASK column to create a boolean mask for values to ignore. We use the
 
 ```{code-cell} ipython3
 bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), color='black', label='Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use')
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linewidth=2.0)
 plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
+plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linewidth=2.0)
+plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
 
 plt.legend(loc='upper right')
-plt.ylim(-0.10, 0.20)
+plt.ylim(-0.05, 0.55)
 plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
 ```
 
