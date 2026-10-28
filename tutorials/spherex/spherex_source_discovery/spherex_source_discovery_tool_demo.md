@@ -802,10 +802,13 @@ if os.path.exists(phot_path):
 ```
 
 Apply flagging to the extracted 1D-Spectrum.
+We use the flags that set the conservative CONTAINS_BAD_PIXEL warning in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf) (flag definitions are in its Table 16).
 
 ```{code-cell} ipython3
 # Define bad photometry flags
-bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'NONFUNC', 'DICHROIC', 'MISSING_DATA', 'HOT', 'COLD', 'FULLSAMPLE', 'PHANMISS', 'NONLINEAR', 'PERSIST', 'OUTLIER']
+bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'NONFUNC', 'DICHROIC', 'MISSING_DATA', 'HOT', 'COLD',
+             'NONLINEAR', 'CROSSTALK', 'GHOST', 'GHOST_FPA', 'GHOST_EXT', 'STREAK', 'PERSIST',
+             'BLOOM', 'SNOWBALL', 'HALO', 'SATELLITE_HALO']
 ap_rad = 3.0  # set your preferred aperture radius, from the `aperture_radii` list you specified above
 targ = 0  # pick index from `all_stars_band_phot` table
 wvl, bdw, abmags, abmag_errs, flx, var, n_bad = \

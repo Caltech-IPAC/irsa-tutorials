@@ -357,7 +357,7 @@ Now let's take a look at some header keywords that provide information about how
 spectral_image_header['L2 N_*']
 ```
 
-These keywords give the number of pixels carrying each of the 22 flags defined in the FLAGS header (see section 9), plus a few combined counts: keywords ending in `_NB` count pixels that are not also flagged as bad, and those ending in `_NS` count pixels that are not also flagged SOURCE. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
+These keywords count the pixels carrying most of the flags defined in the FLAGS header (see section 9), plus a few combined counts: keywords ending in `_NB` count pixels that are not also flagged as bad, and those ending in `_NS` count pixels that are not also flagged SOURCE. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The flags are described in Table 16 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 

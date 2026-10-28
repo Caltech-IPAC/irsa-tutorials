@@ -535,7 +535,8 @@ def grab_star(obs_log_entry: list[dict], ap_rad: float, bad_flags: list[str]) ->
     ap_rad : `float`
         Aperture radius to consider.
     bad_flags : `list` of `str`
-        List of bad photometry flags to check for.
+        List of bad photometry flags to check for. Flags not defined in an
+        image's FLAGS header are skipped for that image.
 
 
     Returns
@@ -570,7 +571,8 @@ def grab_star(obs_log_entry: list[dict], ap_rad: float, bad_flags: list[str]) ->
             # Sum number of bad pixels in aperture
             bad_pixels = 0
             for flag in bad_flags:
-                bad_pixels += obs['dqf_sum'][flag][idx_ap]
+                if flag in obs['dqf_sum']:
+                    bad_pixels += obs['dqf_sum'][flag][idx_ap]
             bad_flags_aperture.append(bad_pixels)
 
     # Filter out non-finite flux measurements and convert to arrays
