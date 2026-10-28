@@ -55,6 +55,23 @@ More information is available in the [SPHEREx Explanatory Supplement](https://ir
 
 ## 3. Requirements
 
+This directory contains the following files:
+
+- `spherex_source_discovery_tool_demo.md`: This notebook.
+- `conda-spherex_sdt.yml`: Conda environment definition file.
+- `spherex_source_discovery_tool/`: Python package, including functions and configuration files to extract and visualize sources.
+  - Python modules
+    - `aperture_photometry.py`: Functions adapted from Zafar Rustamkulov to perform aperture photometry.
+    - `bokeh_viz.py`: Functions for dynamic `bokeh` visualizations.
+    - `firefly_viz.py`: Functions for `Firefly` visualizations.
+    - `source_extraction.py`: Functions to work with SExtractor.
+    - `sdt_utils.py`: Miscellaneous utility functions for working with IRSA tables and SPHEREx image headers.
+  - SExtractor files
+    - `default.conv`: Convolution mask used as detection filter.
+    - `default.nnw`: Table of neural-network weights for star/galaxy separation.
+    - `default_sdt.sex`: SExtractor default config file. Specifies catalog, extraction, photometry, etc. options.
+    - `default_sdt.param`: SExtractor default parameters file. Specifies columns to include in output SExtractor catalog.
+
 +++
 
 ### 3.1 On local machines
