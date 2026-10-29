@@ -3,10 +3,13 @@ release that is not yet in SIA or public S3.
 
 Usage (from the repo root, IRSA network or VPN):
     python run_sdt_release_test.py <path to spherex_source_discovery_tool_demo.md> \
-        --release dr2 [--host https://irsatest.ipac.caltech.edu]
+        --release dr2 [--host https://irsatest.ipac.caltech.edu] \
+        [--sia-host https://irsadev.ipac.caltech.edu]
 
 Stand-ins:
-- sec. 6 SIA results -> TAP rows on --host, with a `cloud_access` JSON built from the uri
+- sec. 6 SIA results -> TAP rows on --host, with a `cloud_access` JSON built from the uri.
+  With --sia-host, sec. 6 instead runs the notebook's own SIA cells against that host (use this
+  once IRSA has loaded the release's SIA collections there).
 - s3://nasa-irsa-spherex/<release>/... reads -> the IBE mirror of the same path on --host
 - secs. 10-11 (SExtractor + interactive selection) -> one 2MASS star near the field center
 Secs. 9-11 (SExtractor, Firefly, bokeh) are not exercised.
@@ -24,6 +27,7 @@ _ap = argparse.ArgumentParser()
 _ap.add_argument("notebook")
 _ap.add_argument("--release", required=True, help="e.g. dr2")
 _ap.add_argument("--host", default="https://irsatest.ipac.caltech.edu")
+_ap.add_argument("--sia-host", help="run sec. 6 with real SIA from this host")
 ARGS = _ap.parse_args()
 REL, HOST = ARGS.release, ARGS.host.rstrip("/")
 
@@ -71,8 +75,17 @@ run("imports", cell("import concurrent.futures"))
 run("sec 5 params", cell('data_release = "'))
 print("sapm_s3[1] =", ns["sapm_s3"][1])
 
+if ARGS.sia_host:
+    # ---- sec. 6 for real, against the pre-release SIA host
+    ns["Irsa"].sia_url = ARGS.sia_host.rstrip("/") + "/SIA"
+    run("sec 6 coord", cell("search_radius = 50 * u.arcsec"))
+    run("sec 6 SIA query", cell("results = Irsa.query_sia("))
+    run("sec 6 pick D2/D4", cell("d2_result = results["))
+    print(len(ns["results"]), "SIA rows; D2 cloud_access:", str(ns["d2_result"]["cloud_access"])[:120])
+
 # ---- sec. 6 stand-in: first D2 and D4 images of the release at the SDT position, from TAP
-run("sec 6 stand-in", '''
+else:
+  run("sec 6 stand-in", '''
 coord = SkyCoord(150.7817877, 3.3502204, unit='deg')
 _svc = pyvo.dal.TAPService(HOST + "/TAP")
 _q = """SELECT a.uri, p.energy_bandpassname, p.time_bounds_lower
