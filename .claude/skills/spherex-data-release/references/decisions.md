@@ -37,6 +37,11 @@
 - FLAGS keywords changed between releases (`MP_*` in QR2, `MSKN*`/`MSKD*` from QR3). New flags
   can appear in the supplement before they appear in image headers (SATELLITE_HALO, bit 29, was in
   supplement v2.0 but not in DR1 v7.0.5 headers) -- code must tolerate missing flag names.
+- To test SIA notebooks against irsadev, set `Irsa.sia_url = "https://irsadev.ipac.caltech.edu/SIA"`
+  in a temporary copy (don't commit it). `Irsa.list_collections()` still lists production
+  collections, so check irsadev collections with a TAP query on `ivoa.obscore` instead. irsadev SIA
+  `access_url`s point at a dev IBE host. IRSA may load only part of the sky, so confirm the notebook
+  positions are covered.
 - Expect overlapping cleanup PRs. Merge them into the release branch before opening the release
   PR, or the same changes show up twice.
 
