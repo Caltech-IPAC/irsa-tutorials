@@ -51,8 +51,9 @@ in a fenced code block. Keep each one short and specific.
 
 - **IRSA** (archive/backend staff): Will the new SIA collections be loaded on the pre-release host
   (irsadev) before release, so the SIA notebooks can be tested? What will the collections be
-  named? Will `cloud_access` be filled in those rows? (On irsadev for DR1 it was empty for QR3
-  rows; the Source Discovery Tool reads its S3 paths from it.) Will the data be on the staging
+  named? Will `cloud_access` be filled in those rows? (The Source Discovery Tool reads its S3
+  paths from it. Check it in SIA results, e.g. with `scripts/check_release.sh`: TAP's
+  `ivoa.obscore` leaves it blank even when SIA fills it.) Will the data be on the staging
   S3 bucket, and when does it move to the public one?
 - **IRSA** (DOIs): the DOI for the new release. It is usually not available until close to release.
 - **SSDC**: a copy of the new Explanatory Supplement, or confirmation that the online one is

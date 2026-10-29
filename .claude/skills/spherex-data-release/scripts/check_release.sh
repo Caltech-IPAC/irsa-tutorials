@@ -16,9 +16,18 @@ tap_rows() {
     curl -s -m 120 --data-urlencode "QUERY=$q" -d FORMAT=csv -d LANG=ADQL "$1/TAP/sync" | sed -n 2p
 }
 
+# Ask SIA, not TAP: ivoa.obscore leaves cloud_access blank even where SIA (what the notebooks
+# use) fills it. Search at the position of one of the release's own images. IRSA's SIA CSV
+# doesn't quote the JSON, so grep it out instead of parsing columns.
 cloud_access() {
-    local q="SELECT TOP 1 cloud_access FROM ivoa.obscore WHERE obs_collection = 'spherex_$REL'"
-    curl -s -m 60 --data-urlencode "QUERY=$q" -d FORMAT=csv -d LANG=ADQL "$1/TAP/sync" | sed -n 2p
+    local q="SELECT TOP 1 s_ra, s_dec FROM ivoa.obscore WHERE obs_collection = 'spherex_$REL'"
+    local pos ra dec row
+    pos=$(curl -s -m 60 --data-urlencode "QUERY=$q" -d FORMAT=csv -d LANG=ADQL "$1/TAP/sync" | sed -n 2p)
+    [ -z "$pos" ] && { echo "(no spherex_$REL rows)"; return; }
+    IFS=, read -r ra dec <<<"$pos"
+    row=$(curl -s -m 120 "$1/SIA?COLLECTION=spherex_$REL&POS=CIRCLE+$ra+$dec+0.0003&MAXREC=1&RESPONSEFORMAT=csv" | sed -n 2p)
+    [ -z "$row" ] && { echo "(no SIA rows)"; return; }
+    grep -o '{"aws": {[^}]*}}' <<<"$row" || echo "(blank)"
 }
 
 # Subfolders under <release>/ in a bucket ("(empty)" if none, or the S3 error code).
