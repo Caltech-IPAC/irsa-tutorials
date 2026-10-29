@@ -270,7 +270,10 @@ d2_result = results[results['energy_bandpassname'] == 'SPHEREx-D2'][0]  # first 
 # Using `astropy.table.TableGroups`
 results_by_detector = results.group_by('energy_bandpassname')
 print(results_by_detector.groups.keys)
-d4_result = results_by_detector.groups[3][0]  # first D4 image
+# Select the group by name: not every detector has images at every position,
+# so the D4 group is not always at the same index
+d4_group = results_by_detector.groups.keys['energy_bandpassname'] == 'SPHEREx-D4'
+d4_result = results_by_detector.groups[d4_group][0]  # first D4 image
 ```
 
 ## 7. Load the Data
