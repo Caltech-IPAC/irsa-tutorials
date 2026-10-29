@@ -25,7 +25,7 @@ kernelspec:
 * Open a SPHEREx HiPS All-Sky Mosaic in Firefly starting from a Jupyter Notebook.
 * Select a specific HiPS Mosaic layer related to a specific wavelength.
 * Download the FITS cube corresponding to a specific HealPix for a given position on sky.
-* Extract a spectrum from the FITS cube at a given position.
+* Extract a quick look spectrum from the FITS cube at a given position.
 
 +++
 
@@ -50,27 +50,31 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy photutils reproject astroquery
+# !pip install astropy matplotlib numpy photutils hpgeom requests firefly_client, posixpath
 ```
 
 ```{code-cell} ipython3
-import copy
 import os
+import io
 import warnings
 
 import numpy as np
 
+import posixpath
+
 from astropy.io import fits
 from astropy.table import Table, vstack
-from astropy.stats import sigma_clipped_stats, SigmaClip
+from astropy.stats import SigmaClip
 from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
-#from astropy.nddata import Cutout2D
 import astropy.units as u
+
+from astropy.io.votable import from_table
+from astropy.io.votable.tree import Group, FieldRef
 
 from photutils.aperture import CircularAperture, CircularAnnulus, ApertureStats, aperture_photometry
 
-import healpy as hp
+import hpgeom as hp
 
 import requests
 
@@ -150,11 +154,10 @@ We can 0-base the layer IDs here so it is more compatible with the following Pyt
 
 ```{code-cell} ipython3
 wavetab = Table([
-    np.asarray(properties["data_cube_crval3_arr"].split(" ")).astype(float)*u.micrometer,
-    np.arange(int(properties["hips_cube_depth"]))
+                np.asarray(properties["data_cube_crval3_arr"].split(" ")).astype(float)*u.micrometer,
+                np.arange(int(properties["hips_cube_depth"]))
              ],
-             names=["lambda_um","layer_id"]
-            )
+                names=["lambda_um","layer_id"])
 
 wavetab[0:10]
 ```
@@ -207,13 +210,13 @@ lambda_view = 3.3*u.micrometer
 ```{code-cell} ipython3
 idx = np.argmin(np.abs(wavetab["lambda_um"] - lambda_view.to_value(u.micrometer)))
 layer_view = int(wavetab["layer_id"][idx])
-print(f"Wavelength {lambda_view} is closeset to layer {layer_view}")
+print(f"Wavelength {lambda_view} is closest to layer {layer_view}")
 ```
 
 With this separate dispatch, we can choose the wavelength layer.
 
 ```{warning}
-Note that the `cubeIdx` is 0-based. Luckliy, we have designed the wavelength layers above such that they are 0-based.
+Note that the `cubeIdx` is 0-based. Luckily, we have designed the wavelength layers above such that they are 0-based.
 ```
 
 +++
@@ -225,6 +228,13 @@ fc.dispatch(action_type='ImagePlotCntlr.ChangeHiPS',
             payload={'plotId': f"{hips_plot_id}", 'cubeIdx': layer_view}) # plotId needs to be same as what you passed in show_hips() and cubeIdx is 0-based
 ```
 
+```{note}
+If you look at the Firefly visualization, you will see some striping happening. This striping is an artifact originating from the mosaic creation close to bright emission lines such as Pa-$\alpha$ (1.88$\mu$m), PAH (3.3$\mu$m), or Br-$\alpha$ (4.05$\mu$m), which are strongly emitted by dust and hydrogen gas in our Milky Way. While these artifacts affect the mosaic, they do not affect the photometry itself if extracted from the [IRSA SPHEREx spectrophotometry tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-spectrophotometry).
+For more information, see the "Mosaics" Section in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+```
+
++++
+
 ## 6. Download and Display HiPS FITS Cube
 
 ### 6.1 Download HiPS FITS Cube
@@ -234,8 +244,8 @@ Next, we show how to download a HiPS cube in FITS format for a given Healpix pix
 To find the Healpix pixel corresponding to the R.A./Decl. coordinates, we make use of the `healpy` package (which we imported above). Note that we are assuming her HiPS order 5, which is the smallest scale that is supported by the current SPHEREx All-Sky Mosaic. But in principle, you can choose an order, if available. We can directly check the `properties` dictionary that we have created above to find out what the minimum and maximum HiPS order is:
 
 ```{code-cell} ipython3
-print(f"Minimum HiPS order (largest spatial scale): {properties["hips_order_min"]}")
-print(f"Maximum HiPS order (smallest spatial scale): {properties["hips_order"]}")
+print(f"Minimum HiPS order (largest spatial scale): {properties['hips_order_min']}")
+print(f"Maximum HiPS order (smallest spatial scale): {properties['hips_order']}")
 ```
 
 Choose Norder:
@@ -248,7 +258,7 @@ Finally get the Healpix pixel number corresponding to our search coordinates.
 
 ```{code-cell} ipython3
 nside = 2**Norder
-ipix = hp.ang2pix(nside, ra.to_value(u.degree), dec.to_value(u.degree), nest=True, lonlat=True)
+ipix = hp.angle_to_pixel(nside, ra.to_value(u.degree), dec.to_value(u.degree), nest=True, lonlat=True)
 print(f"Healpix pixel number corresponding to R.A. = {ra} and Decl. = {dec}: {ipix}")
 ```
 
@@ -256,7 +266,7 @@ Now that we know the Healpix pixel number, we can construct the URL leading to t
 
 ```{code-cell} ipython3
 dirid = (ipix // 10000) * 10000
-cube_url = os.path.join(hips_url, f"Norder{Norder}", f"Dir{dirid}", f"Npix{ipix}", f"Npix{ipix}_cube.fits")
+cube_url = posixpath.join(hips_url, f"Norder{Norder}", f"Dir{dirid}", f"Npix{ipix}", f"Npix{ipix}_cube.fits")
 print(f"Cube URL: {cube_url}")
 ```
 
@@ -271,22 +281,29 @@ The WCS will include the wavelength information. If we only want to extract the 
 
 +++
 
-### 6.3 Display HiPS FITS Cube
+### 6.2 Display HiPS FITS Cube
 Next, we demonstrate how to load the FITS cube and how to display a specific layer of it.
-We also show that the FITS cube comes with a science layer as well as a Hits map and a Flags layer.
+
+The SPHEREx HiPS FITS cube consists of different extensions.
+* The `IMAGE` extension is the actual science cube
+* The `NHITS` extension shows the number of contributing input pixels per mosaic pixel.
+* The `FLAGS` extension includes bitwise OR of flags propagated from contributing input pixels.
+
+For more information on these layer and the FITS cube construction, we refer to the "Mosaics" Section of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
 
 First, we open the FITS cube using the `cube_url` that we have defined above.
 
 ```{code-cell} ipython3
 with fits.open(cube_url, cache=False) as hdul:
     hdul.info()
-    img_cube = hdul["IMAGE"].data
-    img_hdr = hdul["IMAGE"].header
-    hits_cube = hdul["NHITS"].data
-    hits_hdr = hdul["NHITS"].header
-    flags_cube = hdul["FLAGS"].data
-    flags_hdr = hdul["FLAGS"].header
-    wcs_img = WCS(hdul["IMAGE"].header, fobj=hdul)
+    img_cube = hdul["IMAGE"].data ## image cube
+    img_hdr = hdul["IMAGE"].header ## image cube header
+    hits_cube = hdul["NHITS"].data ## hits cube
+    hits_hdr = hdul["NHITS"].header ## hits cube header
+    flags_cube = hdul["FLAGS"].data ## flags cube
+    flags_hdr = hdul["FLAGS"].header ## flags cube
+    wcs_img = WCS(hdul["IMAGE"].header, fobj=hdul) ## WCS
+    spec_channels = Table.read(hdul["SPECTRAL_CHANNELS"], cache=False) ## spectral channel table
 ```
 
 Let's first check the dimensions of the cube. It should have 102 layers, corresponding to the wavelengths.
@@ -295,10 +312,12 @@ Let's first check the dimensions of the cube. It should have 102 layers, corresp
 print(f"Cube shape: {img_cube.shape}")
 ```
 
-In addition, we can also read in the spectral channels table, that contains more information on the wavelength of the channels and their widths. 
+In addition, we can also read in the spectral channels table, that contains more information on the wavelength of the channels and their widths. Let's look at it here.
+```{tip}
+You can also read in the spectral channel table directly via `Table.read(cube_url, hdu="SPECTRAL_CHANNELS", cache=False)`.
+```
 
 ```{code-cell} ipython3
-spec_channels = Table.read(cube_url, hdu="SPECTRAL_CHANNELS", cache=False)
 spec_channels[0:10]
 ```
 
@@ -541,7 +560,7 @@ def measure_aperture_photometry_cube(cube, *, ra=None, dec=None, wcs=None,
     ## Compute photometry (use helper function to iterate over planes)
     phot_all = vstack([apphot_helper(cube[ii, :, :], aperture, annulus_aperture)
                        for ii in range(cube.shape[0])])
-    phot_all["id"] = np.arange(cube.shape[0]) + 1  ## add plane numbers back
+    phot_all["id"] = np.arange(cube.shape[0]) + 0  ## add plane numbers back (0-based)
     phot_all.rename_column("id", "plane")
 
     ## Convert aperture sums (bunit x pixels) to flux densities in mJy
@@ -579,7 +598,8 @@ def measure_aperture_photometry_cube(cube, *, ra=None, dec=None, wcs=None,
 
         # Plot the median image
         img_plot = np.nanmedian(cube, axis=0)
-        lims = np.nanpercentile(img_plot.flatten(), q=(5, 99.9))
+        possel = img_plot[np.isfinite(img_plot) & (img_plot > 0)]
+        lims = np.nanpercentile(possel.flatten(), q=(5, 99.9))
         ax1.imshow(img_plot, origin="lower", vmin=lims[0], vmax=lims[1],
                    norm="log", cmap="inferno")
 
@@ -615,13 +635,18 @@ phot_table = measure_aperture_photometry_cube(img_cube, ra=ra, dec=dec, wcs=wcs_
                                         r_aperture=5*u.pixel,
                                         r_inner = 40*u.pixel,
                                         r_outer = 60*u.pixel,
-                                        makeplot = True
+                                        makeplot = True,
+                                        bunit = u.Unit(img_hdr["BUNIT"])
                                        )
 
-phot_table["lambda_um"] = wavetab['lambda_um'].copy()
+phot_table["lambda_um"] = spec_channels['WAVELENGTH'].copy()
 ```
 
-Now that we have extracted the spectrum, let's plot it. In this tutorial, we have targeted a cloud in the Milky Way, which is characterized by strong Polycyclic Aromatric Hydrocarbon (PAH) emission. We see that in the spectrum that we extracted.
+```{code-cell} ipython3
+phot_table[0:10]
+```
+
+Now that we have extracted the spectrum, let's plot it. In this tutorial, we have targeted a cloud in the Milky Way, which is characterized by strong Polycyclic Aromatic Hydrocarbon (PAH) emission. We see that in the spectrum that we extracted.
 
 We first define the default lines to plot...
 
@@ -725,17 +750,70 @@ And finally, we can plot the spectrum
 fig, ax = plot_spectrum(phot_table["lambda_um"], phot_table["flux_bkgsub_mjy"])
 ```
 
+### 6.4 Show Spectrum in Firefly
+Finally, we can also show the spectrum in Firefly directly. The Firefly visualizer even allows to add certain emission lines ones the redshift is fixed. Before doing that, we have to convert our table `phot_table` in the correct format. 
+To this end, we define a small function that does the conversion.
+
+```{code-cell} ipython3
+---
+jupyter:
+  source_hidden: true
+---
+def to_spectrum_votable(tbl, wave_col, flux_col, flux_err_col=None):
+    '''Serialize a Table as a Spectrum DM VOTable that Firefly recognizes.'''
+    utypes = {wave_col: "spec:Spectrum.Data.SpectralAxis.Value",
+              flux_col: "spec:Spectrum.Data.FluxAxis.Value"}
+    if flux_err_col:
+        utypes[flux_err_col] = "spec:Spectrum.Data.FluxAxis.Accuracy.StatError"
+
+    vot = from_table(tbl)
+    vt = vot.get_first_table()
+    vt.utype = "spec:Spectrum"
+    grp = Group(vt)
+    for col, utype in utypes.items():
+        f = vt.get_field_by_id_or_name(col)
+        f.ID, f.utype = col, utype
+        grp.entries.append(FieldRef(vt, ref=col))
+    vt.groups.append(grp)
+    stream = io.BytesIO()
+    vot.to_xml(stream)
+    return stream
+```
+
+Before we convert the table, we convert mJy to $\mu$Jy since Firefly does not recognize it as flux unit.
+
+```{code-cell} ipython3
+phot_table["flux_bkgsub_ujy"] = phot_table["flux_bkgsub_mjy"].to(u.uJy)
+phot_table_firefly = to_spectrum_votable(phot_table, "lambda_um", "flux_bkgsub_ujy")
+```
+
+Now we add a new Firefly instance to plot the spectrum, we call it `fc_spec`.
+
+```{code-cell} ipython3
+fc_spec = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
+```
+
+And finally, we can load the spectrum.
+```{tip}
+You can load emission lines by clicking on the "lines" button on the upper left of the viewer. Clicking that opens a pop up and you can select the line list. For example "SPHEREx line list". Do not forget to set the redshift of the source if needed. You can set the redshift by clicking on the "gear" icon, then selecting "Spectral frame" as "Rest Frame" and then entering the redshift.
+```
+
+```{code-cell} ipython3
+fc_spec.show_table(file_input=phot_table_firefly,
+              tbl_id="spherex-spectrum", title="SPHEREx quick-look spectrum")
+```
+
 ## Acknowledgements
 
 - [Caltech/IPAC-IRSA](https://irsa.ipac.caltech.edu/)
 
 ## About this notebook
 
-**Updated:** 23 October 2026
+**Updated:** 29 October 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
-**Runtime:** This notebook takes about 30 seconds to run to completion on a machine with 16GB RAM and 4 CPU. Note that the run time depends mostly on your internet connection, as the FITS cube (~300 MB) has to be downloaded by `astropy.io.fits`.
+**Runtime:** This notebook takes about 1-3 minutes to run to completion on a machine with 16GB RAM and 4 CPU. Note that the run time depends mostly on your internet connection, as the FITS cube (~300 MB) has to be downloaded by `astropy.io.fits`.
 
 ```{code-cell} ipython3
 
