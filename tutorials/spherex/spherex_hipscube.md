@@ -795,7 +795,7 @@ fc_spec = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewe
 
 And finally, we can load the spectrum.
 ```{tip}
-You can load emission lines by clicking on the "lines" button on the upper left of the viewer. Clicking that opens a pop up and you can select the line list. For example "SPHEREx line list". Do not forget to set the redshift of the source if needed. You can set the redshift by clicking on the "gear" icon, then selecting "Spectral frame" as "Rest Frame" and then entering the redshift.
+You can load emission lines by clicking on the "Spectral lines" button on the upper left of the "Active Chart" viewer. Clicking that opens a pop up and you can select the line list. For example "SPHEREx line list". Do not forget to set the redshift of the source if needed. You can set the redshift by clicking on the "gear" icon, then selecting "Spectral frame" as "Rest Frame" and then entering the redshift.
 ```
 
 ```{code-cell} ipython3
