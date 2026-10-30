@@ -44,7 +44,7 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 
 More information about SPHEREx, the data releases, and the data products is available in the [SPHEREx Archive at IRSA User Guide](https://caltech-ipac.github.io/spherex-archive-documentation).
 
-This notebook can be used with both Quick Release 3 (QR3) and Quick Release 2 (QR2) data.
+This notebook uses data from SPHEREx Data Release 1 (DR1).
 
 +++
 
@@ -109,15 +109,13 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-There are currently four collections available:
+The DR1 Spectral Image MEFs are available in two collections:
 
-* `'spherex_qr3'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr3_deep'` -- Quick Release 3 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
-* `'spherex_qr2'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
-* `'spherex_qr2_deep'` -- Quick Release 2 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
+* `'spherex_dr1'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_dr1_deep'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_qr2')
+results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_dr1')
 ```
 
 :::{note}
@@ -188,7 +186,7 @@ You can see that the Level 2 Spectral Image files are multi-extension FITS files
 * **FLAGS:** A bitmap with per-pixel status and processing flags.
 * **VARIANCE:** A per-pixel estimate of the variance.
 * **ZODI:** An model of the zodiacal dust background signal. Note that this is not subtracted from the IMAGE extension.
-* **PSF:** An image cube (3D array) where each plane represents a Point Spread Function (PSF) for a cutout in over-sampled pixel space.
+* **EPSF:** A table of effective Point Spread Functions (ePSFs), one for each of 441 regions of the detector, in over-sampled pixel space.
 * **WCS-WAVE:** Spectral WCS lookup table that maps pixel coordinates to the central wavelength and bandwidth of each pixel.
 
 We will tour each extension in the sections below.
@@ -362,7 +360,7 @@ Now let's take a look at some header keywords that provide information about how
 spectral_image_header['L2 N_*']
 ```
 
-There are 14 flags in total. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The remaining flags are described in Table 8 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+These keywords count the pixels carrying most of the flags defined in the FLAGS header (see section 9), plus a few combined counts: keywords ending in `_NB` count pixels that are not also flagged as bad, and those ending in `_NS` count pixels that are not also flagged SOURCE. Typically, most of the pixels are identified as SOURCE pixels, which are pixels mapped to a known source. The flags are described in Table 16 of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -382,10 +380,12 @@ for keyword in keywords_to_print:
     print(f"{keyword}: {value}")
 ```
 
-Conveniently, the definitions of the flags are also provided in the FLAGS header.
+Conveniently, the definitions of the flags are also provided in the FLAGS header. For each bit number n, the keyword `MSKNnnnn` gives the flag name and `MSKDnnnn` gives its description.
 
 ```{code-cell} ipython3
-flags_header['MP*']
+for key in flags_header['MSKN*']:
+    bit = key[4:]
+    print(f"{int(bit):2d}  {flags_header[key]:<13} {flags_header['MSKD' + bit]}")
 ```
 
 Tip: In the Firefly visualization, if you are looking at the first extension (IMAGE), you can open up the layers icon (top right) to enable overlaying a visualization of the flags.
@@ -420,14 +420,14 @@ for keyword in keywords_to_print:
     print(f"{keyword}: {value}")
 ```
 
-## 12. Explore the fifth extension: PSF
+## 12. Explore the fifth extension: EPSF
 
-The fifth extension of the MEF contains 121 Point-spread functions (PSFs); each PSF is represented as a 101 x 101 image and all 121 are assembled together into a cube. Each of the 121 layers represents a "super-resolution" PSF estimate in a different region (defined by an 11x11 grid) of the detector. Each PSF is a two-dimensional array with size of 101 × 101 pixels. The PSFs are oversampled such that 10 PSF pixels cover the same spatial extent as one spectral image pixel (0.615 arcsec). Let's look at some specific header keywords for the PSF:
+The fifth extension of the MEF contains the effective Point Spread Function (ePSF), stored as a binary table. The detector is divided into a 21 x 21 grid of regions (each about 97 x 97 spectral image pixels), and each of the 441 rows of the table holds the ePSF for one region, along with that region's position on the detector (`XCENTER`, `YCENTER`) and its central wavelength and bandwidth (`CWAVE`, `CBAND`). Each ePSF is a 33 x 33 array, oversampled by a factor of 5 relative to the spectral image pixels (header keywords `OVSMPX` and `OVSMPY`). Unlike an optical PSF, the ePSF is a model of the pixel-convolved PSF: it predicts the pixel values of a point source at any sub-pixel position. The [SPHEREx ePSF tutorial](spherex_psf.md) shows how to find and use the ePSF for a given position. Let's look at some specific header keywords for the EPSF:
 
 ```{code-cell} ipython3
-psf_header = hdulist[5].header
+psf_header = hdulist["EPSF"].header
 
-keywords_to_print = ['EXTNAME', 'NAXIS1', 'NAXIS2', 'NAXIS3', 'BUNIT']
+keywords_to_print = ['EXTNAME', 'NAXIS2', 'DETECTOR', 'OVSMPX', 'OVSMPY']
 
 for keyword in keywords_to_print:
     value = psf_header.get(keyword, 'Keyword not found')
