@@ -42,6 +42,20 @@
   collections, so check irsadev collections with a TAP query on `ivoa.obscore` instead. irsadev SIA
   `access_url`s point at a dev IBE host. IRSA may load only part of the sky, so confirm the notebook
   positions are covered.
+- Select detectors by name, never by position. The SDT once took D4 as
+  `results.group_by('energy_bandpassname').groups[3]`, which is D4 only if all six detectors have
+  images at the position. DR1 at the demo position had D1, D2, D4 and D5, so it silently used D5
+  with every label still saying D4. Fixed for DR1 by matching `groups.keys` to `'SPHEREx-D4'`.
+- The SDT's sec. 12.1 measures a hard-coded SExtractor source number (`selected_ids = [65]`). The
+  numbering changes whenever the images change, so check the number on every release, including
+  release day. For DR1 it was left as 65 (a real source, mid-brightness) with a release-day check.
+- Production Firefly (irsa.ipac.caltech.edu/irsaviewer) can't load images from pre-release hosts:
+  it shows "failed". Use the same host's viewer (`https://irsatest.ipac.caltech.edu/irsaviewer`)
+  when testing, and check production Firefly on release day.
+- MOST on the pre-release hosts doesn't index the new release, so `MOST_queries.md` can't be
+  tested end to end before release. Its SPHEREx cutout cell can be: take the exposures production
+  MOST returns, find the new-release file with the same observation ID
+  (`level2_<week>_<n>_<det>`) on the pre-release IBE, and run the cell on it.
 - Expect overlapping cleanup PRs. Merge them into the release branch before opening the release
   PR, or the same changes show up twice.
 
@@ -54,9 +68,13 @@
    `grep -rn "irsatest\|irsadev\|IRSA_HOST" tutorials/` finds nothing.
 3. Put in the new DOI (SDT acknowledgements).
 4. Bump `**Updated:**` in every notebook that changed.
-5. Run each notebook against production with `jupytext --to notebook --execute` (SDT needs its
-   conda env, `conda-spherex_sdt.yml`).
-6. Re-run `techniques-and-tools/MOST_queries.md` once the release is in MOST.
+5. Run each notebook against production with `jupytext --to notebook --execute` (SDT needs
+   SExtractor: its conda env, `conda-spherex_sdt.yml`, or `brew install sextractor`). Check the
+   Firefly tabs show images, and that the SDT's hard-coded `selected_ids` still gives a real
+   spectrum.
+6. `techniques-and-tools/MOST_queries.md` belongs to other authors and isn't in the release PR.
+   For DR1 a separate issue asked them to re-run it once MOST serves the release and check which
+   release MOST returns.
 7. Recheck the supplement's flag table number.
 8. Mark the draft PR ready for review (it closes the release issue).
 9. Update this skill with what was learned.

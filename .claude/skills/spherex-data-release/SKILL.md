@@ -22,8 +22,8 @@ those answers right away.
   asking the user anything; most questions were already answered once.
 - `scripts/check_release.sh <rel>` -- what is live for release `<rel>` (e.g. `dr2`) on the
   pre-release and production hosts, S3 buckets and docs.
-- `scripts/run_sdt_release_test.py` -- runs the Source Discovery Tool's own notebook cells against
-  pre-release data, with stand-ins for the parts that are not live yet.
+- `scripts/run_sdt_release_test.py` -- executes the whole Source Discovery Tool notebook against
+  pre-release data and prints a summary of what to check.
 
 ## Workflow
 
@@ -90,18 +90,23 @@ the plan what each commit did.
 
 ### 5. Test the Source Discovery Tool
 
-The SDT needs SIA results and S3 reads that do not exist before release.
-`scripts/run_sdt_release_test.py` runs the notebook's own cells with stand-ins: pre-release TAP rows
-instead of SIA (with a `cloud_access` value built from the URI), pre-release IBE instead of S3, and
-one 2MASS star instead of the SExtractor/interactive selection. Run it from the repo root:
+Run the whole notebook, not selected cells. A DR1 test that ran only some cells and stood in a
+2MASS star for secs. 9-11 passed while sec. 6 was silently picking a D5 image instead of D4
+(see decisions.md). `scripts/run_sdt_release_test.py` executes every cell on a copy, with the
+pre-release host's SIA, its IBE mirror in place of S3, and its Firefly viewer. It needs the
+release's SIA collection on that host and SExtractor's `sex` command (`brew install sextractor`
+is enough; the notebook's conda env is not needed). Run it from the repo root:
 
 ```bash
 .venv/bin/python .claude/skills/spherex-data-release/scripts/run_sdt_release_test.py \
-  tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md --release dr2
+  tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md --release dr2 \
+  --out <your excluded test folder>/sdt_run
 ```
 
-Report the number of spectral points, how many are flagged, and the flux near 2.16 um against
-the 2MASS K estimate. For DR1: 281 points, 40 flagged with the final `bad_flags`, about 17.9 mJy.
+Check its summary: sec. 6 must pick D2 and D4, the hard-coded `selected_ids` source must exist,
+and its spectrum should look like a real source. Ask the user to look at the two Firefly tabs.
+For DR1: 33 notebook code cells, 0 errors; 79 SExtractor sources, #65 was 40th by flux; 276
+points, 0.75-4.99 um, median S/N about 11, 50 points with a `bad_flags` pixel in the aperture.
 
 ### 6. Release day
 

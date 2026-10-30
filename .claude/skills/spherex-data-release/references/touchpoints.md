@@ -46,10 +46,15 @@ quoted text instead. Paths are relative to `tutorials/spherex/`.
   `solid_angle_pixel_map/`, not `sapm/`). If only the SIA name changes, set `sia_collection`
   directly. Remove any "valid as of <date>" note that no longer holds.
 - "Note that we have used the collection `spherex_dr1`" sentence after the SIA query.
+- Sec. 6 picks the D2 and D4 images by `energy_bandpassname` (D4 through `groups.keys`, since DR1).
+  Check that the new release's search still returns both detectors at the demo position.
 - Sec. 7 `get_s3_fpath(cloud_access)`: needs `cloud_access` filled in SIA results.
 - Sec. 8 masks: D2 mask from `flags_data2`, D4 mask from `flags_data4` (DR1 fixed a typo here).
 - Sec. 12.1 TAP query: `IRSA_HOST` test block (uses `pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")`),
   release filter, cutout URL prefix.
+- Sec. 12.1 `selected_ids = [65]`: a SExtractor source number from sec. 10, so it changes when the
+  images do. Check it still names a real source.
+- Secs. 6 and 11.2 use `FireflyClient.make_lab_client()`, which works only inside JupyterLab.
 - Sec. 12.2 `bad_flags`: the supplement's CONTAINS_BAD_PIXEL list (see decisions.md). Any listed
   flag in the aperture drops the point from the plotted spectrum (`bokeh_viz.plot_spectrum`).
 - Acknowledgements: DOI sentence. Cite only the DOIs of releases the notebook actually loads.
@@ -68,8 +73,11 @@ quoted text instead. Paths are relative to `tutorials/spherex/`.
 
 ## techniques-and-tools/MOST_queries.md
 
-- No release-specific code (`catalog="spherex"`). Re-run once the release is queryable in MOST to
-  refresh its outputs.
+- Not a SPHEREx tutorial (other authors) and not changed for DR1. Sec. 5 queries MOST with
+  `catalog="spherex"` (Vesta, Aug 2025); `plot_path()` uses only MOST's output columns; the cutout
+  cell reads `hdul[1]` and `PC1_1`/`PC1_2`. No release-specific code. Before DR1, production MOST
+  returned QR2 images; whether it returns the new release, the old one, or both is only known
+  after release (see decisions.md for the pre-release check).
 
 ## Repo files
 
