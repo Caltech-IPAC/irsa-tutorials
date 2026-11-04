@@ -115,10 +115,13 @@ def_cols = plt.rcParams['axes.prop_cycle'].by_key()['color']
 ## 4. Understanding the HiPS All-Sky Mosaic Cube
 
 We first spend some time to understand the format of the HiPS All-Sky Mosaic Cube. To interact with the cube, we need an URL where it is hosted.
+There are two URLs:
+* The first one (hereafter `hips_url`) links to the AllSky Cube that FireFly will use. We feed this URL to Firefly (Section 5)
+* The second one (hereafter `hips_data_url`) links to the data behind the AllSky Cube. This URL is used when we access the FITS cube directly (Section 6)
 
 ```{code-cell} ipython3
-#hips_url = "http://spherexdev2.ipac.caltech.edu:8080/hips" ## CHANGE THIS TO THE PUBLIC VERSION
-hips_url = "https://loi.irsakubedev.ipac.caltech.edu/data/hips/SPHEREx/sample_hips_20261012" ## CHANGE THIS TO THE PUBLIC VERSION
+hips_url = "https://irsa.ipac.caltech.edu/data/hips/SPHEREx/spherex_allsky_cube"
+hips_data_url = "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/hips5_cube/hips_20261026"
 ```
 
 We can first load the HiPS properties from the `properties` metadata. For this, we have to retrieve the HiPS from the above URL. We do this by using the `requests` library.
@@ -180,8 +183,7 @@ dec = 51.3404038*u.degree
 Now start the Firefly server.
 
 ```{code-cell} ipython3
-#fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
-fc = FireflyClient.make_client(url="http://spherexdev2.ipac.caltech.edu:8090/firefly") ## CHANGE THIS TO PUBLIC VERSION ABOVE
+fc = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
 ```
 
 Now, we open the HiPS All-Sky Mosaic Cube in Firefly. We can also define the field of view of the visualizer.
@@ -266,7 +268,8 @@ Now that we know the Healpix pixel number, we can construct the URL leading to t
 
 ```{code-cell} ipython3
 dirid = (ipix // 10000) * 10000
-cube_url = posixpath.join(hips_url, f"Norder{Norder}", f"Dir{dirid}", f"Npix{ipix}", f"Npix{ipix}_cube.fits")
+#cube_url = posixpath.join(hips_data_url, f"Norder{Norder}", f"Dir{dirid}", f"Npix{ipix}", f"Npix{ipix}_cube.fits")
+cube_url = posixpath.join(hips_data_url, f"Norder{Norder}", f"Dir{dirid}", f"Npix{ipix}_cube.fits")
 print(f"Cube URL: {cube_url}")
 ```
 
@@ -659,6 +662,7 @@ DEFAULT_LINES = [
     (2.626, r"Br$\beta$"),
     (3.30, r"PAH 3.3"),
     (4.052, r"Br$\alpha$"),
+    (4.67, "CO")
 ]
 ```
 
@@ -788,6 +792,9 @@ phot_table_firefly = to_spectrum_votable(phot_table, "lambda_um", "flux_bkgsub_u
 ```
 
 Now we add a new Firefly instance to plot the spectrum, we call it `fc_spec`.
+```{note}
+Note that you can use the same Firefly client that we used above (`fc`). In that case, the spectrum is opened in the same window together with the cube.
+```
 
 ```{code-cell} ipython3
 fc_spec = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewer")
@@ -795,7 +802,7 @@ fc_spec = FireflyClient.make_client(url="https://irsa.ipac.caltech.edu/irsaviewe
 
 And finally, we can load the spectrum.
 ```{tip}
-You can load emission lines by clicking on the "Spectral lines" button on the upper left of the "Active Chart" viewer. Clicking that opens a pop up and you can select the line list. For example "SPHEREx line list". Do not forget to set the redshift of the source if needed. You can set the redshift by clicking on the "gear" icon, then selecting "Spectral frame" as "Rest Frame" and then entering the redshift.
+You can load emission lines by clicking on the "lines" button on the upper left of the viewer. Clicking that opens a pop up and you can select the line list. For example "SPHEREx line list". Do not forget to set the redshift of the source if needed. You can set the redshift by clicking on the "gear" icon, then selecting "Spectral frame" as "Rest Frame" and then entering the redshift.
 ```
 
 ```{code-cell} ipython3
@@ -809,7 +816,7 @@ fc_spec.show_table(file_input=phot_table_firefly,
 
 ## About this notebook
 
-**Updated:** 29 October 2026
+**Updated:** 4 November 2026
 
 **Contact:** Contact [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or problems.
 
