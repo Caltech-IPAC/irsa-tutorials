@@ -211,7 +211,7 @@ results = Irsa.query_sia(pos=(coord, search_radius), collection=sia_collection)
 results_summary(results)
 ```
 
-Note that we have used the collection `spherex_dr1` in this case. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
+Note that we have used the collection `spherex_dr1` in this case. QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
 +++
 
 ```{tip}

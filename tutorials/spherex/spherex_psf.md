@@ -32,6 +32,8 @@ kernelspec:
 
 ```{note}
 This notebook is not intended for use of QR-1 data.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
+Section 5.2 shows how to obtain the ePSF for QR2 images, for users who are still analyzing them.
 ```
 
 +++
@@ -296,7 +298,7 @@ We advice the users **not** to use the older PSFs, which are stored in the `PSF`
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
 
 ```{note}
-Eventually, after the reprocessing of the data products, the older version LVF images will be replaced by newer versions. Generally, we advise to download the newest images (which also contain improved flagging and calibrations). However, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). For users who are still analyzing QR2 images, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images.
 ```
 
 For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).

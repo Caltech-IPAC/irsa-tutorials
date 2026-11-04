@@ -45,6 +45,7 @@ The community will also mine SPHEREx data and combine it with synergistic data s
 More information about SPHEREx, the data releases, and the data products is available in the [SPHEREx Archive at IRSA User Guide](https://caltech-ipac.github.io/spherex-archive-documentation).
 
 This notebook uses data from SPHEREx Data Release 1 (DR1).
+QR3 and DR1 supersede the earlier Quick Release 2 (QR2), and SPHEREx recommends using QR3 and DR1 over QR2.
 
 +++
 

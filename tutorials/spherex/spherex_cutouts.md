@@ -104,6 +104,8 @@ output_filename = 'spherex_cutouts_mef.fits'
 Here we show how to use `astroquery`'s IRSA TAP interface to retrieve all images that overlap with the position defined above.
 This query will retrieve a table of URLs that link to the MEF cutouts.
 Each row in the table corresponds to a single cutout and includes the data access URL and an observation timestamp.
+The SPHEREx metadata tables include images from every release.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2; this query keeps only DR1 images.
 The results are sorted from oldest to newest.
 
 ```{code-cell} ipython3
