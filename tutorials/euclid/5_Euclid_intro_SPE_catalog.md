@@ -104,17 +104,6 @@ warnings.filterwarnings(
 )
 ```
 
-## 1. Find the     that corresponds to a given RA and Dec
-
-In this case, choose the coordinates from the first notebook to save time 
-
-Search a radius of 1.5 arcminutes around these coordinates.
-
-```{code-cell} ipython3
-search_radius = 10 * u.arcsec
-coord = SkyCoord.from_name('HD 168151')
-```
-
 ```{tip}
 The IRSA SIA collections can be listed using using the ``list_collections`` method, we can filter on the ones containing "euclid" in the collection name:
 
@@ -152,7 +141,7 @@ tileID = science_images[science_images['energy_bandpassname'] == 'VIS']['obs_id'
 print(f'The MER tile ID for this object is : {tileID}')
 ```
 
-## 2. Download SPE catalog from IRSA directly to this notebook
+## 1. Download SPE catalog from IRSA directly to this notebook
 
 Search for all Euclid catalogs and metadata tables in IRSA:
 
@@ -166,10 +155,11 @@ Irsa.list_catalogs(filter='euclid', include_metadata_tables=True)
 ```
 
 ```{code-cell} ipython3
-table_mer = 'euclid_q1_mer_catalogue'
-table_galaxy_candidates = 'euclid_q1_spectro_zcatalog_spe_galaxy_candidates'
-table_1dspectra = 'euclid.objectid_spectrafile_association_q1'
-table_lines = 'euclid_q1_spe_lines_line_features'
+table_mer = 'euclid_dr1_mer_catalogue_deep_survey'
+table_galaxy_candidates = 'euclid_dr1_spectro_z_spe_galaxy_candidates_deep'
+table_quality = 'euclid_dr1_spectro_z_spe_quality_deep'
+table_lines = 'euclid_dr1_spectro_line_features_spe_line_features_deep'
+table_photo_z = 'euclid_dr1_phz_photo_z_deep_survey'
 ```
 
 ### Learn some information about the table:
