@@ -156,6 +156,24 @@ Euclid DR1 covers a large sky area of approximately 1,900 square degrees. To red
 
 As an example, let's select objects within a 0.2-square-degree region of the Euclid Deep Field North (EDF-N).
 
+```{code-cell} ipython3
+query_mer = f"""
+SELECT DISTINCT
+    object_id,
+    ra,
+    dec
+FROM {table_mer}
+WHERE
+     ra BETWEEN 269.34391 AND 270.12192
+AND dec BETWEEN 65.85958 AND 66.17581
+"""
+
+mer = Irsa.query_tap(query_mer).to_table()
+
+object_ids = mer["object_id", "ra", "dec"].as_array().tolist()
+object_ids = [row[0] for row in object_ids]
+```
+
 
 ## 3. Find some objects with spectra with conditions  
 
