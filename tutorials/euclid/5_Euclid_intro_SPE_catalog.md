@@ -110,36 +110,7 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
     Irsa.list_collections(filter='euclid')
 ```
 
-+++
 
-### Use IRSA to search for all Euclid data on this target
-
-This searches specifically in the ``euclid_DpdMerBksMosaic`` collection which is the MER images and catalogs.
-
-```{code-cell} ipython3
-image_table = Irsa.query_sia(pos=(coord, search_radius), collection='euclid_DpdMerBksMosaic')
-```
-
-This table lists all MER mosaic images available in this search position. These mosaics include the Euclid VIS, Y, J, H images, as well as ground-based telescopes which have been put on the same pixel scale. For more information, see the [Euclid documentation at IPAC](https://euclid.caltech.edu/page/euclid-faq-tech/).
-
-Note that there are various image types are returned as well, we filter out the `science` images from these:
-
-```{code-cell} ipython3
-science_images = image_table[image_table['dataproduct_subtype'] == 'science']
-science_images
-```
-
-### Choose the VIS image and pull the Tile ID
-
-+++
-
-Extract the tile ID from the ``obs_id`` column. The values in this column are made a combination of the 9 digit tile ID and the abbreviation of the instrument.
-
-```{code-cell} ipython3
-tileID = science_images[science_images['energy_bandpassname'] == 'VIS']['obs_id'][0][:9]
-
-print(f'The MER tile ID for this object is : {tileID}')
-```
 
 ## 1. Download SPE catalog from IRSA directly to this notebook
 
@@ -180,7 +151,13 @@ Irsa.list_columns(catalog=table_1dspectra, full=True)
 columns_info
 ```
 
-## 3. Find some objects with spectra in our tileID
+## 2. Find objects within a specified sky region defined by RA and Dec ranges
+Euclid DR1 covers a large sky area of approximately 1,900 square degrees. To reduce query execution time and avoid potential timeout issues, we recommend restricting searches to smaller sky regions.
+
+As an example, let's select objects within a 0.2-square-degree region of the Euclid Deep Field North (EDF-N).
+
+
+## 3. Find some objects with spectra with conditions  
 
 We specify the following conditions on our search:
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 5
