@@ -154,7 +154,7 @@ columns_info
 ## 2. Find objects within a specified sky region defined by RA and Dec ranges
 Euclid DR1 covers a large sky area of approximately 1,900 square degrees. To reduce query execution time and avoid potential timeout issues, we recommend restricting searches to smaller sky regions.
 
-As an example, let's select objects within a 0.2-square-degree region of the Euclid Deep Field North (EDF-N).
+As an example, let's select objects within a 0.1 square-degree region of the Euclid Deep Field North (EDF-N).
 
 ```{code-cell} ipython3
 query_mer = f"""
@@ -177,12 +177,15 @@ object_ids = [row[0] for row in object_ids]
 
 ## 3. Find some objects with spectra with conditions  
 
-We specify the following conditions on our search:
-- Signal to noise ratio column (_gf = gaussian fit) should be greater than 5
-- We want to detect H-alpha.
-- We choose in which tileID to search, usign the tileID from the first notebook.
-- Choose spectroscopic redshift (spe_z) between 1.4 and 1.6 and spe_z_prob greater than 0.999
+We specify the following conditions on our search, as recommended in the Euclid DR1 spectroscopic paper:
+- Signal to noise ratio column (_gf = gaussian fit) should be greater than 10
+- We want to detect H-alpha
+- We select objects with well-measured H-alpha flux based on the spe_line_qual_gf quality flags
+- Choose spectroscopic redshift (spe_z) between 0.85 and 1.85 and spe_z_prob greater than 0.999
+- We select objects whose spectroscopic redshifts (spe_z) fall within the 95% confidence intervals of their photometric redshifts (phz_95_int)
+- Choose spectrum spe_npix and spe_n_dith_med greater than 15
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
+- 
 - Join the lines and galaxy candidates tables on object_id and spe_rank
 
 Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.
