@@ -33,7 +33,8 @@ kernelspec:
 ```{note}
 This notebook is not intended for use of QR-1 data.
 QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
-Section 5.2 shows how to obtain the ePSF for QR2 images, for users who are still analyzing them.
+IRSA searches, including the one in this notebook, no longer return QR2 images.
+If you already have QR2 images and prefer not to switch to DR1, Section 5.2 shows how to obtain the ePSF for them.
 ```
 
 +++
@@ -255,7 +256,7 @@ We will use these coordinates later to obtain the correct spatial PSF.
 
 ## 5. Obtain the ePSF Depending on Image Version
 
-The PSFs included in the SPHEREx LVF images has been updated. Some of the images therefore still include the old PSF (referred to as "PSF"), while newer versions of the images include the new PSF (referred to as "ePSF"). Differently than the previously used PSF, the ePSF is *not* an optical PSF. Instead, the ePSF is a subpixel-resolved model of the pixel-convolved PSF, which predicts pixel values for a point source at arbitrary sub-pixel positions. Additionally, we implemented a simpler way to read the PSF layer - it is now simply a binary table with array columns.
+The PSFs included in the SPHEREx LVF images has been updated. Older images therefore still include the old PSF (referred to as "PSF"), while newer versions of the images include the new PSF (referred to as "ePSF"). Differently than the previously used PSF, the ePSF is *not* an optical PSF. Instead, the ePSF is a subpixel-resolved model of the pixel-convolved PSF, which predicts pixel values for a point source at arbitrary sub-pixel positions. Additionally, we implemented a simpler way to read the PSF layer - it is now simply a binary table with array columns.
 
 The differentiation is as follows:
 * Versions earlier than `7.0` contain the old PSF (saved in the `PSF` FITS layer). These are QR-1 and QR-2 data.
@@ -298,7 +299,7 @@ We advice the users **not** to use the older PSFs, which are stored in the `PSF`
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
 
 ```{note}
-QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). For users who are still analyzing QR2 images, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). IRSA searches no longer return QR2 images, so the query in Section 4.1 finds only DR1 images and the code cells in this section are skipped. If you already have QR2 images and prefer not to switch to DR1, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images. To do this, set `spectral_image_url` in Section 4.1 to your QR2 image and rerun the notebook from there.
 ```
 
 For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).
