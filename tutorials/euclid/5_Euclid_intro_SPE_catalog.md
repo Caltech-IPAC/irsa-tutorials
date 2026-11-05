@@ -177,7 +177,7 @@ object_ids = [row[0] for row in object_ids]
 
 ## 3. Find some objects with spectra with conditions  
 
-We specify the following conditions on our search, as recommended in the Euclid DR1 spectroscopic paper:
+We specify the following conditions on our search, based on recommendations in the Euclid DR1 spectroscopic paper:
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 10
 - We want to detect H-alpha
 - We select objects with well-measured H-alpha flux based on the spe_line_qual_gf quality flags
@@ -185,7 +185,7 @@ We specify the following conditions on our search, as recommended in the Euclid 
 - We select objects whose spectroscopic redshifts (spe_z) fall within the 95% confidence intervals of their photometric redshifts (phz_95_int)
 - Choose spectrum spe_npix and spe_n_dith_med greater than 15
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
-- 
+- We exclude point-like objects (primarily stars; mer.point_like_prob < 0.05), excessively large objects (mer.kron_radius < 50), and potentially spurious detections (mer.spurious_prob < 0.5). The size criterion helps minimize contamination from galaxies at $z < 0.85$ with incorrectly measured spectroscopic redshifts.
 - Join the lines and galaxy candidates tables on object_id and spe_rank
 
 Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.
