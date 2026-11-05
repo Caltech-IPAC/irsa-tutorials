@@ -60,6 +60,7 @@ from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.nddata import Cutout2D
 from astropy.nddata.utils import NoOverlapError
+from astropy.table import Table
 from astropy.wcs import WCS, FITSFixedWarning
 from astroquery.ipac.irsa import Irsa
 from matplotlib import animation
@@ -97,7 +98,7 @@ FILENAME = 'Roman_TDS_obseq_11_6_23.fits'
 OBSEQ_PATH = f's3://{BUCKET_NAME}/{ROMAN_TDS_PATH}/{FILENAME}'
 
 obseq_hdu = fits.open(OBSEQ_PATH, fsspec_kwargs={"anon": True})
-obseq = pd.DataFrame(obseq_hdu[1].data)
+obseq = Table(obseq_hdu[1].data).to_pandas()
 
 print(obseq)
 ```
