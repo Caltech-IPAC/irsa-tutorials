@@ -104,9 +104,11 @@ warnings.filterwarnings(
 )
 ```
 
-## 1. Find the MER Tile ID that corresponds to a given RA and Dec
+## 1. Find the     that corresponds to a given RA and Dec
 
-In this case, choose the coordinates from the first notebook to save time downloading the MER mosaic. Search a radius of 1.5 arcminutes around these coordinates.
+In this case, choose the coordinates from the first notebook to save time 
+
+Search a radius of 1.5 arcminutes around these coordinates.
 
 ```{code-cell} ipython3
 search_radius = 10 * u.arcsec
