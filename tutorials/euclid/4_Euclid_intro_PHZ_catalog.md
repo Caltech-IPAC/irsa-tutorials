@@ -37,7 +37,7 @@ By the end of this tutorial, you will:
 - know how to join the PHZ and MER catalogs with ADQL to select galaxies with good photometric redshifts in a redshift range;
 - know how to compare the photometric redshifts with the spectroscopic redshifts of the DR1 SPE catalog;
 - know how to make a cutout of a MER mosaic and overplot the selected galaxies on it;
-- know how to retrieve and plot the spectrum of one of the galaxies, and compare its photometric and spectroscopic redshifts;
+- know how to find and plot the spectra of one of the galaxies from its object ID, and compare its photometric and spectroscopic redshifts;
 - know how to load the image and catalog into Firefly to inspect individual sources interactively.
 
 +++
@@ -129,32 +129,6 @@ conf.remote_timeout = 120
 # DR1 is not public yet, so we query IRSA's development server.
 Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
 Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
-Irsa.ssa_url = 'https://irsadev.ipac.caltech.edu/SSA'
-```
-
-<!-- TODO: remove this cell once the SSA service serves the DR1 spectra again (IRSA temporarily removed the euclid_dr1_DpdSirCombinedSpectra collection for fixes on 2026-11-06). -->
-
-```{code-cell} ipython3
-# TEMPORARY: the SSA service does not return DR1 spectra yet, so we emulate
-# Irsa.query_ssa with a TAP query on IRSA's CAOM tables, which already have them.
-from astropy.table import Table
-
-
-def query_ssa_from_caom(*, pos, radius, collection):
-    query = f"""
-        SELECT a.uri
-        FROM euclid.plane_euclid_dr1 AS p
-        JOIN euclid.observation_euclid_dr1 AS o ON o.obsid = p.obsid
-        JOIN euclid.artifact_euclid_dr1 AS a ON a.planeid = p.planeid
-        WHERE o.collection = '{collection}'
-          AND CONTAINS(p.pt, CIRCLE('ICRS', {pos.ra.deg}, {pos.dec.deg}, {radius.to(u.deg).value})) = 1
-    """
-    uris = Irsa.query_tap(query, async_job=True).to_table()['uri']
-    return Table({'s_ra': [pos.ra.deg] * len(uris), 's_dec': [pos.dec.deg] * len(uris),
-                  'access_url': [f'https://irsadev.ipac.caltech.edu/{uri}' for uri in uris]})
-
-
-Irsa.query_ssa = query_ssa_from_caom
 ```
 
 ## 1. Find the PHZ catalog tables at IRSA
@@ -201,14 +175,14 @@ A few highlights of the PHZ catalog columns:
 columns_info
 ```
 
-## 2. Select galaxies between z = 1.4 and 1.6 with good photometric redshifts
+## 2. Select galaxies between z = 0.85 and 1.85 with good photometric redshifts
 
 We join the PHZ catalog with the MER catalog, which has the coordinates, and select galaxies in a 5 arcmin box around a position in the Euclid Deep Field North, with the following conditions:
 - the unified fluxes in the four Euclid bands are greater than zero, so the galaxies are detected in all four Euclid MER mosaics;
 - `phz_classification = 2`, so the source is accepted as a galaxy only;
 - `phz_flags = 0`, so the PHZ processing had no problems;
 - the 90% interval of the photometric redshift PDF is narrower than 20% of (1 + z), so the photometric redshift is well constrained;
-- the median photometric redshift is between 1.4 and 1.6.
+- the median photometric redshift is between 0.85 and 1.85, the range in which the Hα line falls in the NISP red grism spectra (1.2 to 1.9 micron), so that the galaxies can also have spectroscopic redshifts (see below).
 
 ```{code-cell} ipython3
 ######################## User defined section ############################
@@ -218,7 +192,7 @@ dec_cutout = 66
 im_cutout = 5 * u.arcmin
 
 # Redshift range
-z_min, z_max = 1.4, 1.6
+z_min, z_max = 0.85, 1.85
 ##########################################################################
 
 coords_cutout = SkyCoord(ra_cutout, dec_cutout, unit='deg', frame='icrs')
@@ -278,22 +252,22 @@ reliable = has_spec_z & (galaxies['spe_z_prob'].filled(0) > 0.99) & (galaxies['s
 print(f'{reliable.sum()} of the {has_spec_z.sum()} spectroscopic redshifts are reliable')
 ```
 
-Let's compare the two redshifts:
+Let's compare the two redshifts of the galaxies with a reliable spectroscopic redshift:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 6))
-ax.scatter(galaxies['spe_z'][has_spec_z], galaxies['phz_median'][has_spec_z],
-           facecolors='none', edgecolors='grey', label='All spectroscopic redshifts')
-ax.scatter(galaxies['spe_z'][reliable], galaxies['phz_median'][reliable],
-           color='tab:blue', label='Reliable spectroscopic redshifts')
-ax.plot([0, 5], [0, 5], color='grey', linestyle='--', linewidth=0.8)
-ax.axhspan(z_min, z_max, color='tab:red', alpha=0.1)
+ax.scatter(galaxies['spe_z'][reliable], galaxies['phz_median'][reliable], color='tab:blue')
+ax.plot([0.5, 2.5], [0.5, 2.5], color='grey', linestyle='--', linewidth=0.8)
+ax.axhspan(z_min, z_max, color='tab:red', alpha=0.1, label='Selected photometric redshift range')
+ax.set_xlim(0.5, 2.5)
+ax.set_ylim(0.5, 2.5)
 ax.set_xlabel('Spectroscopic redshift (spe_z)')
 ax.set_ylabel('Photometric redshift (phz_median)')
 _ = ax.legend(loc='upper left')
 ```
 
-The galaxies with a reliable spectroscopic redshift lie close to the one-to-one line, within the width of their photometric redshift intervals, while the unreliable ones are scattered over the whole redshift range.
+Most of the galaxies lie close to the one-to-one line, within the width of their photometric redshift intervals.
+Try plotting the unreliable spectroscopic redshifts as well: they are scattered over the whole redshift range, because a single detected line attributed to the wrong transition gives a completely wrong redshift.
 
 ## 4. Read in a cutout of the VIS mosaic and overplot the galaxies
 
@@ -370,10 +344,23 @@ brightest.sort(keys='flux_h_unif', reverse=True)
 brightest['object_id', 'flux_h_unif', 'phz_median', 'phz_90_int_1', 'phz_90_int_2', 'spe_z', 'spe_z_prob', 'spe_z_rel'][:5]
 ```
 
-We pick the brightest one:
+### Retrieve the spectra
+
+The DR1 SIR 1D spectra are stored in large FITS files with one extension (HDU) per spectrum.
+The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file and the HDU of its spectra; we query it for the brightest of these galaxies.
+Not every galaxy with a spectroscopic redshift has a spectrum listed in this table yet, so if none is found, we move on to the next brightest galaxy.
 
 ```{code-cell} ipython3
-galaxy = brightest[0]
+for galaxy in brightest:
+    adql_spectra = f"""
+        SELECT objectid, tileid, path, hdu
+        FROM euclid.objectid_spectrafile_association_dr1
+        WHERE objectid = {galaxy['object_id']}
+    """
+    result_spectra = Irsa.query_tap(adql_spectra).to_table()
+    if len(result_spectra) > 0:
+        break
+    print(f"No spectra listed for object {galaxy['object_id']}, trying the next galaxy")
 
 obj_id = galaxy['object_id']
 photo_z = galaxy['phz_median']
@@ -381,18 +368,18 @@ spec_z = galaxy['spe_z']
 coords_galaxy = SkyCoord(galaxy['ra'], galaxy['dec'], unit='deg')
 
 print(f'Object {obj_id}: photometric redshift {photo_z:.2f}, spectroscopic redshift {spec_z:.3f}')
+result_spectra
 ```
 
-### Retrieve the spectra
+IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable, which we read into an astropy table.
+A galaxy in the Euclid Deep Fields can have spectra from both the red and the blue grism; as in the [SIR 1D spectra notebook](3_Euclid_intro_1D_spectra.md), we keep the spectrum with the most usable flux bins for each kind of grism.
 
-We search IRSA's Simple Spectral Access (SSA) service for the DR1 SIR 1D spectra at the position of the galaxy.
-A galaxy in the Euclid Deep Fields can have several spectra, from the red and blue grisms and from the deep and wide tiles; as in the [SIR 1D spectra notebook](3_Euclid_intro_1D_spectra.md), we keep the spectrum with the most usable flux bins for each kind of grism.
+<!-- TODO: change the base URL to https://irsa.ipac.caltech.edu when DR1 is public on the production IRSA services. -->
 
 ```{code-cell} ipython3
-ssa_result = Irsa.query_ssa(pos=coords_galaxy, radius=1 * u.arcsec, collection='euclid_dr1_DpdSirCombinedSpectra')
-spectra = [QTable.read(url) for url in ssa_result['access_url']]
-
-print(f'Found {len(spectra)} spectra')
+spectrum_urls = [f"https://irsadev.ipac.caltech.edu/api/spectrumdm/convert/{row['path']}?dataset_id=euclid_combspec&hdu={row['hdu']}"
+                 for row in result_spectra]
+spectra = [QTable.read(url) for url in spectrum_urls]
 ```
 
 ```{code-cell} ipython3
