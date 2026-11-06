@@ -55,6 +55,7 @@ It follows Quick Release 1 (Q1), which covered about 63 sq deg with a single pas
 Further information about Euclid DR1 can be found at https://euclid.caltech.edu/page/euclid-dr1.
 
 Among the data products included in DR1 are the one-dimensional (1D) spectra extracted from the NISP slitless spectroscopic observations by the SIR (Spectroscopic Imaging Reduction) processing function.
+The SIR processing for DR1 is described in detail in Euclid Collaboration: Scodeggio et al. (2026), see the [References](#references) section below.
 This notebook provides an introduction to the Euclid DR1 SIR 1D spectra.
 If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
@@ -441,6 +442,14 @@ for galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len(galaxi
         continue
     plot_spectra(galaxy_spectra, f"Object {galaxy['object_id']}", galaxy['spe_z'])
 ```
+
+## References
+
+<!-- TODO: update the Scodeggio et al. reference (journal, volume, arXiv ID) once the paper is public. -->
+
+- Euclid Collaboration: Scodeggio, M., et al. 2026, *Euclid Data Release 1 (DR1): The SIR spectroscopic processing*, A&A, in prep.
+
++++
 
 ## About this Notebook
 

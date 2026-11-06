@@ -13,7 +13,7 @@
 - title: SIR 1D Spectra
   file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
   section: Euclid
-  description: Load a galaxy spectrum and plot it. Understand the wavelength, flux, and mask values.
+  description: Search for the Euclid DR1 SIR spectra of a galaxy, pick the best red and blue grism spectra, and plot them with their emission lines.
 - title: PHZ Catalogs
   file: tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
   section: Euclid
