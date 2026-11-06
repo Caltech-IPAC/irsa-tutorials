@@ -29,7 +29,7 @@
 - title: Euclid Cloud Access
   file: tutorials/euclid/euclid-cloud-access.md
   section: Euclid
-  description: Browse the on-cloud copy of Q1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
+  description: Browse the on-cloud copy of DR1, then efficiently retrieve a MER mosaic cutout and a SIR spectrum.
 - title: Galaxy Clusters
   file: tutorials/euclid/euclid_clusters_tutorial.md
   section: Euclid
