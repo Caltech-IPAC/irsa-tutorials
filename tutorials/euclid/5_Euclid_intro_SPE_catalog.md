@@ -181,7 +181,7 @@ We specify the following conditions on our search, based on recommendations in t
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 10
 - We want to detect H-alpha
 - We select objects with well-measured Hα fluxes based on the spe_line_qual_gf quality flags (spe_line_qual_gf = 212, 222, or 252)
-- Choose spectroscopic redshift (spe_z) between 0.85 and 1.85 and spe_z_prob greater than 0.999
+- Choose spectroscopic redshift (spe_z) between 0.85 and 1.85 and spe_z_prob greater than 0.99, and spe_z_rel greater than 0.05
 - We select objects whose spectroscopic redshifts (spe_z) fall within the 95% confidence intervals of their photometric redshifts (phz_95_int)
 - We select spectra with a high number of valid pixels (spe_npix > 800) and a median number of dithers greater than 15 (spe_n_dith_med > 15)
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
