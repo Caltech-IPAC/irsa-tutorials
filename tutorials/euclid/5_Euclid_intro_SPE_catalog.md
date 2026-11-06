@@ -180,12 +180,12 @@ object_ids = [row[0] for row in object_ids]
 We specify the following conditions on our search, based on recommendations in the Euclid DR1 spectroscopic paper:
 - Signal to noise ratio column (_gf = gaussian fit) should be greater than 10
 - We want to detect H-alpha
-- We select objects with well-measured H-alpha flux based on the spe_line_qual_gf quality flags
+- We select objects with well-measured Hα fluxes based on the spe_line_qual_gf quality flags (spe_line_qual_gf = 212, 222, or 252)
 - Choose spectroscopic redshift (spe_z) between 0.85 and 1.85 and spe_z_prob greater than 0.999
 - We select objects whose spectroscopic redshifts (spe_z) fall within the 95% confidence intervals of their photometric redshifts (phz_95_int)
-- We select spectra with a high number of valid pixels (spe_npix > 800) and a median number of dithers greater than 15 (spe_n_dith_med > 15).
+- We select spectra with a high number of valid pixels (spe_npix > 800) and a median number of dithers greater than 15 (spe_n_dith_med > 15)
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
-- We exclude point-like objects (primarily stars; mer.point_like_prob < 0.05), excessively large objects (mer.kron_radius < 50), and potentially spurious detections (mer.spurious_prob < 0.5). The size criterion helps minimize contamination from galaxies at $z < 0.85$ with incorrectly measured spectroscopic redshifts.
+- We exclude point-like objects (primarily stars; mer.point_like_prob < 0.05), excessively large objects (mer.kron_radius < 50), and potentially spurious detections (mer.spurious_prob < 0.5). The size criterion helps minimize contamination from galaxies at $z < 0.85$ with incorrectly measured spectroscopic redshifts
 - Join the lines, mer, photometric redshift, and galaxy candidates tables on object_id and spe_rank
 
 We limit our search to the first 10,000 objects to reduce query execution time and avoid potential timeout issues.
