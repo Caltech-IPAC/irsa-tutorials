@@ -33,406 +33,417 @@ authors:
 +++
 
 By the end of this tutorial, you will:
-- Understand the basic characteristics of Euclid DR1 SIR 1D spectra.
-- Examine the provided boolean masks
-- Make a simple plot of a Euclid spectrum.
+- know how to search for and retrieve the spectra of a galaxy with IRSA's Simple Spectral Access (SSA) service;
+- know how to use the MASK column to pick the flux bins to plot;
+- understand why a galaxy can have several spectra, from the red and blue grisms and from the deep and wide tiles, and how to pick the best one;
+- know how to get the spectroscopic redshift of a galaxy from the DR1 SPE catalog and mark the emission lines on its spectrum;
+- know how to explore the spectra of randomly selected galaxies.
 
 +++
 
 ## Introduction
-<!-- This part is not needed to change-->
-Euclid launched in July 2023 as a European Space Agency (ESA) mission with contributions from NASA.
+
++++
+
+Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
 The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
-The Euclid mission provides space-based imaging and spectroscopy, complemented by ground-based imaging, to achieve these goals.
-These data will be archived by multiple global repositories, including IRSA, where they will support a wide range of astrophysical research.
+The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
+These data are archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields. Further information about Euclid DR1 can be found at: https://euclid.caltech.edu/page/euclid-dr1
+Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS), which will eventually cover about 14,000 sq deg, and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
+It follows Quick Release 1 (Q1), which covered about 63 sq deg with a single pass over each of the three Euclid Deep Fields and the dark cloud LDN 1641; all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
+Further information about Euclid DR1 can be found at https://euclid.caltech.edu/page/euclid-dr1.
 
-
-Among the DR1 data products are the one-dimensional (1D) spectra extracted from NISP slitless spectroscopic observations by the SIR Processing Function.
+Among the data products included in DR1 are the one-dimensional (1D) spectra extracted from the NISP slitless spectroscopic observations by the SIR (Spectroscopic Imaging Reduction) processing function.
 This notebook provides an introduction to the Euclid DR1 SIR 1D spectra.
 If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
 
 ## Imports
-<!-- This part is not needed to change-->
 
 ```{important}
 We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
 ```
 
 ```{code-cell} ipython3
-# Uncomment the next line to install dependencies if needed
-# !pip install matplotlib astropy 'astroquery>=0.4.10'
+# Uncomment the next line to install dependencies if needed.
+# !pip install numpy matplotlib astropy 'astroquery>=0.4.10'
 ```
 
 ```{code-cell} ipython3
+import warnings
+from urllib.error import HTTPError
+
 import numpy as np
+
 import matplotlib.pyplot as plt
 
-from astropy.io import fits
-from astropy.table import QTable
-from astropy import units as u
 from astropy.coordinates import SkyCoord
+from astropy.table import QTable
 from astropy.utils.data import conf
 from astropy.visualization import quantity_support
+from astropy import units as u
 
 from astroquery.ipac.irsa import Irsa
 
-#suppress warnings about deprecated units
-import warnings
-warnings.filterwarnings(
-    "ignore",
-    message="The unit 'Angstrom' has been deprecated",
-    category=u.UnitsWarning,
-)
+# Suppress warnings about deprecated units in the spectrum files
+warnings.filterwarnings('ignore', message="The unit 'Angstrom' has been deprecated", category=u.UnitsWarning)
+warnings.filterwarnings('ignore', message="The unit 'erg' has been deprecated", category=u.UnitsWarning)
 
-warnings.filterwarnings(
-    "ignore",
-    message="The unit 'erg' has been deprecated",
-    category=u.UnitsWarning,
-)
+# Let matplotlib pick up the axis units from the quantities we plot
+quantity_support()
 
-# The Euclid spectrum files are large and the time it takes to read
-# them can exceed astropy's default timeout limit. Increase it.
+# The Euclid spectrum files can take a while to read,
+# which can exceed astropy's default timeout limit. Increase it.
 conf.remote_timeout = 120
 ```
 
-## 1. Search for the spectrum of a specific galaxy
-
-First, explore what Euclid catalogs are available. Note that we need to use the object ID for our targets to be able to download their spectrum.
-
-Search for spectra collections in IRSA.
+<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
 
 ```{code-cell} ipython3
-Irsa.list_collections(servicetype="ssa")
+# DR1 is not public yet, so we query IRSA's development server.
+Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
+Irsa.ssa_url = 'https://irsadev.ipac.caltech.edu/SSA'
+```
+
+<!-- TODO: remove this cell once the SSA service serves the DR1 spectra again (IRSA temporarily removed the euclid_dr1_DpdSirCombinedSpectra collection for fixes on 2026-11-06; it returns 0 rows on irsadev/irsatest/prod). -->
+
+```{code-cell} ipython3
+# TEMPORARY: the SSA service does not return DR1 spectra yet, so we emulate
+# Irsa.query_ssa with a TAP query on IRSA's CAOM tables, which already have them.
+from astropy.table import Table
+
+
+def query_ssa_from_caom(*, pos, radius, collection):
+    query = f"""
+        SELECT a.uri
+        FROM euclid.plane_euclid_dr1 AS p
+        JOIN euclid.observation_euclid_dr1 AS o ON o.obsid = p.obsid
+        JOIN euclid.artifact_euclid_dr1 AS a ON a.planeid = p.planeid
+        WHERE o.collection = '{collection}'
+          AND CONTAINS(p.pt, CIRCLE('ICRS', {pos.ra.deg}, {pos.dec.deg}, {radius.to(u.deg).value})) = 1
+    """
+    uris = Irsa.query_tap(query, async_job=True).to_table()['uri']
+    return Table({'s_ra': [pos.ra.deg] * len(uris), 's_dec': [pos.dec.deg] * len(uris),
+                  'access_url': [f'https://irsadev.ipac.caltech.edu/{uri}' for uri in uris]})
+
+
+Irsa.query_ssa = query_ssa_from_caom
+```
+
+## 1. Search for the spectra of a galaxy
+
+IRSA's SSA service serves several spectra collections; they can be listed with the `list_collections` method.
+The DR1 SIR 1D spectra are in the `euclid_dr1_DpdSirCombinedSpectra` collection (`euclid_DpdSirCombinedSpectra` holds the Q1 spectra).
+
+```{code-cell} ipython3
+Irsa.list_collections(servicetype='ssa')
 ```
 
 ```{code-cell} ipython3
 euclid_ssa_collection = 'euclid_dr1_DpdSirCombinedSpectra'
 ```
 
-## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
+We start with a galaxy in the Euclid Deep Field North, and search the collection for spectra within 1 arcsec of it:
 
 ```{code-cell} ipython3
-coord = SkyCoord(
-    ra=272.3240 * u.deg,
-    dec=68.2962 * u.deg,
-    frame="icrs"
-)
+coord = SkyCoord(272.3240, 68.2962, unit='deg', frame='icrs')
+search_radius = 1 * u.arcsec
 
-search_radius = 1.0 * u.arcsec
+ssa_result = Irsa.query_ssa(pos=coord, radius=search_radius, collection=euclid_ssa_collection)
+
+print(f'Found {len(ssa_result)} spectra')
 ```
 
-Query the IRSA SSA service for spectra near this position
+Each row of the result is one spectrum, and its `access_url` column gives the URL of the spectrum file.
+A galaxy can have several spectra; we explain why in section 3.
 
 ```{code-cell} ipython3
-#=====This part to be removed once the dr1 becomes public====
-irsa_dev = IrsaClass()
-irsa_dev.ssa_url = "https://irsadev.ipac.caltech.edu/SSA"
-#============================================================
-
-#===ssa_result = irsa_dev.query_ssa --> ssa_result = Irsa.query_ssa, once the dr1 becomes public==
-ssa_result = irsa_dev.query_ssa(
-    pos=coord,
-    radius=search_radius,
-    collection="euclid_dr1_DpdSirCombinedSpectra",
-)
-
-#check whether any spectra were found
-len(ssa_result)
+ssa_result['s_ra', 's_dec', 'access_url']
 ```
 
-Pull out the file name from the ``result`` table:
+## 2. Read in the spectra and plot one of them
+
+Each `access_url` returns a VOTable containing the spectrum, which we read into an astropy table:
 
 ```{code-cell} ipython3
-# Extract the single SSA result row
-row = ssa_result[0]  #in case there is more than one spectra in the search radius
-row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
-
-
-# Each SSA row provides a direct URL to the spectrum file
-spectrum_path = row["access_url"]
-spectrum_path
-
-spectrum_path_blue = row_blue["access_url"]
-spectrum_path_blue
-```
-
-## 3. Read in the spectrum for only our specific object
-
-`spectrum_path` is a url that will return a VOTable containing the spectrum of our object.
-
-```{code-cell} ipython3
-spectrum = QTable.read(spectrum_path)
-spectrum_blue = QTable.read(spectrum_path_blue)
-```
-
-```{code-cell} ipython3
-spectrum
-```
-
-## 4. Plot the image of the extracted spectrum
-
-```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
-```
-
-```{code-cell} ipython3
-quantity_support()
+spectra = [QTable.read(url) for url in ssa_result['access_url']]
 ```
 
 ```{note}
-The 1D combined spectra table contains 6 columns, below are a few highlights:
+Some highlights of the columns of the 1D spectra:
 
 - WAVELENGTH is in Angstroms by default.
 - SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
-- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
+- VAR is the variance of the flux, and UNCERTAINTY is its square root, the flux uncertainty.
+- MASK values can be used to determine which flux bins to discard: flux bins with an odd MASK value or a MASK value of 64 or more should not be used.
+- NDITH is the number of dithered exposures that contribute to each flux bin.
 ```
 
-We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
+Before plotting, we use the MASK column to find the flux bins not to use:
 
 ```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
-plt.ylabel('Mask value')
-plt.title('Values of MASK by flux bin')
+def bad_flux_bins(spectrum):
+    mask = spectrum['MASK'].value
+    return (mask % 2 == 1) | (mask >= 64)
 ```
 
-We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
+Let's plot the spectrum with the most usable flux bins, with the flux as a solid line and its uncertainty as a thin line:
 
 ```{code-cell} ipython3
-bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
-bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
+spectrum = max(spectra, key=lambda spectrum: np.sum(~bad_flux_bins(spectrum)))
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
-plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
+bad = bad_flux_bins(spectrum)
+wavelength = spectrum['WAVELENGTH'].to(u.micron)
 
-plt.legend(loc='upper right')
-plt.ylim(-0.05, 0.55)
-plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color='tab:red', label='Flux')
+ax.plot(wavelength, np.ma.masked_where(bad, spectrum['UNCERTAINTY']), color='tab:red', linewidth=0.5, label='Uncertainty')
+ax.set_title(f'Euclid SIR 1D spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°')
+ax.legend()
+plt.show()
 ```
 
-## 5. Repeat Steps 2-4 for a different galaxy
-## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
+The strong emission line near 1.76 micron is Hα, and the lines near 1.3 micron are Hβ and [OIII]; we will confirm this with the redshift of the galaxy in section 4.
+
+## 3. Why several spectra? Red and blue grisms, deep and wide tiles
+
+NISP takes slitless spectra with two kinds of grisms:
+
+* **Red grisms** cover about 1.2 to 1.9 micron and are used in both the Euclid Wide Survey and the Euclid Deep Survey.
+* **The blue grism** covers about 0.9 to 1.4 micron and is used only in the Euclid Deep Survey.
+
+A galaxy in the Euclid Wide Survey has only red grism spectra, while a galaxy in the Euclid Deep Fields can have spectra from both kinds of grism.
+Each spectrum is a separate entry in IRSA's spectra collection.
+
+A galaxy can also have several spectra from the same kind of grism.
+As with the MER mosaics (see the [MER mosaics notebook](1_Euclid_intro_MER_images.md)), the Euclid Deep Fields are covered by both deep and wide tiles: the deep tiles combine all of the observations, while the wide tiles have several spectra built from different subsets of them.
+These spectra differ in depth, and some of them have no usable flux bins at all.
+
+We tell the red and blue grism spectra apart by their wavelength range (blue grism spectra start below 1.1 micron):
 
 ```{code-cell} ipython3
-coord = SkyCoord(
-    ra=271.2353 * u.deg,
-    dec=65.0631 * u.deg,
-    frame="icrs"
-)
-
-search_radius = 1.0 * u.arcsec
+def grism_name(spectrum):
+    return 'Blue grism' if spectrum['WAVELENGTH'].min() < 1.1 * u.micron else 'Red grism'
 ```
 
-Query the IRSA SSA service for spectra near this position
+Let's compare the spectra we found: their grism, wavelength range, the largest number of dithered exposures in a flux bin, and the number of usable flux bins:
 
 ```{code-cell} ipython3
-#=====This part to be removed once the dr1 becomes public====
-irsa_dev = IrsaClass()
-irsa_dev.ssa_url = "https://irsadev.ipac.caltech.edu/SSA"
-#============================================================
-
-#===ssa_result = irsa_dev.query_ssa --> ssa_result = Irsa.query_ssa, once the dr1 becomes public==
-ssa_result = irsa_dev.query_ssa(
-    pos=coord,
-    radius=search_radius,
-    collection="euclid_dr1_DpdSirCombinedSpectra",
-)
-
-#check whether any spectra were found
-len(ssa_result)
+summary = QTable({
+    'grism': [grism_name(spectrum) for spectrum in spectra],
+    'min_wavelength': [spectrum['WAVELENGTH'].min().to(u.micron) for spectrum in spectra],
+    'max_wavelength': [spectrum['WAVELENGTH'].max().to(u.micron) for spectrum in spectra],
+    'max_ndith': [spectrum['NDITH'].max() for spectrum in spectra],
+    'usable_bins': [np.sum(~bad_flux_bins(spectrum)) for spectrum in spectra],
+})
+summary.sort(['grism', 'usable_bins'], reverse=True)
+summary
 ```
 
-Pull out the file name from the ``result`` table:
+The spectra with many dithered exposures come from the deep tile, and the others from the wide tiles; some of the wide tile spectra have no usable flux bins at all.
+The spectrum we plotted above is the deep red grism one.
+For each kind of grism, we keep the spectrum with the most usable flux bins:
 
 ```{code-cell} ipython3
-# Extract the single SSA result row
-row = ssa_result[0]  #in case there is more than one spectra in the search radius
-row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
+def best_spectra(spectra):
+    best = {}
+    for spectrum in sorted(spectra, key=lambda spectrum: np.sum(~bad_flux_bins(spectrum)), reverse=True):
+        best.setdefault(grism_name(spectrum), spectrum)
+    return best
 
 
-# Each SSA row provides a direct URL to the spectrum file
-spectrum_path = row["access_url"]
-spectrum_path
-
-spectrum_path_blue = row_blue["access_url"]
-spectrum_path_blue
+best = best_spectra(spectra)
+list(best)
 ```
 
-## 3. Read in the spectrum for only our specific object
+## 4. Get the redshift of the galaxy
 
-`spectrum_path` is a url that will return a VOTable containing the spectrum of our object.
+To identify the emission lines in the spectra, we need the redshift of the galaxy.
+The DR1 SPE catalog gives the spectroscopic redshifts measured from these spectra, but it has no coordinates, so we join it with the MER catalog on `object_id` (see the [MER catalogs notebook](2_Euclid_intro_MER_catalog.md)).
+Our galaxy is in a deep tile, so we use the deep versions of both catalogs, and keep the best redshift estimate (`spe_rank = 0`):
 
 ```{code-cell} ipython3
-spectrum = QTable.read(spectrum_path)
-spectrum_blue = QTable.read(spectrum_path_blue)
-```
-
-```{code-cell} ipython3
-spectrum
-```
-
-## 4. Plot the image of the extracted spectrum
-
-```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
-```
-
-```{code-cell} ipython3
-quantity_support()
-```
-
-```{note}
-The 1D combined spectra table contains 6 columns, below are a few highlights:
-
-- WAVELENGTH is in Angstroms by default.
-- SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
-- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
-```
-
-We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
-
-```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
-plt.ylabel('Mask value')
-plt.title('Values of MASK by flux bin')
-```
-
-We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
-
-```{code-cell} ipython3
-bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
-bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
-
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
-plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
-
-plt.legend(loc='upper right')
-plt.ylim(-0.05, 0.55)
-plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
-```
-
-## 6. Repeat Steps 2-4 for a different galaxy
-## 2. Search for the spectrum of a specific galaxy in the 1D spectra table
-
-```{code-cell} ipython3
-coord = SkyCoord(
-    ra=270.7769 * u.deg,
-    dec=64.7781 * u.deg,
-    frame="icrs"
-)
-
-search_radius = 1.0 * u.arcsec
-```
-
-Query the IRSA SSA service for spectra near this position
-
-```{code-cell} ipython3
-#=====This part to be removed once the dr1 becomes public====
-irsa_dev = IrsaClass()
-irsa_dev.ssa_url = "https://irsadev.ipac.caltech.edu/SSA"
-#============================================================
-
-#===ssa_result = irsa_dev.query_ssa --> ssa_result = Irsa.query_ssa, once the dr1 becomes public==
-ssa_result = irsa_dev.query_ssa(
-    pos=coord,
-    radius=search_radius,
-    collection="euclid_dr1_DpdSirCombinedSpectra",
-)
-
-#check whether any spectra were found
-len(ssa_result)
-```
-
-Pull out the file name from the ``result`` table:
-
-```{code-cell} ipython3
-# Extract the single SSA result row
-row = ssa_result[0]  #in case there is more than one spectra in the search radius
-row_blue = ssa_result[1] #the blue grism of the same galaxy within the deep field
+def get_redshift(coord, search_radius=1 * u.arcsec):
+    query = f"""
+        SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
+        FROM euclid_dr1_mer_catalogue_deep_survey AS mer
+        JOIN euclid_dr1_spectro_z_spe_galaxy_candidates_deep AS spe ON spe.object_id = mer.object_id
+        WHERE spe.spe_rank = 0
+          AND CONTAINS(POINT('ICRS', mer.ra, mer.dec),
+                       CIRCLE('ICRS', {coord.ra.deg}, {coord.dec.deg}, {search_radius.to(u.deg).value})) = 1
+    """
+    return Irsa.query_tap(query, async_job=True).to_table()
 
 
-# Each SSA row provides a direct URL to the spectrum file
-spectrum_path = row["access_url"]
-spectrum_path
-
-spectrum_path_blue = row_blue["access_url"]
-spectrum_path_blue
-```
-
-## 3. Read in the spectrum for only our specific object
-
-`spectrum_path` is a url that will return a VOTable containing the spectrum of our object.
-
-```{code-cell} ipython3
-spectrum = QTable.read(spectrum_path)
-spectrum_blue = QTable.read(spectrum_path_blue)
+galaxy = get_redshift(coord)
+galaxy
 ```
 
 ```{code-cell} ipython3
-spectrum
+redshift = galaxy['spe_z'][0]
 ```
 
-## 4. Plot the image of the extracted spectrum
+## 5. Plot the best spectra and mark the emission lines
 
-```{tip}
-As we use astropy.visualization's ``quantity_support``, matplotlib automatically picks up the axis units from the quantities we plot.
+These are the rest-frame vacuum wavelengths of some of the strongest emission lines of galaxies; at the redshift of the galaxy, they are shifted by a factor of (1 + z).
+Hα is blended with the [NII] lines, and the [SII] and [OII] doublets are not resolved at the resolution of the Euclid spectra, so we mark each of them with a single label.
+
+```{code-cell} ipython3
+emission_lines = {
+    '[OII]': 3728.5 * u.AA,
+    '[NeIII]': 3870.9 * u.AA,
+    'Hγ': 4341.7 * u.AA,
+    'Hβ': 4862.7 * u.AA,
+    '[OIII]': 5008.2 * u.AA,
+    'Hα': 6564.6 * u.AA,
+    '[SII]': 6725.5 * u.AA,
+}
+```
+
+We now wrap the plotting into a function that plots the best spectrum of each grism.
+We plot the flux bins to use as solid lines, the flux bins not to use as dotted lines, and the flux uncertainty as thin lines.
+We set the y-axis range from the flux bins to use, so that the bad flux bins do not stretch it, and mark the emission lines that fall in the wavelength range of the spectra.
+
+```{code-cell} ipython3
+grism_colors = {'Red grism': 'tab:red', 'Blue grism': 'tab:blue'}
+
+
+def plot_spectra(spectra, title, redshift=None):
+    fig, ax = plt.subplots(figsize=(12, 4.5))
+    for name, spectrum in spectra.items():
+        wavelength = spectrum['WAVELENGTH'].to(u.micron)
+        bad = bad_flux_bins(spectrum)
+        color = grism_colors[name]
+
+        ax.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color=color, alpha=0.8, label=name)
+        ax.plot(wavelength, np.ma.masked_where(~bad, spectrum['SIGNAL']), color=color, linestyle=':', alpha=0.6)
+        ax.plot(wavelength, spectrum['UNCERTAINTY'], color=color, linewidth=0.5, alpha=0.5)
+
+    good_flux = np.concatenate([spectrum['SIGNAL'][~bad_flux_bins(spectrum)].filled(np.nan)
+                                for spectrum in spectra.values()])
+    low, high = np.nanpercentile(good_flux, [1, 100])
+    ax.set_ylim(low - 0.1 * (high - low), high + 0.25 * (high - low))
+
+    # Mark the emission lines at the redshift of the galaxy
+    if redshift is not None:
+        wave_min = min(spectrum['WAVELENGTH'].min() for spectrum in spectra.values())
+        wave_max = max(spectrum['WAVELENGTH'].max() for spectrum in spectra.values())
+        for line, rest_wavelength in emission_lines.items():
+            observed = (rest_wavelength * (1 + redshift)).to(u.micron)
+            if wave_min < observed < wave_max:
+                ax.axvline(observed, color='grey', linestyle='--', linewidth=0.8)
+                ax.text(observed.value, 0.98, f' {line}', transform=ax.get_xaxis_transform(),
+                        rotation=90, va='top', ha='right', fontsize=9)
+        title = f'{title}, z = {redshift:.3f}'
+
+    # Legend entries for the line styles
+    ax.plot([], [], color='grey', linestyle=':', label='Do not use')
+    ax.plot([], [], color='grey', linewidth=0.5, label='Uncertainty')
+
+    ax.set_title(title)
+    ax.legend(loc='upper left', bbox_to_anchor=(1.01, 1), fontsize='small')
+    plt.show()
+
+
+plot_spectra(best, f'Euclid SIR 1D spectra at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°', redshift)
+```
+
+## 6. Look closer at the spectrum table and the MASK column
+
+Now that we have seen the spectra, let's look at the usable flux bins of the red grism spectrum:
+
+```{code-cell} ipython3
+red_spectrum = best['Red grism']
+red_spectrum[~bad_flux_bins(red_spectrum)]
+```
+
+The MASK values are bit flags, so each value combines several conditions.
+Let's plot them as a function of wavelength, to see where the flux bins not to use are:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(12, 3))
+for name, spectrum in best.items():
+    ax.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], color=grism_colors[name], alpha=0.6, label=name)
+ax.set_ylabel('MASK value')
+ax.set_title('Values of MASK by flux bin')
+ax.legend()
+plt.show()
+```
+
+Most of the flux bins not to use are at the edges of the wavelength range of each grism, where its throughput is low.
+
+## 7. Explore the spectra of random galaxies
+
+Now it's your turn to explore!
+We select galaxies from the DR1 SPE and MER deep catalogs in a region of the Euclid Deep Field North, pick a few of them at random, and plot their spectra with their emission lines.
+To avoid stars and problematic sources, we keep only sources with a high redshift probability (`spe_z_prob`), a low probability of being point-like (`point_like_prob`), and no MER detection quality flags set (`det_quality_flag = 0`), for example for blending with a neighbor.
+Change the parameters below to look at other regions, redshift ranges, or numbers of galaxies; change or remove the random seed to get a different selection.
+Each time you rerun the plotting cell, it picks new galaxies from the same selection.
+Most of these galaxies are much fainter than our first example, so their spectra are noisier, and their emission lines can be weak or missing.
+
+```{code-cell} ipython3
+######################## User defined section ############################
+# Center and radius of the region to select galaxies from
+region_center = SkyCoord(271.0, 66.0, unit='deg', frame='icrs')
+region_radius = 6 * u.arcmin
+
+# Redshift range, the minimum probability of the redshift estimate,
+# and the maximum probability of the source being point-like
+z_min, z_max = 0.9, 1.8
+min_z_prob = 0.99
+max_point_like_prob = 0.5
+
+# Number of galaxies to plot, and the random seed
+n_galaxies = 3
+rng = np.random.default_rng(seed=42)
+##########################################################################
+
+query = f"""
+    SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
+    FROM euclid_dr1_mer_catalogue_deep_survey AS mer
+    JOIN euclid_dr1_spectro_z_spe_galaxy_candidates_deep AS spe ON spe.object_id = mer.object_id
+    WHERE spe.spe_rank = 0
+      AND spe.spe_z BETWEEN {z_min} AND {z_max}
+      AND spe.spe_z_prob > {min_z_prob}
+      AND mer.point_like_prob < {max_point_like_prob}
+      AND mer.det_quality_flag = 0
+      AND CONTAINS(POINT('ICRS', mer.ra, mer.dec),
+                   CIRCLE('ICRS', {region_center.ra.deg}, {region_center.dec.deg}, {region_radius.to(u.deg).value})) = 1
+"""
+galaxies = Irsa.query_tap(query, async_job=True).to_table()
+print(f'Found {len(galaxies)} galaxies')
+```
+
+We wrap sections 1 to 3 into a function, which returns the best spectrum of each grism near a position.
+If a spectrum file cannot be read, we skip it and use the other spectra of the galaxy:
+
+```{code-cell} ipython3
+def get_best_spectra(coord, search_radius=1 * u.arcsec):
+    ssa_result = Irsa.query_ssa(pos=coord, radius=search_radius, collection=euclid_ssa_collection)
+
+    spectra = []
+    for url in ssa_result['access_url']:
+        try:
+            spectra.append(QTable.read(url))
+        except HTTPError as error:
+            print(f'Skipping a spectrum that could not be read ({error}): {url}')
+    return best_spectra(spectra)
 ```
 
 ```{code-cell} ipython3
-quantity_support()
+for galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len(galaxies)), replace=False)]:
+    galaxy_coord = SkyCoord(galaxy['ra'], galaxy['dec'], unit='deg')
+    galaxy_spectra = get_best_spectra(galaxy_coord)
+    if not galaxy_spectra:
+        print(f"No spectra found for object {galaxy['object_id']}")
+        continue
+    plot_spectra(galaxy_spectra, f"Object {galaxy['object_id']}", galaxy['spe_z'])
 ```
-
-```{note}
-The 1D combined spectra table contains 6 columns, below are a few highlights:
-
-- WAVELENGTH is in Angstroms by default.
-- SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
-- MASK values can be used to determine which flux bins to discard. MASK = odd and MASK >=64 means the flux bins not be used.
-```
-
-We investigate the MASK column to see which flux bins are recommended to keep vs "Do Not Use"
-
-```{code-cell} ipython3
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], alpha=0.6, color='red')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), spectrum_blue['MASK'], alpha=0.6, color='blue')
-plt.ylabel('Mask value')
-plt.title('Values of MASK by flux bin')
-```
-
-We use the MASK column to create a boolean mask for values to ignore. We use the inverse of this mask to mark the flux bins to use.
-
-```{code-cell} ipython3
-bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
-bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
-
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
-plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
-plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
-plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linestyle=':', linewidth=2.0)
-plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
-
-plt.legend(loc='upper right')
-plt.ylim(-0.05, 0.55)
-plt.title(f"Euclid SIR 1D Spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°")
-```
-
 
 ## About this Notebook
 
-**Updated**: 2026-01-13
+**Updated**: 2026-11-12
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
