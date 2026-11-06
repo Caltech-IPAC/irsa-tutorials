@@ -33,10 +33,11 @@ authors:
 +++
 
 By the end of this tutorial, you will:
-- know how to search for and retrieve the spectra of a galaxy with IRSA's Simple Spectral Access (SSA) service;
+- know how to find a galaxy and its spectroscopic redshift in the DR1 MER and SPE catalogs with IRSA's Table Access Protocol (TAP) service;
+- know how to find and retrieve the spectra of a galaxy from its object ID;
 - know how to use the MASK column to pick the flux bins to plot;
-- understand why a galaxy can have several spectra, from the red and blue grisms and from the deep and wide tiles, and how to pick the best one;
-- know how to get the spectroscopic redshift of a galaxy from the DR1 SPE catalog and mark the emission lines on its spectrum;
+- understand the difference between the red and blue grism spectra, and how to pick the best spectrum of each grism;
+- know how to plot a Euclid spectrum and mark its emission lines;
 - know how to explore the spectra of randomly selected galaxies.
 
 +++
@@ -105,71 +106,87 @@ conf.remote_timeout = 120
 ```{code-cell} ipython3
 # DR1 is not public yet, so we query IRSA's development server.
 Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-Irsa.ssa_url = 'https://irsadev.ipac.caltech.edu/SSA'
 ```
 
-<!-- TODO: remove this cell once the SSA service serves the DR1 spectra again (IRSA temporarily removed the euclid_dr1_DpdSirCombinedSpectra collection for fixes on 2026-11-06; it returns 0 rows on irsadev/irsatest/prod). -->
+## 1. Find a galaxy and its redshift in the DR1 catalogs
 
-```{code-cell} ipython3
-# TEMPORARY: the SSA service does not return DR1 spectra yet, so we emulate
-# Irsa.query_ssa with a TAP query on IRSA's CAOM tables, which already have them.
-from astropy.table import Table
-
-
-def query_ssa_from_caom(*, pos, radius, collection):
-    query = f"""
-        SELECT a.uri
-        FROM euclid.plane_euclid_dr1 AS p
-        JOIN euclid.observation_euclid_dr1 AS o ON o.obsid = p.obsid
-        JOIN euclid.artifact_euclid_dr1 AS a ON a.planeid = p.planeid
-        WHERE o.collection = '{collection}'
-          AND CONTAINS(p.pt, CIRCLE('ICRS', {pos.ra.deg}, {pos.dec.deg}, {radius.to(u.deg).value})) = 1
-    """
-    uris = Irsa.query_tap(query, async_job=True).to_table()['uri']
-    return Table({'s_ra': [pos.ra.deg] * len(uris), 's_dec': [pos.dec.deg] * len(uris),
-                  'access_url': [f'https://irsadev.ipac.caltech.edu/{uri}' for uri in uris]})
-
-
-Irsa.query_ssa = query_ssa_from_caom
-```
-
-## 1. Search for the spectra of a galaxy
-
-IRSA's SSA service serves several spectra collections; they can be listed with the `list_collections` method.
-The DR1 SIR 1D spectra are in the `euclid_dr1_DpdSirCombinedSpectra` collection (`euclid_DpdSirCombinedSpectra` holds the Q1 spectra).
-
-```{code-cell} ipython3
-Irsa.list_collections(servicetype='ssa')
-```
-
-```{code-cell} ipython3
-euclid_ssa_collection = 'euclid_dr1_DpdSirCombinedSpectra'
-```
-
-We start with a galaxy in the Euclid Deep Field North, and search the collection for spectra within 1 arcsec of it:
+We start with a galaxy in the Euclid Deep Field North.
+To find its spectra, we need its Euclid object ID, and to identify the emission lines in the spectra, we need its redshift.
+Both come from the DR1 catalogs: the MER catalog gives the object ID of the source at a position, and the SPE catalog gives the spectroscopic redshift measured from its spectra (see the [MER catalogs notebook](2_Euclid_intro_MER_catalog.md) and the [SPE catalogs notebook](5_Euclid_intro_SPE_catalog.md)).
+The SPE catalog has no coordinates, so we join it with the MER catalog on `object_id`.
+Our galaxy is in a deep tile, so we use the deep versions of both catalogs, and keep the best redshift estimate (`spe_rank = 0`):
 
 ```{code-cell} ipython3
 coord = SkyCoord(272.3240, 68.2962, unit='deg', frame='icrs')
 search_radius = 1 * u.arcsec
-
-ssa_result = Irsa.query_ssa(pos=coord, radius=search_radius, collection=euclid_ssa_collection)
-
-print(f'Found {len(ssa_result)} spectra')
 ```
 
-Each row of the result is one spectrum, and its `access_url` column gives the URL of the spectrum file.
-A galaxy can have several spectra; we explain why in section 3.
-
 ```{code-cell} ipython3
-ssa_result['s_ra', 's_dec', 'access_url']
+def find_galaxy(coord, search_radius=1 * u.arcsec):
+    query = f"""
+        SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
+        FROM euclid_dr1_mer_catalogue_deep_survey AS mer
+        JOIN euclid_dr1_spectro_z_spe_galaxy_candidates_deep AS spe ON spe.object_id = mer.object_id
+        WHERE spe.spe_rank = 0
+          AND CONTAINS(POINT('ICRS', mer.ra, mer.dec),
+                       CIRCLE('ICRS', {coord.ra.deg}, {coord.dec.deg}, {search_radius.to(u.deg).value})) = 1
+    """
+    return Irsa.query_tap(query, async_job=True).to_table()
+
+
+galaxy = find_galaxy(coord)
+galaxy
 ```
 
-## 2. Read in the spectra and plot one of them
+```{code-cell} ipython3
+object_id = galaxy['object_id'][0]
+redshift = galaxy['spe_z'][0]
+```
 
-Each `access_url` returns a VOTable containing the spectrum, which we read into an astropy table:
+## 2. Find the spectra of the galaxy
+
+The DR1 SIR 1D spectra are stored in large FITS files, one per MER tile, with one extension (HDU) per spectrum.
+The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file and the HDU of each of its spectra:
 
 ```{code-cell} ipython3
-spectra = [QTable.read(url) for url in ssa_result['access_url']]
+def find_spectra(object_id):
+    query = f"""
+        SELECT objectid, tileid, path, hdu
+        FROM euclid.objectid_spectrafile_association_dr1
+        WHERE objectid = {object_id}
+    """
+    return Irsa.query_tap(query).to_table()
+
+
+spectrum_files = find_spectra(object_id)
+spectrum_files
+```
+
+IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable.
+We build the URL of each spectrum from its file path and HDU:
+
+<!-- TODO: change the base URL to https://irsa.ipac.caltech.edu when DR1 is public on the production IRSA services. -->
+
+```{code-cell} ipython3
+def spectrum_url(spectrum_file):
+    return (f"https://irsadev.ipac.caltech.edu/api/spectrumdm/convert/{spectrum_file['path']}"
+            f"?dataset_id=euclid_combspec&hdu={spectrum_file['hdu']}")
+
+
+spectrum_urls = [spectrum_url(spectrum_file) for spectrum_file in spectrum_files]
+spectrum_urls
+```
+
+```{note}
+IRSA's Simple Spectral Access (SSA) service will also serve the DR1 SIR 1D spectra, which will allow searching for them by position; this notebook will be updated when it is available.
+```
+
+## 3. Read in the spectra and plot one of them
+
+Each URL returns a VOTable containing the spectrum, which we read into an astropy table:
+
+```{code-cell} ipython3
+spectra = [QTable.read(url) for url in spectrum_urls]
 ```
 
 ```{note}
@@ -201,28 +218,22 @@ wavelength = spectrum['WAVELENGTH'].to(u.micron)
 fig, ax = plt.subplots(figsize=(12, 4))
 ax.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color='tab:red', label='Flux')
 ax.plot(wavelength, np.ma.masked_where(bad, spectrum['UNCERTAINTY']), color='tab:red', linewidth=0.5, label='Uncertainty')
-ax.set_title(f'Euclid SIR 1D spectrum at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°')
+ax.set_title(f'Euclid SIR 1D spectrum of object {object_id}')
 ax.legend()
 plt.show()
 ```
 
-The strong emission line near 1.76 micron is Hα, and the lines near 1.3 micron are Hβ and [OIII]; we will confirm this with the redshift of the galaxy in section 4.
+The strong emission line near 1.76 micron is Hα, and the lines near 1.3 micron are Hβ and [OIII]; we will confirm this with the redshift of the galaxy in section 5.
 
-## 3. Why several spectra? Red and blue grisms, deep and wide tiles
+## 4. Red and blue grism spectra
 
 NISP takes slitless spectra with two kinds of grisms:
 
 * **Red grisms** cover about 1.2 to 1.9 micron and are used in both the Euclid Wide Survey and the Euclid Deep Survey.
 * **The blue grism** covers about 0.9 to 1.4 micron and is used only in the Euclid Deep Survey.
 
-A galaxy in the Euclid Wide Survey has only red grism spectra, while a galaxy in the Euclid Deep Fields can have spectra from both kinds of grism.
-Each spectrum is a separate entry in IRSA's spectra collection.
-
-A galaxy can also have several spectra from the same kind of grism.
-As with the MER mosaics (see the [MER mosaics notebook](1_Euclid_intro_MER_images.md)), the Euclid Deep Fields are covered by both deep and wide tiles: the deep tiles combine all of the observations, while the wide tiles have several spectra built from different subsets of them.
-These spectra differ in depth, and some of them have no usable flux bins at all.
-
-We tell the red and blue grism spectra apart by their wavelength range (blue grism spectra start below 1.1 micron):
+A galaxy in the Euclid Wide Survey has only a red grism spectrum, while a galaxy in the Euclid Deep Fields, like ours, has spectra from both kinds of grism, each of them a separate spectrum in the files.
+We tell them apart by their wavelength range (blue grism spectra start below 1.1 micron):
 
 ```{code-cell} ipython3
 def grism_name(spectrum):
@@ -243,9 +254,8 @@ summary.sort(['grism', 'usable_bins'], reverse=True)
 summary
 ```
 
-The spectra with many dithered exposures come from the deep tile, and the others from the wide tiles; some of the wide tile spectra have no usable flux bins at all.
-The spectrum we plotted above is the deep red grism one.
-For each kind of grism, we keep the spectrum with the most usable flux bins:
+The spectrum we plotted above is the red grism one.
+A galaxy can also have several spectra of the same kind of grism, for example when it is covered by several tiles; these can differ in depth, so in general we keep, for each kind of grism, the spectrum with the most usable flux bins:
 
 ```{code-cell} ipython3
 def best_spectra(spectra):
@@ -257,33 +267,6 @@ def best_spectra(spectra):
 
 best = best_spectra(spectra)
 list(best)
-```
-
-## 4. Get the redshift of the galaxy
-
-To identify the emission lines in the spectra, we need the redshift of the galaxy.
-The DR1 SPE catalog gives the spectroscopic redshifts measured from these spectra, but it has no coordinates, so we join it with the MER catalog on `object_id` (see the [MER catalogs notebook](2_Euclid_intro_MER_catalog.md)).
-Our galaxy is in a deep tile, so we use the deep versions of both catalogs, and keep the best redshift estimate (`spe_rank = 0`):
-
-```{code-cell} ipython3
-def get_redshift(coord, search_radius=1 * u.arcsec):
-    query = f"""
-        SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
-        FROM euclid_dr1_mer_catalogue_deep_survey AS mer
-        JOIN euclid_dr1_spectro_z_spe_galaxy_candidates_deep AS spe ON spe.object_id = mer.object_id
-        WHERE spe.spe_rank = 0
-          AND CONTAINS(POINT('ICRS', mer.ra, mer.dec),
-                       CIRCLE('ICRS', {coord.ra.deg}, {coord.dec.deg}, {search_radius.to(u.deg).value})) = 1
-    """
-    return Irsa.query_tap(query, async_job=True).to_table()
-
-
-galaxy = get_redshift(coord)
-galaxy
-```
-
-```{code-cell} ipython3
-redshift = galaxy['spe_z'][0]
 ```
 
 ## 5. Plot the best spectra and mark the emission lines
@@ -348,7 +331,7 @@ def plot_spectra(spectra, title, redshift=None):
     plt.show()
 
 
-plot_spectra(best, f'Euclid SIR 1D spectra at RA={coord.ra.deg:.4f}°, Dec={coord.dec.deg:.4f}°', redshift)
+plot_spectra(best, f'Euclid SIR 1D spectra of object {object_id}', redshift)
 ```
 
 ## 6. Look closer at the spectrum table and the MASK column
@@ -379,7 +362,7 @@ Most of the flux bins not to use are at the edges of the wavelength range of eac
 
 Now it's your turn to explore!
 We select galaxies from the DR1 SPE and MER deep catalogs in a region of the Euclid Deep Field North, pick a few of them at random, and plot their spectra with their emission lines.
-To avoid stars and problematic sources, we keep only sources with a high redshift probability (`spe_z_prob`), a low probability of being point-like (`point_like_prob`), and no MER detection quality flags set (`det_quality_flag = 0`), for example for blending with a neighbor.
+To avoid stars and problematic sources, we keep only sources with a reliable redshift (`spe_z_prob` and `spe_z_rel`, see the [SPE catalogs notebook](5_Euclid_intro_SPE_catalog.md)), a low probability of being point-like (`point_like_prob`), and no MER detection quality flags set (`det_quality_flag = 0`), for example for blending with a neighbor.
 Change the parameters below to look at other regions, redshift ranges, or numbers of galaxies; change or remove the random seed to get a different selection.
 Each time you rerun the plotting cell, it picks new galaxies from the same selection.
 Most of these galaxies are much fainter than our first example, so their spectra are noisier, and their emission lines can be weak or missing.
@@ -390,10 +373,11 @@ Most of these galaxies are much fainter than our first example, so their spectra
 region_center = SkyCoord(271.0, 66.0, unit='deg', frame='icrs')
 region_radius = 6 * u.arcmin
 
-# Redshift range, the minimum probability of the redshift estimate,
+# Redshift range, the minimum probability and reliability of the redshift estimate,
 # and the maximum probability of the source being point-like
 z_min, z_max = 0.9, 1.8
 min_z_prob = 0.99
+min_z_rel = 0.05
 max_point_like_prob = 0.5
 
 # Number of galaxies to plot, and the random seed
@@ -402,12 +386,13 @@ rng = np.random.default_rng(seed=42)
 ##########################################################################
 
 query = f"""
-    SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
+    SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob, spe.spe_z_rel
     FROM euclid_dr1_mer_catalogue_deep_survey AS mer
     JOIN euclid_dr1_spectro_z_spe_galaxy_candidates_deep AS spe ON spe.object_id = mer.object_id
     WHERE spe.spe_rank = 0
       AND spe.spe_z BETWEEN {z_min} AND {z_max}
       AND spe.spe_z_prob > {min_z_prob}
+      AND spe.spe_z_rel > {min_z_rel}
       AND mer.point_like_prob < {max_point_like_prob}
       AND mer.det_quality_flag = 0
       AND CONTAINS(POINT('ICRS', mer.ra, mer.dec),
@@ -417,15 +402,13 @@ galaxies = Irsa.query_tap(query, async_job=True).to_table()
 print(f'Found {len(galaxies)} galaxies')
 ```
 
-We wrap sections 1 to 3 into a function, which returns the best spectrum of each grism near a position.
+We wrap sections 2 to 4 into a function, which returns the best spectrum of each grism of an object.
 If a spectrum file cannot be read, we skip it and use the other spectra of the galaxy:
 
 ```{code-cell} ipython3
-def get_best_spectra(coord, search_radius=1 * u.arcsec):
-    ssa_result = Irsa.query_ssa(pos=coord, radius=search_radius, collection=euclid_ssa_collection)
-
+def get_best_spectra(object_id):
     spectra = []
-    for url in ssa_result['access_url']:
+    for url in map(spectrum_url, find_spectra(object_id)):
         try:
             spectra.append(QTable.read(url))
         except HTTPError as error:
@@ -435,8 +418,7 @@ def get_best_spectra(coord, search_radius=1 * u.arcsec):
 
 ```{code-cell} ipython3
 for galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len(galaxies)), replace=False)]:
-    galaxy_coord = SkyCoord(galaxy['ra'], galaxy['dec'], unit='deg')
-    galaxy_spectra = get_best_spectra(galaxy_coord)
+    galaxy_spectra = get_best_spectra(galaxy['object_id'])
     if not galaxy_spectra:
         print(f"No spectra found for object {galaxy['object_id']}")
         continue
