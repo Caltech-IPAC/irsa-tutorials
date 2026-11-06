@@ -146,12 +146,15 @@ redshift = galaxy['spe_z'][0]
 ## 2. Find the spectra of the galaxy
 
 The DR1 SIR 1D spectra are stored in large FITS files, one per MER tile, with one extension (HDU) per spectrum.
-The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file and the HDU of each of its spectra:
+The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file (`path`) and the HDU of each of its spectra.
+IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable; its URL is built from the file path and HDU, which we do directly in the query:
 
 ```{code-cell} ipython3
 def find_spectra(object_id):
     query = f"""
-        SELECT objectid, tileid, path, hdu
+        SELECT objectid, tileid, hdu,
+               'https://irsacloud.ipac.caltech.edu/api/spectrumdm/convert/' || path
+               || '?dataset_id=euclid_combspec_dr1&hdu=' || hdu AS url
         FROM euclid.objectid_spectrafile_association_dr1
         WHERE objectid = {object_id}
     """
@@ -160,21 +163,6 @@ def find_spectra(object_id):
 
 spectrum_files = find_spectra(object_id)
 spectrum_files
-```
-
-IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable.
-We build the URL of each spectrum from its file path and HDU:
-
-<!-- TODO: change the base URL to https://irsa.ipac.caltech.edu when DR1 is public on the production IRSA services. -->
-
-```{code-cell} ipython3
-def spectrum_url(spectrum_file):
-    return (f"https://irsadev.ipac.caltech.edu/api/spectrumdm/convert/{spectrum_file['path']}"
-            f"?dataset_id=euclid_combspec&hdu={spectrum_file['hdu']}")
-
-
-spectrum_urls = [spectrum_url(spectrum_file) for spectrum_file in spectrum_files]
-spectrum_urls
 ```
 
 ```{note}
@@ -186,7 +174,7 @@ IRSA's Simple Spectral Access (SSA) service will also serve the DR1 SIR 1D spect
 Each URL returns a VOTable containing the spectrum, which we read into an astropy table:
 
 ```{code-cell} ipython3
-spectra = [QTable.read(url) for url in spectrum_urls]
+spectra = [QTable.read(url) for url in spectrum_files['url']]
 ```
 
 ```{note}
@@ -408,7 +396,7 @@ If a spectrum file cannot be read, we skip it and use the other spectra of the g
 ```{code-cell} ipython3
 def get_best_spectra(object_id):
     spectra = []
-    for url in map(spectrum_url, find_spectra(object_id)):
+    for url in find_spectra(object_id)['url']:
         try:
             spectra.append(QTable.read(url))
         except HTTPError as error:
