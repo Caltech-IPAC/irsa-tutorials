@@ -186,8 +186,9 @@ We specify the following conditions on our search, based on recommendations in t
 - Choose spectrum spe_npix and spe_n_dith_med greater than 15
 - H-alpha line flux should be more than 2x10^16 erg s^-1 cm^-2
 - We exclude point-like objects (primarily stars; mer.point_like_prob < 0.05), excessively large objects (mer.kron_radius < 50), and potentially spurious detections (mer.spurious_prob < 0.5). The size criterion helps minimize contamination from galaxies at $z < 0.85$ with incorrectly measured spectroscopic redshifts.
-- Join the lines and galaxy candidates tables on object_id and spe_rank
+- Join the lines, mer, photometric redshift, and galaxy candidates tables on object_id and spe_rank
 
+We search objects within the first 10000 objects to avoid the timeout issue withe the query which happens when the search takes long time.
 Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.
 
 ```{code-cell} ipython3
