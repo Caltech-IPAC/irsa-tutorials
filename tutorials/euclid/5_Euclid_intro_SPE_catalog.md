@@ -287,7 +287,7 @@ obj_row
 
 ```{code-cell} ipython3
 # Query SSA for the 1D spectrum near this object's sky position
-euclid_ssa_collection = "euclid_DpdSirCombinedSpectra"
+euclid_ssa_collection = "euclid_dr1_DpdSirCombinedSpectra"
 
 # Use the object's MER coordinates from obj_row
 coord_obj = SkyCoord(obj_row["ra"][0], obj_row["dec"][0], unit=u.deg)
@@ -295,7 +295,7 @@ coord_obj = SkyCoord(obj_row["ra"][0], obj_row["dec"][0], unit=u.deg)
 #complete the query
 ssa_result = Irsa.query_ssa(
     pos=coord_obj,
-    radius=2.0 * u.arcsec,
+    radius=1.0 * u.arcsec,
     collection=euclid_ssa_collection,
 )
 
@@ -306,12 +306,19 @@ ssa_result
 
 ```{code-cell} ipython3
 # Read in the spectrum for this object from the SSA access URL
-spectrum_path = ssa_result["access_url"][0]
+row = ssa_result[1]
+row_blue = ssa_result[0]
+
+spectrum_path = row["access_url"]
 spectrum_path
+
+spectrum_path_blue = row_blue["access_url"]
+spectrum_path_blue
 ```
 
 ```{code-cell} ipython3
 spectrum = QTable.read(spectrum_path)
+spectrum_blue = QTable.read(spectrum_path_blue)
 ```
 
 ### Now the data are read in, plot the spectrum with the H-alpha line labeled
@@ -326,16 +333,18 @@ quantity_support()
 
 ```{code-cell} ipython3
 # Note that the units are missing from the lines table, we manually add Angstrom
-line_wavelengths = obj_row['spe_line_central_wl_gf'] * u.angstrom
-line_names = obj_row['spe_line_name']
-snr_gf = obj_row['spe_line_snr_gf']
+bad_mask = (spectrum['MASK'].value % 2 == 1) | (spectrum['MASK'].value >= 64)
+bad_mask_blue = (spectrum_blue['MASK'].value % 2 == 1) | (spectrum_blue['MASK'].value >= 64)
 
-plt.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['SIGNAL'])
+plt.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask, spectrum['SIGNAL']), alpha=0.6, color='red', label='Red Spectrum')
+plt.plot(spectrum['WAVELENGTH'], np.ma.masked_where(~bad_mask, spectrum['SIGNAL']), color='red', label='Do not use (Red)', linestyle=':', linewidth=2.0)
+plt.plot(spectrum['WAVELENGTH'], np.sqrt(spectrum['VAR']), color='grey', label='Error')
+plt.plot(spectrum_blue['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad_mask_blue, spectrum_blue['SIGNAL']), alpha=0.5, color='blue', label='Blue Spectrum')#, #color='black', label='Spectrum')
+plt.plot(spectrum_blue['WAVELENGTH'], np.ma.masked_where(~bad_mask_blue, spectrum_blue['SIGNAL']), color='blue', label='Do not use (Blue)', linestyle=':', linewidth=2.0)
+plt.plot(spectrum_blue['WAVELENGTH'], np.sqrt(spectrum_blue['VAR']), color='grey', label='Error')
 
-for wl, name, snr in zip(np.atleast_1d(line_wavelengths), np.atleast_1d(line_names), np.atleast_1d(snr_gf)):
-    plt.axvline(wl, color='b', linestyle='--', alpha=0.3)
-    plt.text(wl, .2, name+' SNR='+str(round(snr)), rotation=90, ha='center', va='bottom', fontsize=10)
-
+plt.legend(loc='upper right')
+plt.ylim(-0.05, 0.25)
 plt.title(f'Object ID {obj_id}')
 ```
 
