@@ -188,35 +188,95 @@ We specify the following conditions on our search, based on recommendations in t
 - We exclude point-like objects (primarily stars; mer.point_like_prob < 0.05), excessively large objects (mer.kron_radius < 50), and potentially spurious detections (mer.spurious_prob < 0.5). The size criterion helps minimize contamination from galaxies at $z < 0.85$ with incorrectly measured spectroscopic redshifts.
 - Join the lines, mer, photometric redshift, and galaxy candidates tables on object_id and spe_rank
 
-We search objects within the first 10000 objects to avoid the timeout issue withe the query which happens when the search takes long time.
+We limit our search to the first 10,000 objects to reduce query execution time and avoid potential timeout issues.
 Finally we sort the data by descending spe_line_snr_gf to have the largest SNR H-alpha lines detected at the top.
 
 ```{code-cell} ipython3
-adql_query = ("SELECT DISTINCT mer.object_id,mer.ra, mer.dec, mer.tileid, mer.flux_y_templfit, "
-    "lines.spe_line_snr_gf,lines.spe_line_snr_di, lines.spe_line_name, lines.spe_line_central_wl_gf, "
-    "lines.spe_line_ew_gf, galaxy.spe_z_err, galaxy.spe_z,galaxy.spe_z_prob, "
-    "lines.spe_line_flux_gf, lines.spe_line_flux_err_gf "
-    f"FROM {table_mer} AS mer "
-    f"JOIN {table_lines} AS lines "
-    "ON mer.object_id = lines.object_id "
-    f"JOIN {table_galaxy_candidates} AS galaxy "
-    "ON lines.object_id = galaxy.object_id AND lines.spe_rank = galaxy.spe_rank "
-    "WHERE lines.spe_line_snr_gf >5 "
-    "AND lines.spe_line_name = 'Halpha' "
-    f"AND mer.tileid = {tileID} "
-    "AND galaxy.spe_z_prob > 0.99 "
-    "AND galaxy.spe_z BETWEEN 1.4 AND 1.6 "
-    "AND lines.spe_line_flux_gf > 2E-16 "
-    "ORDER BY lines.spe_line_snr_gf DESC ")
+batch_size = 500
 
-# Use TAP with this ADQL string
-result_table = Irsa.query_tap(adql_query).to_table()
+line_tables = []
+for i in range(0, 10000, batch_size):
+
+    batch = object_ids[i:i + batch_size]
+
+    ids = ", ".join(str(int(x)) for x in batch)
+
+    query_lines = f"""
+    SELECT
+        lines.object_id,
+        lines.spe_rank,
+        lines.spe_line_name,
+        lines.spe_line_qual_gf,
+        lines.spe_line_central_wl_gf,
+        lines.spe_line_snr_gf,
+        galaxy.object_id,
+        galaxy.spe_z
+    FROM {table_lines} AS lines
+    JOIN {table_galaxy_candidates} AS galaxy
+    ON lines.object_id = galaxy.object_id
+    AND lines.spe_rank = galaxy.spe_rank
+    JOIN {table_quality} AS quality
+    ON lines.object_id = quality.object_id
+    JOIN {table_mer} AS mer
+    ON lines.object_id = mer.object_id
+    JOIN {table_photo_z} AS phz
+    ON lines.object_id = phz.object_id
+    
+    WHERE
+    lines.object_id IN ({ids})
+    AND lines.spe_line_name = 'Halpha'
+    AND lines.spe_line_qual_gf IN (212, 222, 252)
+    AND lines.spe_line_snr_gf > 10
+    AND lines.spe_rank = 0
+    AND lines.spe_line_flux_gf > 2E-16
+    AND galaxy.spe_z_prob > 0.99
+    AND galaxy.spe_z_rel > 0.05
+    AND galaxy.spe_rank = 0
+    AND galaxy.spe_z > 0.85
+    AND galaxy.spe_z < 1.85
+    AND quality.spe_npix > 800
+    AND quality.spe_n_dith_med > 15
+    AND (mer.point_like_prob < 0.05) 
+    AND (mer.spurious_prob < 0.5) 
+    AND (mer.kron_radius < 50)
+    AND (galaxy.spe_z > phz.phz_95_int_1)
+    AND (galaxy.spe_z < phz.phz_95_int_2)
+    ORDER BY lines.spe_line_snr_gf DESC
+        """
+
+    result = Irsa.query_tap(
+        query_lines,
+        async_job=True
+    ).to_table()
+
+    line_tables.append(result)
+
+if line_tables:
+    lines = vstack(line_tables)
+else:
+    lines = Table()
+
+
+# --------------------------------------------------
+# Add RA and Dec from the MER catalog
+# --------------------------------------------------
+
+if len(lines) > 0:
+    lines = join(
+        lines,
+        mer["object_id", "ra", "dec"],
+        keys="object_id",
+        join_type="left"
+    )
+
+# Sort final table by SNR (highest first)
+lines.sort("spe_line_snr_gf", reverse=True)
 ```
 
 ### Choose an object of interest, lets look at an object with a strong Halpha line detected with high SNR.
 
 ```{code-cell} ipython3
-obj_id = 2737659721646729968
+obj_id = 2700933273661649762
 
 obj_row = result_table[(result_table['object_id'] == obj_id)]
 
