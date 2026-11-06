@@ -24,16 +24,6 @@ authors:
 
 # Euclid DR1: MER Mosaics
 
-```{danger} TODO before the DR1 release (remove this box when done)
-**1. Remove the cell that points `Irsa.sia_url` to irsadev, once DR1 is public on the production IRSA services.**
-
-**2. Switch to, or add, `access_url` downloads once IRSA redirects the DR1 `access_url` links to the cloud (expected in about a week).**
-
-**3. Update the Kümmel et al. reference (journal, volume, arXiv ID), confirm it can be cited, and verify the DR1 DOI.**
-
-**4. Re-run the notebook against production IRSA and check the outputs and plots.**
-```
-
 +++
 
 ## Learning Goals
@@ -59,14 +49,15 @@ By the end of this tutorial, you will:
 Euclid launched in July 2023 as a European Space Agency (ESA) mission with involvement by NASA.
 The primary science goals of Euclid are to better understand the composition and evolution of the dark Universe.
 The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
-These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
+These data are archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS), which will eventually cover about 14,000 sq deg, and from the Euclid Deep Survey (EDS), which covers about 63 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
+Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS), which will eventually cover about 14,000 sq deg, and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
 DR1 also includes several photometric redshift and instrument calibration fields, such as COSMOS, CDFS, and AEGIS.
-It follows Quick Release 1 (Q1), which covered four much smaller fields; all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
+It follows Quick Release 1 (Q1), which covered about 63 sq deg with a single pass over each of the three Euclid Deep Fields and the dark cloud LDN 1641; all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
 
 Among the data products included in DR1 are the Level 2 MER mosaics.
-These are multiwavelength mosaics created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based surveys (DES, CFIS, Pan-STARRS, and HSC-based surveys) that provide the u, g, r, i, and z bands.
+MER (the Merge processing function of the Euclid ground segment) combines the VIS, NISP, and ground-based images into mosaics on a common grid, and detects and measures the sources on them to build the MER catalog.
+The mosaics are created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based surveys (DES, CFIS, Pan-STARRS, and HSC-based surveys) that provide the u, g, r, i, and z bands.
 All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale of 0.1 arcsec.
 The MER processing for DR1 is described in detail in Euclid Collaboration: Kümmel et al. (2026), see the [References](#references) section below.
 This notebook provides a quick introduction to accessing MER mosaics from IRSA.
@@ -79,12 +70,15 @@ If you have questions about it, please contact the [IRSA helpdesk](https://irsa.
 DR1 MER mosaics come in two kinds of tiles, which IRSA serves as two separate collections:
 
 * **Wide tiles** (`euclid_dr1_wide_DpdMerBksMosaic`): tile IDs start with `102`, about 32 x 32 arcmin, the same tiling as in Q1.
-* **Deep tiles** (`euclid_dr1_deep_DpdMerBksMosaic`): tile IDs start with `101`, about 17 x 17 arcmin, covering the deep fields.
-  They stack all of the deep field observations (about 8 times the VIS exposure time of a wide tile), so they reach much fainter sources.
+* **Deep tiles** (`euclid_dr1_deep_DpdMerBksMosaic`): tile IDs start with `101`, about 17 x 17 arcmin, used for fields too deep to process as wide tiles: the Euclid Deep Fields and auxiliary fields such as COSMOS, CDFS, and AEGIS.
+  In the Euclid Deep Fields, they stack all of the observations (about 8 times the VIS exposure time of a wide tile), so they reach much fainter sources.
 
 The deep fields are also covered by wide tiles, and because they have been observed many times, these wide tiles have **several mosaics in every band**.
-Only one is the official wide survey mosaic; the others are each built from a single pass over the deep field.
-The `PPLANID` keyword in the FITS header tells them apart: the official mosaic has `DATA_RELEASE` in it, the others `DATA_RELEASE_DEEP`.
+At most one of them is the official wide survey mosaic; the others are each built from a single pass over the deep field.
+At our position, only one of the two overlapping wide tiles has its official mosaic in the collection, which the code below selects.
+The `PPLANID` keyword in the FITS header tells them apart: the official wide survey mosaic has `-DATA_RELEASE-` in it, the others `DATA_RELEASE_DEEP`.
+
+In the MER catalog (see the [MER catalogs notebook](2_Euclid_intro_MER_catalog.md)), the sources of the `wide_survey` and `wide_mode` tables are measured on the wide mosaics, and those of the `deep_survey` and `deep_mode` tables on the deep mosaics.
 
 +++
 
@@ -92,6 +86,7 @@ The `PPLANID` keyword in the FITS header tells them apart: the official mosaic h
 
 Each wide MER mosaic is approximately 1.47 GB, and each deep MER mosaic is approximately 0.42 GB.
 Downloading can take some time.
+Running the full notebook takes about 20 minutes, most of it spent reading data from the cloud.
 
 +++
 
@@ -131,11 +126,12 @@ import sep
 
 ```{code-cell} ipython3
 # DR1 is not public yet, so we query IRSA's development server.
+Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
 Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
 ```
 
 ## 1. Search for multiwavelength Euclid DR1 MER mosaics in the Euclid Deep Field North
-Below we set a search radius of 10 arcsec around a position in the Euclid Deep Field North, an area covered by both deep and wide tiles.
+Below we set a search radius of 10 arcsec around a bright edge-on spiral galaxy in the Euclid Deep Field North, an area covered by both deep and wide tiles.
 
 ```{code-cell} ipython3
 search_radius = 10 * u.arcsec
@@ -144,14 +140,14 @@ coord = SkyCoord(273.1670, 64.3687, unit='deg', frame='icrs')
 
 Use IRSA's Simple Image Access (SIA) API to search for all Euclid MER mosaics that overlap with the search region you have specified.
 
-```{tip}
-The IRSA SIA collections can be listed using the ``list_collections`` method, we can filter on the ones containing "euclid" in the collection name:
+The IRSA SIA collections can be listed using the `list_collections` method; we filter on the ones containing "euclid" in the collection name:
 
-    Irsa.list_collections(filter='euclid')
+```{code-cell} ipython3
+Irsa.list_collections(filter='euclid')
 ```
 
-We search both DR1 MER collections described above, one for the deep and one for the wide tiles.
-IRSA serves other Euclid data products, as well as the Q1 and Early Release Observations data, in further collections.
+The two DR1 MER collections are `euclid_dr1_wide_DpdMerBksMosaic` and `euclid_dr1_deep_DpdMerBksMosaic`; the others hold the Q1 and Early Release Observations data and other Euclid data products, such as calibrated frames and spectra.
+We search both DR1 MER collections, one for the deep and one for the wide tiles.
 For more information, please read the [IRSA User Guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf).
 
 ```{code-cell} ipython3
@@ -164,7 +160,7 @@ These tables list all MER mosaic images available in this search position. These
 Note that there are various image types are returned as well, we filter out the `science` images from these:
 
 ```{code-cell} ipython3
-science_images = deep_table[deep_table['dataproduct_subtype'] == 'science']
+deep_science_images = deep_table[deep_table['dataproduct_subtype'] == 'science']
 wide_science_images = wide_table[wide_table['dataproduct_subtype'] == 'science']
 ```
 
@@ -172,30 +168,27 @@ The tile ID is the first part of the `obs_id`: deep tile IDs start with `101` an
 Adjacent tiles overlap, and our position happens to lie in the overlap of two deep tiles and of two wide tiles:
 
 ```{code-cell} ipython3
-for name, images in [('Deep', science_images), ('Wide', wide_science_images)]:
+for name, images in [('Deep', deep_science_images), ('Wide', wide_science_images)]:
     tile_ids, n_vis = np.unique([obs_id[:9] for obs_id in images[images['energy_bandpassname'] == 'VIS']['obs_id']], return_counts=True)
     print(f'{name} tiles and their number of VIS mosaics:', dict(zip(tile_ids.tolist(), n_vis.tolist())))
 ```
 
-Each deep tile has a single VIS mosaic, while the wide tiles have several.
-For the deep tile, we keep the one whose center is closest to our position:
+We see that each deep tile has a single VIS mosaic, while the wide tiles have several.
+Among the two deep tiles, we keep the one whose center is closest to our position:
 
 ```{code-cell} ipython3
-tile_centers = SkyCoord(science_images['s_ra'], science_images['s_dec'], unit='deg')
-deep_tileID = science_images['obs_id'][np.argmin(tile_centers.separation(coord))][:9]
-science_images = science_images[[obs_id.startswith(deep_tileID) for obs_id in science_images['obs_id']]]
+tile_centers = SkyCoord(deep_science_images['s_ra'], deep_science_images['s_dec'], unit='deg')
+deep_tileID = deep_science_images['obs_id'][np.argmin(tile_centers.separation(coord))][:9]
+deep_science_images = deep_science_images[[obs_id.startswith(deep_tileID) for obs_id in deep_science_images['obs_id']]]
 
 print(f'Deep MER tile ID: {deep_tileID}')
-science_images
+deep_science_images
 ```
 
 ## 2. Locate the mosaics in the cloud
 
 IRSA hosts the DR1 MER mosaics in an AWS S3 bucket.
 The `cloud_access` column of the search results gives the bucket name and file location of each mosaic, so let's extract the S3 file path from it:
-
-<!-- TODO: the DR1 access_url links do not work yet. Once IRSA redirects them to the cloud, consider showing
-access_url with download_file() again, alongside cloud_access. -->
 
 ```{code-cell} ipython3
 def get_s3_fpath(cloud_access):
@@ -206,33 +199,48 @@ def get_s3_fpath(cloud_access):
     return f'{bucket_name}/{key}'
 
 
-science_images['s3_fpath'] = [get_s3_fpath(row['cloud_access']) for row in science_images]
+deep_science_images['s3_fpath'] = [get_s3_fpath(row['cloud_access']) for row in deep_science_images]
 wide_science_images['s3_fpath'] = [get_s3_fpath(row['cloud_access']) for row in wide_science_images]
 ```
 
-## 3. Identify the official wide survey VIS mosaic
-
-To find the official wide survey VIS mosaic, we read the `PPLANID` keyword from the header of each wide VIS mosaic returned by our search.
-Reading only the header with a small block size avoids downloading the large image data.
+A few files listed in the search results may not be available in the bucket yet, so we check that each file exists and skip the ones that do not:
 
 ```{code-cell} ipython3
 s3 = s3fs.S3FileSystem(anon=True)
 
 
+def drop_missing(images):
+    exists = np.array([s3.exists(path) for path in images['s3_fpath']], dtype=bool)
+    for obs_id in images['obs_id'][~exists]:
+        print(f'Not in the bucket, skipping: {obs_id}')
+    return images[exists]
+
+
+deep_science_images = drop_missing(deep_science_images)
+wide_science_images = drop_missing(wide_science_images)
+```
+
+## 3. Identify the official wide survey VIS mosaic
+
+Because our position is in the Euclid Deep Field North, which has been observed many times, each wide tile has several VIS mosaics: the official wide survey mosaic and mosaics built from single passes over the deep field (see [Wide and deep MER tiles](#wide-and-deep-mer-tiles) above).
+To find the official wide survey VIS mosaic, we read the `PPLANID` keyword from the header of each wide VIS mosaic returned by our search.
+Reading only the header with a small block size avoids downloading the large image data.
+
+```{code-cell} ipython3
 def get_processing_plan(s3_fpath):
-    try:
-        with s3.open(s3_fpath, block_size=28800) as f:
-            return fits.Header.fromfile(f).get('PPLANID', '')
-    except FileNotFoundError:
-        # A few files listed in the search results may not be available in the bucket
-        return ''
+    with s3.open(s3_fpath, block_size=28800) as f:
+        return fits.Header.fromfile(f).get('PPLANID', '')
 
 
 wide_vis_images = wide_science_images[wide_science_images['energy_bandpassname'] == 'VIS']
 wide_vis_images['plan'] = [get_processing_plan(path) for path in wide_vis_images['s3_fpath']]
 
 wide_vis_images['official'] = ['-DATA_RELEASE-' in plan for plan in wide_vis_images['plan']]
-wide_tileID = wide_vis_images[wide_vis_images['official']]['obs_id'][0][:9]
+official_vis = wide_vis_images[wide_vis_images['official']]
+if len(official_vis) == 0:
+    raise ValueError('No official wide survey VIS mosaic was found at this position; '
+                     "try another position, or look at wide_vis_images['obs_id', 'plan'].")
+wide_tileID = official_vis['obs_id'][0][:9]
 
 wide_vis_images['obs_id', 'plan', 'official']
 ```
@@ -246,11 +254,11 @@ wide_vis_images['obs_id', 'plan', 'official']
 We open the full deep VIS mosaic directly from the S3 bucket. Note this file is about 0.42 GB.
 
 ```{code-cell} ipython3
-filename = science_images[science_images['energy_bandpassname'] == 'VIS']['s3_fpath'][0]
+filename = deep_science_images[deep_science_images['energy_bandpassname'] == 'VIS']['s3_fpath'][0]
 print(filename)
 
 hdu_mer_irsa = fits.open(f's3://{filename}', fsspec_kwargs={'anon': True})
-print(hdu_mer_irsa.info())
+hdu_mer_irsa.info()
 
 header_mer_irsa = hdu_mer_irsa[0].header
 ```
@@ -273,6 +281,7 @@ Lets extract just the primary image. This reads the full image from the cloud, s
 
 ```{code-cell} ipython3
 im_mer_irsa = hdu_mer_irsa[0].data
+hdu_mer_irsa.close()
 
 print(im_mer_irsa.shape)
 ```
@@ -287,12 +296,16 @@ plt.imshow(im_2arcmin, cmap='gray', origin='lower',
 colorbar = plt.colorbar()
 ```
 
-Uncomment the code below to plot an image of the entire field of view of the MER mosaic.
+Let's look at the whole tile, plotting only every 20th pixel to keep it fast.
 
 ```{code-cell} ipython3
-# # Full MER mosaic, may take a minute for python to create this image
-# plt.imshow(im_mer_irsa, cmap='gray', origin='lower', norm=ImageNormalize(im_mer_irsa, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
-# colorbar = plt.colorbar()
+# Plot every 20th pixel, which is enough to see the whole tile and fast to display
+im_binned = im_mer_irsa[::20, ::20]
+plt.imshow(im_binned, cmap='gray', origin='lower',
+           norm=ImageNormalize(im_binned, interval=PercentileInterval(99.9), stretch=AsinhStretch()))
+plt.colorbar()
+plt.title(f'Deep VIS mosaic of tile {deep_tileID} (every 20th pixel)')
+plt.show()
 ```
 
 ## 5. Create multiwavelength Euclid DR1 MER cutouts of a region of interest
@@ -303,18 +316,27 @@ Uncomment the code below to plot an image of the entire field of view of the MER
 We'd like to take a look at the multiwavelength images of our object, but the full MER mosaics are very large, so we will inspect the multiwavelength cutouts.
 ```
 
-Create an array with the instrument and filter name so we can add this to the plots.
+Create short labels with the instrument and filter name so we can add them to the plots, and sort the bands by wavelength.
 
 ```{code-cell} ipython3
-science_images['filters'] = science_images['instrument_name'] + "_" + science_images['energy_bandpassname']
+# Short labels for the plots, e.g. 'HSC G' or 'NISP H'
+short_names = {'Hyper Suprime-Cam': 'HSC'}
+deep_science_images['filters'] = [band if band == 'VIS' else f"{short_names.get(inst, inst)} {band}"
+                             for inst, band in deep_science_images['instrument_name', 'energy_bandpassname']]
 
-# VIS_VIS appears in the filters, so update that filter to just say VIS
-science_images['filters'][science_images['filters']== 'VIS_VIS'] = "VIS"
-
-science_images['filters']
+# Sort the bands by wavelength (u, g, r, VIS, i, z from the ground and Euclid, then the NISP bands)
+band_order = ['U', 'G', 'R', 'R2', 'VIS', 'I', 'I2', 'Z', 'Y', 'J', 'H']
+deep_science_images['band_order'] = [band_order.index(band) if band in band_order else len(band_order)
+                                for band in deep_science_images['energy_bandpassname']]
+deep_science_images.sort('band_order')
+deep_science_images['filters']
 ```
 
 ## 6. Define cutout parameters for a smaller region of interest
+
+Each cutout is read directly from the cloud, without downloading the full mosaic, but reading the cutouts in all of the bands can still take a few minutes.
+Larger cutouts take longer.
+A cutout cannot be larger than the tile itself (about 17 arcmin for deep tiles and 32 arcmin for wide tiles); near the edge of a tile it is trimmed to the part that overlaps the tile.
 
 ```{code-cell} ipython3
 ######################## User defined section ############################
@@ -340,7 +362,7 @@ def make_cutout(s3_fpath):
 
 
 # Iterate through each filter
-cutout_list = [make_cutout(s3_fpath) for s3_fpath in science_images['s3_fpath']]
+cutout_list = [make_cutout(s3_fpath) for s3_fpath in deep_science_images['s3_fpath']]
 
 # Combine all cutouts into a single HDUList and display information
 final_hdulist = fits.HDUList(cutout_list)
@@ -359,7 +381,7 @@ rows = -(-num_images // columns)
 fig, axes = plt.subplots(rows, columns, figsize=(4 * columns, 4 * rows), subplot_kw={'projection': WCS(final_hdulist[0].header)})
 axes = axes.flatten()
 
-for idx, (ax, filt) in enumerate(zip(axes, science_images['filters'])):
+for idx, (ax, filt) in enumerate(zip(axes, deep_science_images['filters'])):
     image_data = final_hdulist[idx].data
     norm = ImageNormalize(image_data, interval=PercentileInterval(99.9), stretch=AsinhStretch())
     ax.imshow(image_data, cmap='gray', origin='lower', norm=norm)
@@ -381,11 +403,11 @@ Because all MER mosaics share the same pixel grid, we can combine the deep cutou
 
 ```{code-cell} ipython3
 def scale_band(filt):
-    image_data = final_hdulist[np.where(science_images['filters'] == filt)[0][0]].data
+    image_data = final_hdulist[np.where(deep_science_images['filters'] == filt)[0][0]].data
     return ImageNormalize(image_data, interval=PercentileInterval(99.5), stretch=AsinhStretch(), clip=True)(image_data)
 
 
-rgb = np.dstack([scale_band('NISP_H'), scale_band('NISP_J'), scale_band('VIS')])
+rgb = np.dstack([scale_band('NISP H'), scale_band('NISP J'), scale_band('VIS')])
 
 plt.figure(figsize=(6, 6))
 plt.imshow(rgb, origin='lower')
@@ -400,14 +422,16 @@ Let's plot the same region in all of the VIS mosaics of the wide tile: first the
 All of them are in the same units, so we display them with the same linear stretch from -2 to +5 times the sky noise of the official wide mosaic.
 This makes the noise visible: the wide mosaics look grainy, while the deep mosaic is smoother and reveals more faint sources.
 The sky noise of each mosaic, measured with sigma clipping, is given in the panel titles.
+The official wide survey mosaic is itself built from a single wide survey visit, so its noise is similar to that of the single-pass mosaics; small differences between them come from the observing conditions of each visit.
+Artifacts such as satellite trails can appear in any single visit.
+This cell reads a cutout from each of the wide VIS mosaics of the tile, so it can take several minutes to run.
 
 ```{code-cell} ipython3
-filt_index = np.where(science_images['filters'] == 'VIS')[0][0]
+filt_index = np.where(deep_science_images['filters'] == 'VIS')[0][0]
 deep_vis = final_hdulist[filt_index].data
 
-# Wide VIS mosaics of the tile with the official mosaic, official first, skipping files not available in the bucket
+# Wide VIS mosaics of the tile with the official mosaic, official first
 wide_tile_vis = wide_vis_images[[obs_id.startswith(wide_tileID) for obs_id in wide_vis_images['obs_id']]]
-wide_tile_vis = wide_tile_vis[wide_tile_vis['plan'] != '']
 wide_tile_vis.sort('official', reverse=True)
 
 images = [make_cutout(s3_fpath).data for s3_fpath in wide_tile_vis['s3_fpath']] + [deep_vis]
@@ -451,8 +475,8 @@ Need to do some initial steps (swap byte order) with the cutout to prevent sep f
 img2 = img1.byteswap().view(img1.dtype.newbyteorder())
 c_contiguous_data = np.array(img2, dtype=np.float32)
 
-# Use a background mesh (bw, bh) larger than our galaxy, so its light is not absorbed into the background
-bkg = sep.Background(c_contiguous_data, bw=128, bh=128)
+# Use a background mesh (bw, bh) larger than our galaxy (about 250 pixels long), so its light is not absorbed into the background
+bkg = sep.Background(c_contiguous_data, bw=300, bh=300)
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 for ax, image_data, title in zip(axes, [bkg.back(), bkg.rms()], ['Background', 'Background rms']):
@@ -519,6 +543,6 @@ for i in range(len(sources_thr)):
 
 ## About this Notebook
 
-**Updated**: 2026-10-05
+**Updated**: 2026-11-12
 
 **Contact:** [the IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
