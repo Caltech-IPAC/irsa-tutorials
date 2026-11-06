@@ -347,13 +347,16 @@ brightest['object_id', 'flux_h_unif', 'phz_median', 'phz_90_int_1', 'phz_90_int_
 ### Retrieve the spectra
 
 The DR1 SIR 1D spectra are stored in large FITS files with one extension (HDU) per spectrum.
-The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file and the HDU of its spectra; we query it for the brightest of these galaxies.
-Not every galaxy with a spectroscopic redshift has a spectrum listed in this table yet, so if none is found, we move on to the next brightest galaxy.
+The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file (`path`) and the HDU of its spectra.
+IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable; its URL is built from the file path and HDU, which we do directly in the query.
+We query the table for the brightest of these galaxies; not every galaxy with a spectroscopic redshift has a spectrum listed in it yet, so if none is found, we move on to the next brightest galaxy.
 
 ```{code-cell} ipython3
 for galaxy in brightest:
     adql_spectra = f"""
-        SELECT objectid, tileid, path, hdu
+        SELECT objectid, tileid, hdu,
+               'https://irsacloud.ipac.caltech.edu/api/spectrumdm/convert/' || path
+               || '?dataset_id=euclid_combspec_dr1&hdu=' || hdu AS url
         FROM euclid.objectid_spectrafile_association_dr1
         WHERE objectid = {galaxy['object_id']}
     """
@@ -371,15 +374,11 @@ print(f'Object {obj_id}: photometric redshift {photo_z:.2f}, spectroscopic redsh
 result_spectra
 ```
 
-IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable, which we read into an astropy table.
+Each URL returns a VOTable containing the spectrum, which we read into an astropy table.
 A galaxy in the Euclid Deep Fields can have spectra from both the red and the blue grism; as in the [SIR 1D spectra notebook](3_Euclid_intro_1D_spectra.md), we keep the spectrum with the most usable flux bins for each kind of grism.
 
-<!-- TODO: change the base URL to https://irsa.ipac.caltech.edu when DR1 is public on the production IRSA services. -->
-
 ```{code-cell} ipython3
-spectrum_urls = [f"https://irsadev.ipac.caltech.edu/api/spectrumdm/convert/{row['path']}?dataset_id=euclid_combspec&hdu={row['hdu']}"
-                 for row in result_spectra]
-spectra = [QTable.read(url) for url in spectrum_urls]
+spectra = [QTable.read(url) for url in result_spectra['url']]
 ```
 
 ```{code-cell} ipython3
