@@ -39,7 +39,7 @@ extends:
 site:
   template: book-theme
   nav:
-    - title: IRSA Tutorials
+    - title: IRSA Tutorial Notebooks
       url: /.
     - title: Contributed Notebooks
       url: https://irsa.ipac.caltech.edu/irsa-contributed-notebooks/
