@@ -86,6 +86,10 @@
   file: tutorials/spherex/spherex_mosaic.md
   section: SPHEREx
   description: Understand and analyze a SPHEREx Mosaic Cube downloaded from the SPHEREx Mosaic tool.
+- title: HiPS All-Sky Cube
+  file: tutorials/spherex/spherex_hipscube.md
+  section: SPHEREx
+  description: Explore the SPHEREx HiPS all-sky cube in Firefly, download its FITS cube tiles, and extract a quick-look spectrum.
 - title: Source Discovery Tool
   file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
   section: SPHEREx

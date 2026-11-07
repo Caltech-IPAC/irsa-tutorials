@@ -41,7 +41,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -232,7 +232,7 @@ fc.dispatch(action_type='ImagePlotCntlr.ChangeHiPS',
 
 ```{note}
 If you look at the Firefly visualization, you will see some striping happening. This striping is an artifact originating from the mosaic creation close to bright emission lines such as Pa-$\alpha$ (1.88$\mu$m), PAH (3.3$\mu$m), or Br-$\alpha$ (4.05$\mu$m), which are strongly emitted by dust and hydrogen gas in our Milky Way. While these artifacts affect the mosaic, they do not affect the photometry itself if extracted from the [IRSA SPHEREx spectrophotometry tool](https://irsa.ipac.caltech.edu/applications/spherex/tool-spectrophotometry).
-For more information, see the "Mosaics" Section in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+For more information, see the "Mosaics" Section in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 ```
 
 +++
@@ -292,7 +292,7 @@ The SPHEREx HiPS FITS cube consists of different extensions.
 * The `NHITS` extension shows the number of contributing input pixels per mosaic pixel.
 * The `FLAGS` extension includes bitwise OR of flags propagated from contributing input pixels.
 
-For more information on these layer and the FITS cube construction, we refer to the "Mosaics" Section of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+For more information on these layer and the FITS cube construction, we refer to the "Mosaics" Section of the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 First, we open the FITS cube using the `cube_url` that we have defined above.
 
