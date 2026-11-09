@@ -38,7 +38,7 @@ By the end of this tutorial, you will:
 - know how to use the MASK column to pick the flux bins to plot;
 - understand the difference between the red and blue grism spectra, and how to pick the best spectrum of each grism;
 - know how to plot a Euclid spectrum and mark its emission lines;
-- know how to explore the spectra of randomly selected galaxies.
+- know how to select galaxies from the catalogs and explore their spectra.
 
 +++
 
@@ -75,7 +75,6 @@ We rely on ``astroquery`` features that have been recently added, so please make
 
 ```{code-cell} ipython3
 import warnings
-from urllib.error import HTTPError
 
 import numpy as np
 
@@ -123,6 +122,20 @@ search_radius = 1 * u.arcsec
 
 ```{code-cell} ipython3
 def find_galaxy(coord, search_radius=1 * u.arcsec):
+    """Find the galaxies near a position and their best spectroscopic redshift.
+
+    Parameters
+    ----------
+    coord : astropy.coordinates.SkyCoord
+        Position to search around.
+    search_radius : astropy.units.Quantity, optional
+        Radius of the search.
+
+    Returns
+    -------
+    astropy.table.Table
+        One row per galaxy, with its MER object ID, coordinates, and best (rank 0) SPE redshift and its probability.
+    """
     query = f"""
         SELECT mer.object_id, mer.ra, mer.dec, spe.spe_z, spe.spe_z_prob
         FROM euclid_dr1_mer_catalogue_deep_survey AS mer
@@ -134,7 +147,7 @@ def find_galaxy(coord, search_radius=1 * u.arcsec):
     return Irsa.query_tap(query, async_job=True).to_table()
 
 
-galaxy = find_galaxy(coord)
+galaxy = find_galaxy(coord, search_radius)
 galaxy
 ```
 
@@ -147,18 +160,53 @@ redshift = galaxy['spe_z'][0]
 
 The DR1 SIR 1D spectra are stored in large FITS files, one per MER tile, with one extension (HDU) per spectrum.
 The table `euclid.objectid_spectrafile_association_dr1` at IRSA lists, for each object ID, the file (`path`) and the HDU of each of its spectra.
-IRSA's spectrumDM service converts a given HDU of a spectrum file into a VOTable; its URL is built from the file path and HDU, which we do directly in the query:
+To read a spectrum, we don't download its whole file: IRSA's spectrumDM service reads a single HDU of a spectrum file in the cloud and returns it as a VOTable following the IVOA Spectrum Data Model, which astropy can read directly.
+Its URL is built from the file path and the HDU number:
 
 ```{code-cell} ipython3
+SPECTRUMDM_URL = 'https://irsacloud.ipac.caltech.edu/api/spectrumdm/convert/'
+SPECTRUM_DATASET_ID = 'euclid_combspec_dr1'
+
+
+def spectrum_url(path, hdu):
+    """Build the spectrumDM URL of one spectrum.
+
+    Parameters
+    ----------
+    path : str
+        Path of the spectrum file, from the ``path`` column of the association table.
+    hdu : int
+        Number of the HDU of the spectrum in the file.
+
+    Returns
+    -------
+    str
+        URL that returns the spectrum as a VOTable.
+    """
+    return f'{SPECTRUMDM_URL}{path}?dataset_id={SPECTRUM_DATASET_ID}&hdu={hdu}'
+
+
 def find_spectra(object_id):
+    """Find the spectra of an object in the spectrum association table.
+
+    Parameters
+    ----------
+    object_id : int
+        MER object ID of the source.
+
+    Returns
+    -------
+    astropy.table.Table
+        One row per spectrum, with the file path and HDU number of the spectrum, and its spectrumDM URL.
+    """
     query = f"""
-        SELECT objectid, tileid, hdu,
-               'https://irsacloud.ipac.caltech.edu/api/spectrumdm/convert/' || path
-               || '?dataset_id=euclid_combspec_dr1&hdu=' || hdu AS url
+        SELECT objectid, tileid, path, hdu
         FROM euclid.objectid_spectrafile_association_dr1
         WHERE objectid = {object_id}
     """
-    return Irsa.query_tap(query).to_table()
+    spectrum_files = Irsa.query_tap(query).to_table()
+    spectrum_files['url'] = [spectrum_url(path, hdu) for path, hdu in zip(spectrum_files['path'], spectrum_files['hdu'])]
+    return spectrum_files
 
 
 spectrum_files = find_spectra(object_id)
@@ -183,48 +231,88 @@ Some highlights of the columns of the 1D spectra:
 - WAVELENGTH is in Angstroms by default.
 - SIGNAL is the flux. The values are scaled and the scaling factor is included in the column's units. This value corresponds to the `'FSCALE'` entry in the HDU header of the original FITS file.
 - VAR is the variance of the flux, and UNCERTAINTY is its square root, the flux uncertainty.
-- MASK values can be used to determine which flux bins to discard: flux bins with an odd MASK value or a MASK value of 64 or more should not be used.
+- MASK is a bit mask of quality flags (Scodeggio et al. 2026, Table 2). Bit 0 (`NOT_USE`, an odd MASK value) marks invalid flux bins and bit 6 (`ABS_FLUX`, a MASK value of 64 or more) a suspicious absolute flux calibration; flux bins with either flag should not be used. The other bits are warnings.
 - NDITH is the number of dithered exposures that contribute to each flux bin.
 ```
 
-Before plotting, we use the MASK column to find the flux bins not to use:
+We use the MASK column to find the flux bins not to use:
 
 ```{code-cell} ipython3
 def bad_flux_bins(spectrum):
+    """Find the flux bins of a spectrum that should not be used.
+
+    Parameters
+    ----------
+    spectrum : astropy.table.QTable
+        Spectrum, with a MASK column.
+
+    Returns
+    -------
+    numpy.ndarray
+        Boolean array, True for the flux bins with an odd MASK value or a MASK value of 64 or more.
+    """
     mask = spectrum['MASK'].value
     return (mask % 2 == 1) | (mask >= 64)
 ```
 
-Let's plot the spectrum with the most usable flux bins, with the flux as a solid line and its uncertainty as a thin line:
+Let's look at the spectrum with the most usable flux bins.
+Each row of the table is one flux bin:
 
 ```{code-cell} ipython3
 spectrum = max(spectra, key=lambda spectrum: np.sum(~bad_flux_bins(spectrum)))
+spectrum
+```
 
+We plot it with the usable flux bins as a solid line, the flux bins not to use as a dotted line, and the flux uncertainty of the usable bins as a thin line.
+Below it, we plot the MASK values as a function of wavelength.
+They are bit flags, so each value combines several conditions:
+
+```{code-cell} ipython3
 bad = bad_flux_bins(spectrum)
 wavelength = spectrum['WAVELENGTH'].to(u.micron)
 
-fig, ax = plt.subplots(figsize=(12, 4))
-ax.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color='tab:red', label='Flux')
-ax.plot(wavelength, np.ma.masked_where(bad, spectrum['UNCERTAINTY']), color='tab:red', linewidth=0.5, label='Uncertainty')
-ax.set_title(f'Euclid SIR 1D spectrum of object {object_id}')
-ax.legend()
+fig, (ax_flux, ax_mask) = plt.subplots(2, 1, figsize=(12, 6), sharex=True, height_ratios=[3, 1])
+ax_flux.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color='tab:red', label='Flux')
+ax_flux.plot(wavelength, np.ma.masked_where(~bad, spectrum['SIGNAL']), color='tab:red', linestyle=':', alpha=0.6,
+             label='Flux, do not use')
+ax_flux.plot(wavelength, np.ma.masked_where(bad, spectrum['UNCERTAINTY']), color='tab:red', linewidth=0.5,
+             label='Uncertainty')
+ax_flux.set_xlabel('')
+ax_flux.set_title(f'Euclid SIR 1D spectrum of object {object_id}')
+ax_flux.legend()
+
+ax_mask.plot(wavelength, spectrum['MASK'], color='tab:red')
+ax_mask.set_ylabel('MASK value')
 plt.show()
 ```
 
+Most of the flux bins not to use are at the edges of the wavelength range of the spectrum, where the throughput of the grism is low.
 The strong emission line near 1.76 micron is Hα, and the lines near 1.3 micron are Hβ and [OIII]; we will confirm this with the redshift of the galaxy in section 5.
 
 ## 4. Red and blue grism spectra
 
 NISP takes slitless spectra with two kinds of grisms:
 
-* **Red grisms** cover about 1.2 to 1.9 micron and are used in both the Euclid Wide Survey and the Euclid Deep Survey.
-* **The blue grism** covers about 0.9 to 1.4 micron and is used only in the Euclid Deep Survey.
+* **Red grisms** cover about 1.2 to 1.9 micron, with a resolving power R > 480, and are used in both the Euclid Wide Survey and the Euclid Deep Survey.
+* **The blue grism** covers about 0.92 to 1.37 micron, with a resolving power R > 400, and is used only in the Euclid Deep Survey.
 
 A galaxy in the Euclid Wide Survey has only a red grism spectrum, while a galaxy in the Euclid Deep Fields, like ours, has spectra from both kinds of grism, each of them a separate spectrum in the files.
 We tell them apart by their wavelength range (blue grism spectra start below 1.1 micron):
 
 ```{code-cell} ipython3
 def grism_name(spectrum):
+    """Tell which kind of grism a spectrum comes from.
+
+    Parameters
+    ----------
+    spectrum : astropy.table.QTable
+        Spectrum, with a WAVELENGTH column.
+
+    Returns
+    -------
+    str
+        ``'Blue grism'`` if the spectrum starts below 1.1 micron, ``'Red grism'`` otherwise.
+    """
     return 'Blue grism' if spectrum['WAVELENGTH'].min() < 1.1 * u.micron else 'Red grism'
 ```
 
@@ -247,6 +335,18 @@ A galaxy can also have several spectra of the same kind of grism, for example wh
 
 ```{code-cell} ipython3
 def best_spectra(spectra):
+    """Pick the spectrum with the most usable flux bins for each kind of grism.
+
+    Parameters
+    ----------
+    spectra : list of astropy.table.QTable
+        Spectra of one object.
+
+    Returns
+    -------
+    dict
+        Best spectrum of each kind of grism, keyed by the name of the grism.
+    """
     best = {}
     for spectrum in sorted(spectra, key=lambda spectrum: np.sum(~bad_flux_bins(spectrum)), reverse=True):
         best.setdefault(grism_name(spectrum), spectrum)
@@ -283,6 +383,17 @@ grism_colors = {'Red grism': 'tab:red', 'Blue grism': 'tab:blue'}
 
 
 def plot_spectra(spectra, title, redshift=None):
+    """Plot the spectra of an object, and mark its emission lines.
+
+    Parameters
+    ----------
+    spectra : dict
+        Spectra to plot, keyed by the name of their grism, as returned by `best_spectra`.
+    title : str
+        Title of the plot.
+    redshift : float, optional
+        Redshift of the object. If given, the emission lines in the wavelength range are marked.
+    """
     fig, ax = plt.subplots(figsize=(12, 4.5))
     for name, spectrum in spectra.items():
         wavelength = spectrum['WAVELENGTH'].to(u.micron)
@@ -291,7 +402,7 @@ def plot_spectra(spectra, title, redshift=None):
 
         ax.plot(wavelength, np.ma.masked_where(bad, spectrum['SIGNAL']), color=color, alpha=0.8, label=name)
         ax.plot(wavelength, np.ma.masked_where(~bad, spectrum['SIGNAL']), color=color, linestyle=':', alpha=0.6)
-        ax.plot(wavelength, spectrum['UNCERTAINTY'], color=color, linewidth=0.5, alpha=0.5)
+        ax.plot(wavelength, np.ma.masked_where(bad, spectrum['UNCERTAINTY']), color=color, linewidth=0.5, alpha=0.5)
 
     good_flux = np.concatenate([spectrum['SIGNAL'][~bad_flux_bins(spectrum)].filled(np.nan)
                                 for spectrum in spectra.values()])
@@ -322,36 +433,12 @@ def plot_spectra(spectra, title, redshift=None):
 plot_spectra(best, f'Euclid SIR 1D spectra of object {object_id}', redshift)
 ```
 
-## 6. Look closer at the spectrum table and the MASK column
-
-Now that we have seen the spectra, let's look at the usable flux bins of the red grism spectrum:
-
-```{code-cell} ipython3
-red_spectrum = best['Red grism']
-red_spectrum[~bad_flux_bins(red_spectrum)]
-```
-
-The MASK values are bit flags, so each value combines several conditions.
-Let's plot them as a function of wavelength, to see where the flux bins not to use are:
-
-```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(12, 3))
-for name, spectrum in best.items():
-    ax.plot(spectrum['WAVELENGTH'].to(u.micron), spectrum['MASK'], color=grism_colors[name], alpha=0.6, label=name)
-ax.set_ylabel('MASK value')
-ax.set_title('Values of MASK by flux bin')
-ax.legend()
-plt.show()
-```
-
-Most of the flux bins not to use are at the edges of the wavelength range of each grism, where its throughput is low.
-
-## 7. Explore the spectra of random galaxies
+## 6. Select galaxies and explore their spectra
 
 Now it's your turn to explore!
 We select galaxies from the DR1 SPE and MER deep catalogs in a region of the Euclid Deep Field North, pick a few of them at random, and plot their spectra with their emission lines.
-To avoid stars and problematic sources, we keep only sources with a reliable redshift (`spe_z_prob` and `spe_z_rel`, see the [SPE catalogs notebook](5_Euclid_intro_SPE_catalog.md)), a low probability of being point-like (`point_like_prob`), and no MER detection quality flags set (`det_quality_flag = 0`), for example for blending with a neighbor.
-Change the parameters below to look at other regions, redshift ranges, or numbers of galaxies; change or remove the random seed to get a different selection.
+The selection is not random: to avoid stars and problematic sources, we keep only sources with a reliable redshift (`spe_z_prob` and `spe_z_rel`, see the [SPE catalogs notebook](5_Euclid_intro_SPE_catalog.md)), a low probability of being point-like (`point_like_prob`), and no MER detection quality flags set (`det_quality_flag = 0`), for example for blending with a neighbor.
+Change the parameters below to look at other regions, redshift ranges, or numbers of galaxies; change or remove the random seed to pick different galaxies from the selection.
 Each time you rerun the plotting cell, it picks new galaxies from the same selection.
 Most of these galaxies are much fainter than our first example, so their spectra are noisier, and their emission lines can be weak or missing.
 
@@ -391,33 +478,47 @@ print(f'Found {len(galaxies)} galaxies')
 ```
 
 We wrap sections 2 to 4 into a function, which returns the best spectrum of each grism of an object.
-If a spectrum file cannot be read, we skip it and use the other spectra of the galaxy:
+If a spectrum cannot be read (for example, because of a network error or a timeout), we skip it and use the other spectra of the galaxy:
 
 ```{code-cell} ipython3
 def get_best_spectra(object_id):
+    """Read the spectra of an object and pick the best one of each kind of grism.
+
+    Spectra that cannot be read are skipped, with a message.
+
+    Parameters
+    ----------
+    object_id : int
+        MER object ID of the source.
+
+    Returns
+    -------
+    dict
+        Best spectrum of each kind of grism, keyed by the name of the grism; empty if no spectrum could be read.
+    """
     spectra = []
     for url in find_spectra(object_id)['url']:
         try:
             spectra.append(QTable.read(url))
-        except HTTPError as error:
+        except OSError as error:
             print(f'Skipping a spectrum that could not be read ({error}): {url}')
     return best_spectra(spectra)
 ```
 
 ```{code-cell} ipython3
-for galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len(galaxies)), replace=False)]:
-    galaxy_spectra = get_best_spectra(galaxy['object_id'])
+for random_galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len(galaxies)), replace=False)]:
+    galaxy_spectra = get_best_spectra(random_galaxy['object_id'])
     if not galaxy_spectra:
-        print(f"No spectra found for object {galaxy['object_id']}")
+        print(f"No spectra found for object {random_galaxy['object_id']}")
         continue
-    plot_spectra(galaxy_spectra, f"Object {galaxy['object_id']}", galaxy['spe_z'])
+    plot_spectra(galaxy_spectra, f"Object {random_galaxy['object_id']}", random_galaxy['spe_z'])
 ```
 
 ## References
 
 <!-- TODO: update the Scodeggio et al. reference (journal, volume, arXiv ID) once the paper is public. -->
 
-- Euclid Collaboration: Scodeggio, M., et al. 2026, *Euclid Data Release 1 (DR1): The SIR spectroscopic processing*, A&A, in prep.
+- Euclid Collaboration: Scodeggio, M., Copin, Y., et al. 2026, *Euclid Data Release 1 (DR1): From spectrograms to spectra: The SIR spectroscopic processing function*, A&A, in prep.
 
 +++
 
