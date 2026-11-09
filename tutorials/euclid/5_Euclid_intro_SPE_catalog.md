@@ -18,6 +18,7 @@ authors:
   - name: Dan Masters
   - name: Harry Teplitz
   - name: Jaladh Singhal
+  - name: Keunho Kim
   - name: Shoubaneh Hemmati
   - name: Vandana Desai
   - name: Troy Raen
@@ -71,6 +72,8 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```
 
 ```{code-cell} ipython3
+from urllib.error import HTTPError
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -120,9 +123,9 @@ In this section we only look at which tables are available and what their column
 
 Like the MER catalog (see the [MER catalogs notebook](2_Euclid_intro_MER_catalog.md)), the DR1 SPE catalogs are split by survey, with a `_wide_survey` and a `_deep` version of each table:
 * `euclid_dr1_spectro_z_spe_galaxy_candidates_*` -- the spectroscopic redshift candidates of each source fitted with galaxy templates, ranked by `spe_rank` (0 is the best candidate), with their probability `spe_z_prob` and reliability `spe_z_rel`.
-* `euclid_dr1_spectro_line_features_spe_line_features_*` -- the line measurements for each redshift candidate (matched on `object_id` and `spe_rank`): every line of a reference list (from Lyα to the Paschen lines) is measured at its expected wavelength at that redshift, with its wavelength, flux, signal-to-noise ratio, and quality, from a Gaussian fit (`_gf`) and from direct integration (`_di`). Lines are measured whether or not they are detected, so most rows are non-detections (for example `spe_line_snr_gf = -99`), and a line can have several rows with different `spe_line_qual_gf` values.
+* `euclid_dr1_spectro_line_features_spe_line_features_*` -- the line measurements for each redshift candidate (matched on `object_id` and `spe_rank`): the lines are measured at their expected wavelengths at that redshift, with their wavelength, flux, signal-to-noise ratio, and quality, from a Gaussian fit (`_gf`) and from direct integration (`_di`). The 11 main lines (Lyα, [OII], Hβ, [OIII], Hα, [NII]6585, [SII]6718, [SIII]9068, [SIII]9530, Paγ, and Paβ) are measured for every candidate, whether or not they are detected, so many rows are non-detections (for example `spe_line_snr_gf = -99`); other lines are only stored when they are detected. A line can have several rows, one for each grism, with different `spe_line_qual_gf` values.
 * `euclid_dr1_spectro_z_spe_quality_*` -- one row per source processed by SPE, including sources without a redshift candidate, describing its spectrum and the processing: grism(s), wavelength range, number of valid pixels, number of dithers, and error and warning flags.
-* `euclid_dr1_spectro_z_spe_classification_*` -- the classification of each source as a galaxy, star, or QSO from its spectrum.
+* `euclid_dr1_spectro_z_spe_classification_*` -- the classification of each source as a galaxy, star, or QSO from its spectrum. The galaxy model only fits emission lines, so galaxies with a strong continuum and weak lines are often best fitted by the QSO model, which in DR1 also includes templates of quiescent, star-forming, and type 2 AGN galaxies: not all of the sources classified as QSO are quasars.
 
 The SPE tables have no coordinates; they are joined to the MER catalog of the same survey on `object_id`.
 In this notebook we work in the Euclid Deep Field North, so we use the deep tables.
@@ -165,9 +168,10 @@ A few highlights of the columns we use below:
 - `object_id`, the MER object ID used to join the SPE tables with each other and with the MER and PHZ catalogs;
 - `spe_rank`, the rank of the redshift candidate, 0 for the best one;
 - `spe_z`, `spe_z_prob`, and `spe_z_rel`, the spectroscopic redshift, its probability, and its reliability;
-- `spe_line_name`, the name of the detected line, for example `'Halpha'`;
+- `spe_line_name`, the name of the measured line, for example `'Halpha'`;
 - `spe_line_central_wl_gf`, `spe_line_flux_gf`, and `spe_line_snr_gf`, the central wavelength (in Angstrom), flux (in erg s<sup>-1</sup> cm<sup>-2</sup>), and signal-to-noise ratio of the line from the Gaussian fit;
 - `spe_line_qual_gf`, the quality of the Gaussian fit measurements;
+- we use the Gaussian fit measurements throughout: in DR1, the direct integration fluxes (`_di`) are about 15% larger than the Gaussian fit ones, because of a too aggressive continuum subtraction (Le Brun et al. 2026);
 - `spe_npix` and `spe_n_dith_med` in the quality table, the number of valid pixels and the median number of dithers of the spectrum.
 ```
 
@@ -208,16 +212,17 @@ Only a fraction of them have an SPE redshift, and fewer still have a redshift an
 The SPE tables can be filtered on any of their columns, and the right filters depend on the science case.
 In this section, we show how to combine the SPE redshift, quality, and lines tables with the MER and PHZ catalogs, using one common case as an example: selecting galaxies with a strong, well-measured Hα line, the main target of the Euclid spectroscopic survey.
 
-The criteria below are one recipe for this case, following the recommendations of the Euclid SPE team.
-They are deliberately strict, and are not a definition of a "good" spectrum: a galaxy at z > 1.85, for example, has its Hα line beyond the end of the red grism spectrum and fails criterion 2, but can have an excellent spectrum and redshift from its [OIII] or [OII] lines.
+The criteria below are one recipe for this case, adapted from the ones used by Le Brun et al. (2026, Sect. 4.2) to build a reference sample of Hα emitters in the EDF-N, which agrees with DESI redshifts for about 99% of the galaxies.
+This is the redshift range and the line that the Euclid spectroscopic survey targets, and for which the SPE galaxy model is optimized.
+The criteria are deliberately strict, and are not a definition of a "good" spectrum: a galaxy at z > 1.85, for example, has its Hα line beyond the end of the red grism spectrum and fails criterion 2, but can have an excellent spectrum and redshift from its [OIII] or [OII] lines, and a galaxy at z < 0.85 can have its Hα line well measured in the blue grism spectrum of the Euclid Deep Fields.
 For another science case, drop or change the criteria that do not apply, for example the redshift range and the line in criteria 2 and 6.
 
-1. **High-confidence redshift**: the best redshift candidate (`spe_rank = 0`) has a high probability (`spe_z_prob > 0.99`) and reliability (`spe_z_rel > 0.05`).
-2. **Hα in the spectrum**: the redshift is between 0.45 and 1.85, the range in which Hα falls in the blue grism (0.93 to 1.37 micron) or the red grism (1.2 to 1.89 micron), away from the edges of the spectra.
-3. **Both grisms, full wavelength coverage and depth**: in the quality table, the source has both a blue and a red grism spectrum (`spe_grism = 'BGS+RGS'`; drop this requirement for the Euclid Wide Survey, which only has red grism spectra), its combined spectrum has at least 800 valid pixels (`spe_npix > 800`, out of at most about 850 for the combined blue and red grism spectrum), so almost none of its wavelength range is masked, and the median number of dithered exposures per pixel is greater than 15 (`spe_n_dith_med > 15`, about 20 for most sources in this region), so it reaches close to the full depth of the survey.
-4. **Extended, non-spurious source**: in the MER catalog, the source is not point-like (`point_like_prob < 0.05`, which removes most stars, but also compact galaxies and quasars), is unlikely to be spurious (`spurious_prob < 0.5`), and is not excessively large (`kron_radius < 50`), which removes nearby galaxies whose lines can be mistaken for Hα.
-5. **Consistent with the photometric redshift**: the spectroscopic redshift is within the 95% interval of the photometric redshift of the PHZ catalog (`phz_95_int_1` to `phz_95_int_2`), a check against a wrong line identification.
-6. **Strong, well-measured Hα line**: the Gaussian fit of the Hα line is good in at least one of the two grisms, and the combined measurement of the two grisms has a signal-to-noise ratio greater than 10 and a flux greater than 2×10<sup>-16</sup> erg s<sup>-1</sup> cm<sup>-2</sup>.
+1. **High-confidence redshift**: the best redshift candidate (`spe_rank = 0`) has a high probability (`spe_z_prob > 0.99`, as in Sect. 4.1 of the paper, while Sect. 4.2 uses 0.94; this is the fraction of the redshift probability distribution in its peak) and is not flagged as unreliable (`spe_z_rel > 0.05`, a reliability from a machine-learning classifier, which in DR1 is trained on simulations, so only a low threshold is recommended).
+2. **Hα in the red grism spectrum**: the redshift is between 0.85 and 1.85, the range in which Hα falls in the red grism spectrum (1.21 to 1.89 micron), away from its edges. At z < 1.08, Hα is also in the blue grism spectrum (up to 1.37 micron).
+3. **Both grisms, full wavelength coverage and depth**: in the quality table, the source has both a blue and a red grism spectrum (`spe_grism = 'BGS+RGS'`; drop this requirement for the Euclid Wide Survey, which only has red grism spectra), its combined spectrum has at least 800 valid pixels (`spe_npix >= 800`, out of at most about 850 for the combined blue and red grism spectrum), so almost none of its wavelength range is masked, and the median number of dithered exposures per pixel is at least 15 (`spe_n_dith_med >= 15`, about 20 for most sources in this region), so it reaches close to the full depth of the survey.
+4. **Extended, non-spurious source**: in the MER catalog, the source is not point-like (`point_like_prob < 0.05`, which removes most stars, but also compact galaxies and quasars), is unlikely to be spurious (`spurious_prob < 0.5`), and is not excessively large (`kron_radius < 50`): a large galaxy is most likely nearby, and a redshift in the Hα range is then most likely wrong. These are the criteria of the Euclid Galaxy Clustering Science Working Group.
+5. **Consistent with the photometric redshift**: the spectroscopic redshift is within the 95% interval of the photometric redshift of the PHZ catalog (`phz_95_int_1` to `phz_95_int_2`), a check against a wrong line identification: Le Brun et al. (2026) find that with this criterion, 98% of the redshifts are correct at 0.84 < z < 1.6 in the EDF-N.
+6. **Strong, well-measured Hα line**: the Gaussian fit of the Hα line is good in at least one of the two grisms, and the combined measurement of the two grisms has a signal-to-noise ratio greater than 10 and a flux greater than 1.5×10<sup>-16</sup> erg s<sup>-1</sup> cm<sup>-2</sup>, as in the visually inspected sample of the paper.
 
 ### 3.1 Get the redshifts, spectrum quality, and morphology of the sources
 
@@ -255,10 +260,10 @@ def criteria(table):
     z = values(table, 'spe_z')
     return {
         '1. High-confidence redshift': (values(table, 'spe_z_prob') > 0.99) & (values(table, 'spe_z_rel') > 0.05),
-        '2. Hα in the spectrum (0.45 < z < 1.85)': (z > 0.45) & (z < 1.85),
+        '2. Hα in the red grism (0.85 < z < 1.85)': (z > 0.85) & (z < 1.85),
         '3. Both grisms, full coverage and depth': ((table['spe_grism'] == 'BGS+RGS')
-                                                    & (values(table, 'spe_npix') > 800)
-                                                    & (values(table, 'spe_n_dith_med') > 15)),
+                                                    & (values(table, 'spe_npix') >= 800)
+                                                    & (values(table, 'spe_n_dith_med') >= 15)),
         '4. Extended, non-spurious source': ((values(table, 'point_like_prob') < 0.05)
                                      & (values(table, 'spurious_prob') < 0.5)
                                      & (values(table, 'kron_radius') < 50)),
@@ -282,24 +287,29 @@ cut_flow(criteria(candidates))
 ### 3.2 Add the H-alpha measurements
 
 As we saw in section 1, the lines table has several rows for each line of a source: one for each grism in which the line is measured.
-The last digit of the quality flag `spe_line_qual_gf` tells which spectrum the measurement comes from, and its middle digit tells how good it is:
+The quality flag `spe_line_qual_gf` has three digits, described in the [DR1 documentation of the SPE catalogs](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html): the first digit is the measurement method (2 for the Gaussian fit), the last digit tells which spectrum the measurement comes from, and the middle digit tells how good it is:
 
 | Digit | Value | Meaning |
 |---|---|---|
 | last (grism) | 1, 2, 3 | blue grism, red grism, blue and red grisms combined |
-| middle (quality) | 1 | good measurement |
+| middle (quality) | 0 | not measured |
+| | 1 | good measurement |
 | | 2 | low signal-to-noise ratio (below 2) |
+| | 3 | positive equivalent width (probably a negative continuum) |
+| | 4 | combined measurement only: the blue and red grism measurements are not both good |
 | | 5 | acceptable, but up to 15% of the pixels of the line are missing |
+| | 7 | combined measurement only: error when combining the blue and red grism measurements |
 | | 8 | unreliable, more than 15% of the pixels of the line are missing |
 | | 9 | the line is outside of the wavelength range (with a negative sign, for example -92) |
 
 For each galaxy, we get all of the Hα measurements in the wavelength range (`spe_line_qual_gf > 0`), and use them in two ways:
-- the quality of the single-grism measurements (last digit 1 or 2) tells us whether Hα is well measured in at least one of the grisms: we require a quality digit of 1 (good) or 5 (acceptable), that is a quality flag of 211, 212, 251, or 252. Hα does not need to be well measured in both grisms: at z > 1.08 it is only in the red grism, and at z < 0.84 only in the blue grism;
+- the quality of the single-grism measurements (last digit 1 or 2) tells us whether Hα is well measured in at least one of the grisms: we require a quality digit of 1 (good) or 5 (acceptable), that is a quality flag of 211, 212, 251, or 252. Hα does not need to be well measured in both grisms: at z > 1.08 it is only in the red grism, and near the start of the red grism spectrum it is often only well measured in the blue grism;
 - the combined measurement (last digit 3), which uses both grisms where the line falls in both, gives the flux and signal-to-noise ratio of the line.
 
 ```{note}
-The quality digit of most of the combined measurements is 4 (for example 243), which is not described in the Q1 documentation of the quality flags; we find it for lines measured in a single grism.
-This is why we take the quality from the single-grism measurements.
+The combined measurement of most lines has a quality digit of 4 (flag 243), because the line is not well measured in both grisms, most often because it is outside of the wavelength range of one of them; the combined measurement then has the same flux and signal-to-noise ratio as the single-grism one.
+Only lines well measured in both grisms have a combined flag of 213.
+This is why we take the quality from the single-grism measurements, and only require Hα to be well measured in one of them.
 ```
 
 The IRSA TAP service accepts at most 1000 values in an `IN (...)` list, so we query the Hα measurements in batches of 1000 object IDs.
@@ -323,7 +333,7 @@ def query_halpha(object_ids, batch_size=1000):
 
 
 cuts = criteria(candidates)
-in_range = cuts['1. High-confidence redshift'] & cuts['2. Hα in the spectrum (0.45 < z < 1.85)']
+in_range = cuts['1. High-confidence redshift'] & cuts['2. Hα in the red grism (0.85 < z < 1.85)']
 halpha_rows = query_halpha(list(candidates['object_id'][in_range]))
 
 grism_digit = halpha_rows['spe_line_qual_gf'] % 10
@@ -348,7 +358,7 @@ def all_criteria(table):
     cuts = criteria(table)
     cuts['6. Strong, well-measured Hα'] = (np.ma.filled(table['halpha_good_in_a_grism'], False)
                                            & (values(table, 'halpha_snr_gf') > 10)
-                                           & (values(table, 'halpha_flux_gf') > 2e-16))
+                                           & (values(table, 'halpha_flux_gf') > 1.5e-16))
     return cuts
 
 
@@ -357,8 +367,8 @@ passes_all = np.logical_and.reduce(list(cuts.values()))
 cut_flow(cuts)
 ```
 
-Out of the tens of thousands of MER sources in the region, about a hundred galaxies pass all the criteria of this strict recipe.
-The Hα criterion removes most of the galaxies left after the first five criteria, mainly because of the flux cut: most of the Hα lines are fainter than 2×10<sup>-16</sup> erg s<sup>-1</sup> cm<sup>-2</sup>, the flux limit of the Euclid Wide Survey, which the deep fields go below (see section 4).
+Out of the tens of thousands of MER sources in the region, about 130 galaxies pass all the criteria of this strict recipe.
+The Hα criterion removes most of the galaxies left after the first five criteria, mainly because of the flux cut: most of the Hα lines are fainter than 1.5×10<sup>-16</sup> erg s<sup>-1</sup> cm<sup>-2</sup>, close to the flux limit of the Euclid Wide Survey (2×10<sup>-16</sup> erg s<sup>-1</sup> cm<sup>-2</sup>), which the deep fields go below (see section 4).
 Let's sort the galaxies that pass all of the criteria by the signal-to-noise ratio of their Hα line:
 
 ```{code-cell} ipython3
@@ -372,12 +382,12 @@ strong_halpha['object_id', 'spe_z', 'phz_median', 'halpha_flux_gf', 'halpha_snr_
 Let's compare the redshifts of the galaxies that pass all of the criteria with those of all the galaxies with a high-confidence redshift in the same range, and look at their Hα fluxes as a function of redshift:
 
 ```{code-cell} ipython3
-high_confidence = cuts['1. High-confidence redshift'] & cuts['2. Hα in the spectrum (0.45 < z < 1.85)']
+high_confidence = cuts['1. High-confidence redshift'] & cuts['2. Hα in the red grism (0.85 < z < 1.85)']
 has_halpha = values(galaxies, 'halpha_flux_gf') > 0
 
 fig, (ax_z, ax_flux) = plt.subplots(1, 2, figsize=(13, 4.5))
 
-bins = np.arange(0.45, 1.86, 0.05)
+bins = np.arange(0.85, 1.86, 0.05)
 ax_z.hist(galaxies['spe_z'][high_confidence], bins=bins, color='lightgrey', label='High-confidence redshift')
 ax_z.hist(galaxies['spe_z'][passes_all], bins=bins, color='tab:red', label='All criteria')
 ax_z.set_xlabel('Spectroscopic redshift')
@@ -389,7 +399,7 @@ ax_flux.scatter(galaxies['spe_z'][high_confidence & has_halpha], values(galaxies
 points = ax_flux.scatter(galaxies['spe_z'][passes_all], values(galaxies, 'halpha_flux_gf')[passes_all],
                          s=12, c=values(galaxies, 'halpha_snr_gf')[passes_all], cmap='viridis', vmin=10, vmax=50,
                          label='All criteria')
-ax_flux.axhline(2e-16, color='grey', linestyle='--', linewidth=0.8)
+ax_flux.axhline(1.5e-16, color='grey', linestyle='--', linewidth=0.8)
 ax_flux.set_yscale('log')
 ax_flux.set_ylim(1e-17, 3e-15)
 ax_flux.set_xlabel('Spectroscopic redshift')
@@ -415,7 +425,15 @@ def read_spectra(object_id):
         WHERE objectid = {object_id}
     """
     urls = Irsa.query_tap(query).to_table()['url']
-    return [QTable.read(url) for url in urls]
+    spectra = []
+    for url in urls:
+        # TODO: remove the try/except once IRSA's spectrumDM service converts all of the DR1 HDUs
+        # (a few of them currently return an HTTP 422 error)
+        try:
+            spectra.append(QTable.read(url))
+        except HTTPError as error:
+            print(f'Could not read a spectrum of object {object_id}: {error}')
+    return spectra
 
 
 def bad_flux_bins(spectrum):
@@ -436,7 +454,7 @@ def best_spectra(spectra):
     return best
 ```
 
-We plot the usable flux bins as solid lines and the flux bins not to use as dotted lines, set the y-axis range from the usable flux bins, and mark the expected wavelengths of some of the strongest emission lines at the redshift of the galaxy:
+We plot the usable flux bins as solid lines and the flux bins not to use as dotted lines, set the y-axis range from the usable flux bins (ignoring the few highest ones, which are often spikes at the edges of the spectra), and mark the expected wavelengths of some of the strongest emission lines at the redshift of the galaxy:
 
 ```{code-cell} ipython3
 grism_colors = {'Red grism': 'tab:red', 'Blue grism': 'tab:blue'}
@@ -455,7 +473,7 @@ def plot_spectra(ax, spectra, title, line_wavelengths):
 
     good_flux = np.concatenate([spectrum['SIGNAL'][~bad_flux_bins(spectrum)].filled(np.nan)
                                 for spectrum in spectra.values()])
-    low, high = np.nanpercentile(good_flux, [1, 100])
+    low, high = np.nanpercentile(good_flux, [1, 99.5])
     ax.set_ylim(low - 0.1 * (high - low), high + 0.3 * (high - low))
 
     # Mark the lines in the wavelength range, with a single label for lines closer than 100 Angstrom
@@ -475,10 +493,11 @@ def plot_spectra(ax, spectra, title, line_wavelengths):
     ax.set_title(title, fontsize='small')
 
 
-def plot_galaxy(ax, galaxy, title=None):
+def plot_galaxy(ax, galaxy, title=None, best=None):
     z = galaxy['spe_z']
     lines = {line: rest_wavelength * (1 + z) for line, rest_wavelength in emission_lines.items()}
-    best = best_spectra(read_spectra(galaxy['object_id']))
+    if best is None:
+        best = best_spectra(read_spectra(galaxy['object_id']))
     description = f"Object {galaxy['object_id']}, z = {z:.3f}, Hα S/N = {galaxy['halpha_snr_gf']:.0f}"
     plot_spectra(ax, best, f'{title}\n{description}' if title else description, lines)
 ```
@@ -489,11 +508,16 @@ Here are 20 of the galaxies that pass all of the criteria, spread evenly from th
 
 ```{code-cell} ipython3
 n_rows, n_columns = 4, 5
-examples = strong_halpha[np.linspace(0, len(strong_halpha) - 1, n_rows * n_columns).astype(int)]
+positions = np.linspace(0, len(strong_halpha) - 1, n_rows * n_columns).astype(int)
 
 fig, axes = plt.subplots(n_rows, n_columns, figsize=(25, 14), sharex=True)
-for ax, galaxy in zip(axes.flat, examples):
-    plot_galaxy(ax, galaxy)
+for ax, position in zip(axes.flat, positions):
+    # If one of the spectra of a galaxy cannot be read, plot the next galaxy of the list instead
+    for galaxy in strong_halpha[position:]:
+        best = best_spectra(read_spectra(galaxy['object_id']))
+        if len(best) == 2:
+            break
+    plot_galaxy(ax, galaxy, best=best)
 # Only label the outer axes
 for ax in axes[:, 1:].flat:
     ax.set_ylabel('')
@@ -527,7 +551,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The galaxy on the left fails the grism, coverage, and depth criterion only because the median number of dithered exposures of its spectrum is 14, just below our threshold of 15: its Hα line is clearly seen in the blue grism spectrum, and the spectrum is perfectly usable for many purposes. This is a reminder that the thresholds of a strict recipe like this one also reject some good spectra.
+The galaxy on the left fails the grism, coverage, and depth criterion because its spectrum has 780 valid pixels and a median of 14 dithered exposures, just below our thresholds of 800 and 15: its blue grism spectrum is noisy, but its Hα line is clearly seen in the red grism spectrum, and its redshift is consistent with its photometric redshift. This is a reminder that the thresholds of a strict recipe like this one also reject some usable spectra.
 The galaxy on the right has a strong line at 1.23 micron, which the SPE processing identified as Hα, but its redshift is outside of the 95% interval of its photometric redshift.
 The line is only seen in the blue grism spectrum, although the red grism spectrum also covers this wavelength: it is most likely not a line of this galaxy, but a contamination of the blue grism spectrum by a neighboring source, and the photometric redshift criterion rightly rejects this galaxy.
 
@@ -571,15 +595,17 @@ plt.show()
 
 ```{warning}
 Be careful when using line ratios from the DR1 SPE lines catalog.
-At the resolution of the NISP spectra, Hα is blended with the [NII] lines, and the Gaussian fits of the blend are not independent: the [NII]6585 line has the same signal-to-noise ratio and FWHM as Hα, and the [NII]/Hα ratio is poorly constrained.
+At the resolution of the NISP spectra, Hα is blended with the [NII] doublet: they are fitted together, with the same width and fixed relative positions, so the [NII]/Hα ratio comes from deblending the two and is poorly constrained.
+For doublets fitted together, such as [OIII] and [NII], the flux is the total flux of the doublet: multiply it by 2/3 to get the flux of [OIII]5008 or [NII]6585 alone (Le Brun et al. 2026).
 Hβ and [OIII] fall in the blue grism for most of the galaxies in the Euclid Deep Fields, while Hα falls in the red grism, so ratios such as Hα/Hβ also depend on the relative calibration of the two grisms.
 ```
 
 ## References
 
-- Euclid Collaboration et al. 2025, *Euclid Quick Data Release (Q1): Characteristics and limitations of the spectroscopic measurements*, [arXiv:2503.15308](https://arxiv.org/abs/2503.15308)
-- [Euclid SPE output catalog data product description](https://euclid.esac.esa.int/dr/q1/dpdd/spedpd/dpcards/spe_spepfoutputcatalog.html), which describes the columns of the SPE catalogs and the line quality flags
-<!-- TODO: add the DR1 SPE paper once it is public, and confirm the author list of the Q1 paper. -->
+- Euclid Collaboration: Le Brun, V., Moresco, M., Bethermin, M., et al. 2026, *Euclid Data Release 1 (DR1): Performances of the redshift measurement and spectroscopic analysis*
+<!-- TODO: add the link to the DR1 SPE paper once it is public. -->
+- Euclid Collaboration: Le Brun, V., Bethermin, M., Moresco, M., et al. 2026, A&A, 711, A7, *Euclid Quick Data Release (Q1): Characteristics and limitations of the spectroscopic measurements*, [arXiv:2503.15308](https://arxiv.org/abs/2503.15308)
+- [Euclid DR1 SPE output catalog data product description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html), which describes the columns of the SPE catalogs and the line quality flags
 
 +++
 
