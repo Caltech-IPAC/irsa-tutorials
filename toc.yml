@@ -37,6 +37,10 @@ project:
               file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
             - title: Magnitudes
               file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+        - title: DR1 HATS Catalogs
+          children:
+            - title: Introduction
+              file: tutorials/euclid/dr1-hats-catalogs/1-euclid-dr1-hats-intro.md
         - title: Euclid Cloud Access
           file: tutorials/euclid/euclid-cloud-access.md
         - title: ERO Star Clusters

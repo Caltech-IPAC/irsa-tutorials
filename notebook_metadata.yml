@@ -42,6 +42,10 @@
   file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
   section: Euclid
   description: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
+- title: 'DR1 HATS Catalogs: Introduction'
+  file: tutorials/euclid/dr1-hats-catalogs/1-euclid-dr1-hats-intro.md
+  section: Euclid
+  description: Learn which Euclid DR1 catalogs are available in HATS format and how they are organized, then perform a basic query and a cone search.
 - title: Firefly Visualization
   file: tutorials/simulated-data/OpenUniverse2024/openuniverse2024_firefly_visualization.md
   section: Simulated Data

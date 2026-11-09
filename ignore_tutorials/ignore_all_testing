@@ -1,2 +1,4 @@
 # Requires source extractor, which requires a conda install
 tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
+# Euclid DR1 HATS catalogs are not public until the DR1 release
+tutorials/euclid/dr1-hats-catalogs/1-euclid-dr1-hats-intro.md
