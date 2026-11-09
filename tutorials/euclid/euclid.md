@@ -7,7 +7,7 @@ It carries two instruments: the VISible instrument (VIS) and the Near-Infrared S
 Data products include MERged mosaics of calibrated and stacked frames; combined infrared spectra (SIR); and catalogs of MER objects, photometric redshifts and classifications (PHZ), and spectroscopic redshifts and line measurements (SPE).
 
 Data Release 1 (DR1) comprises about 1900 square degrees of imaging, spectroscopy, and catalogs from the Euclid Wide Survey and the Euclid Deep Survey, reprocessed with updated pipelines and calibrations, including the Q1 areas.
-The MER mosaics and MER catalogs notebooks below use DR1; the other notebooks still use Q1.
+The notebooks below are being updated from Q1 to DR1; the title of each notebook says which release it uses.
 
 Data products include:
 - MER (merged) mosaic images of calibrated and stacked frames;
