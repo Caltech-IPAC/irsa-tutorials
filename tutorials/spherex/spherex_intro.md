@@ -110,13 +110,15 @@ The IRSA SIA collections can be listed using using the ``list_collections`` meth
 +++
 
 The collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis)
-The DR1 Spectral Image MEFs are available in two collections:
+The Spectral Image MEFs are available in four collections:
 
 * `'spherex_dr1'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
 * `'spherex_dr1_deep'` -- DR1 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
+* `'spherex_qr3'` -- QR3 Spectral Image MEFs that are part of the SPHEREx **Wide Survey**
+* `'spherex_qr3_deep'` -- QR3 Spectral Image MEFs that are part of the SPHEREx **Deep Survey**
 
 ```{code-cell} ipython3
-results = Irsa.query_sia(pos=(coord, search_radius), collection='spherex_dr1')
+results = Irsa.query_sia(pos=(coord, search_radius), collection=['spherex_dr1', 'spherex_qr3'])
 ```
 
 :::{note}

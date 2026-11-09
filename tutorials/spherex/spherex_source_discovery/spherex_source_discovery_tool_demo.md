@@ -179,7 +179,7 @@ Specifically, the ephemeral query parameters _will_ change for future SPHEREx da
 data_release = "dr1"
 
 # Spectral image queries
-sia_collection = f"spherex_{data_release}"
+sia_collection = [f"spherex_{data_release}", "spherex_qr3"]
 
 # Solid angle pixel map queries
 dataset_type="solid_angle_pixel_map"
@@ -211,7 +211,7 @@ results = Irsa.query_sia(pos=(coord, search_radius), collection=sia_collection)
 results_summary(results)
 ```
 
-Note that we have used the collection `spherex_dr1` in this case. QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
+Note that we have used the collections `spherex_dr1` and `spherex_qr3` in this case. QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
 +++
 
 ```{tip}
@@ -669,13 +669,9 @@ Note that the following procedure follows the one shown in the SPHEREx [Image Cu
 ```
 
 ```{code-cell} ipython3
-# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
-# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
-IRSA_HOST = "https://irsatest.ipac.caltech.edu"
-
 # Define the service endpoint for IRSA's Table Access Protocol (TAP)
 # so that we can query SPHEREx metadata tables.
-service = pyvo.dal.TAPService(f"{IRSA_HOST}/TAP")
+service = pyvo.dal.TAPService("https://irsa.ipac.caltech.edu/TAP")
 
 # Specify cutout size (approximately 60 pixels on a side)
 size = 0.1 * u.degree
@@ -684,16 +680,13 @@ size = 0.1 * u.degree
 # for spectral images that cover the chosen coordinates and match the
 # specified bandpass. Return the cutout data access URL and the time of observation.
 # Sort by observation time.
-# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
-# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    '{IRSA_HOST}/' || a.uri || '?center={matched_stars['ra'][0]},{matched_stars['dec'][0]}d&size={size.value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={matched_stars['ra'][0]},{matched_stars['dec'][0]}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {matched_stars['ra'][0]}, {matched_stars['dec'][0]}), p.poly)
-        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 

@@ -34,7 +34,7 @@ kernelspec:
 This notebook is not intended for use of QR-1 data.
 QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
 IRSA searches, including the one in this notebook, no longer return QR2 images.
-If you already have QR2 images and prefer not to switch to DR1, Section 5.2 shows how to obtain the ePSF for them.
+If you already have QR2 images and prefer not to switch to QR3 or DR1, Section 5.2 shows how to obtain the ePSF for them.
 ```
 
 +++
@@ -118,27 +118,17 @@ size = 0.01 * u.degree
 Once we defined the coordinates of interest and the size of the cutout, we run a TAP query to gather all SPHEREx spectral images that cover the coordinates.
 
 ```{code-cell} ipython3
-# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
-# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
-# Note: `Irsa.tap_url` must be set directly -- `astroquery.ipac.irsa.conf.tap_url` is only read
-# once when the module is first imported, so changing it afterward has no effect.
-IRSA_HOST = "https://irsatest.ipac.caltech.edu"
-Irsa.tap_url = f"{IRSA_HOST}/TAP"
-
 # Define a query that will search the appropriate SPHEREx metadata tables
 # for spectral images that cover the chosen coordinates of interest.
 # Return the cutout data access URL and the time of observation.
 # Sort by observation time.
-# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
-# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    '{IRSA_HOST}/' || a.uri || '?center={coord.ra.deg},{coord.dec.deg}d&size={size.value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={coord.ra.deg},{coord.dec.deg}d&size={size.value}' AS uri,
     p.time_bounds_lower, p.energy_bandpassname, p.time_bounds_lower, p.time_bounds_upper, p.provenance_version
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {coord.ra.deg}, {coord.dec.deg}), p.poly)
-        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
@@ -299,7 +289,7 @@ We advice the users **not** to use the older PSFs, which are stored in the `PSF`
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
 
 ```{note}
-QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). IRSA searches no longer return QR2 images, so the query in Section 4.1 finds only DR1 images and the code cells in this section are skipped. If you already have QR2 images and prefer not to switch to DR1, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images. To do this, set `spectral_image_url` in Section 4.1 to your QR2 image and rerun the notebook from there.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). IRSA searches no longer return QR2 images, so the query in Section 4.1 finds only DR1 and QR3 images and the code cells in this section are skipped. If you already have QR2 images and prefer not to switch to QR3 or DR1, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images. To do this, set `spectral_image_url` in Section 4.1 to your QR2 image and rerun the notebook from there.
 ```
 
 For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).

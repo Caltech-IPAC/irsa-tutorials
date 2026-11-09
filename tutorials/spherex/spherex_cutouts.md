@@ -104,33 +104,23 @@ output_filename = 'spherex_cutouts_mef.fits'
 Here we show how to use `astroquery`'s IRSA TAP interface to retrieve all images that overlap with the position defined above.
 This query will retrieve a table of URLs that link to the MEF cutouts.
 Each row in the table corresponds to a single cutout and includes the data access URL and an observation timestamp.
-The SPHEREx metadata tables include images from every release.
-QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2; this query keeps only DR1 images.
+The SPHEREx metadata tables include DR1 and QR3 images.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
 The results are sorted from oldest to newest.
 
 ```{code-cell} ipython3
-# TESTING ONLY -- DR1 is not yet on production. Point at irsatest for now and
-# revert IRSA_HOST to "https://irsa.ipac.caltech.edu" before merging at DR1 release.
-# Note: `Irsa.tap_url` must be set directly -- `astroquery.ipac.irsa.conf.tap_url` is only read
-# once when the module is first imported, so changing it afterward has no effect.
-IRSA_HOST = "https://irsatest.ipac.caltech.edu"
-Irsa.tap_url = f"{IRSA_HOST}/TAP"
-
 # Define a query that will search the appropriate SPHEREx metadata tables
 # for spectral images that cover the chosen coordinates and match the
 # specified bandpass. Return the cutout data access URL and the time of observation.
 # Sort by observation time.
-# spherex.plane.datarelease is a date, not a release name, so DR1 rows are
-# selected by matching the DR1 path in the artifact URI instead.
 query = f"""
 SELECT
-    '{IRSA_HOST}/' || a.uri || '?center={coord.ra.deg},{coord.dec.deg}d&size={size.value}' AS uri,
+    'https://irsa.ipac.caltech.edu/' || a.uri || '?center={coord.ra.deg},{coord.dec.deg}d&size={size.value}' AS uri,
     p.time_bounds_lower
 FROM spherex.artifact a
 JOIN spherex.plane p ON a.planeid = p.planeid
 WHERE 1 = CONTAINS(POINT('ICRS', {coord.ra.deg}, {coord.dec.deg}), p.poly)
         AND p.energy_bandpassname = '{bandpass}'
-        AND a.uri LIKE 'ibe/data/spherex/dr1/%'
 ORDER BY p.time_bounds_lower
 """
 
