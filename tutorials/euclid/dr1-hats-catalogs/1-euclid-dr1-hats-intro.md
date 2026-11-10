@@ -60,6 +60,7 @@ In many DR1 catalogs, more than one row can have the same `object_id`, so `objec
 Things to expect when working with these catalogs:
 
 - Looking up an object by its `object_id` can return more than one row.
+  This includes lookups that use a catalog's index table (for example, LSDB's `id_search`), which return every row with that `object_id`.
 - Joining two catalogs on `object_id` returns every matching pair of rows, so the result can have many more rows than either catalog.
   Where possible, filter each catalog before joining (for example, to one redshift candidate or one `lrange`).
 - The number of rows is not the number of objects. Count the unique `object_id` values instead.
@@ -169,10 +170,10 @@ For example, the galaxy redshift candidate tables contain several redshift estim
 ### 3.5 Catalog paths
 
 Each catalog is stored in its own HATS collection.
-A collection contains the catalog itself, plus ancillary data that some libraries (such as LSDB) use to make queries faster: a margin cache and, for some catalogs, an index table.
-The collection for a catalog is at `individual_catalogs/hats/<catalog>/` and the catalog inside it is named `euclid_dr1_individual_catalogs_<catalog>-hats`.
+A collection contains the catalog itself, plus ancillary data that some libraries (such as LSDB) use to make queries faster: a margin cache and an index table on `object_id`.
+The collection for a catalog is at `hats/reformatted_catalogs/<catalog>/` and the catalog inside it is named `euclid_dr1_reformatted_catalogs_<catalog>-hats`.
 
-The collections can be browsed [here]() [FIXME: add the irsa link].
+The collections can be browsed [here](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/dr1/hats/reformatted_catalogs/).
 
 In the rest of this tutorial we use the MER catalog for the Deep Survey, `mer_catalogue_deep_survey`.
 
@@ -180,8 +181,7 @@ In the rest of this tutorial we use the MER catalog for the Deep Survey, `mer_ca
 # AWS S3 paths.
 s3_bucket = "nasa-irsa-euclid-dr1"
 collection_prefix = "contributed/dr1/hats/reformatted_catalogs/mer_catalogue_deep_survey"
-# [FIXME] Confirm the catalog folder name inside the collection once the catalogs are in the bucket.
-catalog_name = "euclid_dr1_individual_catalogs_mer_catalogue_deep_survey-hats"
+catalog_name = "euclid_dr1_reformatted_catalogs_mer_catalogue_deep_survey-hats"
 
 collection_path = f"{s3_bucket}/{collection_prefix}"
 dataset_path = f"{collection_path}/{catalog_name}/dataset"
