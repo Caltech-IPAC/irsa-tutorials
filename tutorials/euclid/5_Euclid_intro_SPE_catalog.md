@@ -72,8 +72,6 @@ We rely on ``astroquery`` features that have been recently added, so please make
 ```
 
 ```{code-cell} ipython3
-from urllib.error import HTTPError
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -425,15 +423,7 @@ def read_spectra(object_id):
         WHERE objectid = {object_id}
     """
     urls = Irsa.query_tap(query).to_table()['url']
-    spectra = []
-    for url in urls:
-        # TODO: remove the try/except once IRSA's spectrumDM service converts all of the DR1 HDUs
-        # (a few of them currently return an HTTP 422 error)
-        try:
-            spectra.append(QTable.read(url))
-        except HTTPError as error:
-            print(f'Could not read a spectrum of object {object_id}: {error}')
-    return spectra
+    return [QTable.read(url) for url in urls]
 
 
 def bad_flux_bins(spectrum):
@@ -493,11 +483,10 @@ def plot_spectra(ax, spectra, title, line_wavelengths):
     ax.set_title(title, fontsize='small')
 
 
-def plot_galaxy(ax, galaxy, title=None, best=None):
+def plot_galaxy(ax, galaxy, title=None):
     z = galaxy['spe_z']
     lines = {line: rest_wavelength * (1 + z) for line, rest_wavelength in emission_lines.items()}
-    if best is None:
-        best = best_spectra(read_spectra(galaxy['object_id']))
+    best = best_spectra(read_spectra(galaxy['object_id']))
     description = f"Object {galaxy['object_id']}, z = {z:.3f}, Hα S/N = {galaxy['halpha_snr_gf']:.0f}"
     plot_spectra(ax, best, f'{title}\n{description}' if title else description, lines)
 ```
@@ -508,16 +497,11 @@ Here are 20 of the galaxies that pass all of the criteria, spread evenly from th
 
 ```{code-cell} ipython3
 n_rows, n_columns = 4, 5
-positions = np.linspace(0, len(strong_halpha) - 1, n_rows * n_columns).astype(int)
+examples = strong_halpha[np.linspace(0, len(strong_halpha) - 1, n_rows * n_columns).astype(int)]
 
 fig, axes = plt.subplots(n_rows, n_columns, figsize=(25, 14), sharex=True)
-for ax, position in zip(axes.flat, positions):
-    # If one of the spectra of a galaxy cannot be read, plot the next galaxy of the list instead
-    for galaxy in strong_halpha[position:]:
-        best = best_spectra(read_spectra(galaxy['object_id']))
-        if len(best) == 2:
-            break
-    plot_galaxy(ax, galaxy, best=best)
+for ax, galaxy in zip(axes.flat, examples):
+    plot_galaxy(ax, galaxy)
 # Only label the outer axes
 for ax in axes[:, 1:].flat:
     ax.set_ylabel('')
