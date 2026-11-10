@@ -192,8 +192,8 @@ We use a left outer join, which keeps the galaxies without a spectroscopic redsh
 ```{code-cell} ipython3
 ######################## User defined section ############################
 # Set the center and size of the region to select galaxies from (and of the image cutout below)
-ra_cutout = 267.8
-dec_cutout = 66
+ra_cutout = 269.46
+dec_cutout = 66.0
 im_cutout = 5 * u.arcmin
 
 # Redshift range
@@ -523,8 +523,9 @@ grism_colors = {'Red grism': 'tab:red', 'Blue grism': 'tab:blue'}
 fig, ax = plt.subplots(figsize=(12, 4.5))
 for name, spectrum in best.items():
     bad = bad_flux_bins(spectrum)
+    # Draw the red grism spectrum on top, as it is less noisy where the two grisms overlap
     ax.plot(spectrum['WAVELENGTH'].to(u.micron), np.ma.masked_where(bad, spectrum['SIGNAL']),
-            color=grism_colors[name], alpha=0.8, label=name)
+            color=grism_colors[name], alpha=0.8, label=name, zorder=3 if name == 'Red grism' else 2)
 
 usable_wavelengths = [spectrum['WAVELENGTH'][~bad_flux_bins(spectrum)] for spectrum in best.values()]
 wave_min = min(wavelengths.min() for wavelengths in usable_wavelengths)
@@ -540,9 +541,9 @@ ax.legend(loc='upper left', bbox_to_anchor=(1.01, 1), fontsize='small')
 plt.show()
 ```
 
-This galaxy has a single spectrum, from the blue grism.
-Its Hα line is clearly detected at 1.24 micron, right at the spectroscopic redshift, which agrees well with the photometric redshift.
-At this redshift, the [OIII] line falls at about 0.95 micron, near the start of the blue grism spectrum, where the spectrum is noisy, and it is not detected.
+This galaxy has spectra from both grisms.
+At its spectroscopic redshift, which agrees well with the photometric redshift, the Hα line falls at 1.30 micron, where the two grisms overlap, and it is seen in both spectra.
+This bright galaxy has a strong continuum, and its emission lines are relatively weak: the Hβ and [OIII] lines, near 1 micron in the blue grism spectrum, are not clearly detected.
 
 ### Look at the galaxy on the VIS mosaic
 
