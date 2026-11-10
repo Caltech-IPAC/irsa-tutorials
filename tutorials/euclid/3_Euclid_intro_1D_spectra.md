@@ -433,6 +433,11 @@ def plot_spectra(spectra, title, redshift=None):
 plot_spectra(best, f'Euclid SIR 1D spectra of object {object_id}', redshift)
 ```
 
+```{note}
+The blue and red grism spectra of a galaxy can have different continuum levels where they overlap (about 1.2 to 1.37 micron), sometimes by a factor of two or more, and the blue grism spectra can have spikes and other artifacts that are not flagged in the MASK column.
+This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026) and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
+```
+
 ## 6. Select galaxies and explore their spectra
 
 Now it's your turn to explore!
