@@ -213,6 +213,9 @@ spectrum_files = find_spectra(object_id)
 spectrum_files
 ```
 
+The table has one row, and one URL, for each spectrum of the galaxy.
+Our galaxy has two spectra: as we will see in section 4, one is from the blue grism and the other from the red grism, as expected for a galaxy in the Euclid Deep Fields.
+
 ```{note}
 IRSA's Simple Spectral Access (SSA) service will also serve the DR1 SIR 1D spectra, which will allow searching for them by position; this notebook will be updated when it is available.
 ```
@@ -255,7 +258,8 @@ def bad_flux_bins(spectrum):
     return (mask % 2 == 1) | (mask >= 64)
 ```
 
-Let's look at the spectrum with the most usable flux bins.
+We will compare the two spectra of the galaxy in section 4.
+For now, let's look at one of them as an example; we pick the one with the most usable flux bins.
 Each row of the table is one flux bin:
 
 ```{code-cell} ipython3
