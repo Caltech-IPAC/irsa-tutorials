@@ -40,7 +40,7 @@ These data will be archived by multiple global repositories, including IRSA, whe
 Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS) and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
 It follows Quick Release 1 (Q1); all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
 
-IRSA maintains copies of the Euclid DR1 data products both on premises at IPAC and on the cloud via Amazon Web Services (AWS).
+IRSA maintains copies of the Euclid DR1 data products on the cloud via Amazon Web Services (AWS).
 This notebook provides an introduction to accessing Euclid DR1 data from the cloud.
 If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
@@ -76,12 +76,6 @@ from matplotlib import pyplot as plt
 import json
 ```
 
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
-```
-
 ## 3. Browse Euclid DR1 cloud-hosted data
 
 ```{code-cell} ipython3
@@ -114,7 +108,7 @@ s3.ls(f'{BUCKET_NAME}/dr1/MER/101839130') # pick any tile ID from above
 s3.ls(f'{BUCKET_NAME}/dr1/MER/101839130/VIS') # pick any instrument from above
 ```
 
-As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), we need `MER/{tile_id}/{instrument}/EUC_MER_BGSUB-MOSAIC*.fits` for displaying background-subtracted mosiac images. But these images are stored under TILE IDs so first we need to find TILE ID for a coordinate search we are interested in. We will use astroquery (in next section) to retrieve FITS file paths for our coordinates by doing spatial search.
+As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we need `MER/{tile_id}/{instrument}/EUC_MER_BGSUB-MOSAIC*.fits` for displaying background-subtracted mosiac images. But these images are stored under TILE IDs so first we need to find TILE ID for a coordinate search we are interested in. We will use astroquery (in next section) to retrieve FITS file paths for our coordinates by doing spatial search.
 
 +++
 
@@ -136,7 +130,7 @@ search_radius = 10 * u.arcsec
 % collections
 % ```
 
-As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), DR1 MER mosaics come in two kinds of tiles, which IRSA serves as two separate collections:
+As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), DR1 MER mosaics come in two kinds of tiles, which IRSA serves as two separate collections:
 - **Wide tiles** (`euclid_dr1_wide_DpdMerBksMosaic`): tile IDs start with `102`, about 32 x 32 arcmin.
 - **Deep tiles** (`euclid_dr1_deep_DpdMerBksMosaic`): tile IDs start with `101`, about 17 x 17 arcmin, covering the Euclid Deep Fields and auxiliary fields.
 
@@ -242,7 +236,7 @@ mer_tile_id = 101839130 # from the image paths for the target we picked
 s3.ls(f'{BUCKET_NAME}/dr1/catalogs/MER_FINAL_CATALOG/{mer_tile_id}')
 ```
 
-As per "Browsable Directiories" section in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
+As per "Browsable Directiories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
 
 ```{note}
 Once the catalogs are available as Parquet files in the cloud, we can efficiently do spatial filtering directly on the cloud-hosted file to identify object ID(s) for our target. But for the time being, we can use catalog VO services through astroquery to do the same.
@@ -319,7 +313,7 @@ Again, we use astropy's lazy-loading capability of FITS to only retrieve the spe
 ```{code-cell} ipython3
 with fits.open(f's3://{BUCKET_NAME}/{spec_fpath_key}', fsspec_kwargs={'anon': True}) as hdul:
     spec_hdu = hdul[object_hdu_idx]
-    spec_tbl = Table.read(spec_hdu)
+    spec_tbl = Table.read(spec_hdu, unit_parse_strict="silent")
     spec_header = spec_hdu.header
 ```
 
