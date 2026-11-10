@@ -30,6 +30,7 @@ In this tutorial, we will:
 - Load the schema (column information) of a catalog and find columns of interest.
 - Perform a basic query using the Python library PyArrow.
 - Perform a cone search using the Python library LSDB.
+- Load and plot a combined 1D spectrum.
 
 +++
 
@@ -40,7 +41,7 @@ The DR1 catalogs were derived from Euclid photometry and spectroscopy, taken by 
 
 IRSA converted a subset of the Euclid DR1 catalog tables into catalogs in the Hierarchical Adaptive Tiling Scheme ([HATS](https://hats.readthedocs.io/)) format, one HATS catalog per table.
 The HATS catalogs cover the Wide Survey, Wide, Deep Survey, and Deep catalog tables, and the combined spectra.
-Other DR1 catalog tables, such as the Deep mode, Deep vsiits, Wide Mode tables and `phz_photo_z_wide`, are not available in HATS format.
+Other DR1 catalog tables, such as the Deep mode, deep visits and Wide mode tables and `phz_photo_z_wide`, are not available in HATS format.
 In HATS, the data are partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
 This is different from the Euclid Q1 release, for which IRSA joined 14 tables into a single Merged Objects HATS Catalog (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](../merged-objects-hats-catalog/1-euclid-q1-hats-intro.md)).
 Each DR1 HATS catalog has the same rows and columns as the original Euclid table, with a few changes described in Section 4 below.
@@ -48,17 +49,34 @@ Each DR1 HATS catalog has the same rows and columns as the original Euclid table
 The catalogs are served from an AWS S3 cloud storage bucket.
 Access is free and no credentials are required.
 
+### 1.1 Duplicate object IDs
+
+In many DR1 catalogs, more than one row can have the same `object_id`, so `object_id` alone often does not identify a single row:
+
+- SPE catalogs: most have several rows per object by design, for example several redshift candidates or several spectral lines per object.
+- `sir_combined_spectra`: there is one row per spectrum, and an object can have more than one spectrum (see Section 3.3).
+- MER catalogs: the Euclid description of `object_id` says "The identifier is not guaranteed to be unique."
+
+Things to expect when working with these catalogs:
+
+- Looking up an object by its `object_id` can return more than one row.
+- Joining two catalogs on `object_id` returns every matching pair of rows, so the result can have many more rows than either catalog.
+  Where possible, filter each catalog before joining (for example, to one redshift candidate or one `lrange`).
+- The number of rows is not the number of objects. Count the unique `object_id` values instead.
+
 +++
 
 ## 2. Imports
 
 ```{code-cell} ipython3
 # # Uncomment the next line to install dependencies if needed.
-# %pip install "lsdb>=0.8.1" pandas pyarrow s3fs
+# %pip install "lsdb>=0.8.1" matplotlib pandas pyarrow s3fs
 ```
 
 ```{code-cell} ipython3
 import lsdb  # Cone search with HATS catalogs
+import matplotlib.pyplot as plt  # Plot the spectrum
+import numpy as np  # Distances from the target position
 import pyarrow.compute as pc  # Filter the catalog
 import pyarrow.dataset  # Load the catalog
 import pyarrow.fs  # Simple S3 filesystem pointer
@@ -92,7 +110,8 @@ Original schemas: [MER final catalog data product](http://st-dm.pages.euclid-sgs
 | `mer_catalogue` | 51,820,952 | 888,152,165 |
 | `mer_morphology` | 51,820,952 | 888,152,165 |
 | `mer_cutouts` | 51,820,952 | 888,152,165 |
-| `mer_catalogue_deep_survey_photometry` (full name) | 26,008,743 | |
+
+The Deep Survey also has a MER photometry catalog, `mer_catalogue_deep_survey_photometry` (26,008,743 rows), described in the same data product.
 
 ### 3.2 PHZ catalogs
 
@@ -160,8 +179,8 @@ In the rest of this tutorial we use the MER catalog for the Deep Survey, `mer_ca
 ```{code-cell} ipython3
 # AWS S3 paths.
 s3_bucket = "nasa-irsa-euclid-dr1"
-# [FIXME] Confirm the S3 prefix once the catalogs are in the bucket.
-collection_prefix = "FIXME/individual_catalogs/hats/mer_catalogue_deep_survey"
+collection_prefix = "contributed/dr1/hats/reformatted_catalogs/mer_catalogue_deep_survey"
+# [FIXME] Confirm the catalog folder name inside the collection once the catalogs are in the bucket.
 catalog_name = "euclid_dr1_individual_catalogs_mer_catalogue_deep_survey-hats"
 
 collection_path = f"{s3_bucket}/{collection_prefix}"
@@ -313,16 +332,84 @@ ngc6543_cone
 The cone search is not run until we call `compute()`, which loads the result into a NestedFrame (a pandas DataFrame with support for nested columns).
 LSDB always loads the columns that the catalog was partitioned on, so `ra_from_object_id` and `dec_from_object_id` are included even though we didn't ask for them.
 The cone search uses these columns.
-LSDB always loads the columns that the catalog was partitioned on, so `ra_from_object_id` and `dec_from_object_id` are included even though we didn't ask for them.
-The cone search uses these columns.
 
 ```{code-cell} ipython3
 ngc6543_objects = ngc6543_cone.compute()
 ngc6543_objects
 ```
 
+## 7. Load and Plot a Spectrum
+
+The `sir_combined_spectra` catalog contains the combined 1D NISP spectra (Section 3.3).
+Here we find the spectra of EX Dra, an eclipsing cataclysmic variable in the Euclid Deep Field North, with a cone search of 1 arcsecond around its position.
+
+```{code-cell} ipython3
+spectra_collection_path = f"{s3_bucket}/contributed/dr1/hats/reformatted_catalogs/sir_combined_spectra"
+spectra_catalog = lsdb.open_catalog(
+    f"s3://{spectra_collection_path}",
+    columns=["object_id", "tileid", "lrange", "n_dith", "spectrum"],
+)
+
+exdra_ra, exdra_dec = 271.05936903, 67.90340938  # degrees
+exdra_spectra = spectra_catalog.cone_search(ra=exdra_ra, dec=exdra_dec, radius_arcsec=1).compute()
+exdra_spectra[["object_id", "tileid", "lrange", "n_dith"]]
+```
+
+Each row is one spectrum, so the same `object_id` can appear more than once (see Section 1.1), for example once for the red grism (`RGS`) and once for the blue grism (`BGS`).
+The cone search also returns several `object_id`s within a fraction of an arcsecond of each other, from two Euclid tiles.
+The column `n_dith` is the number of exposures (dithers) combined into each spectrum, so we keep the spectra of the object observed with the most dithers, choosing the one nearest EX Dra's position if more than one has the same number.
+
+```{code-cell} ipython3
+offset_arcsec = 3600 * np.hypot(
+    (exdra_spectra["ra_from_object_id"] - exdra_ra) * np.cos(np.radians(exdra_dec)),
+    exdra_spectra["dec_from_object_id"] - exdra_dec,
+)
+best = exdra_spectra.assign(offset_arcsec=offset_arcsec).sort_values(["n_dith", "offset_arcsec"], ascending=[False, True])
+exdra_object = exdra_spectra[exdra_spectra["object_id"] == best["object_id"].iloc[0]]
+exdra_object[["object_id", "tileid", "lrange", "n_dith"]]
+```
+
+The `spectrum` column is a nested column.
+In each row, it holds a small table with one row per wavelength bin and these columns:
+
+- `wavelength` : wavelength (Angstrom)
+- `signal` : flux, in units of $10^{-16}$ erg s$^{-1}$ cm$^{-2}$ Å$^{-1}$ (see below)
+- `var` : variance of the flux, in units of $10^{-32}$ erg$^2$ s$^{-2}$ cm$^{-4}$ Å$^{-2}$
+- `mask` : pixel mask
+- `quality` : pixel quality flag
+- `ndith` : number of spectra used in the combination
+
+```{code-cell} ipython3
+# The spectrum in the first row, as a pandas DataFrame.
+exdra_object.iloc[0]["spectrum"]
+```
+
+Following the [Euclid Q1 1D spectra tutorial](../3_Euclid_intro_1D_spectra.md), we don't use wavelength bins with an odd `mask` value or a `mask` value of 64 or more.
+Those bins are left as gaps in the plot.
+
+The `signal` values are stored scaled, as in the original FITS files, where the scale factor is the `FSCALE` header keyword ($10^{-16}$ for every spectrum).
+The unit recorded in this catalog's metadata (`erg/s/cm2/Angstrom`) is missing that factor, so we multiply by it before plotting.
+
+```{code-cell} ipython3
+# signal is stored in units of 1e-16 erg/s/cm2/Angstrom (FITS keyword FSCALE). The catalog's unit metadata omits this factor.
+FSCALE = 1e-16
+
+fig, ax = plt.subplots(figsize=(10, 4))
+for _, row in exdra_object.iterrows():
+    spectrum = row["spectrum"]
+    bad = (spectrum["mask"] % 2 == 1) | (spectrum["mask"] >= 64)
+    flux = spectrum["signal"] * FSCALE
+    ax.plot(spectrum["wavelength"] / 1e4, flux.where(~bad), label=f"{row['lrange']} (n_dith {row['n_dith']})")
+
+ax.set_xlabel("Wavelength (micron)")
+ax.set_ylabel("Flux (erg s$^{-1}$ cm$^{-2}$ Å$^{-1}$)")
+ax.set_title("EX Dra")
+ax.legend()
+plt.show()
+```
+
 ## About this notebook
 
-**Updated:** 2026-11-09
+**Updated:** 2026-11-10
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)
