@@ -50,7 +50,7 @@ The following packages must be installed to run this notebook.
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install astropy matplotlib numpy photutils hpgeom requests firefly_client, posixpath
+# !pip install astropy matplotlib numpy photutils hpgeom requests firefly_client
 ```
 
 ```{code-cell} ipython3
