@@ -763,7 +763,7 @@ Where the Hα line falls in both grisms (1.21 to 1.37 micron), it is seen at the
 
 ```{note}
 The blue and red grism spectra of a galaxy can have different continuum levels where they overlap (1.21 to 1.37 micron), sometimes by a factor of two or more, and the blue grism spectra can have spikes and other artifacts that are not flagged in the MASK column.
-This is a property of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026) and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
+This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026) and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
 ```
 
 ### 5.2 Galaxies failing one of the criteria
