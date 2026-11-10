@@ -236,7 +236,7 @@ mer_tile_id = 101839130 # from the image paths for the target we picked
 s3.ls(f'{BUCKET_NAME}/dr1/catalogs/MER_FINAL_CATALOG/{mer_tile_id}')
 ```
 
-As per "Browsable Directiories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
+As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
 
 ```{note}
 Once the catalogs are available as Parquet files in the cloud, we can efficiently do spatial filtering directly on the cloud-hosted file to identify object ID(s) for our target. But for the time being, we can use catalog VO services through astroquery to do the same.
