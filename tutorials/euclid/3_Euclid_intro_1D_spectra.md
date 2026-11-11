@@ -100,13 +100,6 @@ quantity_support()
 conf.remote_timeout = 120
 ```
 
-<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
-
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-```
-
 ## 1. Find a galaxy and its redshift in the DR1 catalogs
 
 We start with a galaxy in the Euclid Deep Field North.
