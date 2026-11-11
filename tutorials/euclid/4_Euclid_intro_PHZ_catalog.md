@@ -124,14 +124,6 @@ quantity_support()
 conf.remote_timeout = 120
 ```
 
-<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
-
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
-```
-
 ## 1. Find the PHZ catalog tables at IRSA
 
 The Euclid catalogs at IRSA can be listed with the `list_catalogs` method; here we filter on the DR1 tables.
