@@ -122,14 +122,6 @@ import s3fs
 import sep
 ```
 
-<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
-
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
-```
-
 ## 1. Search for multiwavelength Euclid DR1 MER mosaics in the Euclid Deep Field North
 Below we set a search radius of 10 arcsec around a bright edge-on spiral galaxy in the Euclid Deep Field North, an area covered by both deep and wide tiles.
 

@@ -114,14 +114,6 @@ from astropy.wcs import WCS
 from astroquery.ipac.irsa import Irsa
 ```
 
-<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
-
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-Irsa.sia_url = 'https://irsadev.ipac.caltech.edu/SIA'
-```
-
 ## 1. Find the MER catalog tables at IRSA
 
 +++
