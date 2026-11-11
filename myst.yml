@@ -1,9 +1,9 @@
 # See docs at: https://mystmd.org/guide/frontmatter
 version: 1
 project:
-  title: IRSA Tutorials
-  subject: IRSA Tutorials
-  description: IRSA Python Notebook tutorials to demostrate accessing data served by the NASA/IPAC Infrared Science Archive (IRSA)
+  title: IRSA Notebooks
+  subject: IRSA Notebooks
+  description: IRSA Python Notebook tutorials to demonstrate accessing data served by the NASA/IPAC Infrared Science Archive (IRSA)
   keywords: [astronomy]
   github: https://github.com/Caltech-IPAC/irsa-tutorials/
   copyright: California Institute of Technology
@@ -39,7 +39,7 @@ extends:
 site:
   template: book-theme
   nav:
-    - title: IRSA Tutorial Notebooks
+    - title: IRSA Notebooks
       url: /.
     - title: Contributed Notebooks
       url: https://irsa.ipac.caltech.edu/irsa-contributed-notebooks/
