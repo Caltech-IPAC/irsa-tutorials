@@ -84,12 +84,12 @@ Some column names differ from the Q1 PHZ catalog: for example the redshift inter
 ## Imports
 
 ```{important}
-We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.11 or newer installed.
 ```
 
 ```{code-cell} ipython3
 # Uncomment the next line to install dependencies if needed.
-# !pip install numpy matplotlib 'astropy>=5.3' 'astroquery>=0.4.10' fsspec s3fs firefly_client
+# !pip install numpy matplotlib 'astropy>=5.3' 'astroquery>=0.4.11' fsspec s3fs firefly_client
 ```
 
 ```{code-cell} ipython3
