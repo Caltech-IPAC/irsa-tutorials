@@ -99,12 +99,6 @@ quantity_support()
 conf.remote_timeout = 120
 ```
 
-<!-- TODO: remove this cell when DR1 is public on the production IRSA services. -->
-```{code-cell} ipython3
-# DR1 is not public yet, so we query IRSA's development server.
-Irsa.tap_url = 'https://irsadev.ipac.caltech.edu/TAP'
-```
-
 ## 1. Find the SPE catalog tables at IRSA
 
 The SPE catalogs are large, so we never download them: we query them on IRSA's server with ADQL through the Table Access Protocol (TAP) service, and get back only the rows we ask for.
