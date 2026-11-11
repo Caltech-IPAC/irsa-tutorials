@@ -41,7 +41,7 @@ The DR1 catalogs were derived from Euclid photometry and spectroscopy, taken by 
 
 IRSA converted a subset of the Euclid DR1 catalog tables into catalogs in the Hierarchical Adaptive Tiling Scheme ([HATS](https://hats.readthedocs.io/)) format, one HATS catalog per table.
 The HATS catalogs cover the Wide Survey, Wide, Deep Survey, and Deep catalog tables, and the combined spectra.
-Other DR1 catalog tables, such as the Deep mode, deep visits and Wide mode tables and `phz_photo_z_wide`, are not available in HATS format.
+Other DR1 catalog tables, such as the Deep mode, Deep visits and Wide mode tables and `phz_photo_z_wide`, are not available in HATS format.
 In HATS, the data are partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
 This is different from the Euclid Q1 release, for which IRSA joined 14 tables into a single Merged Objects HATS Catalog (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](../merged-objects-hats-catalog/1-euclid-q1-hats-intro.md)).
 Each DR1 HATS catalog has the same rows and columns as the original Euclid table, with a few changes described in Section 4 below.
