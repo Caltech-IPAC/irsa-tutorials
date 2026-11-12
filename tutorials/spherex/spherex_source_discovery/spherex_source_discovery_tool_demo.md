@@ -47,7 +47,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -170,20 +170,20 @@ output_notebook(resources=INLINE)
 ## 5. Initialize Ephemeral Query Parameters
 
 ```{attention}
-The query parameters below are valid as of **February 2026**, but will need to be updated as the mission proceeds.
+The query parameters below are valid as of **SPHEREx Data Release 1 (DR1), November 2026**, but will need to be updated as the mission proceeds.
 Specifically, the ephemeral query parameters _will_ change for future SPHEREx data releases.
 ```
 
 ```{code-cell} ipython3
 # General
-data_release = "qr2"
+data_release = "dr1"
 
 # Spectral image queries
-sia_collection = f"spherex_{data_release}"
+sia_collection = [f"spherex_{data_release}", "spherex_qr3"]
 
 # Solid angle pixel map queries
 dataset_type="solid_angle_pixel_map"
-sapm_collection = "cal-sapm-v2-2025-164"
+sapm_collection = "cal-sapm-v3-2026-191"
 sapm_s3 = [
     f"nasa-irsa-spherex/{data_release}/{dataset_type}/{sapm_collection}/{k}/"\
     f"{dataset_type}_D{k}_spx_{sapm_collection}.fits" for k in range(1, 7)
@@ -211,7 +211,7 @@ results = Irsa.query_sia(pos=(coord, search_radius), collection=sia_collection)
 results_summary(results)
 ```
 
-Note that we have used the collection `spherex_qr2` in this case. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
+Note that we have used the collections `spherex_dr1` and `spherex_qr3` in this case. QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2. All the available collections are documented at [SPHEREx Data Access: Application Program Interfaces (APIs)](https://caltech-ipac.github.io/spherex-archive-documentation/spherex-data-access#application-program-interfaces-apis).
 +++
 
 ```{tip}
@@ -270,7 +270,10 @@ d2_result = results[results['energy_bandpassname'] == 'SPHEREx-D2'][0]  # first 
 # Using `astropy.table.TableGroups`
 results_by_detector = results.group_by('energy_bandpassname')
 print(results_by_detector.groups.keys)
-d4_result = results_by_detector.groups[3][0]  # first D4 image
+# Select the group by name: not every detector has images at every position,
+# so the D4 group is not always at the same index
+d4_group = results_by_detector.groups.keys['energy_bandpassname'] == 'SPHEREx-D4'
+d4_result = results_by_detector.groups[d4_group][0]  # first D4 image
 ```
 
 ## 7. Load the Data
@@ -392,7 +395,7 @@ mask2 = np.zeros(flags_data2.shape) * np.nan
 mask2[(flags_data2 == 2097152) | (flags_data2 == 2) | (flags_data2 == 0)] = 1
 
 mask4 = np.zeros(flags_data4.shape) * np.nan
-mask4[(flags_data4 == 2097152) | (flags_data2 == 2) | (flags_data4 == 0)] = 1
+mask4[(flags_data4 == 2097152) | (flags_data4 == 2) | (flags_data4 == 0)] = 1
 ```
 
 Finally, we reproject the images and masks to the same pixel grid. We reproject D2 on D4. For this we use `reproject_exact()` (for flux conservation) and `reproject_interp()` (for mask) from the _reproject_ Python package.
@@ -721,7 +724,7 @@ def process_cutout(row, ra, dec, cache, retries=3, delay=5):
             with fits.open(row["uri"]) as hdulist:
                 # There are seven HDUs:
                 # 0 contains minimal metadata in the header and no data.
-                # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, PSF, WCS-WAVE
+                # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE
                 header = hdulist[1].header
 
                 # Fetch spatial and spectral WCS
@@ -812,11 +815,13 @@ if os.path.exists(phot_path):
 ```
 
 Apply flagging to the extracted 1D-Spectrum.
+We use the flags that set the conservative CONTAINS_BAD_PIXEL warning in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf) (flag definitions are in its Table 16).
 
 ```{code-cell} ipython3
 # Define bad photometry flags
-bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'PHANTOM', 'REFERENCE', 'NONFUNC', 'DICHROIC',
-             'MISSING_DATA', 'HOT', 'COLD', 'FULLSAMPLE', 'PHANMISS', 'NONLINEAR', 'PERSIST', 'OUTLIER']
+bad_flags = ['TRANSIENT', 'OVERFLOW', 'SUR_ERROR', 'NONFUNC', 'DICHROIC', 'MISSING_DATA', 'HOT', 'COLD',
+             'NONLINEAR', 'CROSSTALK', 'GHOST', 'GHOST_FPA', 'GHOST_EXT', 'STREAK', 'PERSIST',
+             'BLOOM', 'SNOWBALL', 'HALO', 'SATELLITE_HALO']
 ap_rad = 3.0  # set your preferred aperture radius, from the `aperture_radii` list you specified above
 targ = 0  # pick index from `all_stars_band_phot` table
 wvl, bdw, abmags, abmag_errs, flx, var, n_bad = \
