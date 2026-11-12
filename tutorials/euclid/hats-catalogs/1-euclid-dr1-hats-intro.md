@@ -28,22 +28,23 @@ In this tutorial, we will:
 
 - Learn which Euclid DR1 catalogs are available in HATS format and how they are named and organized.
 - Load the schema (column information) of a catalog and find columns of interest.
-- Perform a basic query using the Python library PyArrow.
-- Perform a cone search using the Python library LSDB.
+- Perform basic queries using the Python libraries PyArrow and LSDB.
 - Load and plot a combined 1D spectrum.
 
 +++
 
 ## 1. Introduction
 
-Euclid DR1 contains data from the first year of survey operations, covering about 1,900 square degrees.
+Euclid DR1 contains data from the first year of survey operations, covering approximately 1,900 square degrees of the Euclid Wide Survey, as well as observations of the Euclid Deep Fields, calibration fields, and Performance Verification data.
 The DR1 catalogs were derived from Euclid photometry and spectroscopy, taken by the Visible Camera (VIS) and the Near-Infrared Spectrometer and Photometer (NISP), and from photometry taken by other ground-based instruments.
+For descriptions of the releases, surveys, data products, and access methods, see the [Euclid Archive User Guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation/).
 
 IRSA converted a subset of the Euclid DR1 catalog tables into catalogs in the Hierarchical Adaptive Tiling Scheme ([HATS](https://hats.readthedocs.io/)) format, one HATS catalog per table.
 The HATS catalogs cover the Wide Survey, Wide, Deep Survey, and Deep catalog tables, and the combined spectra.
-Other DR1 catalog tables, such as the Deep mode, Deep visits and Wide mode tables and `phz_photo_z_wide`, are not available in HATS format.
+IRSA is making the DR1 HATS catalogs available incrementally.
 In HATS, the data are partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
-This is different from the Euclid Q1 release, for which IRSA joined 14 tables into a single Merged Objects HATS Catalog (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](../merged-objects-hats-catalog/1-euclid-q1-hats-intro.md)).
+This is different from the Euclid Q1 release, for which IRSA joined 14 tables into a single Merged Objects HATS Catalog (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](1-euclid-q1-hats-intro.md)).
+IRSA intends to release similar merged products for DR1.
 Each DR1 HATS catalog has the same rows and columns as the original Euclid table, with a few changes described in Section 4 below.
 
 The catalogs are served from an AWS S3 cloud storage bucket.
@@ -54,7 +55,7 @@ Access is free and no credentials are required.
 In many DR1 catalogs, more than one row can have the same `object_id`, so `object_id` alone often does not identify a single row:
 
 - SPE catalogs: most have several rows per object by design, for example several redshift candidates or several spectral lines per object.
-- `sir_combined_spectra`: there is one row per spectrum, and an object can have more than one spectrum (see Section 3.3).
+- `sir_combined_spectra`: there is one row per spectrum, and an object can have more than one spectrum (see Section 3.1).
 - MER catalogs: the Euclid description of `object_id` says "The identifier is not guaranteed to be unique."
 
 Things to expect when working with these catalogs:
@@ -71,17 +72,18 @@ Things to expect when working with these catalogs:
 
 ```{code-cell} ipython3
 # # Uncomment the next line to install dependencies if needed.
-# %pip install "lsdb>=0.8.1" matplotlib pandas pyarrow s3fs
+# %pip install astropy "lsdb>=0.8.1" matplotlib pandas pyarrow s3fs
 ```
 
 ```{code-cell} ipython3
+import astropy.units as u  # Angular units
 import lsdb  # Cone search with HATS catalogs
 import matplotlib.pyplot as plt  # Plot the spectrum
-import numpy as np  # Distances from the target position
 import pyarrow.compute as pc  # Filter the catalog
 import pyarrow.dataset  # Load the catalog
 import pyarrow.fs  # Simple S3 filesystem pointer
 import pyarrow.parquet  # Load the schema
+from astropy.coordinates import SkyCoord  # Distances from the target position
 ```
 
 ## 3. Available Catalogs
@@ -89,7 +91,8 @@ import pyarrow.parquet  # Load the schema
 +++
 
 The HATS catalogs are from the Wide Survey, Wide, Deep Survey, and Deep tables, plus the combined spectra.
-The tables were produced by four Euclid processing functions: MER (multi-wavelength mosaics on common spatial and pixel scales), PHZ (photometric redshifts), SIR (NISP spectra), and SPE (spectroscopy).
+The tables were produced by four Euclid processing functions: SIR (NISP spectra), MER (multi-wavelength mosaics on common spatial and pixel scales), PHZ (photometric redshifts), and SPE (spectroscopy).
+For details, see [Data Products](https://irsa.ipac.caltech.edu/euclid-archive-documentation/data-products/) in the Euclid Archive User Guide.
 
 The suffix in each catalog name is the suffix of the original Euclid table, and the suffixes differ between processing functions:
 
@@ -97,14 +100,28 @@ The suffix in each catalog name is the suffix of the original Euclid table, and 
 - PHZ: `_deep_survey` and `_wide`
 - SPE: `_deep`, `_wide_survey`, and `_wide`
 
-[FIXME] Explain what the suffixes mean. `_deep` and `_wide` may each combine more than one type of observation (e.g., `_deep` may include Deep Survey, Deep mode, and deep visits), but this is not confirmed. Also explain how the SPE `_wide_survey` and `_wide` tables differ.
+For what each survey and suffix means, see the [Euclid Archive User Guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation/).
 
 The tables below list each catalog and its number of rows.
-A dash means there is no HATS catalog for that table.
+"Not yet" means the table is in Euclid DR1 but IRSA has not yet released a HATS catalog for it.
+"Not in DR1" means Euclid DR1 does not contain that table.
 
-### 3.1 MER catalogs
+### 3.1 SIR combined 1D spectra
+<!-- comment these lines out for all schemas if they block deployment on nov 12 -->
+Original schema: [SIR combined spectra data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/sirdpd/dpcards/sir_combinedspectra.html)
 
-Original schemas: [MER final catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/merdpd/dpcards/mer_finalcatalog.html)
+| Table | Rows |
+|---|---|
+| `sir_combined_spectra` | 309,078,775 |
+
+`sir_combined_spectra` contains the combined 1D spectra, with one row per spectrum.
+An object can have more than one spectrum, so it can appear in more than one row.
+For example, an object can have both a red grism spectrum and a blue grism spectrum, which are identified by the column `lrange` (values `RGS` and `BGS`).
+An object can also have more than one spectrum with the same `lrange`, so `object_id` and `lrange` together do not uniquely identify a row.
+The spectrum itself is stored in a single nested column, `spectrum`.
+
+### 3.2 MER catalogs
+Original schemas: [MER final catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/merdpd/dpcards/mer_finalcatalog.html)
 
 | Table | `_deep_survey` | `_wide_survey` |
 |---|---|---|
@@ -114,38 +131,24 @@ Original schemas: [MER final catalog data product](http://st-dm.pages.euclid-sgs
 
 The Deep Survey also has a MER photometry catalog, `mer_catalogue_deep_survey_photometry` (26,008,743 rows), described in the same data product.
 
-### 3.2 PHZ catalogs
+### 3.3 PHZ catalogs
 
-Original schemas: [PHZ output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/phzdpd/dpcards/phz_phzpfoutputcatalog.html) (`phz_photo_z`, `phz_galaxy_sed`, `phz_star_sed`) and [PHZ output for L3 data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/phzdpd/dpcards/phz_phzpfoutputforl3.html) (the other PHZ catalogs)
+Original schemas: [PHZ output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/phzdpd/dpcards/phz_phzpfoutputcatalog.html) (`phz_photo_z`, `phz_galaxy_sed`, `phz_star_sed`) and [PHZ output for L3 data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/phzdpd/dpcards/phz_phzpfoutputforl3.html) (the other PHZ catalogs)
 
 | Table | `_deep_survey` | `_wide` |
 |---|---|---|
-| `phz_photo_z` | 51,550,740 | - |
+| `phz_photo_z` | 51,550,740 | Not yet |
 | `phz_classification` | 51,550,740 | 847,313,811 |
 | `phz_physical_parameters` | 51,550,740 | 847,313,811 |
 | `phz_nir_physical_parameters` | 6,415,078 | 187,662,926 |
 | `phz_qso_physical_parameters` | 6,154,637 | 116,564,738 |
 | `phz_star_template` | 7,275,888 | 189,466,498 |
-| `phz_galaxy_sed` | - | 846,826,349 |
-| `phz_star_sed` | - | 12,275,216 |
-
-### 3.3 SIR catalog
-
-Original schema: [SIR combined spectra data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/sirdpd/dpcards/sir_combinedspectra.html)
-
-| Table | Rows |
-|---|---|
-| `sir_combined_spectra` | 309,078,775 |
-
-The `sir_combined_spectra` catalog contains the combined 1D spectra, with one row per spectrum.
-An object can have more than one spectrum, so it can appear in more than one row.
-For example, an object can have both a red grism spectrum and a blue grism spectrum, which are identified by the column `lrange` (values `RGS` and `BGS`).
-An object can also have more than one spectrum with the same `lrange`, so `object_id` and `lrange` together do not uniquely identify a row.
-The spectrum itself is stored in a single nested column, `spectrum`.
+| `phz_galaxy_sed` | Not in DR1 | 846,826,349 |
+| `phz_star_sed` | Not in DR1 | 12,275,216 |
 
 ### 3.4 SPE catalogs
 
-Original schemas: [SPE output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/spedpd/dpcards/spe_spepfoutputcatalog.html)
+Original schemas: [SPE output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html)
 
 | Table | `_deep` | `_wide_survey` | `_wide` |
 |---|---|---|---|
@@ -173,7 +176,7 @@ Each catalog is stored in its own HATS collection.
 A collection contains the catalog itself, plus ancillary data that some libraries (such as LSDB) use to make queries faster: a margin cache and an index table on `object_id`.
 The collection for a catalog is at `hats/reformatted_catalogs/<catalog>/` and the catalog inside it is named `euclid_dr1_reformatted_catalogs_<catalog>-hats`.
 
-The collections can be browsed [here](https://irsa.ipac.caltech.edu/data/download/parquet/euclid/dr1/hats/reformatted_catalogs/).
+The collections can be browsed [here](https://nasa-irsa-euclid-dr1.s3.us-east-1.amazonaws.com/index.html#contributed/dr1/hats/reformatted_catalogs/).
 
 In the rest of this tutorial we use the MER catalog for the Deep Survey, `mer_catalogue_deep_survey`.
 
@@ -219,7 +222,7 @@ In the MER catalogs, three columns were renamed to match other IRSA services:
 - `tileid` : 'TILE_INDEX', the ID of the Euclid tile the object was detected in.
 
 Two columns were added to every catalog.
-They contain the object's coordinates, calculated from its `object_id` following the [MER catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dm10/merdpd/dpcards/mer_finalcatalog.html#detailed-description-of-the-data-product).
+They contain the object's coordinates, calculated from its `object_id` following the [MER catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/merdpd/dpcards/mer_finalcatalog.html).
 They were used to partition the catalogs spatially, including the PHZ and SPE catalogs that don't have RA and Dec columns of their own.
 
 - `ra_from_object_id` : RA coordinate (degrees) calculated from `object_id`.
@@ -291,6 +294,7 @@ external_flux_columns[:4]
 ## 5. Basic Query with PyArrow
 
 To demonstrate a basic query, we'll search for bright, point-like objects detected in the VIS mosaic.
+The columns used in this query are described in more detail in [Euclid Q1 Merged Objects HATS Catalog: Magnitudes](4-euclid-q1-hats-magnitudes.md).
 PyArrow dataset filters are described at [Filtering by Expressions](https://arrow.apache.org/docs/python/compute.html#filtering-by-expressions), and the list of available functions is at [Compute Functions](https://arrow.apache.org/docs/python/api/compute.html).
 
 ```{code-cell} ipython3
@@ -340,7 +344,7 @@ ngc6543_objects
 
 ## 7. Load and Plot a Spectrum
 
-The `sir_combined_spectra` catalog contains the combined 1D NISP spectra (Section 3.3).
+`sir_combined_spectra` contains the combined 1D NISP spectra (Section 3.1).
 Here we find the spectra of EX Dra, an eclipsing cataclysmic variable in the Euclid Deep Field North, with a cone search of 1 arcsecond around its position.
 
 ```{code-cell} ipython3
@@ -350,8 +354,8 @@ spectra_catalog = lsdb.open_catalog(
     columns=["object_id", "tileid", "lrange", "n_dith", "spectrum"],
 )
 
-exdra_ra, exdra_dec = 271.05936903, 67.90340938  # degrees
-exdra_spectra = spectra_catalog.cone_search(ra=exdra_ra, dec=exdra_dec, radius_arcsec=1).compute()
+exdra = SkyCoord(ra=271.05936903 * u.deg, dec=67.90340938 * u.deg)
+exdra_spectra = spectra_catalog.cone_search(ra=exdra.ra.deg, dec=exdra.dec.deg, radius_arcsec=1).compute()
 exdra_spectra[["object_id", "tileid", "lrange", "n_dith"]]
 ```
 
@@ -360,17 +364,18 @@ The cone search also returns several `object_id`s within a fraction of an arcsec
 The column `n_dith` is the number of exposures (dithers) combined into each spectrum, so we keep the spectra of the object observed with the most dithers, choosing the one nearest EX Dra's position if more than one has the same number.
 
 ```{code-cell} ipython3
-offset_arcsec = 3600 * np.hypot(
-    (exdra_spectra["ra_from_object_id"] - exdra_ra) * np.cos(np.radians(exdra_dec)),
-    exdra_spectra["dec_from_object_id"] - exdra_dec,
+spectra_coords = SkyCoord(
+    ra=exdra_spectra["ra_from_object_id"].to_numpy() * u.deg, dec=exdra_spectra["dec_from_object_id"].to_numpy() * u.deg
 )
+offset_arcsec = exdra.separation(spectra_coords).arcsec
 best = exdra_spectra.assign(offset_arcsec=offset_arcsec).sort_values(["n_dith", "offset_arcsec"], ascending=[False, True])
 exdra_object = exdra_spectra[exdra_spectra["object_id"] == best["object_id"].iloc[0]]
 exdra_object[["object_id", "tileid", "lrange", "n_dith"]]
 ```
 
-The `spectrum` column is a nested column.
-In each row, it holds a small table with one row per wavelength bin and these columns:
+LSDB returns query results as a [nested-pandas](https://nested-pandas.readthedocs.io/) NestedFrame, and `spectrum` is a nested column.
+Nested-pandas provides methods for querying and operating on nested columns without unpacking them; see its documentation for details.
+In each row, `spectrum` holds a small table with one row per wavelength bin and these columns:
 
 - `wavelength` : wavelength (Angstrom)
 - `signal` : flux, in units of $10^{-16}$ erg s$^{-1}$ cm$^{-2}$ Å$^{-1}$ (see below)
@@ -410,6 +415,6 @@ plt.show()
 
 ## About this notebook
 
-**Updated:** 2026-11-10
+**Updated:** 2026-11-11
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html)

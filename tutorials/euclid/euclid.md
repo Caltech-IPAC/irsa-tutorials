@@ -18,9 +18,9 @@ tutorials/euclid/3_Euclid_intro_1D_spectra.md
 tutorials/euclid/2_Euclid_intro_MER_catalog.md
 tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
 tutorials/euclid/5_Euclid_intro_SPE_catalog.md
-tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
-tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
-tutorials/euclid/dr1-hats-catalogs/1-euclid-dr1-hats-intro.md
+tutorials/euclid/hats-catalogs/1-euclid-dr1-hats-intro.md
+tutorials/euclid/hats-catalogs/1-euclid-q1-hats-intro.md
+tutorials/euclid/hats-catalogs/4-euclid-q1-hats-magnitudes.md
 tutorials/euclid/euclid-cloud-access.md
 tutorials/euclid/euclid_clusters_tutorial.md
 tutorials/euclid/Euclid_ERO.md
