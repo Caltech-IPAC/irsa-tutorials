@@ -17,7 +17,7 @@
 - title: PHZ Catalogs
   file: tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
   section: Euclid
-  description: Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
+  description: Join the DR1 PHZ and MER catalogs to select galaxies with good photometric redshifts in a region, overlay them on a MER mosaic cutout, and compare the photometric redshift of one of them with its SIR spectrum and spectroscopic redshift.
 - title: SPE Catalogs
   file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
   section: Euclid
