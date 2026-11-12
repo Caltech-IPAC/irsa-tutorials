@@ -38,7 +38,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 ## 3. Imports
 
@@ -104,6 +104,8 @@ output_filename = 'spherex_cutouts_mef.fits'
 Here we show how to use `astroquery`'s IRSA TAP interface to retrieve all images that overlap with the position defined above.
 This query will retrieve a table of URLs that link to the MEF cutouts.
 Each row in the table corresponds to a single cutout and includes the data access URL and an observation timestamp.
+The SPHEREx metadata tables include DR1 and QR3 images.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
 The results are sorted from oldest to newest.
 
 ```{code-cell} ipython3
@@ -166,7 +168,7 @@ def process_cutout(row, coord, cache):
     with fits.open(row["uri"], cache=cache) as hdulist:
         # There are seven HDUs:
         # 0 contains minimal metadata in the header and no data.
-        # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, PSF, WCS-WAVE
+        # 1 through 6 are: IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE
         header = hdulist[1].header
 
         # Compute pixel coordinates corresponding to cutout position.
