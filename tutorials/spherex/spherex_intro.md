@@ -164,8 +164,11 @@ Transient read errors occur sometimes, so we'll catch those and retry a few time
 max_retries = 3
 for attempt in range(max_retries):
     try:
-        # Load the data.
-        hdulist = fits.open(spectral_image_url)
+        # Load the data, reading every extension into memory so that
+        # hdulist stays usable after the file is closed.
+        with fits.open(spectral_image_url, memmap=False) as hdulist:
+            for hdu in hdulist:
+                hdu.data
         break
     except (TimeoutError, urllib.error.HTTPError, http.client.IncompleteRead):
         if attempt == max_retries - 1:
