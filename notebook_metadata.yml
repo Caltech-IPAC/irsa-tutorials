@@ -5,11 +5,11 @@
 - title: MER Image Mosaics
   file: tutorials/euclid/1_Euclid_intro_MER_images.md
   section: Euclid
-  description: Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
+  description: Search the DR1 wide and deep MER mosaics, identify the official wide survey mosaic, make multiwavelength cutouts, compare wide and deep images, and subtract the background and extract sources.
 - title: MER Catalogs
   file: tutorials/euclid/2_Euclid_intro_MER_catalog.md
   section: Euclid
-  description: Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
+  description: Choose among the DR1 MER catalog tables, clean a sample with the quality columns, select stars, plot their SEDs and VIS cutouts, and make a color-color diagram.
 - title: SIR 1D Spectra
   file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
   section: Euclid

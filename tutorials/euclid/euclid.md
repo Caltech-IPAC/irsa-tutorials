@@ -6,6 +6,9 @@ It carries two instruments: the VISible instrument (VIS) and the Near-Infrared S
 [Quick Release 1 (Q1)](https://irsa.ipac.caltech.edu/data/Euclid/docs/overview_q1.html) was released in March 2025 and consists of approximately 35 TB of imaging, spectroscopy, and catalogs, covering four non-contiguous fields totaling 63 square degrees.
 Data products include MERged mosaics of calibrated and stacked frames; combined infrared spectra (SIR); and catalogs of MER objects, photometric redshifts and classifications (PHZ), and spectroscopic redshifts and line measurements (SPE).
 
+Data Release 1 (DR1) comprises about 1900 square degrees of imaging, spectroscopy, and catalogs from the Euclid Wide Survey and the Euclid Deep Survey, reprocessed with updated pipelines and calibrations, including the Q1 areas.
+The notebooks below are being updated from Q1 to DR1; the title of each notebook says which release it uses.
+
 Data products include:
 - MER (merged) mosaic images of calibrated and stacked frames;
 - SIR combined infrared spectra;
