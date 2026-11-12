@@ -1,127 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="http://localhost:3000/sitemap_style.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="http://pre.render/sitemap_style.xsl" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:3000</loc>
+    <loc>http://pre.render</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex</loc>
+    <loc>http://pre.render/spherex</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex-intro</loc>
+    <loc>http://pre.render/spherex-intro</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex-cutouts</loc>
+    <loc>http://pre.render/spherex-cutouts</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex-psf</loc>
+    <loc>http://pre.render/spherex-psf</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex-source-discovery-tool-demo</loc>
+    <loc>http://pre.render/spherex-source-discovery-tool-demo</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/spherex-mosaic</loc>
+    <loc>http://pre.render/spherex-mosaic</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid</loc>
+    <loc>http://pre.render/euclid</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-mer-images</loc>
+    <loc>http://pre.render/euclid-intro-mer-images</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-1d-spectra</loc>
+    <loc>http://pre.render/euclid-intro-1d-spectra</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-mer-catalog</loc>
+    <loc>http://pre.render/euclid-intro-mer-catalog</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-phz-catalog</loc>
+    <loc>http://pre.render/euclid-intro-phz-catalog</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-intro-spe-catalog</loc>
+    <loc>http://pre.render/euclid-intro-spe-catalog</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-clusters-tutorial</loc>
+    <loc>http://pre.render/euclid-clusters-tutorial</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-q1-hats-intro</loc>
+    <loc>http://pre.render/euclid-q1-hats-intro</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-q1-hats-magnitudes</loc>
+    <loc>http://pre.render/euclid-q1-hats-magnitudes</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-cloud-access</loc>
+    <loc>http://pre.render/euclid-cloud-access</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/euclid-ero</loc>
+    <loc>http://pre.render/euclid-ero</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/wise</loc>
+    <loc>http://pre.render/wise</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/sia-allwise-atlas</loc>
+    <loc>http://pre.render/sia-allwise-atlas</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/wise-allwise-catalog-demo</loc>
+    <loc>http://pre.render/wise-allwise-catalog-demo</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/neowise-light-curve-demo</loc>
+    <loc>http://pre.render/neowise-light-curve-demo</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/neowise-source-table-strategies</loc>
+    <loc>http://pre.render/neowise-source-table-strategies</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/neowise-source-table-lightcurves</loc>
+    <loc>http://pre.render/neowise-source-table-lightcurves</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/sia-v1-cosmos</loc>
+    <loc>http://pre.render/sia-v1-cosmos</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/plot-spitzer-irs-spectra</loc>
+    <loc>http://pre.render/plot-spitzer-irs-spectra</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/ztf-lightcurves</loc>
+    <loc>http://pre.render/ztf-lightcurves</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/simulated</loc>
+    <loc>http://pre.render/simulated</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/openuniverse2024-quickstart</loc>
+    <loc>http://pre.render/openuniverse2024-quickstart</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/openuniverse2024-firefly-visualization</loc>
+    <loc>http://pre.render/openuniverse2024-firefly-visualization</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/openuniverse2024-roman-tds-supernova</loc>
+    <loc>http://pre.render/openuniverse2024-roman-tds-supernova</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/openuniverse2024-tde-light-curve</loc>
+    <loc>http://pre.render/openuniverse2024-tde-light-curve</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/openuniverse2024-sed-fit</loc>
+    <loc>http://pre.render/openuniverse2024-sed-fit</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/roman-hlss-number-density</loc>
+    <loc>http://pre.render/roman-hlss-number-density</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/cosmodc2-tap-access</loc>
+    <loc>http://pre.render/cosmodc2-tap-access</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/techniques</loc>
+    <loc>http://pre.render/techniques</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/cloud-access-intro</loc>
+    <loc>http://pre.render/cloud-access-intro</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/irsa-hats-with-lsdb</loc>
+    <loc>http://pre.render/irsa-hats-with-lsdb</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/most-queries</loc>
+    <loc>http://pre.render/most-queries</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/parallelize-convolution</loc>
+    <loc>http://pre.render/parallelize-convolution</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/seds-in-firefly</loc>
+    <loc>http://pre.render/seds-in-firefly</loc>
   </url>
 </urlset>
