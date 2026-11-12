@@ -16,6 +16,8 @@ project:
           file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
         - title: Mosaic Cube
           file: tutorials/spherex/spherex_mosaic.md
+        - title: HiPS All-Sky Cube
+          file: tutorials/spherex/spherex_hipscube.md
     - title: Euclid
       file: tutorials/euclid/euclid.md
       children:
