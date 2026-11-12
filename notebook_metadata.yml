@@ -21,7 +21,7 @@
 - title: SPE Catalogs
   file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
   section: Euclid
-  description: Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
+  description: Join the DR1 SPE tables with the MER and PHZ catalogs, filter them for galaxies with a strong H-alpha line following the DR1 SPE paper, see what each criterion removes, and plot the spectra and line measurements of galaxies that pass or fail the criteria.
 - title: Early Release Observations (ERO) - Star Clusters
   file: tutorials/euclid/Euclid_ERO.md
   section: Euclid
