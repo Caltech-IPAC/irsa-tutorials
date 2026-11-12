@@ -6,8 +6,9 @@ tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
 tutorials/euclid/5_Euclid_intro_SPE_catalog.md
 tutorials/euclid/Euclid_ERO.md
 tutorials/euclid/euclid-cloud-access.md
-tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
-tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+tutorials/euclid/hats-catalogs/1-euclid-dr1-hats-intro.md
+tutorials/euclid/hats-catalogs/1-euclid-q1-hats-intro.md
+tutorials/euclid/hats-catalogs/4-euclid-q1-hats-magnitudes.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_firefly_visualization.md
 tutorials/simulated-data/cosmoDC2_TAP_access.md
 tutorials/simulated-data/OpenUniverse2024/openuniverse2024_roman_tds_supernova.md
