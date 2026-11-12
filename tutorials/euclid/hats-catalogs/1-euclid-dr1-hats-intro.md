@@ -18,7 +18,7 @@ authors:
 
 +++
 
-This tutorial is an introduction to the content and format of the Euclid DR1 HATS Catalogs, a set of catalogs that IRSA created from the Euclid Data Release 1 (DR1) catalog tables.
+This tutorial is an introduction to the content and format of the Euclid DR1 HATS Catalogs, a set of catalogs that IRSA created from the Euclid Data Release 1 (DR1) catalogs and spectra.
 
 +++
 
