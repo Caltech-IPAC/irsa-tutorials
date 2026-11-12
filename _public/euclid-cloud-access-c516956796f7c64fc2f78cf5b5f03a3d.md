@@ -15,16 +15,16 @@ authors:
   - name: Brigitta Sipőcz
   - name: Tiffany Meshkat
   - name: Troy Raen
-  - name: IRSA Data Science Team
+  - name: Jessica Krick
 ---
 
-# Euclid Q1: Cloud Access
+# Euclid DR1: Cloud Access
 
 +++
 
 ## Learning Goals
 By the end of this tutorial, you will:
-- Learn where Euclid Q1 data are stored in the cloud.
+- Learn where Euclid DR1 data are stored in the cloud.
 - Retrieve an image cutout from the cloud.
 - Retrieve a spectrum from the cloud.
 
@@ -37,11 +37,11 @@ The primary science goals of Euclid are to better understand the composition and
 The Euclid mission is providing space-based imaging and spectroscopy as well as supporting ground-based imaging to achieve these primary goals.
 These data will be archived by multiple global repositories, including IRSA, where they will support transformational work in many areas of astrophysics.
 
-Euclid Quick Release 1 (Q1) consists of consists of ~30 TB of imaging, spectroscopy, and catalogs covering four non-contiguous fields:
-Euclid Deep Field North (22.9 sq deg), Euclid Deep Field Fornax (12.1 sq deg), Euclid Deep Field South (28.1 sq deg), and LDN1641.
+Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS) and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
+It follows Quick Release 1 (Q1); all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
 
-IRSA maintains copies of the Euclid Q1 data products both on premises at IPAC and on the cloud via Amazon Web Services (AWS).
-This notebook provides an introduction to accessing Euclid Q1 data from the cloud.
+IRSA maintains copies of the Euclid DR1 data products on the cloud via Amazon Web Services (AWS).
+This notebook provides an introduction to accessing Euclid DR1 data from the cloud.
 If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
@@ -49,12 +49,12 @@ If you have questions, please contact the [IRSA helpdesk](https://irsa.ipac.calt
 ## 2. Imports
 - `s3fs` for browsing S3 buckets
 - `astropy` for handling coordinates, units, FITS I/O, tables, images, etc.
-- `astroquery>=0.4.10` for querying Euclid data products from IRSA
+- `astroquery>=0.4.11` for querying Euclid data products from IRSA
 - `matplotlib` for visualization
 - `json` for decoding JSON strings
 
-```{important}
-We rely on ``astroquery`` features that have been recently added, so please make sure you have version v0.4.10 or newer installed.
+```{note}
+Please make sure you have ``astroquery`` version v0.4.11 or newer installed.
 ```
 
 ```{code-cell} ipython3
@@ -76,10 +76,10 @@ from matplotlib import pyplot as plt
 import json
 ```
 
-## 3. Browse Euclid Q1 cloud-hosted data
+## 3. Browse Euclid DR1 cloud-hosted data
 
 ```{code-cell} ipython3
-BUCKET_NAME = 'nasa-irsa-euclid-q1'
+BUCKET_NAME = 'nasa-irsa-euclid-dr1'
 ```
 
 [s3fs](https://s3fs.readthedocs.io/en/latest/) provides a filesystem-like python interface for AWS S3 buckets. First we create a s3 client:
@@ -88,37 +88,38 @@ BUCKET_NAME = 'nasa-irsa-euclid-q1'
 s3 = s3fs.S3FileSystem(anon=True)
 ```
 
-Then we list the `q1` directory that contains Euclid Q1 data products:
+Then we list the `dr1` directory that contains Euclid DR1 data products:
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1')
+s3.ls(f'{BUCKET_NAME}/dr1')
 ```
 
 Let's navigate to MER images (available as FITS files):
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/MER')[:10] # ls only top 10 to limit the long output
+s3.ls(f'{BUCKET_NAME}/dr1/MER')[:10] # ls only top 10 to limit the long output
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/MER/102018211') # pick any tile ID from above
+s3.ls(f'{BUCKET_NAME}/dr1/MER/101839130') # pick any tile ID from above
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/MER/102018211/VIS') # pick any instrument from above
+s3.ls(f'{BUCKET_NAME}/dr1/MER/101839130/VIS') # pick any instrument from above
 ```
 
-As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), we need `MER/{tile_id}/{instrument}/EUC_MER_BGSUB-MOSAIC*.fits` for displaying background-subtracted mosiac images. But these images are stored under TILE IDs so first we need to find TILE ID for a coordinate search we are interested in. We will use astroquery (in next section) to retrieve FITS file paths for our coordinates by doing spatial search.
+As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we need `MER/{tile_id}/{instrument}/EUC_MER_BGSUB-MOSAIC*.fits` for displaying background-subtracted mosiac images. But these images are stored under TILE IDs so first we need to find TILE ID for a coordinate search we are interested in. We will use astroquery (in next section) to retrieve FITS file paths for our coordinates by doing spatial search.
 
 +++
 
 ## 4. Do a spatial search for MER mosaics
 
-Pick a target and search radius:
+Pick a target and search radius.
+We give the target's coordinates directly; you could instead look them up by name with `SkyCoord.from_name(target_name)`.
 
 ```{code-cell} ipython3
-target_name = 'TYC 4429-1677-1'
-coord = SkyCoord.from_name(target_name)
+target_name = 'WISEA J181204.48+681354.0'
+coord = SkyCoord(ra=273.018690, dec=68.231680, unit='deg')
 search_radius = 10 * u.arcsec
 ```
 
@@ -129,10 +130,14 @@ search_radius = 10 * u.arcsec
 % collections
 % ```
 
-As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf) and above table, we identify that MER Mosiacs are available as the following collection:
+As per "Data Products Overview" in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), DR1 MER mosaics come in two kinds of tiles, which IRSA serves as two separate collections:
+- **Wide tiles** (`euclid_dr1_wide_DpdMerBksMosaic`): tile IDs start with `102`, about 32 x 32 arcmin.
+- **Deep tiles** (`euclid_dr1_deep_DpdMerBksMosaic`): tile IDs start with `101`, about 17 x 17 arcmin, covering the Euclid Deep Fields and auxiliary fields.
+
+Our target lies in the Euclid Deep Field North, so we use the deep collection:
 
 ```{code-cell} ipython3
-img_collection = 'euclid_DpdMerBksMosaic'
+img_collection = 'euclid_dr1_deep_DpdMerBksMosaic'
 ```
 
 Now query this collection for our target's coordinates and search radius:
@@ -216,22 +221,22 @@ plt.tight_layout()
 ```
 
 ## 6. Find the MER catalog for a given tile
-Let's navigate to MER catalog in the Euclid Q1 bucket:
+Let's navigate to MER catalog in the Euclid DR1 bucket:
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/catalogs')
+s3.ls(f'{BUCKET_NAME}/dr1/catalogs')
 ```
 
 ```{code-cell} ipython3
-s3.ls(f'{BUCKET_NAME}/q1/catalogs/MER_FINAL_CATALOG')[:10] # ls only top 10 to limit the long output
+s3.ls(f'{BUCKET_NAME}/dr1/catalogs/MER_FINAL_CATALOG')[:10] # ls only top 10 to limit the long output
 ```
 
 ```{code-cell} ipython3
-mer_tile_id = 102160339 # from the image paths for the target we picked
-s3.ls(f'{BUCKET_NAME}/q1/catalogs/MER_FINAL_CATALOG/{mer_tile_id}')
+mer_tile_id = 101839130 # from the image paths for the target we picked
+s3.ls(f'{BUCKET_NAME}/dr1/catalogs/MER_FINAL_CATALOG/{mer_tile_id}')
 ```
 
-As per "Browsable Directiories" section in [user guide](https://irsa.ipac.caltech.edu/data/Euclid/docs/euclid_archive_at_irsa_user_guide.pdf), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
+As per "Browsable Directories" section in [user guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation), we can use `catalogs/MER_FINAL_CATALOG/{tile_id}/EUC_MER_FINAL-CAT*.fits` for listing the objects catalogued. We can read the identified FITS file as table and do filtering on ra, dec columns to find object ID(s) only for the target we picked. But it will be an expensive operation so we will instead use astroquery (in next section) to do a spatial search in the MER catalog provided by IRSA.
 
 ```{note}
 Once the catalogs are available as Parquet files in the cloud, we can efficiently do spatial filtering directly on the cloud-hosted file to identify object ID(s) for our target. But for the time being, we can use catalog VO services through astroquery to do the same.
@@ -241,22 +246,21 @@ Once the catalogs are available as Parquet files in the cloud, we can efficientl
 
 ## 7. Find the MER Object ID for our target
 First, list the Euclid catalogs provided by IRSA.
-
-```{note}
-In the example below, we use ``include_metadata_tables=True``.
-This parameter was introduced in astroquery 0.4.11. For earlier versions, please omit this parameter to receive the combined list of available catalogs and metadata tables.
-```
+We use `include_metadata_tables=True` so that the list also includes metadata tables, such as the one that associates objects with their spectra.
 
 ```{code-cell} ipython3
 catalogs = Irsa.list_catalogs(full=True, filter='euclid', include_metadata_tables=True)
 catalogs
 ```
 
-From this table, we can extract the MER catalog name. We also see several other interesting metadata tables, let's also extract spectral file association table for retrieving spectra later.
+From this table, we can extract the MER catalog name.
+The DR1 MER catalog is split into several tables; sources in the `deep_survey` table are measured on the deep tiles, matching the deep mosaics we used above.
+For a target in the Euclid Wide Survey, use `euclid_dr1_mer_catalogue_wide_survey` instead.
+We also see several other interesting metadata tables, let's also extract spectral file association table for retrieving spectra later.
 
 ```{code-cell} ipython3
-euclid_mer_catalog = 'euclid_q1_mer_catalogue'
-euclid_spec_association_catalog = 'euclid.objectid_spectrafile_association_q1'
+euclid_mer_catalog = 'euclid_dr1_mer_catalogue_deep_survey'
+euclid_spec_association_catalog = 'euclid.objectid_spectrafile_association_dr1'
 ```
 
 Now, we do a region search within a cone of 5 arcsec around our target to pinpoint its object ID in Euclid catalog:
@@ -289,10 +293,13 @@ spec_association_tbl
 If you picked a target other than what this notebook uses, it's possible that there is no spectrum associated for your target's object ID. In that case, `spec_association_tbl` will contain 0 rows.
 ```
 
-In above table, we can see that the `'path'` column gives us a url that can be used to call an IRSA service to get the spectrum of our object as SpectrumDM VOTable. We can map it to an S3 bucket key to retrieve a spectra file from the cloud. This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. The `'hdu'` column gives us the extension number for our object. So let's extract both of these.
+In above table, we can see that the `'path'` column gives us the location of the combined spectra file that contains our object, and the `'hdu'` column gives us the extension number for our object.
+Together they can be used to call an IRSA service to get the spectrum of our object as a SpectrumDM VOTable, at `https://irsacloud.ipac.caltech.edu/api/spectrumdm/convert/{path}?dataset_id=euclid_combspec_dr1&hdu={hdu}`.
+Here we instead retrieve the spectrum from the cloud: removing the leading `euclid/` from the path gives us the S3 bucket key of the spectra file.
+This is a very big FITS spectra file with multiple extensions where each extension contains spectrum of one object. So let's extract both the key and the extension number.
 
 ```{code-cell} ipython3
-spec_fpath_key = spec_association_tbl['path'][0].replace('api/spectrumdm/convert/euclid/', '').split('?')[0]
+spec_fpath_key = spec_association_tbl['path'][0].removeprefix('euclid/')
 spec_fpath_key
 ```
 
@@ -306,7 +313,7 @@ Again, we use astropy's lazy-loading capability of FITS to only retrieve the spe
 ```{code-cell} ipython3
 with fits.open(f's3://{BUCKET_NAME}/{spec_fpath_key}', fsspec_kwargs={'anon': True}) as hdul:
     spec_hdu = hdul[object_hdu_idx]
-    spec_tbl = Table.read(spec_hdu)
+    spec_tbl = Table.read(spec_hdu, unit_parse_strict="silent")
     spec_header = spec_hdu.header
 ```
 
@@ -314,9 +321,18 @@ with fits.open(f's3://{BUCKET_NAME}/{spec_fpath_key}', fsspec_kwargs={'anon': Tr
 spec_tbl
 ```
 
+The `MASK` column flags flux bins that should not be used; bins with an odd `MASK` value or a value of 64 or more are flagged.
+These include the low-flux bins at both ends of the wavelength range, so we set the y-axis range from the unflagged bins to show the spectrum in more detail.
+
 ```{code-cell} ipython3
-# The signal needs to be multiplied by the scale factor in the header.
-plt.plot(spec_tbl['WAVELENGTH'], spec_header['FSCALE'] * spec_tbl['SIGNAL'])
+good = (spec_tbl['MASK'] % 2 == 0) & (spec_tbl['MASK'] < 64)
+good_signal = spec_tbl['SIGNAL'][good]
+margin = 0.05 * (good_signal.max() - good_signal.min())
+
+# In DR1, the flux scale factor (the FSCALE header keyword) is already included in the unit of the SIGNAL column,
+# so we plot the signal as is and label the axis with that unit.
+plt.plot(spec_tbl['WAVELENGTH'], spec_tbl['SIGNAL'])
+plt.ylim(good_signal.min() - margin, good_signal.max() + margin)
 plt.xlabel(spec_tbl['WAVELENGTH'].unit.to_string('latex_inline'))
 plt.ylabel(spec_tbl['SIGNAL'].unit.to_string('latex_inline'))
 
@@ -325,6 +341,6 @@ plt.title(f'Spectrum of Target: {target_name}\n(Euclid Object ID: {object_id})')
 
 ## About this Notebook
 
-**Updated:** 2025-09-23
+**Updated:** 2026-11-12
 
 **Contact:** the [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions or reporting problems.
