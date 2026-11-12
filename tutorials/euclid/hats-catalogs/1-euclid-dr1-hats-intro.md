@@ -39,32 +39,34 @@ Euclid DR1 contains data from the first year of survey operations, covering appr
 The DR1 catalogs were derived from Euclid photometry and spectroscopy, taken by the Visible Camera (VIS) and the Near-Infrared Spectrometer and Photometer (NISP), and from photometry taken by other ground-based instruments.
 For descriptions of the releases, surveys, data products, and access methods, see the [Euclid Archive User Guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation/).
 
-IRSA converted a subset of the Euclid DR1 catalog tables into catalogs in the Hierarchical Adaptive Tiling Scheme ([HATS](https://hats.readthedocs.io/)) format, one HATS catalog per table.
-The HATS catalogs cover the Wide Survey, Wide, Deep Survey, and Deep catalog tables, and the combined spectra.
-IRSA is making the DR1 HATS catalogs available incrementally.
-In HATS, the data are partitioned spatially (by right ascension and declination) and written as an Apache Parquet dataset.
-This is different from the Euclid Q1 release, for which IRSA joined 14 tables into a single Merged Objects HATS Catalog (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](1-euclid-q1-hats-intro.md)).
-IRSA intends to release similar merged products for DR1.
-Each DR1 HATS catalog has the same rows and columns as the original Euclid table, with a few changes described in Section 4 below.
+Euclid DR1 catalog data are separated into about 25 merged-mosaic, photo-z, and spectroscopy catalogs, which are further split by survey or processing mode (e.g., deep survey), for a total of 93 individual catalogs.
+IRSA is creating various [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme) products and releasing them as they become available.
+
+Currently, IRSA provides 56 HATS catalogs corresponding to individual Euclid DR1 catalogs, plus 1 HATS catalog with DR1 spectra.
+For the Q1 release, IRSA joined most of the individual catalogs together into a single Merged Objects HATS product (see [Euclid Q1 Merged Objects HATS Catalog: Introduction](1-euclid-q1-hats-intro.md)).
+We intend to provide similar products for Euclid DR1 in the near future.
 
 The catalogs are served from an AWS S3 cloud storage bucket.
 Access is free and no credentials are required.
 
 ### 1.1 Duplicate object IDs
 
-In many DR1 catalogs, more than one row can have the same `object_id`, so `object_id` alone often does not identify a single row:
+Most DR1 catalogs have more than one row with the same `object_id`, meaning `object_id` alone usually does not identify a unique row.
+There are a few reasons for this, including:
 
-- SPE catalogs: most have several rows per object by design, for example several redshift candidates or several spectral lines per object.
-- `sir_combined_spectra`: there is one row per spectrum, and an object can have more than one spectrum (see Section 3.1).
-- MER catalogs: the Euclid description of `object_id` says "The identifier is not guaranteed to be unique."
+1. Euclid object IDs are constructed from RA and dec coordinates that are truncated such that objects that are very close together on the sky ended up with the same object ID.
+2. Most spectroscopy catalogs have, for example, several redshift solutions or several spectral lines per object, each stored in its own row.
+3. Euclid DR1 provides red and blue grism spectra, with each spectrum in its own row, and many objects have both.
 
 Things to expect when working with these catalogs:
 
 - Looking up an object by its `object_id` can return more than one row.
   This includes lookups that use a catalog's index table (for example, LSDB's `id_search`), which return every row with that `object_id`.
-- Joining two catalogs on `object_id` returns every matching pair of rows, so the result can have many more rows than either catalog.
-  Where possible, filter each catalog before joining (for example, to one redshift candidate or one `lrange`).
-- The number of rows is not the number of objects. Count the unique `object_id` values instead.
+- It's often not clear how to join two catalogs when either or both contain duplicated `object_id`s. 
+  So the user must choose if they want to drop the duplicates, choose one of the possible permutations, accept all possible permutations, or make some other choice.
+- When an `object_id` value appears more than once in a given catalog, those rows might belong to different Euclid objects that are close enough on the sky to end up with the same object ID, or they might belong to different measurements for the same Euclid object.
+    - Non-spectroscopy catalogs generally keep data for one Euclid object on one row, so duplicates there are likely to be different Euclid objects.
+    - However, most spectroscopy catalogs separate one Euclid object into multiple rows (one row per redshift solution, for example), and may also contain different Euclid objects that happen to have the same `object_id`.
 
 +++
 
@@ -90,8 +92,8 @@ from astropy.coordinates import SkyCoord  # Distances from the target position
 
 +++
 
-The HATS catalogs are from the Wide Survey, Wide, Deep Survey, and Deep tables, plus the combined spectra.
-The tables were produced by four Euclid processing functions: SIR (NISP spectra), MER (multi-wavelength mosaics on common spatial and pixel scales), PHZ (photometric redshifts), and SPE (spectroscopy).
+The HATS catalogs currently available are from the Deep Survey, Deep, Wide Survey, and Wide tables, plus the 1D combined spectra.
+The original data products were produced by four Euclid processing functions: MER (multi-wavelength mosaics on common spatial and pixel scales), PHZ (photometric redshifts), SPE (spectroscopy), and SIR (NISP spectra).
 For details, see [Data Products](https://irsa.ipac.caltech.edu/euclid-archive-documentation/data-products/) in the Euclid Archive User Guide.
 
 The suffix in each catalog name is the suffix of the original Euclid table, and the suffixes differ between processing functions:
