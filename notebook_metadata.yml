@@ -5,11 +5,11 @@
 - title: MER Image Mosaics
   file: tutorials/euclid/1_Euclid_intro_MER_images.md
   section: Euclid
-  description: Retrieve both a full MER mosaic image and multi-wavelength cutouts, then subtract the background from the cutouts and extract sources.
+  description: Search the DR1 wide and deep MER mosaics, identify the official wide survey mosaic, make multiwavelength cutouts, compare wide and deep images, and subtract the background and extract sources.
 - title: MER Catalogs
   file: tutorials/euclid/2_Euclid_intro_MER_catalog.md
   section: Euclid
-  description: Explore the columns in the MER final catalog, query for stars, and create a color-magnitude diagram.
+  description: Choose among the DR1 MER catalog tables, clean a sample with the quality columns, select stars, plot their SEDs and VIS cutouts, and make a color-color diagram.
 - title: SIR 1D Spectra
   file: tutorials/euclid/3_Euclid_intro_1D_spectra.md
   section: Euclid
@@ -17,11 +17,11 @@
 - title: PHZ Catalogs
   file: tutorials/euclid/4_Euclid_intro_PHZ_catalog.md
   section: Euclid
-  description: Join the PHZ and MER catalogs to query galaxies with quality redshifts in a box region, create MER mosaic cutouts with catalog overlays, and plot the brightest galaxy's SIR spectrum.
+  description: Join the DR1 PHZ and MER catalogs to select galaxies with good photometric redshifts in a region, overlay them on a MER mosaic cutout, and compare the photometric redshift of one of them with its SIR spectrum and spectroscopic redshift.
 - title: SPE Catalogs
   file: tutorials/euclid/5_Euclid_intro_SPE_catalog.md
   section: Euclid
-  description: Join the SPE and MER catalogs and query for galaxies with H-alpha line detections, then plot the SIR spectrum of a galaxy with a high SNR H-alpha line measurement.
+  description: Join the DR1 SPE tables with the MER and PHZ catalogs, filter them for galaxies with a strong H-alpha line following the DR1 SPE paper, see what each criterion removes, and plot the spectra and line measurements of galaxies that pass or fail the criteria.
 - title: Early Release Observations (ERO) - Star Clusters
   file: tutorials/euclid/Euclid_ERO.md
   section: Euclid
@@ -34,12 +34,16 @@
   file: tutorials/euclid/euclid_clusters_tutorial.md
   section: Euclid
   description: Use Euclid Q1 data to detect and validate a galaxy cluster.
+- title: 'DR1 HATS Catalogs: Introduction'
+  file: tutorials/euclid/hats-catalogs/1-euclid-dr1-hats-intro.md
+  section: Euclid
+  description: Learn which Euclid DR1 catalogs are available in HATS format and how they are organized, then perform a basic query and a cone search.
 - title: 'Merged Objects Catalog: Introduction'
-  file: tutorials/euclid/merged-objects-hats-catalog/1-euclid-q1-hats-intro.md
+  file: tutorials/euclid/hats-catalogs/1-euclid-q1-hats-intro.md
   section: Euclid
   description: Understand the content and format of the Euclid Q1 Merged Objects HATS Catalog, then perform a basic query.
 - title: 'Merged Objects Catalog: Magnitudes'
-  file: tutorials/euclid/merged-objects-hats-catalog/4-euclid-q1-hats-magnitudes.md
+  file: tutorials/euclid/hats-catalogs/4-euclid-q1-hats-magnitudes.md
   section: Euclid
   description: Review the types of flux measurements available, load template-fit and aperture magnitudes, and plot distributions and comparisons for different object types.
 - title: Firefly Visualization
@@ -86,6 +90,10 @@
   file: tutorials/spherex/spherex_mosaic.md
   section: SPHEREx
   description: Understand and analyze a SPHEREx Mosaic Cube downloaded from the SPHEREx Mosaic tool.
+- title: HiPS All-Sky Cube
+  file: tutorials/spherex/spherex_hipscube.md
+  section: SPHEREx
+  description: Explore the SPHEREx HiPS all-sky cube in Firefly, download its FITS cube tiles, and extract a quick-look spectrum.
 - title: Source Discovery Tool
   file: tutorials/spherex/spherex_source_discovery/spherex_source_discovery_tool_demo.md
   section: SPHEREx
