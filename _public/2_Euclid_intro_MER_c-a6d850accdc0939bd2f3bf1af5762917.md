@@ -61,6 +61,7 @@ The MER processing detects sources on the VIS and NISP mosaics (see the [MER mos
 This notebook provides an introduction to the MER final catalog, in which each entry is a single source.
 In this notebook we follow a typical path through the MER catalog: we search for the sources around a position on the sky, clean the sample with the quality columns, select the stars, look at the spectral energy distributions and VIS images of a few of them, and finally make a color-color diagram of many stars.
 The MER processing for DR1 is described in detail in Euclid Collaboration: Kümmel et al. (2026), see the [References](#references) section below.
+The release as a whole is described in Euclid Collaboration: Aussel et al. (2026) and the surveys it covers in Euclid Collaboration: Tereno et al. (2026).
 If you have questions about this notebook, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
@@ -273,7 +274,7 @@ print(len(stars))
 ### Total fluxes in the Euclid and ground-based bands
 
 Besides the Euclid VIS, Y, J, and H bands, the MER catalog contains photometry measured on ground-based images in the u, g, r, i, and z bands.
-Which ground-based surveys are available depends on the position on the sky, for example DECam in the south, or a combination of MegaCam, HSC, and Pan-STARRS in the north.
+Which ground-based surveys are available depends on the position on the sky, for example DECam in the south, or a combination of MegaCam, HSC, and Pan-STARRS in the north (Euclid Collaboration: Corcho-Caballero et al. 2026).
 The catalog therefore has columns for all of the possible survey and band combinations, named `flux_<band>_ext_<survey>_...`, and only some of them are filled at a given position.
 Let's check which ground-based bands have measurements for our stars.
 
@@ -461,7 +462,8 @@ The ground-based g - r color, which also traces temperature, changes smoothly al
 
 ## Notes on the DR1 MER photometry
 
-Kümmel et al. (2026) describe the DR1 MER photometry and its known limitations in detail.
+Kümmel et al. (2026) describe the DR1 MER photometry and its known limitations in detail, and Euclid Collaboration: Gasparetto et al. (2026) validate the multi-band photometry on extragalactic sources in the COSMOS field.
+The processing and calibration of the NISP images are described in Euclid Collaboration: Polenta et al. (2026), and the photometric masks of DR1 in Euclid Collaboration: Odier et al. (2026).
 The most important points for using the catalog are:
 
 * **NIR calibration offsets**: the Euclid Y, J, and H fluxes have offsets of a few to about 13 percent with respect to Gaia, depending on the photometric method. The offsets are similar in the three bands, so NIR colors are more reliable than absolute NIR magnitudes.
@@ -480,7 +482,13 @@ Colors measured with aperture (A-PHOT) or template-fitting (T-PHOT) photometry a
 
 <!-- TODO: update the Kümmel et al. reference (journal, volume, arXiv ID) and verify the DR1 DOI once the paper and DR1 are public. -->
 
-- Euclid Collaboration: Kümmel, M., et al. 2026, *Euclid Data Release (DR1): The MERge processing*, A&A, in prep.
+- Euclid Collaboration: Kümmel, M., et al. 2026, *Euclid Data Release 1 (DR1): The MERge processing*, A&A, in prep.
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
+- Euclid Collaboration: Tereno et al. 2026, *Euclid Data Release 1 (DR1): The Euclid surveys at DR1*, [arXiv:2611.17040](https://arxiv.org/abs/2611.17040)
+- Euclid Collaboration: Polenta et al. 2026, *Euclid Data Release 1 (DR1): Near-infrared processing and data products*, [arXiv:2611.16119](https://arxiv.org/abs/2611.16119)
+- Euclid Collaboration: Corcho-Caballero et al. 2026, *Euclid Data Release 1 (DR1): Colouring Euclid with external ground-based imaging data*, [arXiv:2611.16533](https://arxiv.org/abs/2611.16533)
+- Euclid Collaboration: Gasparetto et al. 2026, *Euclid Data Release 1 (DR1): Multi-band photometry validation on COSMOS extragalactic sources*, [arXiv:2611.16825](https://arxiv.org/abs/2611.16825)
+- Euclid Collaboration: Odier et al. 2026, *Euclid Data Release 1 (DR1): Euclid photometric masks*, [arXiv:2611.16602](https://arxiv.org/abs/2611.16602)
 - Euclid Collaboration: Romelli, E., Kümmel, M., Dole, H., et al. 2026, A&A, 711, A4 (the Q1 MER processing)
 - Euclid Data Release 1, 2026, [doi:10.57780/esa-d079c51](https://doi.org/10.57780/esa-d079c51)
 

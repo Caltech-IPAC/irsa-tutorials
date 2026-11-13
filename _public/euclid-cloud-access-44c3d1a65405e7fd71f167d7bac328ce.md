@@ -39,6 +39,7 @@ These data will be archived by multiple global repositories, including IRSA, whe
 
 Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS) and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
 It follows Quick Release 1 (Q1); all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
+The release is described in Euclid Collaboration: Aussel et al. (2026) and the surveys it covers in Euclid Collaboration: Tereno et al. (2026); see the [References](#references) section below.
 
 IRSA maintains copies of the Euclid DR1 data products on the cloud via Amazon Web Services (AWS).
 This notebook provides an introduction to accessing Euclid DR1 data from the cloud.
@@ -338,6 +339,11 @@ plt.ylabel(spec_tbl['SIGNAL'].unit.to_string('latex_inline'))
 
 plt.title(f'Spectrum of Target: {target_name}\n(Euclid Object ID: {object_id})');
 ```
+
+## References
+
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
+- Euclid Collaboration: Tereno et al. 2026, *Euclid Data Release 1 (DR1): The Euclid surveys at DR1*, [arXiv:2611.17040](https://arxiv.org/abs/2611.17040)
 
 ## About this Notebook
 
