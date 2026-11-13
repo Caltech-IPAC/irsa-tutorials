@@ -51,9 +51,12 @@ The primary science goals of Euclid are to better understand the composition and
 The Euclid mission provides space-based imaging and spectroscopy, complemented by ground-based imaging, to achieve these goals.
 These data will be archived by multiple global repositories, including IRSA, where they will support a wide range of astrophysical research.
 
-Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields. Further information about Euclid DR1 can be found at: https://euclid.caltech.edu/page/euclid-dr1
+Euclid Data Release 1 (DR1) will include imaging, spectroscopy, and catalogs covering approximately 1,900 square degrees of the Euclid Wide Survey, along with observations of the Euclid Deep Fields. Further information about Euclid DR1 can be found at https://euclid.caltech.edu/page/euclid-dr1 and in the release overview paper, Euclid Collaboration: Aussel et al. (2026).
 
 Among the DR1 data products are multiple spectroscopic catalogs produced by the Spectroscopic Analysis (SPE) Processing Function, including spectroscopic redshifts, emission-line measurements, and other derived spectral properties.
+
+The SPE measurements for DR1 are described in Euclid Collaboration: Le Brun et al. (2026), see the [References](#references) section below.
+For an example of what can be done with the emission lines in the NISP spectra beyond these catalogs, see the emission-line maps of Gabarra et al. (2026).
 
 This notebook provides an introduction to the Euclid DR1 SPE catalogs.
 If you have questions about this notebook, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
@@ -757,7 +760,7 @@ Where the Hα line falls in both grisms (1.21 to 1.37 micron), it is seen at the
 
 ```{note}
 The blue and red grism spectra of a galaxy can have different continuum levels where they overlap (1.21 to 1.37 micron), sometimes by a factor of two or more, and the blue grism spectra can have spikes and other artifacts that are not flagged in the MASK column.
-This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026) and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
+This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026), Fumana et al. (2026), and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
 ```
 
 ### 5.2 Galaxies failing one of the criteria
@@ -834,10 +837,13 @@ Which grism a line falls in depends on the redshift. In the Euclid Deep Fields, 
 
 ## References
 
-- Euclid Collaboration: Le Brun, V., Moresco, M., Bethermin, M., et al. 2026, *Euclid Data Release 1 (DR1): Performances of the redshift measurement and spectroscopic analysis*
+- Euclid Collaboration: Le Brun, V., Moresco, M., Bethermin, M., et al. 2026, *Euclid Data Release 1 (DR1): Performance of the redshift measurement and spectroscopic analysis*, A&A, in prep.
 <!-- TODO: add the link to the DR1 SPE paper once it is public. -->
 <!-- TODO: update the Scodeggio et al. reference (journal, volume, arXiv ID) once the paper is public. -->
 - Euclid Collaboration: Scodeggio, M., Copin, Y., et al. 2026, *Euclid Data Release 1 (DR1): From spectrograms to spectra: The SIR spectroscopic processing function*, A&A, in prep.
+- Euclid Collaboration: Fumana et al. 2026, *Euclid Data Release 1 (DR1): SIR spectroscopic calibration*, [arXiv:2611.17305](https://arxiv.org/abs/2611.17305)
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
+- Gabarra et al. 2026, *Euclid: Data Release 1 (DR1) -- First NISP emission-line maps: Methodology, validation, and applications to galaxy evolution*, [arXiv:2611.16504](https://arxiv.org/abs/2611.16504)
 - Euclid Collaboration: Le Brun, V., Bethermin, M., Moresco, M., et al. 2026, A&A, 711, A7, *Euclid Quick Data Release (Q1): Characteristics and limitations of the spectroscopic measurements*, [arXiv:2503.15308](https://arxiv.org/abs/2503.15308)
 - [Euclid DR1 SPE output catalog data product description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html), which describes the columns of the SPE catalogs and the line quality flags
 

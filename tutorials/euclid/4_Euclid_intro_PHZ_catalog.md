@@ -60,6 +60,7 @@ In DR1, the photometric redshifts are measured with a nearest-neighbour method (
 This notebook provides an introduction to the main PHZ catalog, which contains the photometric redshift probability distribution, the unified fluxes, and the classification for each source.
 We follow a typical path through the catalog: we select galaxies with good photometric redshifts in a redshift range, look at them on a MER mosaic, and compare the photometric redshift of one of them with its spectrum and spectroscopic redshift.
 The PHZ processing for DR1 is described in detail in Euclid Collaboration: Hartley et al. (2026), and the galaxy physical properties it also provides in Euclid Collaboration: Enia et al. (2026); see the [References](#references) section below.
+The release as a whole is described in Euclid Collaboration: Aussel et al. (2026).
 If you have questions about this notebook, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
 +++
@@ -585,10 +586,9 @@ fc.show_table(tbl_stream)
 
 ## References
 
-<!-- TODO: update the Hartley et al. and Enia et al. references (journal, volume, arXiv ID) once the papers are public. -->
-
-- Euclid Collaboration: Hartley, W., Paltani, S., Dubath, F., et al. 2026, *Euclid Data Release 1 (DR1): Photometric-redshift pipeline overview and validation*, A&A, in prep.
-- Euclid Collaboration: Enia, A., Hartley, W. G., Bolzonella, M., et al. 2026, *Euclid Data Release 1 (DR1): The PHZ processing function for the physical properties of galaxies*, A&A, in prep.
+- Euclid Collaboration: Hartley, W., Paltani, S., Dubath, F., et al. 2026, *Euclid Data Release 1 (DR1): Photometric-redshift pipeline overview and validation*, [arXiv:2611.15987](https://arxiv.org/abs/2611.15987)
+- Euclid Collaboration: Enia, A., Hartley, W. G., Bolzonella, M., et al. 2026, *Euclid Data Release 1 (DR1): The PHZ processing function for the physical properties of galaxies*, [arXiv:2611.16444](https://arxiv.org/abs/2611.16444)
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
 - Euclid Collaboration: Tucci, M., Paltani, S., Hartley, W. G., et al. 2026, A&A, 711, A5, which describes the PHZ processing of Q1.
 
 +++

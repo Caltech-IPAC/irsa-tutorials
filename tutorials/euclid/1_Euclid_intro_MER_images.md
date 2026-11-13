@@ -60,6 +60,8 @@ MER (the Merge processing function of the Euclid ground segment) combines the VI
 The mosaics are created from images taken with the Euclid instruments (VIS and NISP), as well as a variety of ground-based surveys (DES, CFIS, Pan-STARRS, and HSC-based surveys) that provide the u, g, r, i, and z bands.
 All of the mosaics have been created according to a uniform tiling on the sky, and mapped to a common pixel scale of 0.1 arcsec.
 The MER processing for DR1 is described in detail in Euclid Collaboration: Kümmel et al. (2026), see the [References](#references) section below.
+The release as a whole is described in Euclid Collaboration: Aussel et al. (2026) and the surveys it covers in Euclid Collaboration: Tereno et al. (2026).
+The VIS, NISP, and ground-based images that go into the mosaics are described in Euclid Collaboration: McCracken et al. (2026), Polenta et al. (2026), and Corcho-Caballero et al. (2026), respectively.
 This notebook provides a quick introduction to accessing MER mosaics from IRSA.
 If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
@@ -529,7 +531,12 @@ for i in range(len(sources_thr)):
 
 <!-- TODO: update the Kümmel et al. reference (journal, volume, arXiv ID) and verify the DR1 DOI once the paper and DR1 are public. -->
 
-- Euclid Collaboration: Kümmel, M., et al. 2026, *Euclid Data Release (DR1): The MERge processing*, A&A, in prep.
+- Euclid Collaboration: Kümmel, M., et al. 2026, *Euclid Data Release 1 (DR1): The MERge processing*, A&A, in prep.
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
+- Euclid Collaboration: Tereno et al. 2026, *Euclid Data Release 1 (DR1): The Euclid surveys at DR1*, [arXiv:2611.17040](https://arxiv.org/abs/2611.17040)
+- Euclid Collaboration: McCracken et al. 2026, *Euclid Data Release 1 (DR1): VIS processing and data products*, [arXiv:2611.15890](https://arxiv.org/abs/2611.15890)
+- Euclid Collaboration: Polenta et al. 2026, *Euclid Data Release 1 (DR1): Near-infrared processing and data products*, [arXiv:2611.16119](https://arxiv.org/abs/2611.16119)
+- Euclid Collaboration: Corcho-Caballero et al. 2026, *Euclid Data Release 1 (DR1): Colouring Euclid with external ground-based imaging data*, [arXiv:2611.16533](https://arxiv.org/abs/2611.16533)
 - Euclid Collaboration: Romelli, E., Kümmel, M., Dole, H., et al. 2026, A&A, 711, A4 (the Q1 MER processing)
 - Euclid Data Release 1, 2026, [doi:10.57780/esa-d079c51](https://doi.org/10.57780/esa-d079c51)
 
