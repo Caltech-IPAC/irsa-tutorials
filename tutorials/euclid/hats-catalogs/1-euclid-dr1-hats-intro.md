@@ -38,6 +38,7 @@ In this tutorial, we will:
 Euclid DR1 contains data from the first year of survey operations, covering approximately 1,900 square degrees of the Euclid Wide Survey, as well as observations of the Euclid Deep Fields, calibration fields, and Performance Verification data.
 The DR1 catalogs were derived from Euclid photometry and spectroscopy, taken by the Visible Camera (VIS) and the Near-Infrared Spectrometer and Photometer (NISP), and from photometry taken by other ground-based instruments.
 For descriptions of the releases, surveys, data products, and access methods, see the [Euclid Archive User Guide](https://irsa.ipac.caltech.edu/euclid-archive-documentation/).
+The release is described in Euclid Collaboration: Aussel et al. (2026) and the surveys it covers in Euclid Collaboration: Tereno et al. (2026); see the [References](#references) section below.
 
 Euclid DR1 catalog data are separated into about 25 merged-mosaic, photo-z, and spectroscopy catalogs, which are further split by survey or processing mode (e.g., deep survey), for a total of 93 individual catalogs.
 IRSA is creating various [HATS](https://hats.readthedocs.io/) (Hierarchical Adaptive Tiling Scheme) products and releasing them as they become available.
@@ -277,7 +278,7 @@ schema.field("flux_y_2fwhm_aper")
 schema.field("flux_y_2fwhm_aper").metadata
 ```
 
-Euclid DR1 offers many flux measurements, both from Euclid detections and from external ground-based surveys.
+Euclid DR1 offers many flux measurements, both from Euclid detections and from external ground-based surveys (Euclid Collaboration: Corcho-Caballero et al. 2026).
 Flux column names start with "flux_", and columns associated with external surveys include "ext" in the name.
 
 ```{code-cell} ipython3
@@ -414,6 +415,12 @@ ax.set_title("EX Dra")
 ax.legend()
 plt.show()
 ```
+
+## References
+
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
+- Euclid Collaboration: Tereno et al. 2026, *Euclid Data Release 1 (DR1): The Euclid surveys at DR1*, [arXiv:2611.17040](https://arxiv.org/abs/2611.17040)
+- Euclid Collaboration: Corcho-Caballero et al. 2026, *Euclid Data Release 1 (DR1): Colouring Euclid with external ground-based imaging data*, [arXiv:2611.16533](https://arxiv.org/abs/2611.16533)
 
 ## About this notebook
 

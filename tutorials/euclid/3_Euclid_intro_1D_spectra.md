@@ -53,10 +53,10 @@ These data are archived by multiple global repositories, including IRSA, where t
 
 Euclid Data Release 1 (DR1) comprises about 1900 sq deg of imaging, spectroscopy, and catalogs from the Euclid Wide Survey (EWS), which will eventually cover about 14,000 sq deg, and from the Euclid Deep Survey (EDS), which covers about 53 sq deg in the three Euclid Deep Fields (North, South, and Fornax).
 It follows Quick Release 1 (Q1), which covered about 63 sq deg with a single pass over each of the three Euclid Deep Fields and the dark cloud LDN 1641; all of the DR1 data, including the areas observed in Q1, have been reprocessed with updated pipelines and calibrations.
-Further information about Euclid DR1 can be found at https://euclid.caltech.edu/page/euclid-dr1.
+Further information about Euclid DR1 can be found at https://euclid.caltech.edu/page/euclid-dr1 and in the release overview paper, Euclid Collaboration: Aussel et al. (2026).
 
 Among the data products included in DR1 are the one-dimensional (1D) spectra extracted from the NISP slitless spectroscopic observations by the SIR (Spectroscopic Imaging Reduction) processing function.
-The SIR processing for DR1 is described in detail in Euclid Collaboration: Scodeggio et al. (2026), see the [References](#references) section below.
+The SIR processing for DR1 is described in detail in Euclid Collaboration: Scodeggio et al. (2026), and the spectroscopic calibration in Euclid Collaboration: Fumana et al. (2026); see the [References](#references) section below.
 This notebook provides an introduction to the Euclid DR1 SIR 1D spectra.
 If you have questions about it, please contact the [IRSA helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
 
@@ -432,7 +432,7 @@ plot_spectra(best, f'Euclid SIR 1D spectra of object {object_id}', redshift)
 
 ```{note}
 The blue and red grism spectra of a galaxy can have different continuum levels where they overlap (about 1.2 to 1.37 micron), sometimes by a factor of two or more, and the blue grism spectra can have spikes and other artifacts that are not flagged in the MASK column.
-This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026) and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
+This is a limitation of the DR1 spectra, not a problem with how they are read in here: see Scodeggio et al. (2026), Fumana et al. (2026), and the [Euclid DR1 documentation](https://euclid.caltech.edu/page/euclid-dr1) for the details.
 ```
 
 ## 6. Select galaxies and explore their spectra
@@ -521,6 +521,8 @@ for random_galaxy in galaxies[rng.choice(len(galaxies), size=min(n_galaxies, len
 <!-- TODO: update the Scodeggio et al. reference (journal, volume, arXiv ID) once the paper is public. -->
 
 - Euclid Collaboration: Scodeggio, M., Copin, Y., et al. 2026, *Euclid Data Release 1 (DR1): From spectrograms to spectra: The SIR spectroscopic processing function*, A&A, in prep.
+- Euclid Collaboration: Fumana et al. 2026, *Euclid Data Release 1 (DR1): SIR spectroscopic calibration*, [arXiv:2611.17305](https://arxiv.org/abs/2611.17305)
+- Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
 
 +++
 
