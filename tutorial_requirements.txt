@@ -6,7 +6,7 @@ numpy>=1.24
 matplotlib>=3.7
 astropy>=5.3
 pyvo>=1.5
-astroquery>=0.4.10
+astroquery>=0.4.11
 scipy>=1.10
 pyarrow>=10.0.1
 hpgeom

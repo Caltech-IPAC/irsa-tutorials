@@ -1321,7 +1321,7 @@ def get_n_spectra(obj_ids, n=10):
             skipped_hdu += 1
             continue
 
-        spec_fpath_key = uri.replace("api/spectrumdm/convert/euclid/", "").split("?")[0]
+        spec_fpath_key = uri.removeprefix("/").removeprefix("euclid/")
         s3_uri = f"s3://{BUCKET_NAME}/{spec_fpath_key}"
         groups.setdefault(s3_uri, []).append((obj_id, hdu_index))
 

@@ -32,6 +32,9 @@ kernelspec:
 
 ```{note}
 This notebook is not intended for use of QR-1 data.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2.
+IRSA searches, including the one in this notebook, no longer return QR2 images.
+If you already have QR2 images and prefer not to switch to QR3 or DR1, Section 5.2 shows how to obtain the ePSF for them.
 ```
 
 +++
@@ -48,7 +51,7 @@ SPHEREx data will be used to:
 
 The community will also mine SPHEREx data and combine it with synergistic data sets to address a variety of additional topics in astrophysics.
 
-More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+More information is available in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 +++
 
@@ -180,7 +183,7 @@ for attempt in range(max_retries):
 hdul.info()
 ```
 
-The downloaded SPHEREx image cutout contains 5 FITS layers, which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp_QR.pdf).
+The downloaded SPHEREx image cutout contains a primary HDU plus 6 extensions (IMAGE, FLAGS, VARIANCE, ZODI, EPSF, WCS-WAVE), which are described in the [SPHEREx Explanatory Supplement](https://irsa.ipac.caltech.edu/data/SPHEREx/docs/SPHEREx_Expsupp.pdf).
 
 Let's also get the version of the image. The version is needed later to decide how to handle the PSF. For obtaining the version of the image, we define a handy function.
 
@@ -243,7 +246,7 @@ We will use these coordinates later to obtain the correct spatial PSF.
 
 ## 5. Obtain the ePSF Depending on Image Version
 
-The PSFs included in the SPHEREx LVF images has been updated. Some of the images therefore still include the old PSF (referred to as "PSF"), while newer versions of the images include the new PSF (referred to as "ePSF"). Differently than the previously used PSF, the ePSF is *not* an optical PSF. Instead, the ePSF is a subpixel-resolved model of the pixel-convolved PSF, which predicts pixel values for a point source at arbitrary sub-pixel positions. Additionally, we implemented a simpler way to read the PSF layer - it is now simply a binary table with array columns.
+The PSFs included in the SPHEREx LVF images has been updated. Older images therefore still include the old PSF (referred to as "PSF"), while newer versions of the images include the new PSF (referred to as "ePSF"). Differently than the previously used PSF, the ePSF is *not* an optical PSF. Instead, the ePSF is a subpixel-resolved model of the pixel-convolved PSF, which predicts pixel values for a point source at arbitrary sub-pixel positions. Additionally, we implemented a simpler way to read the PSF layer - it is now simply a binary table with array columns.
 
 The differentiation is as follows:
 * Versions earlier than `7.0` contain the old PSF (saved in the `PSF` FITS layer). These are QR-1 and QR-2 data.
@@ -267,12 +270,14 @@ Note that the ePSFs are stored in the form of a binary table, which makes it str
 try:
     epsf_hdu = image_hdul["EPSF"]
 except KeyError:
+    epsf_in_image = False
     print(
         "This image does not contain the EPSF extension. "
         "It was likely created with an older version. "
-        "Please proceed to Section 5.2."
+        "Proceeding to Section 5.2."
     )
 else:
+    epsf_in_image = True
     epsf_bintable = Table(epsf_hdu.data)
     epsf_header = epsf_hdu.header
     print("ePSF loaded.")
@@ -284,14 +289,15 @@ We advice the users **not** to use the older PSFs, which are stored in the `PSF`
 Since in these older versions the ePSFs are not provided in the FITS images, we have to obtain them from the respective calibration products. 
 
 ```{note}
-Eventually, after the reprocessing of the data products, the older version LVF images will be replaced by newer versions. Generally, we advise to download the newest images (which also contain improved flagging and calibrations). However, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images.
+QR3 and DR1 supersede QR2, and SPHEREx recommends using QR3 and DR1 over QR2 (the newer images also contain improved flagging and calibrations). IRSA searches no longer return QR2 images, so the query in Section 4.1 finds only DR1 and QR3 images and the code cells in this section are skipped. If you already have QR2 images and prefer not to switch to QR3 or DR1, note that the effective PSF of the images is unchanged, but the ePSF provides a better modeling of it than the previous PSFs. It is therefore safe to just exchange the PSFs and use the new ePSF for the older version images. To do this, set `spectral_image_url` in Section 4.1 to your QR2 image and rerun the notebook from there.
 ```
 
 For this, we first have to figure out the detector on which the image was taken, because the PSF depends on the wavelength (hence detector).
 
 ```{code-cell} ipython3
-this_detector = image_hdul['IMAGE'].header["DETECTOR"]
-print(f"Detector is {this_detector}")
+if not epsf_in_image:
+    this_detector = image_hdul['IMAGE'].header["DETECTOR"]
+    print(f"Detector is {this_detector}")
 ```
 
 Next, we load the calibration file for that detector. Note that each detector has one ePSF calibration file as for now we do not assume that the calibration changes as a function of time.
@@ -303,37 +309,44 @@ Specifically, the ePSF calibration files are stored in the respective release di
 We first construct a dictionary linking the detectors with the most current ePSFs in this bucket.
 
 ```{code-cell} ipython3
-ePSF_calibs = {
-    "1": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/1/epsf_D1_spx_cal-epsf-v1-2026-191.fits",
-    "2": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/2/epsf_D2_spx_cal-epsf-v1-2026-191.fits",
-    "3": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v2-2026-191/3/epsf_D3_spx_cal-epsf-v2-2026-191.fits",
-    "4": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/4/epsf_D4_spx_cal-epsf-v1-2026-191.fits",
-    "5": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/5/epsf_D5_spx_cal-epsf-v1-2026-191.fits",
-    "6": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/6/epsf_D6_spx_cal-epsf-v1-2026-191.fits"
-}
+if not epsf_in_image:
+    ePSF_calibs = {
+        "1": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/1/epsf_D1_spx_cal-epsf-v1-2026-191.fits",
+        "2": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/2/epsf_D2_spx_cal-epsf-v1-2026-191.fits",
+        "3": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v2-2026-191/3/epsf_D3_spx_cal-epsf-v2-2026-191.fits",
+        "4": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/4/epsf_D4_spx_cal-epsf-v1-2026-191.fits",
+        "5": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/5/epsf_D5_spx_cal-epsf-v1-2026-191.fits",
+        "6": "https://nasa-irsa-spherex.s3.us-east-1.amazonaws.com/qr3/epsf/cal-epsf-v1-2026-191/6/epsf_D6_spx_cal-epsf-v1-2026-191.fits"
+    }
 ```
 
-Now we can rad in the correct calibration product ePSF corresponding to the detector in which the image was taken.
+Now we can read in the correct calibration product ePSF corresponding to the detector in which the image was taken.
 
 ```{code-cell} ipython3
-with fits.open(ePSF_calibs[str(this_detector)]) as hdul:
-    hdul.info()
-    epsf_bintable = Table(hdul['EPSF'].data)
-    epsf_header = hdul['EPSF'].header
-    epsf_mosaic = hdul['EPSF_MOSAIC'].data
+if not epsf_in_image:
+    with fits.open(ePSF_calibs[str(this_detector)]) as hdul:
+        hdul.info()
+        epsf_bintable = Table(hdul['EPSF'].data)
+        epsf_header = hdul['EPSF'].header
+        epsf_mosaic = hdul['EPSF_MOSAIC'].data
+else:
+    print("ePSF was already loaded from the image in Section 5.1; skipping the calibration-file fallback.")
 ```
 
 The calibration product contains the same `EPSF` extension as the SPHEREx LVF image files.
 In addition, the calibration products contains an `EPSF_MOSAIC` layer, which is *not* available in the LVF images. The ePSF mosaic allows a quick visualization of all the ePSFs on the detector.
 
 ```{code-cell} ipython3
-fig = plt.figure(figsize=(16,10))
-ax1 = fig.add_subplot(1,2,1)
+if not epsf_in_image:
+    fig = plt.figure(figsize=(16,10))
+    ax1 = fig.add_subplot(1,2,1)
 
-im1 = ax1.imshow(epsf_mosaic, origin='lower')
-ax1.set_xlabel("$x$")
-ax1.set_ylabel("$y$")
-plt.show()
+    im1 = ax1.imshow(epsf_mosaic, origin='lower')
+    ax1.set_xlabel("$x$")
+    ax1.set_ylabel("$y$")
+    plt.show()
+else:
+    print("EPSF_MOSAIC is only available in the calibration product (Section 5.2), not in the LVF image itself.")
 ```
 
 ```{note}
