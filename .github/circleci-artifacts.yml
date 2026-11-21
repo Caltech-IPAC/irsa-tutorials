@@ -1,4 +1,4 @@
-artifact-path: 0/_build/html/index.html
+artifact-path: 0/_build/html/
 circleci-jobs: build-docs
 domain: circle.scientific-python.dev
 job-title: "--> Rendering Preview <--"
