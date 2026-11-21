@@ -111,7 +111,7 @@ The tables below list each catalog and its number of rows.
 
 ### 3.1 SIR combined 1D spectra
 <!-- comment these lines out for all schemas if they block deployment on nov 12 -->
-Original schema: [SIR combined spectra data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/sirdpd/dpcards/sir_combinedspectra.html)
+Original schema: [SIR combined spectra data product](https://euclid.esac.esa.int/dr/dr1/dpdd/sirdpd/dpcards/sir_combinedspectra.html)
 
 | Table | Rows |
 |---|---|
@@ -124,7 +124,7 @@ An object can also have more than one spectrum with the same `lrange`, so `objec
 The spectrum itself is stored in a single nested column, `spectrum`.
 
 ### 3.2 MER catalogs
-Original schemas: [MER final catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/merdpd/dpcards/mer_finalcatalog.html)
+Original schemas: [MER final catalog data product](https://euclid.esac.esa.int/dr/dr1/dpdd/merdpd/dpcards/mer_finalcatalog.html)
 
 | Table | `_deep_survey` | `_wide_survey` |
 |---|---|---|
@@ -136,7 +136,7 @@ The Deep Survey also has a MER photometry catalog, `mer_catalogue_deep_survey_ph
 
 ### 3.3 PHZ catalogs
 
-Original schemas: [PHZ output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/phzdpd/dpcards/phz_phzpfoutputcatalog.html) (`phz_photo_z`, `phz_galaxy_sed`, `phz_star_sed`) and [PHZ output for L3 data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/phzdpd/dpcards/phz_phzpfoutputforl3.html) (the other PHZ catalogs)
+Original schemas: [PHZ output catalog data product](https://euclid.esac.esa.int/dr/dr1/dpdd/phzdpd/dpcards/phz_phzpfoutputcatalog.html) (`phz_photo_z`, `phz_galaxy_sed`, `phz_star_sed`) and [PHZ output for L3 data product](https://euclid.esac.esa.int/dr/dr1/dpdd/phzdpd/dpcards/phz_phzpfoutputforl3.html) (the other PHZ catalogs)
 
 | Table | `_deep_survey` | `_wide` |
 |---|---|---|
@@ -151,7 +151,7 @@ Original schemas: [PHZ output catalog data product](http://st-dm.pages.euclid-sg
 
 ### 3.4 SPE catalogs
 
-Original schemas: [SPE output catalog data product](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html)
+Original schemas: [SPE output catalog data product](https://euclid.esac.esa.int/dr/dr1/dpdd/spedpd/dpcards/spe_spepfoutputcatalog.html)
 
 | Table | `_deep` | `_wide_survey` | `_wide` |
 |---|---|---|---|
@@ -225,7 +225,7 @@ In the MER catalogs, three columns were renamed to match other IRSA services:
 - `tileid` : 'TILE_INDEX', the ID of the Euclid tile the object was detected in.
 
 Two columns were added to every catalog.
-They contain the object's coordinates, calculated from its `object_id` following the [MER catalog description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/merdpd/dpcards/mer_finalcatalog.html).
+They contain the object's coordinates, calculated from its `object_id` following the [MER catalog description](https://euclid.esac.esa.int/dr/dr1/dpdd/merdpd/dpcards/mer_finalcatalog.html).
 They were used to partition the catalogs spatially, including the PHZ and SPE catalogs that don't have RA and Dec columns of their own.
 
 - `ra_from_object_id` : RA coordinate (degrees) calculated from `object_id`.
