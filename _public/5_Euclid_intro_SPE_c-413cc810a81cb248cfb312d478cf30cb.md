@@ -331,7 +331,7 @@ cut_flow(criteria(candidates))
 ### 3.2 Add the H-alpha measurements
 
 As we saw in section 1, the lines table has several rows for each line of a source: one for each grism in which the line is measured.
-The quality flag `spe_line_qual_gf` has three digits, described in the [DR1 documentation of the SPE catalogs](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html): the first digit is the measurement method (2 for the Gaussian fit), the last digit tells which spectrum the measurement comes from, and the middle digit tells how good it is:
+The quality flag `spe_line_qual_gf` has three digits, described in the [DR1 documentation of the SPE catalogs](https://euclid.esac.esa.int/dr/dr1/dpdd/spedpd/dpcards/spe_spepfoutputcatalog.html): the first digit is the measurement method (2 for the Gaussian fit), the last digit tells which spectrum the measurement comes from, and the middle digit tells how good it is:
 
 | Digit | Value | Meaning |
 |---|---|---|
@@ -845,7 +845,7 @@ Which grism a line falls in depends on the redshift. In the Euclid Deep Fields, 
 - Euclid Collaboration: Aussel et al. 2026, *Euclid Data Release 1 (DR1): Data release overview*, [arXiv:2611.16510](https://arxiv.org/abs/2611.16510)
 - Gabarra et al. 2026, *Euclid: Data Release 1 (DR1) -- First NISP emission-line maps: Methodology, validation, and applications to galaxy evolution*, [arXiv:2611.16504](https://arxiv.org/abs/2611.16504)
 - Euclid Collaboration: Le Brun, V., Bethermin, M., Moresco, M., et al. 2026, A&A, 711, A7, *Euclid Quick Data Release (Q1): Characteristics and limitations of the spectroscopic measurements*, [arXiv:2503.15308](https://arxiv.org/abs/2503.15308)
-- [Euclid DR1 SPE output catalog data product description](http://st-dm.pages.euclid-sgs.uk/data-product-doc/dmdr1/spedpd/dpcards/spe_spepfoutputcatalog.html), which describes the columns of the SPE catalogs and the line quality flags
+- [Euclid DR1 SPE output catalog data product description](https://euclid.esac.esa.int/dr/dr1/dpdd/spedpd/dpcards/spe_spepfoutputcatalog.html), which describes the columns of the SPE catalogs and the line quality flags
 
 +++
 
